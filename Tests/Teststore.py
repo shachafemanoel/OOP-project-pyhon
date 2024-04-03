@@ -1,8 +1,10 @@
 import unittest
-from Store.store import Store
+
 from Store.order import Order
 from Store.product import Product
+from Store.store import Store
 from Store.user import User
+
 
 class TestStore(unittest.TestCase):
     def test_add_product(self):
