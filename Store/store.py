@@ -1,7 +1,7 @@
 from Store.order import Order
 from Store.product import Product
 from Store.user import User
-
+from Store.reporting import Reporting
 
 class Store:  # מחלקה שמממשת את החנות עצמה
 
@@ -9,15 +9,17 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.collection = {}  # קולקציית המוצרים שבחנות
         self.users = {}  # משתמשי החנות
         self.orders = {}  # הזמנות החנות
-        self.order_number = 0  # מספר הזמנה
+        self.order_number = 1  # מספר הזמנה
+        self.reporting = Reporting()
 
     def add_product(self, product):
         if product.name not in self.collection:
             self.collection[product.name] = product
+            self.reporting.sold_products[product.name] = 0
             return True  # במידה ונוסף למלאי ולא קיים כבר אחד
         return False
 
-    def add_user(self, user):  # הוספת משתמש לחנות
+    def add_user(self, user:User):  # הוספת משתמש לחנות
         if user.user_id not in self.users and user.ok():
             self.users[user.user_id] = user
             return True
@@ -28,11 +30,13 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
 
 
-    def add_item_order(self, product, how_many,order):
+    def add_item_order(self, product,how_many,order):
         if self.collection[product.name].available(how_many):
             new_order = order
-            new_order.add_item_to_order(product, how_many)
+            new_order.add_item_to_order(product,how_many)
             self.collection[product.name].buy_product(how_many)
+            self.reporting.sold_products[product.name] += how_many
+            self.reporting.revenue +=new_order.total_amount
         else:
             return False, f"Sorry there is only{self.collection[product.name].quantity} of {product.name} in  the inventory"
 
@@ -66,6 +70,5 @@ order = Order("John Doe")
 store.add_item_order(product1, 2, order)
 store.add_item_order(product2, 1, order)
 store.add_item_order(product3, 3, order)
-shachaf = User(2073, "shachaf", 783434)
-store.add_user(shachaf)
+
 

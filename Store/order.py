@@ -30,4 +30,4 @@ class Order:
         self.total_amount += product.get_price(how_many)
 
     def __str__(self):
-        return f"Customer: {self.customer_name}\nItems: {self.product_dict}\nTotal amout: {self.total_amount}\nStatus:{self.status}"
+        return f"Customer: {self.customer_name}\nItems: {self.product_dict}\nTotal amout: {self.total_amount}₪ \nStatus:{self.status}"

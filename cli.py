@@ -2,20 +2,23 @@ from Store.store import Store
 from Store.order import Order
 from Store.product import Product
 from Store.user import User
+from Store.reporting import Reporting
 class StoreCLI:
     def __init__(self):
         self.store = Store()
 
     def log_in(self):
         user_id = input("Enter User ID")
-        if user_id in self.store.users:
-            user = self.store.users[user_id]
-            password = input("Enter Password")
-            user = user.login(password)
-            return user
+        if user_id.isdigit():
+            if user_id in self.store.users:
+                user = self.store.users[user_id]
+                password = input("Enter Password")
+                user.login(password)
+                if user.online == True:
+                    return True
+            else:
+                return False
 
-        else:
-            print("The user does not exist in the system, please register")
 
     def register(self):
         user_id = input("Enter User ID")
@@ -23,15 +26,14 @@ class StoreCLI:
         pass_word = input("Enter your Password")
         new_user = User(user_id,full_name,pass_word)
         if self.store.add_user(new_user):
+            new_user.online = True
             return new_user
         else:
-            new_user = User("error")
-            print("\nPlease try again")
             return new_user
 
 
     def display_user(self):
-        print("1. Log in")
+        print("\n1. Log in")
         print("2. Register")
         print("3. Exit")
         choice = input("Enter your choice: ")
@@ -39,9 +41,9 @@ class StoreCLI:
 
 
     def display_order(self):
-        print("1.Add Item")
-        print("2.Return To main menu")
-        choice = input("Enter your choice: ")
+        print("\n1.Add Item")
+        print("\n2.Check Out")
+        choice = input(" Enter your choice: ")
         return choice
 
 
@@ -60,24 +62,24 @@ class StoreCLI:
             print("5. List Product")
             print("6. List Orders")
             print("7. Reporting")
-            print("7. Exit")
+            print("8. Exit")
             choice = input("Enter your choice: ")
             return choice
 
     def add_item(self,order):
-        name = input("Enter Product name")
+        name = input("\nEnter Product name")
         if name in self.store.collection:
             print(self.store.collection[name])
-            how_much = input("Enter a quantity of the following product")
+            how_much = input("\nEnter a quantity of the following product\n")
             if how_much.isdigit():
                 how_much = int(how_much)
                 self.store.add_item_order(self.store.collection[name],how_much,order)
         else:
-            print("The product you entered does not exist in the store")
+            print("\nThe product you entered does not exist in the store")
 
     def add_product(self):
         name = input("Enter Product Name: ")
-        description = input("Enter Description: ")
+        description = input("Enter Model: ")
         price = input("Enter Price")
         quantity = input("Enter Quantity")
         if price.isdigit() and quantity.isdigit():
@@ -97,7 +99,8 @@ class StoreCLI:
                 self.add_item(new_order)
             elif choice =='2':
                 break
-        if new_order.product_dict != None:
+
+        if new_order.total_amount != 0:
             self.store.place_order(new_order)
             print(new_order)
 
@@ -114,18 +117,21 @@ class StoreCLI:
             print(order_number)
 
 
-
+    def reporting(self):
+        print(self.store.reporting)
 
     def run(self):
         user = User()
-        while user.online == False:
+        while True:
             selc = self.display_user()
             if selc == '1':
-                user = self.log_in()
+                if self.log_in():
+                    print("\n you are online")
+                    break
             elif selc == '2':
                 user = self.register()
                 if user.user_id is not None:
-                    user.online = True
+                    break
             elif selc == '3':
                 break
             else:
@@ -136,7 +142,7 @@ class StoreCLI:
             choice = self.display_menu()
 
             if choice == '1':
-                self.add_book()
+                self.add_product()
             elif choice == '2':
                 self.register()
             elif choice == '3':
@@ -148,6 +154,8 @@ class StoreCLI:
             elif choice == '6':
                 self.orders()
             elif choice == '7':
+                self.reporting()
+            elif choice == '8':
                 break
             else:
                 print("Invalid choice. Please try again.")

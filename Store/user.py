@@ -1,17 +1,16 @@
 class User:
-    def __init__(self, user_id =None,user_full_name =None, password=None,onlne = False):
+    def __init__(self,user_id = None,user_full_name = None,password = None):
         self.user_id = user_id
         self.user_full_name = user_full_name
         self.password = password
-        self.online = onlne
+        self.online = False
 
 
     def login(self, entered_password):
         if self.password == entered_password:
-            self.online =True
+            self.online = True
             return True
-        return False,"Login failed. Incorrect user ID or password."
-
+        return False
     def logout(self):
         print('Logged out successfully.')
         return True
