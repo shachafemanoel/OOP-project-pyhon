@@ -4,7 +4,6 @@ class Order:
         self.customer_name = customer_name
         self.total_amount = 0
         self.status = "processing"
-        self.order_number = 0  # מספר הזמנה
         self.product_dict = {}
         if product_dict is None:
             self.product_dict = {}
