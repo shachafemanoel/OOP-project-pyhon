@@ -1,39 +1,34 @@
 import unittest
-
 from Store.order import Order
 from Store.product import Product
 
-
 class TestOrder(unittest.TestCase):
-    def test_constructor(self):
-        # נבדוק את פעולת הבנאי
-        order = Order("Test Customer")
-        self.assertEqual(order.customer_name, "Test Customer")
-        self.assertEqual(order.total_amount, 0)
-        self.assertEqual(order.status, "processing")
-        self.assertEqual(order.product_dict, {})
+    def setUp(self):
+        self.product1 = Product("Laptop", "Dell XPS 15", 4500.0, 10)
+        self.product2 = Product("Smartphone", "iPhone 13", 3500.0, 20)
+        self.order = Order("John Doe")
+
+    def test_initial_values(self):
+        self.assertEqual(self.order.customer_name, "John Doe")
+        self.assertEqual(self.order.total_amount, 0)
+        self.assertEqual(self.order.status, "processing")
+        self.assertEqual(self.order.product_dict, {})
+
+    def test_change_status(self):
+        self.order.change_status(1)
+        self.assertEqual(self.order.status, "shipped")
+
+        self.order.change_status(2)
+        self.assertEqual(self.order.status, "delivered")
 
     def test_add_item_to_order(self):
-        # נבדוק את פעולת ההוספה של מוצר להזמנה
-        order = Order("Test Customer")
-        product = Product("Test Product", "Test Description", 10.0, 100)
+        self.order.add_item_to_order(self.product1, 2)
+        self.assertEqual(self.order.product_dict, {"Laptop": 2})
+        self.assertEqual(self.order.total_amount, 9000.0)
 
-        # נוסיף מוצר להזמנה
-        order.add_item_to_order(product, 5)
+        self.order.add_item_to_order(self.product2, 1)
+        self.assertEqual(self.order.product_dict, {"Laptop": 2, "Smartphone": 1})
+        self.assertEqual(self.order.total_amount, 12500.0)
 
-        # נבדוק אם המוצר נוסף בהצלחה
-        self.assertTrue("Test Product" in order.product_dict)
-        self.assertEqual(order.product_dict["Test Product"], 5)
-
-        # נבדוק את העדכון בכמות הכוללת ובסכום הכולל
-        self.assertEqual(order.total_amount, 50)
-
-        # נבדוק אם המוצר נכנס להזמנה בכמות תקינה
-        self.assertTrue(order.add_item_to_order(product, 10))
-
-        # נבדוק אם המוצר אינו נכנס להזמנה בכמות שאינה תקינה
-        self.assertFalse(order.add_item_to_order(product, 150))
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

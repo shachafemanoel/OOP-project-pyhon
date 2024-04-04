@@ -1,6 +1,5 @@
 class Order:
-    def __init__(self, customer_name,
-                 product_dict=None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
+    def __init__(self, customer_name,product_dict=None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
         self.customer_name = customer_name
         self.total_amount = 0
         self.status = "processing"
