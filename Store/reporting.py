@@ -8,7 +8,7 @@ class Reporting:
     def best_sell_product(self):
         value = list(self.sold_products.values())
         key = list(self.sold_products.keys())
-        self.best_sell =  key[value.index(max(value))]
+        self.best_sell = key[value.index(max(value))]
 
         return f"{self.best_sell} is the best selling product"
 
@@ -20,4 +20,7 @@ class Reporting:
         return f"Total revenue of our store: {self.revenue}₪ "
 
     def __str__(self):
-        return f"{self.sold()} \n Store revenue: {self.revenue}₪ \n {self.best_sell_product()}"
+        if len(self.sold_products)>0:
+            return f"{self.sold()} \n Store revenue: {self.revenue}₪ \n {self.best_sell_product()}"
+        else:
+            return f"No products have been purchased from the store yet\n{self.total_revenue()}"

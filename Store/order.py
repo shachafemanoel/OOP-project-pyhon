@@ -16,10 +16,9 @@ class Order:
 
         if choice == 1:
             self.status = ship
-        elif choice == 2:
+        if choice == 2:
             self.status = deli
-        else:
-            print("Invalid status code")
+
 
     def add_item_to_order(self, product, how_many):
         if product.name not in self.product_dict:
