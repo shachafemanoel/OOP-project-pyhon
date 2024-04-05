@@ -37,21 +37,22 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             self.collection[product.name].buy_product(how_many)
             self.reporting.sold_products[product.name] += how_many
             self.reporting.revenue +=new_order.total_amount
+            return True
         else:
-            return False, f"Sorry there is only{self.collection[product.name].quantity} of {product.name} in  the inventory"
+            return False
 
     def place_order(self, order):
         self.orders[self.order_number] = order
         self.order_number += 1
 
     def list_products(self):
-        return [(name, product.description, product.price, product.quantity) for name, product in
-                self.collection.items()]
+        if len(self.collection) > 0:
+            return [(name, product.description, product.price, product.quantity) for name, product in
+                    self.collection.items()]
 
     def list_orders(self):
         return [(order_number, order.customer_name, order.total_amount, order.status) for order_number, order in
                 self.orders.items()]
-
 
 
 

@@ -16,8 +16,10 @@ class Order:
 
         if choice == 1:
             self.status = ship
-        if choice == 2:
+        elif choice == 2:
             self.status = deli
+        else:
+            print("Wrong choice")
 
 
     def add_item_to_order(self, product, how_many):
