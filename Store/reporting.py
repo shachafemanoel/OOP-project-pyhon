@@ -17,7 +17,7 @@ class Reporting:
         return [(product, amount) for product , amount in self.sold_products.items()]
 
     def total_revenue(self):
-        return f" Total revenue of our store {self.revenue} ₪ "
+        return f"Total revenue of our store: {self.revenue} ₪"
 
     def __str__(self):
         if len(self.sold_products)>0:

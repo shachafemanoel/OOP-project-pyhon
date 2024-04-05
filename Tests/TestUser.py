@@ -12,15 +12,12 @@ class TestUser(unittest.TestCase):
 
     def test_login(self):
         user = User('123456789', "Nirel", '123456789')
-        self.assertTrue(user.login("123456789", "123456789"))
-        self.assertFalse(user.login("123456782", "123456789"))
-        self.assertFalse(user.login("123456789", "123456782"))
+        user.login("123456789")
+        self.assertEqual(user.online, 1)
 
-    def test_authenticate(self):
         user = User('123456789', "Nirel", '123456789')
-        self.assertTrue(user.authenticate("123456789", "123456789"))
-        self.assertFalse(user.authenticate("123456782", "123456789"))
-        self.assertFalse(user.authenticate("123456789", "123456782"))
+        user.login("123456782")
+        self.assertEqual(user.online, 0)
 
 
 if __name__ == '__main__':

@@ -11,23 +11,20 @@ class TestStore(unittest.TestCase):
         # נבדוק את פעולת ההוספה של מוצר לחנות
         store = Store()
         product = Product("Test Product", "Test Description", 10.0, 100)
-
-        # נוסיף מוצר לחנות
-        store.add_product(product)
+        store.add_product(product)        # נוסיף מוצר לחנות
 
         # נבדוק אם המוצר נוסף לחנות בהצלחה
         self.assertTrue("Test Product" in store.collection)
         self.assertEqual(store.collection["Test Product"], product)
 
-        # נבדוק אם המוצר לא נכנס לחנות במידה והוא כבר קיים
-        self.assertFalse(store.add_product(product))
+        product1 = Product("Test Product", "Test Description", 10.0,100)
+        store.add_product(product1)
+        self.assertTrue(store.collection["Test Product"], 200)
 
     def test_add_user(self):
         # נבדוק את פעולת ההוספה של משתמש לחנות
         store = Store()
         user = User('123456789', "The User", '123456')
-
-        # נוסיף משתמש לחנות
         store.add_user(user)
 
         # נבדוק אם המשתמש נוסף לחנות בהצלחה

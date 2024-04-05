@@ -19,8 +19,6 @@ class TestProduct(unittest.TestCase):
         self.assertEqual(product.quantity, 50)  # על פי ההנחה נשארו 50
         self.assertFalse(product.buy_product(100))  # לא מספיק מוצרים, כך שאמור להחזיר False
 
-    # נוסיף פונקציות בדיקה נוספות ככל הצורך...
-
 
 if __name__ == '__main__':
     unittest.main()
