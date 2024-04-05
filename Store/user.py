@@ -15,9 +15,5 @@ class User:
         print('Logged out successfully.')
         return True
 
-
-
-
-
     def __str__(self):
         return f"User: {self.user_full_name}\nID: {self.user_id}\nPassword: {self.password}"

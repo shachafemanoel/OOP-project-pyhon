@@ -20,14 +20,14 @@ class StoreCLI:
         print("\nWelcome to the registration systemֿ\n")
         print(" User id must be a at least 4 digit ")
         user_id = input("Enter User ID: ")
-        if user_id.isdigit() and len(user_id) >3 :
+        if user_id.isdigit() and len(user_id) > 3:
             print("\n Full name must be at least 4 characters ")
             full_name = input("Enter your Full name: ")
             if len(full_name) >3:
                 print("\n The password must contain at least 4 characters ")
                 pass_word = input("Enter your Password: ")
                 if len(pass_word) > 3:
-                    new_user = User(int(user_id),full_name,pass_word)
+                    new_user = User(int(user_id), full_name, pass_word)
                     if self.store.add_user(new_user):
                         new_user.online = 1
 
@@ -49,7 +49,7 @@ class StoreCLI:
     def display_user(self):
         print("\n Welcome to Electronic Store Management System!\n ")
         print("1. Existing User? Log in")
-        print("2. New User ? Sign up now ")
+        print("2. New User? Sign up now ")
         print("3. Exit")
         choice = input("\nEnter your choice: ")
         return choice
@@ -66,7 +66,7 @@ class StoreCLI:
 
     def change_status(self):
         print(f"{self.store.list_orders()}")
-        order_num = input("\nPlease Enter the order number")
+        order_num = input("\nPlease Enter the order number: ")
         number = int(order_num)
         if number in self.store.orders:
             print(f"{self.store.orders[number]}")
@@ -96,7 +96,7 @@ class StoreCLI:
             choice = input("Enter your choice: ")
             return choice
 
-    def add_item(self,order):
+    def add_item(self, order):
         self.list_products()
         name = input("\nEnter Product name: ")
         if name in self.store.collection:
@@ -104,7 +104,7 @@ class StoreCLI:
             how_much = input("\nEnter a quantity of the following product: ")
             if how_much.isdigit():
                 how_much = int(how_much)
-                if self.store.add_item_order(self.store.collection[name],how_much,order) ==False:
+                if not self.store.add_item_order(self.store.collection[name], how_much, order):
                    print(f"Sorry there is only {self.store.collection[name].quantity} of {name} in  the inventory")
 
             else:
@@ -117,10 +117,10 @@ class StoreCLI:
         description = input("Enter Model: ")
         price = input("Enter Price: ")
         quantity = input("Enter Quantity: ")
-        if price.isdigit() and quantity.isdigit():
+        if int(price) > 0 and price.isdigit() and quantity.isdigit():
             price = float(price)
             quantity = int(quantity)
-            product = Product(name,description,price,quantity)
+            product = Product(name, description, price, quantity)
             self.store.add_product(product)
         else:
             print(" Price and Quantity must be a digit ")
@@ -141,15 +141,19 @@ class StoreCLI:
             print(new_order)
 
     def remove_product(self):
-       name = ("Input Product Name: ")
-       if name in self.store.collection:
-            print(f" {self.store.collection[name]} has been removed ")
-            self.store.remove(self.store.collection[name])
+        name = input("Enter Product Name: ")
+        removed_product = self.store.remove(name)
+        if removed_product:
+            print(f"{name} has been removed")
+        else:
+            print(f"{name} not found in the store")
+
     def list_products(self):
-        if len(self.store.collection)>0:
+        if len(self.store.collection) > 0:
             print(self.store.list_products())
         else:
             print(" No products in inventory yet!")
+
     def orders(self):
         if len(self.store.orders) > 0:
             print(self.store.list_orders())
@@ -158,26 +162,25 @@ class StoreCLI:
 
     def reporting(self):
         print(self.store.reporting)
-    def welcome_page(self):
+
+    def wellcome_page(self):
         user = User()
         while user.online == 0:
-            selc = self.display_user()
-            if selc == '1':
+            selection = self.display_user()
+            if selection == '1':
                 user = self.log_in(user)
-            elif selc == '2':
+            elif selection == '2':
                 user = self.register(user)
-            elif selc == '3':
-                break
-
+            elif selection == '3':
+                print('Bye, Thank you')
             else:
-                print("Invalid choice.")
-            if user.online == 0:
                 print("\n Login failed. Please check your credentials and try again.\n ")
+
         return user
 
     def run(self):
 
-        user = self.welcome_page()
+        user = self.wellcome_page()
         print(f"\n welcome {user.user_full_name} you are now connected ")
         while True:
 

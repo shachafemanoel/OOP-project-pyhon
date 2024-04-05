@@ -13,11 +13,20 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.reporting = Reporting()
 
     def add_product(self, product):
-        if product.name not in self.collection:
+        existing_product = self.collection.get(product.name)
+        if existing_product:
+            if existing_product.description == product.description:
+                existing_product.quantity += product.quantity
+                print("Product quantity updated successfully.")
+            else:
+                new_product = f"{product.name} ({product.description})"
+                self.collection[new_product] = product
+                self.reporting.sold_products[new_product] = 0
+                print("Product added successfully.")
+        else:
             self.collection[product.name] = product
             self.reporting.sold_products[product.name] = 0
-            return True  # במידה ונוסף למלאי ולא קיים כבר אחד
-        return False
+            print("Product added successfully.")
 
     def add_user(self, user:User):  # הוספת משתמש לחנות
         if user.user_id not in self.users:
@@ -25,18 +34,20 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return True
         return False
 
-    def remove (self,product):
-         del self.collection[product.name]
+    def remove(self, product_name):
+        if product_name in self.collection:
+            del self.collection[product_name]
+            return True
+        else:
+            return False
 
-
-
-    def add_item_order(self, product,how_many,order):
+    def add_item_order(self, product, how_many, order):
         if self.collection[product.name].available(how_many):
             new_order = order
             new_order.add_item_to_order(product,how_many)
             self.collection[product.name].buy_product(how_many)
             self.reporting.sold_products[product.name] += how_many
-            self.reporting.revenue +=new_order.total_amount
+            self.reporting.revenue += new_order.total_amount
             return True
         else:
             return False
