@@ -2,7 +2,7 @@ class Reporting:
     def __init__(self):
         self.revenue = 0
         self.best_sell = None
-        self.sold_products = {}
+        self.sold_products = {'MacBook Air 13”': 0, 'Iphone 15 pro max': 0}
 
 
     def best_sell_product(self):

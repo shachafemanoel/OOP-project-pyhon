@@ -1,7 +1,7 @@
 class Product:
-    def __init__(self, name: str,model : str,description: str, price: float, quantity: int):  #
+    def __init__(self, name: str, model: str, description: str, price: float, quantity: int):  #
         self.name = name  # שם המוצר
-        self.model = model # דגo
+        self.model = model # דגם
         self.description = description  # תיאור המוצר
         self.price = price  # מחיר המוצר
         self.quantity = quantity  # הכמות המוצר
@@ -27,7 +27,8 @@ class Product:
 
     def get_quantity(self):  # לראות רק את הכמות של המוצר
         return self.quantity
-
+    def add_quantity(self, quantity):
+        self.quantity += quantity
     def available(self, how_many):  # בדיקת זמינות של מוצר מסוים
         return self.quantity >= how_many
 

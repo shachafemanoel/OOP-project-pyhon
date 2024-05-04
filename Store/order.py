@@ -19,7 +19,7 @@ class Order:
         elif choice == 2:
             self.status = deli
         else:
-            print("Wrong choice")
+            return "Wrong choice"
 
 
     def add_item_to_order(self, product, how_many):

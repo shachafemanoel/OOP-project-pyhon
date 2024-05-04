@@ -1,5 +1,5 @@
 class User:
-    def __init__(self, user_id = None, user_full_name = None, password = None, online = 0,address = None):
+    def __init__(self, user_id = None, user_full_name = None, password = None, online = 0, address = None):
         self.user_id = user_id
         self.user_full_name = user_full_name
         self.password = password
@@ -15,6 +15,7 @@ class User:
     def logout(self):
         print('Logged out successfully.')
         return True
+
 
     def __str__(self):
         return f"User: {self.user_full_name}\nID: {self.user_id}\nPassword: {self.password}"

@@ -24,14 +24,16 @@ class StoreCLI:
         if user_id.isdigit() and len(user_id) > 3:
             print("\n Full name must be at least 4 characters ")
             full_name = input("Enter your Full name: ")
-            if len(full_name) >3:
+            if len(full_name) > 3:
                 print("\n The password must contain at least 4 characters ")
                 pass_word = input("Enter your Password: ")
                 if len(pass_word) > 3:
                     new_user = User(int(user_id), full_name, pass_word)
                     if self.store.add_user(new_user):
                         new_user.online = 1
-
+                        if not isinstance(new_user, Client):
+                            new_user = Client(new_user.user_id, new_user.user_full_name, new_user.password)
+                        print("\nUser registered successfully.")
                     else:
 
                         print("\n User already exists please try to log in ")
@@ -55,14 +57,25 @@ class StoreCLI:
         choice = input("\nEnter your choice: ")
         return choice
 
+    def display_client(self):
+        print("\n1. Set address")
+        print("2. List of products")
+        print("3. Historical orders")
+        #print("4 Rating products")
+        print("5 Exit")
+        choice = input("\nEnter your choice: ")
+        return choice
+
+    def set_address(self):
+        new_address = input("Enter your address: ")
+        self.client.change_address(new_address)
+        print("\n Address has been changed successfully")
 
     def display_order(self):
         print("\n 1.Add Item ")
         print("\n 2.Check Out or Exit ")
         choice = input(" Enter your choice: ")
         return choice
-
-
 
 
     def change_status(self):
@@ -105,6 +118,8 @@ class StoreCLI:
             how_much = input("\nEnter a quantity of the following product: ")
             if how_much.isdigit():
                 how_much = int(how_much)
+                if how_much == 0:
+                    print("No quantity provided")
                 if not self.store.add_item_order(self.store.collection[name], how_much, order):
                    print(f"Sorry there is only {self.store.collection[name].quantity} of {name} in  the inventory")
 
@@ -112,25 +127,43 @@ class StoreCLI:
                 print(" \nError: Invalid quantity entered. ")
         else:
             print("\nThe product you entered does not exist in the store")
+    def display_adding_products(self):
+        print("\n1. Add new product")
+        print("2. Add quantity to existing product")
+        print("3. Return to primary display")
+        choice = input("\nEnter your choice: ")
+        return choice
+
+    def add_quantity_to_product(self):
+        print(self.store.list_products())
+        name = input("Enter Product Name: ")
+        quantity = input("Enter Quantity: ")
+        if name in self.store.collection and quantity.isdigit() and int(quantity) > 0:
+            product = self.store.collection[name]
+            product.add_quantity(int(quantity))
+            print("Quantity added successfully\n")
+        else:
+            print("Invalid input or product not found.\n")
 
     def add_product(self):
         name = input("Enter Product Name: ")
-        description = input("Enter Model: ")
+        model = input("Enter Product Model: ")
+        description = input("Enter description: ")
         price = input("Enter Price: ")
         quantity = input("Enter Quantity: ")
         if int(price) > 0 and price.isdigit() and quantity.isdigit():
             price = float(price)
             quantity = int(quantity)
-            product = Product(name, description, price, quantity)
+            product = Product(name, model, description, price, quantity)
             self.store.add_product(product)
         else:
-            print(" Price and Quantity must be a digit ")
+            print("Price and Quantity must be a digit ")
 
     def place_order(self,user):
         new_order = Order(user)
         if user.address is None:
-            new_adress = input("Enter your address: ")
-            user.address = new_adress
+            new_address = input("Enter your address: ")
+            user.address = new_address
         self.add_item(new_order)
         while True:
             choice = self.display_order()
@@ -180,18 +213,50 @@ class StoreCLI:
             else:
                 print("\n Login failed. Please check your credentials and try again.\n ")
 
-        return user
+        if not isinstance(user, Client):
+            user = Client(user.user_id, user.user_full_name, user.password)
+            return user
+        else:
+            return None
 
     def run(self):
 
         user = self.wellcome_page()
         print(f"\n welcome {user.user_full_name} you are now connected ")
-        while True:
 
+        if isinstance(user, Client):
+            while True:
+                sub_choice = self.display_client()
+                if sub_choice == '1':
+                    self.set_address()
+                elif sub_choice == '2':
+                    self.list_products()
+                elif sub_choice == '3':
+                    self.client.order_history()
+                #elif sub_choice == '4':
+                elif sub_choice == '5':
+                    break
+                else:
+                    print("\n Invalid choice. Please try again.")
+
+            return "Bye, have a nice day"
+
+
+        while True:
                     choice = self.display_menu()
 
                     if choice == '1':
-                        self.add_product()
+                        while True:
+                            sub_choice = self.display_adding_products()
+                            if sub_choice == '1':
+                                self.add_product()
+                            elif sub_choice == '2':
+                                self.add_quantity_to_product()
+                            elif sub_choice == '3':
+                                break
+                            else:
+                                print("\n Invalid choice. Please try again.")
+
                     elif choice == '2':
                         self.register()
                     elif choice == '3':
