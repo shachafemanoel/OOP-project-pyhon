@@ -129,7 +129,8 @@ class StoreCLI:
     def place_order(self,user):
         new_order = Order(user)
         if user.address is None:
-            addres =
+            new_adress = input("Enter your address: ")
+            user.address = new_adress
         self.add_item(new_order)
         while True:
             choice = self.display_order()
