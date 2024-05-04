@@ -2,6 +2,7 @@ from Store.store import Store
 from Store.order import Order
 from Store.product import Product
 from Store.user import User
+from Store.client import Client
 from Store.reporting import Reporting
 class StoreCLI:
     def __init__(self):
@@ -125,9 +126,10 @@ class StoreCLI:
         else:
             print(" Price and Quantity must be a digit ")
 
-    def place_order(self):
-        customer_name = input("Enter Customer Name: ")
-        new_order = Order(customer_name)
+    def place_order(self,user):
+        new_order = Order(user)
+        if user.address is None:
+            addres =
         self.add_item(new_order)
         while True:
             choice = self.display_order()
@@ -138,6 +140,7 @@ class StoreCLI:
 
         if new_order.total_amount > 0 and len(new_order.product_dict) > 0:
             self.store.place_order(new_order)
+            self.store.users.append_order(new_order)
             print(new_order)
 
     def remove_product(self):
@@ -191,7 +194,7 @@ class StoreCLI:
                     elif choice == '2':
                         self.register()
                     elif choice == '3':
-                        self.place_order()
+                        self.place_order(user)
                     elif choice == '4':
                         self.change_status()
                     elif choice == '5':
