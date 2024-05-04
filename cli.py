@@ -144,9 +144,9 @@ class StoreCLI:
         name = input("Enter Product Name: ")
         removed_product = self.store.remove(name)
         if removed_product:
-            print(f"{name} has been removed")
+            print(f" {name} has been removed ")
         else:
-            print(f"{name} not found in the store")
+            print(f" {name} does not exist ")
 
     def list_products(self):
         if len(self.store.collection) > 0:

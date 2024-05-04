@@ -1,6 +1,6 @@
 class Order:
-    def __init__(self, customer_name, product_dict=None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
-        self.customer_name = customer_name
+    def __init__(self, customer, product_dict=None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
+        self.customer = customer
         self.total_amount = 0
         self.status = "processing"
         self.product_dict = {}
@@ -30,4 +30,4 @@ class Order:
         self.total_amount += product.get_price(how_many)
 
     def __str__(self):
-        return f"Customer: {self.customer_name}\nItems: {self.product_dict}\nTotal amout: {self.total_amount}₪ \nStatus:{self.status}"
+        return f"Customer: {self.customer.full_name}\nItems: {self.product_dict}\nTotal amount: {self.total_amount}₪ \nStatus:{self.status}"
