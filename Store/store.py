@@ -6,7 +6,9 @@ from Store.reporting import Reporting
 class Store:  # מחלקה שמממשת את החנות עצמה
 
     def __init__(self):
-        self.collection = {}  # קולקציית המוצרים שבחנות
+        macbook_air_13 = Product('MacBook Air 13”', " 256 gb,M2 chip Liquid Retina display  ", 6000, 10)
+        iphone_15promax = Product('Iphone 15 pro max', " 256 gb ", 4000, 10)
+        self.collection = {'MacBook Air 13”':macbook_air_13,'Iphone 15 pro max':iphone_15promax,}  # קולקציית המוצרים שבחנות
         self.users = {1111:User(1111,"Admin",'1234'),}  # משתמשי החנות
         self.orders = {}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה

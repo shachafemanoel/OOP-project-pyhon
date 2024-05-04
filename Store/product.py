@@ -1,7 +1,8 @@
 class Product:
-    def __init__(self, name: str, description: str, price: float, quantity: int):  #
+    def __init__(self, name: str,model : str,description: str, price: float, quantity: int):  #
         self.name = name  # שם המוצר
-        self.description = description  # תיאור המוצר(דגם המוצר)
+        self.model = model # דגo
+        self.description = description  # תיאור המוצר
         self.price = price  # מחיר המוצר
         self.quantity = quantity  # הכמות המוצר
 
