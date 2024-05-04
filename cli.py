@@ -213,18 +213,18 @@ class StoreCLI:
             else:
                 print("\n Login failed. Please check your credentials and try again.\n ")
 
-        if not isinstance(user, Client):
-            user = Client(user.user_id, user.user_full_name, user.password)
+        if isinstance(user, Client):
             return user
         else:
-            return None
+            user = Client(user.user_id, user.user_full_name, user.password)
+            return user
 
     def run(self):
 
         user = self.wellcome_page()
         print(f"\n welcome {user.user_full_name} you are now connected ")
 
-        if isinstance(user, Client):
+        '''if isinstance(user, Client):
             while True:
                 sub_choice = self.display_client()
                 if sub_choice == '1':
@@ -239,7 +239,7 @@ class StoreCLI:
                 else:
                     print("\n Invalid choice. Please try again.")
 
-            return "Bye, have a nice day"
+            return "Bye, have a nice day"'''
 
 
         while True:

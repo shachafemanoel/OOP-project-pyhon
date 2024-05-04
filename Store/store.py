@@ -63,7 +63,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def list_products(self):
         if len(self.collection) > 0:
-            return [(name, product.description, f"Price: {product.price}", f"Available: {product.quantity}\n") for name, product in
+            return [(name, product.description, f"Price: {product.price}", f"Available: {product.quantity}") for name, product in
                     self.collection.items()]
 
     def list_orders(self):
