@@ -13,22 +13,30 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         clinet1 = Client(2020, "Client Check", '1234', 'Address')
         order1 = Order(clinet1,0,{macbook_air_13.name:3,iphone_15_promax.name:2})
         clinet1.order_history[order1.order_number] =order1
-        self.collection = {'MacBook Air 13”':macbook_air_13,'Iphone 15 pro max':iphone_15_promax,}  # קולקציית המוצרים שבחנות
+        self.collection = {'MacBook':macbook_air_13,'Iphone 15':iphone_15_promax,}  # קולקציית המוצרים שבחנות
         self.users = {1111:admin,2020:clinet1,}  # משתמשי החנות
         self.orders = {order1.order_number:order1,}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
 
-    def add_product(self, product):
+    def search(self, name):
+        found = []
+        for key, value in self.collection.items():
+            if key.casefold() == name.casefold():
+               found.append(key)
 
-        if product.name  in self.collection:
-            if product.model == self.collection[product.name]:
-                self.collection[product.name] += product.quantity
+        return found
+    def add_product(self, product):
+        if len(self.search(product.name)) ==1 :
+                self.collection[product.name].add_quantity(product.quantity)
                 return "Product quantity updated successfully."
-            else:
-                self.collection[product.name] = product
-                self.reporting.sold_products[product.name] = 0
-                return "Product added successfully."
+        else:
+            len(self.search(product.name)) == 0
+            self.collection[product.name] = product
+            self.reporting.sold_products[product.name] = 0
+            return "Product added successfully."
+
+
 
     def add_user(self, user:User):  # הוספת משתמש לחנות
         if user.user_id not in self.users:
@@ -68,6 +76,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def list_orders(self):
         return [(order_number, order.customer.user_full_name, order.total_amount, order.status) for order_number, order in
                 self.orders.items()]
+
 
 
 

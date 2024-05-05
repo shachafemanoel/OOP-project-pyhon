@@ -171,14 +171,18 @@ class StoreCLI:
     def add_item(self, order):
         self.list_products()
         name = input("\nEnter Product name: ")
-        if name in self.store.collection:
+        if len(self.store.search(name)) >1:
+            for i in self.store.search(name):
+                print(i)
+        elif len(self.store.search(name))==1:
+            name = self.store.search(name)[0]
             print(self.store.collection[name])
             how_much = input("\nEnter a quantity of the following product: ")
             if how_much.isdigit():
                 how_much = int(how_much)
                 if how_much == 0:
                     print("No quantity provided")
-                if not self.store.add_item_order(self.store.collection[name], how_much, order):
+                if  self.store.add_item_order(self.store.collection[name], how_much, order) == False:
                    print(f"Sorry there is only {self.store.collection[name].quantity} of {name} in  the inventory")
 
             else:
@@ -197,8 +201,7 @@ class StoreCLI:
         name = input("Enter Product Name: ")
         quantity = input("Enter Quantity: ")
         if name in self.store.collection and quantity.isdigit() and int(quantity) > 0:
-            product = self.store.collection[name]
-            product.add_quantity(int(quantity))
+            self.store.collection[name].add_quantatiy(int(quantity))
             print("Quantity added successfully\n")
         else:
             print("Invalid input or product not found.\n")
@@ -206,16 +209,21 @@ class StoreCLI:
     def add_product(self):
         name = input("Enter Product Name: ")
         model = input("Enter Product Model: ")
-        description = input("Enter description: ")
-        price = input("Enter Price: ")
-        quantity = input("Enter Quantity: ")
-        if int(price) > 0 and price.isdigit() and quantity.isdigit():
-            price = float(price)
-            quantity = int(quantity)
-            product = Product(name, model, description, price, quantity)
-            self.store.add_product(product)
+        if name in self.store.collection and self.store.collection[name].model == model:
+            print(f" {self.store.collection[name]}\n This product exists in the system. How much would you like to add to the inventory?")
+            quan = input("Add quantity: ")
+            self.store.collection[name].add_quantity(int(quan))
         else:
-            print("Price and Quantity must be a digit ")
+            description = input("Enter description: ")
+            price = input("Enter Price: ")
+            quantity = input("Enter Quantity: ")
+            if int(price) > 0 and price.isdigit() and quantity.isdigit():
+                price = float(price)
+                quantity = int(quantity)
+                product = Product(name, model, description, price, quantity)
+                self.store.add_product(product)
+            else:
+                print("Price and Quantity must be a digit ")
 
     def place_order(self,user):
         new_order = Order(user)

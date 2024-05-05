@@ -3,8 +3,7 @@ from Store.order import Order
 
 class Client(User):
     def __init__(self,user_id = None, full_name = None, password = None,address=None, order_history=None,online = 0,payment = None):
-        super().__init__(user_id,full_name, password, online, address)
-        self.payment = payment
+        super().__init__(user_id,full_name, password, online, address,payment)
         if order_history is None:
             self.order_history = {}
         else:
