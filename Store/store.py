@@ -7,25 +7,35 @@ from Store.client import Client
 class Store:  # מחלקה שמממשת את החנות עצמה
 
     def __init__(self):
-        macbook_air_13 = Product('MacBook', 'Air 13"',"Liquid Retina display with 256 GB",6000, 10)
+        macbook_air_13 = Product('MacBook 13"', 'Air 13"',"Liquid Retina display with 256 GB",6000, 10)
         iphone_15_promax = Product('Iphone 15', 'Pro max ', "The new Iphone 15 pro max with 256 GB",5000, 10)
+        macbook_air_15 = Product('MacBook 15"', 'Air 15"',"Liquid Retina display with 256 GB",7000, 10)
+        iphone_14 = Product('Iphone 14', 'Pro max ', "The new Iphone 15 pro max with 256 GB",3000, 10)
         admin = User(1111,"Admin",'1234')
         clinet1 = Client(2020, "Client Check", '1234', 'Address')
         order1 = Order(clinet1,0,{macbook_air_13.name:3,iphone_15_promax.name:2})
         clinet1.order_history[order1.order_number] =order1
-        self.collection = {'MacBook':macbook_air_13,'Iphone 15':iphone_15_promax,}  # קולקציית המוצרים שבחנות
+        self.collection = {'MacBook':macbook_air_13,'Iphone 15':iphone_15_promax,'iphone 14':iphone_14,"macbook air 15":macbook_air_15,}  # קולקציית המוצרים שבחנות
         self.users = {1111:admin,2020:clinet1,}  # משתמשי החנות
         self.orders = {order1.order_number:order1,}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
 
-    def search(self, name):
+    def search(self,name,):
         found = []
         for key, value in self.collection.items():
-            if key.casefold() == name.casefold():
-               found.append(key)
+            if key.casefold()[0:3] == name.casefold()[0:3]:
+                    found.append(self.collection[key])
+
 
         return found
+
+
+    def match(self,name,model,names):
+        for item in names:
+            if item.model.casefold()[0:3] == model.casefold()[0:3]:
+                return item
+        return False
     def add_product(self, product):
         if len(self.search(product.name)) ==1 :
                 self.collection[product.name].add_quantity(product.quantity)
@@ -70,7 +80,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def list_products(self):
         if len(self.collection) > 0:
-            return [(name, product.description, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
+            return [(name, product.model,product.description, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
                     self.collection.items()]
 
     def list_orders(self):

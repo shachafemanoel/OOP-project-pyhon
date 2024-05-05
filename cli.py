@@ -171,22 +171,27 @@ class StoreCLI:
     def add_item(self, order):
         self.list_products()
         name = input("\nEnter Product name: ")
-        if len(self.store.search(name)) >1:
+        if len(self.store.search(name))>0:
             for i in self.store.search(name):
-                print(i)
-        elif len(self.store.search(name))==1:
-            name = self.store.search(name)[0]
-            print(self.store.collection[name])
-            how_much = input("\nEnter a quantity of the following product: ")
-            if how_much.isdigit():
-                how_much = int(how_much)
-                if how_much == 0:
-                    print("No quantity provided")
-                if  self.store.add_item_order(self.store.collection[name], how_much, order) == False:
-                   print(f"Sorry there is only {self.store.collection[name].quantity} of {name} in  the inventory")
+                print(f"\n{i}")
+            model = input("\nEnter model: ")
+            new = self.store.match(name,model,self.store.search(name))
+            if new != False:
+                print(new)
+                how_much = input("\nEnter a quantity of the following product: ")
+                if how_much.isdigit():
+                    how_much = int(how_much)
+                    if how_much == 0:
+                        print("No quantity provided")
+                    if  self.store.add_item_order(self.store.collection[new], how_much, order) == False:
+                        print(f"Sorry there is only {self.store.collection[new].quantity} of {name} in  the inventory")
+                    else:
+                        print(f"\n{new}\n{how_much} added to your order !" )
 
+                else:
+                    print(" \nError: Invalid quantity entered. ")
             else:
-                print(" \nError: Invalid quantity entered. ")
+                print("\n Error: invalid model entered.")
         else:
             print("\nThe product you entered does not exist in the store")
     def display_adding_products(self):
