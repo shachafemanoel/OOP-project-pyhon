@@ -3,6 +3,7 @@ from Store.order import Order
 from Store.product import Product
 from Store.user import User
 from Store.client import Client
+from Store.payment import Payment
 from Store.reporting import Reporting
 class StoreCLI:
     def __init__(self):
@@ -75,6 +76,45 @@ class StoreCLI:
         choice = input(" Enter your choice: ")
         return choice
 
+    def display_payment(self,order):
+        print(order)
+        print("\nHow would you like to pay?")
+        print("\n 1.Credit Card ")
+        print("\n 2.Paypal")
+        print("\n 3.Cash")
+        print("\n 4.Exit ")
+        choice = input(" Enter your choice: ")
+        return choice
+    def pay(self,order):
+        paymethood = Payment()
+        pay_option = self.display_payment(order)
+        while True:
+            if pay_option =='1':
+                card_holder = input("Name on card ")
+                card_number = input("Card number ")
+                paymethood =Payment(card_holder,card_number,)
+                if paymethood.check_card():
+                  return paymethood
+                else:
+                   print("The card number is invalid")
+
+            elif pay_option == '2':
+                paypal_id = input("Enter your Paypal id")
+                if len(paypal_id) > 0:
+                    paymethood = Payment(paypal_id,None,'paypal')
+                    return paymethood
+                else:
+                    print("Paypal id in invalid ")
+
+            elif pay_option == '3':
+                paymethood = Payment(order.customer.user_full_name,None,'Cash')
+                return paymethood
+
+            elif pay_option == '4':
+                print('Good bye')
+                return False
+            else:
+                print("\n Invalid choice. Please try again.")
 
     def change_status(self):
         print(f"{self.store.list_orders()}")
@@ -171,9 +211,13 @@ class StoreCLI:
                 break
 
         if new_order.total_amount > 0 and len(new_order.product_dict) > 0:
-            self.store.place_order(new_order)
-            self.store.users[user.user_id].append_order(new_order)
-            print(new_order)
+            payment =  self.pay(new_order)
+            if payment != False:
+                    new_order.pay_order(payment)
+                    self.store.place_order(new_order)
+                    self.store.users[user.user_id].append_order(new_order)
+                    print(f"\norder number:{self.store.order_number-1}\n {new_order}\n {payment}\n The order was successfully completed ")
+
 
     def remove_product(self):
         name = input("Enter Product Name: ")

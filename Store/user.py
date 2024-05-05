@@ -18,4 +18,4 @@ class User:
 
 
     def __str__(self):
-        return f"User: {self.user_full_name}\nID: {self.user_id}\nPassword: {self.password}"
+        return f"User: {self.user_full_name}\nID: {self.user_id}"

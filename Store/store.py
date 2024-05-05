@@ -53,8 +53,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return False
 
     def place_order(self, order):
-        self.orders[self.order_number] = order
-        self.order_number += 1
+        if order.payment != None:
+            self.orders[self.order_number] = order
+            self.order_number += 1
 
     def list_products(self):
         if len(self.collection) > 0:
@@ -62,7 +63,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     self.collection.items()]
 
     def list_orders(self):
-        return [(order_number, order.customer_name, order.total_amount, order.status) for order_number, order in
+        return [(order_number, order.customer.user_full_name, order.total_amount, order.status) for order_number, order in
                 self.orders.items()]
 
 
