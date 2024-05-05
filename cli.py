@@ -7,6 +7,7 @@ from Store.reporting import Reporting
 class StoreCLI:
     def __init__(self):
         self.store = Store()
+
     def log_in(self,user):
         user_id = input("Enter User ID: ")
         if user_id.isdigit():
@@ -15,9 +16,11 @@ class StoreCLI:
                 user = self.store.users[user_id]
                 password = input("Enter Password: ")
                 user.login(password)
+                if isinstance(user, Client):
+                    self.client = user
         return user
 
-    def register(self,new_user = None):
+    def register(self, new_user=None):
         print("\nWelcome to the registration systemֿ\n")
         print(" User id must be a at least 4 digit ")
         user_id = input("Enter User ID: ")
@@ -25,6 +28,7 @@ class StoreCLI:
             print("\n Full name must be at least 4 characters ")
             full_name = input("Enter your Full name: ")
             if len(full_name) > 3:
+                address = input("\nEnter your address: ")  # Move address input here
                 print("\n The password must contain at least 4 characters ")
                 pass_word = input("Enter your Password: ")
                 if len(pass_word) > 3:
@@ -33,21 +37,17 @@ class StoreCLI:
                         new_user.online = 1
                         if not isinstance(new_user, Client):
                             new_user = Client(new_user.user_id, new_user.user_full_name, new_user.password)
+                        new_user.address = address  # Assign address here
                         print("\nUser registered successfully.")
                     else:
-
                         print("\n User already exists please try to log in ")
-
                 else:
                     print("\n The password must contain at least 4 characters. Please try again ")
             else:
                 print("\n Invalid full name. Try again ")
-
         else:
             print("\n User ID must be at least 4 digit.Try again ")
-
         return new_user
-
 
     def display_user(self):
         print("\n Welcome to Electronic Store Management System!\n ")
@@ -69,7 +69,7 @@ class StoreCLI:
     def set_address(self):
         new_address = input("Enter your address: ")
         self.client.change_address(new_address)
-        print("\n Address has been changed successfully")
+        print("\nAddress has been changed successfully")
 
     def display_order(self):
         print("\n 1.Add Item ")
@@ -216,15 +216,15 @@ class StoreCLI:
         if isinstance(user, Client):
             return user
         else:
-            user = Client(user.user_id, user.user_full_name, user.password)
-            return user
+            client = Client(user.user_id, user.user_full_name, user.password)
+            return client
 
     def run(self):
 
         user = self.wellcome_page()
         print(f"\n welcome {user.user_full_name} you are now connected ")
 
-        '''if isinstance(user, Client):
+        if isinstance(user, Client):
             while True:
                 sub_choice = self.display_client()
                 if sub_choice == '1':
@@ -239,7 +239,7 @@ class StoreCLI:
                 else:
                     print("\n Invalid choice. Please try again.")
 
-            return "Bye, have a nice day"'''
+            return "Bye, have a nice day"
 
 
         while True:
