@@ -16,8 +16,8 @@ class StoreCLI:
                 user = self.store.users[user_id]
                 password = input("Enter Password: ")
                 user.login(password)
-                if isinstance(user, Client):
-                    self.client = user
+                if type(user) == User:
+                    user.__class__ = User
         return user
 
     def register(self, new_user=None):
@@ -32,12 +32,9 @@ class StoreCLI:
                 print("\n The password must contain at least 4 characters ")
                 pass_word = input("Enter your Password: ")
                 if len(pass_word) > 3:
-                    new_user = User(int(user_id), full_name, pass_word)
+                    new_user = Client(int(user_id), full_name, pass_word)
                     if self.store.add_user(new_user):
                         new_user.online = 1
-                        if not isinstance(new_user, Client):
-                            new_user = Client(new_user.user_id, new_user.user_full_name, new_user.password)
-                        new_user.address = address  # Assign address here
                         print("\nUser registered successfully.")
                     else:
                         print("\n User already exists please try to log in ")
@@ -175,7 +172,7 @@ class StoreCLI:
 
         if new_order.total_amount > 0 and len(new_order.product_dict) > 0:
             self.store.place_order(new_order)
-            self.store.users[self.client.user_id].append_order(new_order)
+            self.store.users[user.user_id].append_order(new_order)
             print(new_order)
 
     def remove_product(self):
@@ -202,7 +199,7 @@ class StoreCLI:
         print(self.store.reporting)
 
     def wellcome_page(self):
-        user = User()
+        user = Client()
         while user.online == 0:
             selection = self.display_user()
             if selection == '1':
@@ -214,18 +211,15 @@ class StoreCLI:
             else:
                 print("\n Login failed. Please check your credentials and try again.\n ")
 
-        if isinstance(user, Client):
-            return user
-        else:
-            client = Client(user.user_id, user.user_full_name, user.password)
-            return client
+
+        return user
 
     def run(self):
 
         user = self.wellcome_page()
         print(f"\n welcome {user.user_full_name} you are now connected ")
 
-        if isinstance(user, Client):
+        if type(user) == Client:
             while True:
                 sub_choice = self.display_client()
                 if sub_choice == '1':
@@ -233,9 +227,9 @@ class StoreCLI:
                 elif sub_choice == '2':
                     self.list_products()
                 elif sub_choice == '3':
-                    self.place_order(self.client)
+                    self.place_order(user)
                 elif sub_choice == '4':
-                    self.client.order_history()
+                    print(user)
                 elif sub_choice == '5':
                     break
                 else:

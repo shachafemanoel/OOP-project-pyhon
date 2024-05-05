@@ -11,26 +11,21 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         iphone_15_promax = Product('Iphone 15 pro max', "256 GB ", "4000",5000, 10)
 
         self.collection = {'MacBook Air 13”':macbook_air_13,'Iphone 15 pro max':iphone_15_promax,}  # קולקציית המוצרים שבחנות
-        self.users = {1111:User(1111,"Admin",'1234'),}  # משתמשי החנות
+        self.users = {1111:User(1111,"Admin",'1234'),2020:Client(2020,"Client Check",'1234','Address'),}  # משתמשי החנות
         self.orders = {}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
 
     def add_product(self, product):
-        existing_product = self.collection.get(product.name)
-        if existing_product:
-            if existing_product.description == product.description:
-                existing_product.quantity += product.quantity
+
+        if product.name  in self.collection:
+            if product.model == self.collection[product.name]:
+                self.collection[product.name] += product.quantity
                 return "Product quantity updated successfully."
             else:
-                new_product = f"{product.name} ({product.description})"
-                self.collection[new_product] = product
-                self.reporting.sold_products[new_product] = 0
+                self.collection[product.name] = product
+                self.reporting.sold_products[product.name] = 0
                 return "Product added successfully."
-        else:
-            self.collection[product.name] = product
-            self.reporting.sold_products[product.name] = 0
-            return "Product added successfully."
 
     def add_user(self, user:User):  # הוספת משתמש לחנות
         if user.user_id not in self.users:
@@ -63,12 +58,13 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def list_products(self):
         if len(self.collection) > 0:
-            return [(name, product.description, f"Price: {product.price}", f"Available: {product.quantity}") for name, product in
+            return [(name, product.description, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
                     self.collection.items()]
 
     def list_orders(self):
         return [(order_number, order.customer_name, order.total_amount, order.status) for order_number, order in
                 self.orders.items()]
+
 
 
 

@@ -2,7 +2,7 @@ from Store.user import User
 
 
 class Client(User):
-    def __init__(self, user_id, full_name, password, online=0, address=None, order_history=None):
+    def __init__(self,user_id = None, full_name = None, password = None,address=None, order_history=None,online = 0):
         super().__init__(user_id, full_name, password, online, address)
         if order_history is None:
             self.order_history = []
