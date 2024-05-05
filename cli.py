@@ -58,11 +58,12 @@ class StoreCLI:
         return choice
 
     def display_client(self):
-        print("\n1. Set address")
+        print("\n1. Change address")
         print("2. List of products")
-        print("3. Historical orders")
-        #print("4 Rating products")
-        print("5 Exit")
+        print("3. Place order")
+        print("4. Historical orders")
+        #print("5 Rating products")
+        print("6 Exit")
         choice = input("\nEnter your choice: ")
         return choice
 
@@ -174,7 +175,7 @@ class StoreCLI:
 
         if new_order.total_amount > 0 and len(new_order.product_dict) > 0:
             self.store.place_order(new_order)
-            self.store.users.append_order(new_order)
+            self.store.users[self.client.user_id].append_order(new_order)
             print(new_order)
 
     def remove_product(self):
@@ -232,8 +233,9 @@ class StoreCLI:
                 elif sub_choice == '2':
                     self.list_products()
                 elif sub_choice == '3':
+                    self.place_order(self.client)
+                elif sub_choice == '4':
                     self.client.order_history()
-                #elif sub_choice == '4':
                 elif sub_choice == '5':
                     break
                 else:
