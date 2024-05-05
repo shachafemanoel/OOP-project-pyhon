@@ -15,7 +15,7 @@ class Client(User):
         self.address = new_address
 
     def list_orders(self):
-        return [(order_number, order.customer.user_full_name, order.total_amount, order.status) for order_number, order
+        return [(order_number, f"Ordr total amount: {order.total_amount}",f"status: {order.status}" ) for order_number, order
                 in
                 self.order_history.items()]
     def __str__(self):

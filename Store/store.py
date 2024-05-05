@@ -7,8 +7,8 @@ from Store.client import Client
 class Store:  # מחלקה שמממשת את החנות עצמה
 
     def __init__(self):
-        macbook_air_13 = Product('MacBook Air 13”', "256 gb,M2 chip Liquid Retina display  ", "13",6000, 10)
-        iphone_15_promax = Product('Iphone 15 pro max', "256 GB ", "4000",5000, 10)
+        macbook_air_13 = Product('MacBook', 'Air 13"',"Liquid Retina display with 256 GB",6000, 10)
+        iphone_15_promax = Product('Iphone 15', 'Pro max ', "The new Iphone 15 pro max with 256 GB",5000, 10)
         admin = User(1111,"Admin",'1234')
         clinet1 = Client(2020, "Client Check", '1234', 'Address')
         order1 = Order(clinet1,0,{macbook_air_13.name:3,iphone_15_promax.name:2})
