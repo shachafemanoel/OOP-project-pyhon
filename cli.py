@@ -85,36 +85,56 @@ class StoreCLI:
         print("\n 4.Exit ")
         choice = input(" Enter your choice: ")
         return choice
-    def pay(self,order):
+    def pay(self,order,user):
         paymethood = Payment()
-        pay_option = self.display_payment(order)
-        while True:
-            if pay_option =='1':
-                card_holder = input("Name on card ")
-                card_number = input("Card number ")
-                paymethood =Payment(card_holder,card_number,)
-                if paymethood.check_card():
-                  return paymethood
-                else:
-                   print("The card number is invalid")
+        if user.payment is not None:
+            print(f"for paying with:")
+            print(user.payment)
+            s = input(" \n Press 1:")
+            if s == '1':
+                return user.payment
+        else:
+            pay_option = self.display_payment(order)
+            while True:
+                if pay_option =='1':
+                    card_holder = input("Name on card ")
+                    card_number = input("Card number ")
+                    paymethood =Payment(card_holder,card_number,)
+                    if paymethood.check_card():
 
-            elif pay_option == '2':
-                paypal_id = input("Enter your Paypal id")
-                if len(paypal_id) > 0:
-                    paymethood = Payment(paypal_id,None,'paypal')
+                        print("\nWould you like to save your payment method for future orders?")
+                        print("\n 1.Yes,save it")
+                        print("\n 2 .No ")
+                        save = input("Enter your choice: ")
+                        if save =='1':
+                            self.store.users[order.customer.user_id].payment = paymethood
+                        return paymethood
+                    else:
+                        print("The card number is invalid")
+
+                elif pay_option == '2':
+                    paypal_id = input("Enter your Paypal id")
+                    if len(paypal_id) > 0:
+                        paymethood = Payment(paypal_id,None,'paypal')
+                        print("\nWould you like to save your payment method for future orders?")
+                        print("\n 1.Yes,save it")
+                        print("\n 2 .No ")
+                        save = input("Enter your choice: ")
+                        if save == '1':
+                            self.store.users[order.customer.user_id].payment = paymethood
+                        return paymethood
+                    else:
+                        print("Paypal id in invalid ")
+
+                elif pay_option == '3':
+                    paymethood = Payment(order.customer.user_full_name,None,'Cash')
                     return paymethood
+
+                elif pay_option == '4':
+                    print('Good bye')
+                    return False
                 else:
-                    print("Paypal id in invalid ")
-
-            elif pay_option == '3':
-                paymethood = Payment(order.customer.user_full_name,None,'Cash')
-                return paymethood
-
-            elif pay_option == '4':
-                print('Good bye')
-                return False
-            else:
-                print("\n Invalid choice. Please try again.")
+                    print("\n Invalid choice. Please try again.")
 
     def change_status(self):
         print(f"{self.store.list_orders()}")
@@ -211,12 +231,13 @@ class StoreCLI:
                 break
 
         if new_order.total_amount > 0 and len(new_order.product_dict) > 0:
-            payment =  self.pay(new_order)
+            payment =  self.pay(new_order,user)
             if payment != False:
                     new_order.pay_order(payment)
+                    new_order.order_number = self.store.order_number
                     self.store.place_order(new_order)
-                    self.store.users[user.user_id].append_order(new_order)
-                    print(f"\norder number:{self.store.order_number-1}\n {new_order}\n {payment}\n The order was successfully completed ")
+                    self.store.users[user.user_id].order_history[self.store.order_number-1] = new_order
+                    print(f" {new_order}\n {payment}\n The order was successfully completed ")
 
 
     def remove_product(self):
@@ -241,6 +262,8 @@ class StoreCLI:
 
     def reporting(self):
         print(self.store.reporting)
+
+
 
     def wellcome_page(self):
         user = Client()
@@ -273,7 +296,7 @@ class StoreCLI:
                 elif sub_choice == '3':
                     self.place_order(user)
                 elif sub_choice == '4':
-                    print(user)
+                    print(self.store.users[user.user_id].list_orders())
                 elif sub_choice == '5':
                     break
                 else:

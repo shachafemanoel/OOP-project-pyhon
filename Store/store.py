@@ -9,10 +9,13 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def __init__(self):
         macbook_air_13 = Product('MacBook Air 13”', "256 gb,M2 chip Liquid Retina display  ", "13",6000, 10)
         iphone_15_promax = Product('Iphone 15 pro max', "256 GB ", "4000",5000, 10)
-
+        admin = User(1111,"Admin",'1234')
+        clinet1 = Client(2020, "Client Check", '1234', 'Address')
+        order1 = Order(clinet1,0,{macbook_air_13.name:3,iphone_15_promax.name:2})
+        clinet1.order_history[order1.order_number] =order1
         self.collection = {'MacBook Air 13”':macbook_air_13,'Iphone 15 pro max':iphone_15_promax,}  # קולקציית המוצרים שבחנות
-        self.users = {1111:User(1111,"Admin",'1234'),2020:Client(2020,"Client Check",'1234','Address'),}  # משתמשי החנות
-        self.orders = {}  # הזמנות החנות
+        self.users = {1111:admin,2020:clinet1,}  # משתמשי החנות
+        self.orders = {order1.order_number:order1,}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
 
@@ -54,7 +57,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def place_order(self, order):
         if order.payment != None:
-            self.orders[self.order_number] = order
+            self.orders[order.order_number] = order
             self.order_number += 1
 
     def list_products(self):

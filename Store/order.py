@@ -1,9 +1,13 @@
 class Order:
-    def __init__(self, customer, product_dict=None,payment = None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
+    def __init__(self,customer=None,order_number = None,product_dict=None,payment = None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
+        self.order_number = order_number
         self.customer = customer
         self.total_amount = 0
         self.payment = payment
-
+        if self.payment is None:
+            self.status = "Not Paid "
+        else:
+            self.status = "Processing"
         if product_dict is None:
             self.product_dict = {}
         else:
@@ -23,6 +27,7 @@ class Order:
 
     def pay_order(self,payme):
         self.payment = payme
+        self.status = "Processing"
 
     def add_item_to_order(self, product, how_many):
         if product.name not in self.product_dict:
@@ -32,5 +37,7 @@ class Order:
         self.total_amount += product.get_price(how_many)
 
     def __str__(self):
-        return f"Customer: {self.customer.user_full_name}\n Shipping address:  {self.customer.address}\nItems: {self.product_dict}\nTotal amount: {self.total_amount}₪   or {self.total_amount/3.7611} $\n Status:{self.status}"
-
+        if self.payment is not None:
+            return f" Order number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n Shipping address:  {self.customer.address}\nItems: {self.product_dict}\nTotal amount: {self.total_amount}₪   or {self.total_amount/3.7611} $\n Status:{self.status}"
+        else:
+            return f"Items: {self.product_dict}\nTotal amount: {self.total_amount}₪   or {self.total_amount/3.7611} $\n "

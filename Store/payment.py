@@ -12,6 +12,6 @@ class Payment:
             return False
     def __str__(self):
         if self.payment_methood == "Credit Card":
-            return f" Paid by:  {self.info[-4:]} Credit Card"
+            return f"  {self.info[-4:]} Credit Card"
         else:
-            return f" Paid by {self.payment_methood}"
+            return f" {self.payment_methood}"
