@@ -68,10 +68,11 @@ class StoreCLI:
         choice = input("\nEnter your choice: ")
         return choice
 
-    def set_address(self):
+    def set_address(self,user):
         new_address = input("Enter your address: ")
-        self.client.change_address(new_address)
+        self.store.users[user.user_id].change_address(new_address)
         print("\nAddress has been changed successfully")
+        print(f"f New Address: {new_address}")
 
 
     def display_order(self):
@@ -292,8 +293,8 @@ class StoreCLI:
     def place_order(self,user):
         new_order = Order(user)
         if user.address is None:
-            new_address = input("Enter your address: ")
-            user.address = new_address
+            self.set_address(user)
+
         else:
             self.add_item(new_order)
             while True:
@@ -363,13 +364,14 @@ class StoreCLI:
             while True:
                 sub_choice = self.display_client()
                 if sub_choice == '1':
-                    self.set_address()
+                    self.set_address(user)
                 elif sub_choice == '2':
                     self.list_products()
                 elif sub_choice == '3':
                     self.place_order(user)
                 elif sub_choice == '4':
-                    print(self.store.users[user.user_id].list_orders())
+                    for key,value in user.order_history.items():
+                        print(f"Order Number:{key}\n user.order_history[key]")
                 elif sub_choice == '5':
                     break
                 else:
