@@ -1,5 +1,5 @@
 class Product:
-    def __init__(self, name: str, model: str, description: str, price: float, quantity: int):  #
+    def __init__(self, name =None,model=None,description=None,price=None, quantity=None):  #
         self.name = name  # שם המוצר
         self.model = model # דגם
         self.description = description  # תיאור המוצר
@@ -33,4 +33,4 @@ class Product:
         return self.quantity >= how_many
 
     def __str__(self):
-        return f"Name: {self.name}\n Model: {self.model}\n Description  {self.description} \n Price: {self.price}₪ or {self.price/3.7611}$\nAvailable: {self.quantity}"
+        return f"Name: {self.name}\n Model: {self.model}\n Description  {self.description} \n "
