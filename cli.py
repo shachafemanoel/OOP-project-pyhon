@@ -159,22 +159,14 @@ class StoreCLI:
         else:
             print("Wrong order number")
 
-    def display_product_type(self,product:Product):
-        new_pro = product
+    def display_product_type(self):
         print("Select Product type")
         print("\n1.TV")
         print("2.Computer")
         print("3.Mobile Phone ")
         print("Other")
         choice = input("Enter Your Choice")
-        if choice =="1":
-            new_pro = Tv()
-        elif choice =='2':
-            new_pro = Computer()
-        elif choice =='3':
-            new_pro = Phone()
-        else:
-            return new_pro
+        return choice
     def display_menu(self):
             print(" \n Electronic store Management System \n")
             print("1. Add Product")
@@ -214,8 +206,7 @@ class StoreCLI:
         count = 0
         new_item = Product()
         tup_item = (False,new_item)
-        new_item = self.display_product_type(new_item)
-        type_item = type(new_item)
+        type_item = self.display_product_type()
         type_search = self.store.search(None, type_item)
         if len(type_search) >0:
             tup_item = self.pick_item(type_search,new_item)
@@ -223,9 +214,9 @@ class StoreCLI:
                 new_item = tup_item[1]
                 return new_item
         if len(type_search) == 0:
-            type_item = None
             print("No products of this type were found in the system. Please try to search by the name of the product")
 
+        else:
             while tup_item[0] == False:
                 print("Try to search for another product")
                 count +=1
@@ -233,7 +224,7 @@ class StoreCLI:
                 new_name = input("\nEnter Product name: ")
                 type_search_name = self.store.search(new_name,type_item)
                 tup_item= self.pick_item(type_search_name,new_item)
-                if tup_item[0]== False:
+                if tup_item[0]== False or tup_item:
                     model = input("\nEnter model: ")
                     type_search_name_model = self.store.search(new_name,type_item,model)
                     tup_item = self.pick_item(type_search_name_model,new_item)
@@ -303,16 +294,16 @@ class StoreCLI:
         if user.address is None:
             new_address = input("Enter your address: ")
             user.address = new_address
-
-        self.add_item(new_order)
-        while True:
-            choice = self.display_order()
-            if choice == '1':
-                self.add_item(new_order)
-            elif choice == '2':
-                break
-            else:
-                print("Wrong choice,Try again ")
+        else:
+            self.add_item(new_order)
+            while True:
+                choice = self.display_order()
+                if choice == '1':
+                    self.add_item(new_order)
+                elif choice == '2':
+                    break
+                else:
+                    print("Wrong choice,Try again ")
 
         if new_order.total_amount > 0 or len(new_order.product_dict) > 0:
             payment = self.pay(new_order,user)

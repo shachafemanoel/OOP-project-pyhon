@@ -36,8 +36,18 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     found.append(value)
 
             if product_type is not None :
-                if product_type == type(value):
-                    found.append(value)
+                if product_type == "1":
+                    if type(value) == Tv:
+                        found.append(value)
+                elif product_type == "2":
+                   if type(value) == Computer:
+                       found.append(value)
+                elif product_type == "3":
+                    if type(value) == Phone:
+                        found.append(value)
+                else:
+                    if type(value) ==Product:
+                        found.append(value)
 
 
         return found
