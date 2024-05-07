@@ -25,16 +25,16 @@ class StoreCLI:
     def register(self, new_user=None):
         print("\nWelcome to the registration systemֿ\n")
         print(" User id must be a at least 4 digit ")
-        user_id = input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        user_id = str(input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:")))
         if user_id.isdigit() and len(user_id) > 3:
             print("\n Full name must be at least 4 characters ")
             full_name = input("Enter your Full name: ")
             if len(full_name) > 3:
                 address = input("\nEnter your address: ")  # Move address input here
                 print("\n The password must contain at least 4 characters ")
-                pass_word = input("Enter your Password: ")
+                pass_word = str(input("Enter your Password: "))
                 if len(pass_word) > 3:
-                    new_user = Client(int(user_id), full_name, pass_word, address)
+                    new_user = Client(user_id, full_name, pass_word, address)
                     if self.store.add_user(new_user):
                         new_user.online = 1
                         print("\nUser registered successfully.")
@@ -63,7 +63,8 @@ class StoreCLI:
         print("3. Place order")
         print("4. Historical orders")
         #print("5 Rating products")
-        print("5. Exit")
+        print("5. Logout")
+        print("6. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -372,6 +373,7 @@ class StoreCLI:
 
     def wellcome_page(self):
         user = Client()
+
         while user.online == 0:
             selection = self.display_user()
             if selection == '1':
@@ -380,70 +382,77 @@ class StoreCLI:
                 user = self.register(user)
             elif selection == '3':
                 print('Bye, Thank you')
+                return None
             else:
                 print("\n Login failed. Please check your credentials and try again.\n ")
-
-
         return user
 
     def run(self):
-
-        user = self.wellcome_page()
-        print(f"\n welcome {user.user_full_name} you are now connected ")
-
-        if type(user) == Client:
-            while True:
-                sub_choice = self.display_client()
-                if sub_choice == '1':
-                    self.set_address(user)
-                elif sub_choice == '2':
-                    self.list_products()
-                elif sub_choice == '3':
-                    self.place_order(user)
-                elif sub_choice == '4':
-                    for key, value in user.order_history.items():
-                        print(f"{key}\n {user.order_history[key]}")
-                elif sub_choice == '5':
-                    break
-                else:
-                    print("\n Invalid choice. Please try again.")
-
-            return "Bye, have a nice day"
-
-
         while True:
-                    choice = self.display_menu()
+            user = self.wellcome_page()
+            if user is None:
+                break
 
-                    if choice == '1':
-                        while True:
-                            sub_choice = self.display_adding_products()
-                            if sub_choice == '1':
-                                self.add_product()
-                            elif sub_choice == '2':
-                                self.add_quantity_to_product()
-                            elif sub_choice == '3':
-                                break
-                            else:
-                                print("\n Invalid choice. Please try again.")
+            print(f"\nWelcome {user.user_full_name}! You are now connected.")
+            logged_out = False
 
-                    elif choice == '2':
-                        self.register()
-                    elif choice == '3':
-                        self.place_order(user)
-                    elif choice == '4':
-                        self.change_status()
-                    elif choice == '5':
-                        self.remove_product()
-                    elif choice == '6':
-                        self.list_products()
-                    elif choice == '7':
-                        self.orders()
-                    elif choice == '8':
-                        self.reporting()
-                    elif choice == '9':
-                        break
-                    else:
-                        print("\n Invalid choice. Please try again.")
+            while not logged_out:
+                if type(user) == Client:
+                    while True:
+                        sub_choice = self.display_client()
+                        if sub_choice == '1':
+                            self.set_address(user)
+                        elif sub_choice == '2':
+                            self.list_products()
+                        elif sub_choice == '3':
+                            self.place_order(user)
+                        elif sub_choice == '4':
+                            for key, value in user.order_history.items():
+                                print(f"{key}\n {user.order_history[key]}")
+
+                        elif sub_choice == '5':
+                            user.logout()
+                            logged_out = True
+                            break
+
+                        elif sub_choice == '6':
+                            return "Bye, have a nice day"
+                        else:
+                            print("\nInvalid choice. Please try again.")
+                else:
+                    while True:
+                                choice = self.display_menu()
+
+                                if choice == '1':
+                                    while True:
+                                        sub_choice = self.display_adding_products()
+                                        if sub_choice == '1':
+                                            self.add_product()
+                                        elif sub_choice == '2':
+                                            self.add_quantity_to_product()
+                                        elif sub_choice == '3':
+                                            break
+                                        else:
+                                            print("\n Invalid choice. Please try again.")
+
+                                elif choice == '2':
+                                    self.register()
+                                elif choice == '3':
+                                    self.place_order(user)
+                                elif choice == '4':
+                                    self.change_status()
+                                elif choice == '5':
+                                    self.remove_product()
+                                elif choice == '6':
+                                    self.list_products()
+                                elif choice == '7':
+                                    self.orders()
+                                elif choice == '8':
+                                    self.reporting()
+                                elif choice == '9':
+                                    break
+                                else:
+                                    print("\n Invalid choice. Please try again.")
 
 
 if __name__ == "__main__":
