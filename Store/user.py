@@ -10,9 +10,12 @@ class User:
     def login(self, entered_password):
         if self.password == entered_password:
             self.online = 1
-
+            return True
+        else:
+            return False
 
     def logout(self):
+        self.online = 0
         print('Logged out successfully.')
         return True
 

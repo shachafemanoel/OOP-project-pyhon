@@ -15,13 +15,13 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         iphone_15_promax = Phone('Iphone 15', 'Pro max ', "The new Iphone 15 pro max ",5000, 10,"5.9",256)
         macbook_air_15 = Computer('MacBook air 15', 'Air',"Liquid Retina display",7000, 10,"15","256","M2")
         iphone_14 = Phone('Iphone 14 pro max', 'Pro max ', " Iphone 14 pro max best value for money !",3000, 10,"6.7","256")
-        admin = User(1111,"Admin",'1234')
-        clinet1 = Client(2020, "Client Check", '1234', 'Address')
+        admin = User("1111","Admin",'1234')
+        clinet1 = Client("2020", "Client Check", '1234', 'Address')
         order1 = Order(clinet1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2})
         clinet1.order_history[order1.order_number] =order1
 
         self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax, iphone_14.get_key_name() : iphone_14, macbook_air_15.get_key_name() : macbook_air_15, smart_tv.get_key_name() : smart_tv,}  # קולקציית המוצרים שבחנות
-        self.users = {1111:admin,2020:clinet1,}  # משתמשי החנות
+        self.users = {"1111":admin,"2020":clinet1,}  # משתמשי החנות
         self.orders = {order1.order_number:order1,}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
@@ -70,16 +70,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def add_user(self, user:User):  # הוספת משתמש לחנות
         if user.user_id not in self.users:
             user = Client(user.user_id, user.user_full_name, user.password)
-            self.users[user.user_id] = user
+            self.users[user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))] = user
             return True
         return False
 
-    def remove(self, product_name):
-        if len(self.search(product_name)) ==1:
-            del self.collection[product_name]
-            return True
-        else:
-            return False
+    def remove(self, product):
+        del self.collection[product.get_key_name()]
+        return True
+
 
     def add_item_order(self, product, how_many, order):
         if self.collection[product.get_key_name()].available(how_many):
@@ -111,6 +109,12 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         return [(order_number, order.customer.user_full_name, order.total_amount, order.status) for order_number, order in
                 self.orders.items()]
 
+    def log (self,user_id,password):
+        login = user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        if login in self.users and self.users[login].login(password):
+            return self.users[login]
+        else:
+            return None
 
 
 

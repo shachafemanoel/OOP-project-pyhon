@@ -14,20 +14,18 @@ class StoreCLI:
 
     def log_in(self,user):
         user_id = input("Enter User ID: ")
-        if user_id.isdigit():
-            user_id = int(user_id)
-            if user_id in self.store.users:
-                user = self.store.users[user_id]
-                password = input("Enter Password: ")
-                user.login(password)
-                if type(user) == User:
-                    user.__class__ = User
+        password = input("Enter Password: ")
+        loggg = self.store.log(user_id,password)
+        if loggg is not None :
+            user = loggg
+            if type(user) == User:
+                user.__class__ = User
         return user
 
     def register(self, new_user=None):
         print("\nWelcome to the registration systemֿ\n")
         print(" User id must be a at least 4 digit ")
-        user_id = input("Enter User ID: ")
+        user_id = input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         if user_id.isdigit() and len(user_id) > 3:
             print("\n Full name must be at least 4 characters ")
             full_name = input("Enter your Full name: ")
@@ -190,13 +188,13 @@ class StoreCLI:
         item_check = (False,item)
         if len(lst) == 0:
            return item_check
-        print("Please select one of the options")
+        print("\nPlease select one of the options")
         for i in range(len(lst)):
             print(f"\n {lst[i]} \n  \n for {lst[i].name} Press =>  {i+1} \n", )
-        print("Choose number or press other number to look for something else\n")
+        print("Choose one of the options \n For exit, enter a different value from the options ")
         select = input("Enter your choice: ")
         if select.isdigit():
-            select = int(select) - 1
+            select = (int(select) - 1)
             if select < len(lst):
                 item_check = (True,lst[select])
                 return item_check
@@ -287,7 +285,7 @@ class StoreCLI:
         model = input("Enter Product Model: ")
         search = self.store.search(name,model)
         if len(self.store.search(name,model)) >0:
-            print(f" {search}\n This products exists in the system.")
+            print(f"\n This products exists in the system.")
             s = self.pick_item(search,pro)
             if s[0]:
                 pro = s[1]
@@ -348,12 +346,12 @@ class StoreCLI:
 
 
     def remove_product(self):
-        name = input("Enter Product Name: ")
-        removed_product = self.store.remove(name)
-        if removed_product:
-            print(f" {name} has been removed ")
+        pro = Product()
+        removed_product = self.search_system()
+        if removed_product is not None:
+            print(f"\n {removed_product.name} has been removed ")
         else:
-            print(f" {name} does not exist ")
+            print(f"Good bye")
 
     def list_products(self):
         if len(self.store.collection) > 0:
