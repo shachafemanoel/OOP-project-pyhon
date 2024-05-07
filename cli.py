@@ -25,14 +25,14 @@ class StoreCLI:
     def register(self, new_user=None):
         print("\nWelcome to the registration systemֿ\n")
         print(" User id must be a at least 4 digit ")
-        user_id = str(input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:")))
+        user_id = input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         if user_id.isdigit() and len(user_id) > 3:
             print("\n Full name must be at least 4 characters ")
             full_name = input("Enter your Full name: ")
             if len(full_name) > 3:
                 address = input("\nEnter your address: ")  # Move address input here
                 print("\n The password must contain at least 4 characters ")
-                pass_word = str(input("Enter your Password: "))
+                pass_word = input("Enter your Password: ")
                 if len(pass_word) > 3:
                     new_user = Client(user_id, full_name, pass_word, address)
                     if self.store.add_user(new_user):
@@ -411,8 +411,8 @@ class StoreCLI:
                                 print(f"{key}\n {user.order_history[key]}")
 
                         elif sub_choice == '5':
-                            user.logout()
-                            logged_out = True
+
+                            logged_out = user.logout()
                             break
 
                         elif sub_choice == '6':
@@ -450,7 +450,7 @@ class StoreCLI:
                                 elif choice == '8':
                                     self.reporting()
                                 elif choice == '9':
-                                    break
+                                    return "Bye Thank you"
                                 else:
                                     print("\n Invalid choice. Please try again.")
 

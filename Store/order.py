@@ -36,8 +36,10 @@ class Order:
             self.product_dict[product.get_key_name()] += how_many
         self.total_amount += product.get_price(how_many)
 
+
+
     def __str__(self):
         if self.payment is not None:
             return f" Order number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n Shipping address:  {self.customer.address}\nItems: {self.product_dict}\nTotal amount: {self.total_amount}₪   or {self.total_amount/3.7611} $\n Status:{self.status}"
         else:
-            return f"Items: {self.product_dict}\nTotal amount: {self.total_amount}₪   or {self.total_amount/3.7611} $\n "
+            return f"Items: {self.product_dict }\n {self.total_amount}₪   or {self.total_amount/3.7611} $\n "
