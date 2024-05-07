@@ -21,7 +21,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         clinet1.order_history[order1.order_number] =order1
 
         self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax, iphone_14.get_key_name() : iphone_14, macbook_air_15.get_key_name() : macbook_air_15, smart_tv.get_key_name() : smart_tv,}  # קולקציית המוצרים שבחנות
-        self.users = {"1111":admin,"2020":clinet1,}  # משתמשי החנות
+        self.users = {admin.user_id:admin,clinet1.user_id:clinet1,}  # משתמשי החנות
         self.orders = {order1.order_number:order1,}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()

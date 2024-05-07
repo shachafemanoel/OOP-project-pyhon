@@ -62,8 +62,8 @@ class StoreCLI:
         print("2. List of products")
         print("3. Place order")
         print("4. Historical orders")
-        #print("5 Rating products")
-        print("5. Exit")
+        print("5 Log out")
+        print("6. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -370,7 +370,7 @@ class StoreCLI:
 
 
 
-    def wellcome_page(self):
+    def wellcome_page(self,user):
         user = Client()
         while user.online == 0:
             selection = self.display_user()
@@ -379,6 +379,7 @@ class StoreCLI:
             elif selection == '2':
                 user = self.register(user)
             elif selection == '3':
+                break
                 print('Bye, Thank you')
             else:
                 print("\n Login failed. Please check your credentials and try again.\n ")
@@ -387,8 +388,8 @@ class StoreCLI:
         return user
 
     def run(self):
-
-        user = self.wellcome_page()
+        user = Client()
+        user = self.wellcome_page(user)
         print(f"\n welcome {user.user_full_name} you are now connected ")
 
         if type(user) == Client:
@@ -404,14 +405,17 @@ class StoreCLI:
                     for key, value in user.order_history.items():
                         print(f"{key}\n {user.order_history[key]}")
                 elif sub_choice == '5':
+                    user.logout()
+                    self.wellcome_page(user)
+                elif sub_choice == '6':
                     break
                 else:
                     print("\n Invalid choice. Please try again.")
 
-            return "Bye, have a nice day"
 
 
-        while True:
+        if type(user) == User:
+            while True:
                     choice = self.display_menu()
 
                     if choice == '1':
