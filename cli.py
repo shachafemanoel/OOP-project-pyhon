@@ -36,7 +36,7 @@ class StoreCLI:
                 print("\n The password must contain at least 4 characters ")
                 pass_word = input("Enter your Password: ")
                 if len(pass_word) > 3:
-                    new_user = Client(int(user_id), full_name, pass_word)
+                    new_user = Client(int(user_id), full_name, pass_word, address)
                     if self.store.add_user(new_user):
                         new_user.online = 1
                         print("\nUser registered successfully.")
@@ -64,7 +64,7 @@ class StoreCLI:
         print("3. Place order")
         print("4. Historical orders")
         #print("5 Rating products")
-        print("6 Exit")
+        print("5. Exit")
         choice = input("\nEnter your choice: ")
         return choice
 
@@ -72,28 +72,27 @@ class StoreCLI:
         new_address = input("Enter your address: ")
         self.store.users[user.user_id].change_address(new_address)
         print("\nAddress has been changed successfully")
-        print(f"f New Address: {new_address}")
-
+        print(f"New Address updated: {new_address}")
 
     def display_order(self):
         print("\n 1.Add Item ")
-        print("\n 2.Check Out or Exit ")
-        choice = input(" Enter your choice: ")
+        print("2.Check Out or Exit ")
+        choice = input("\nEnter your choice: ")
         return choice
 
     def display_payment(self,order):
         print(order)
-        print("\nHow would you like to pay?")
-        print("\n 1.Credit Card ")
-        print("\n 2.Paypal")
-        print("\n 3.Cash")
-        print("\n 4.Exit ")
-        choice = input(" Enter your choice: ")
+        print("How would you like to pay?")
+        print("1.Credit Card")
+        print("2.Paypal")
+        print("3.Cash")
+        print("4.Exit")
+        choice = input("\nEnter your choice: ")
         return choice
     def pay(self,order,user):
         print(f"{order.total_amount}₪\n {order.total_amount/3.711} $")
 
-        paymethood = Payment()
+        paymethood = Payment
         if user.payment is not None:
             print(f"for paying with:")
             print(user.payment)
@@ -104,14 +103,14 @@ class StoreCLI:
             pay_option = self.display_payment(order)
             while True:
                 if pay_option =='1':
-                    card_holder = input("Name on card ")
-                    card_number = input("Card number ")
+                    card_holder = input("Name on card: ")
+                    card_number = input("Card number: ")
                     paymethood =Payment(card_holder,card_number,)
                     if paymethood.check_card():
 
                         print("\nWould you like to save your payment method for future orders?")
-                        print("\n 1.Yes,save it")
-                        print("\n 2 .No ")
+                        print("\n1. Yes,save it")
+                        print("\n2 .No ")
                         save = input("Enter your choice: ")
                         if save =='1':
                             self.store.users[user.user_id].payment = paymethood
@@ -120,18 +119,18 @@ class StoreCLI:
                         print("The card number is invalid")
 
                 elif pay_option == '2':
-                    paypal_id = input("Enter your Paypal id")
+                    paypal_id = input("Enter your Paypal id: ")
                     if len(paypal_id) > 0:
                         paymethood = Payment(paypal_id,None,'paypal')
                         print("\nWould you like to save your payment method for future orders?")
-                        print("\n 1.Yes,save it")
-                        print("\n 2 .No ")
+                        print("1. Yes,save it")
+                        print("2 .No ")
                         save = input("Enter your choice: ")
                         if save == '1':
                             self.store.users[user.user_id].payment = paymethood
                         return paymethood
                     else:
-                        print("Paypal id in invalid ")
+                        print("Paypal id in invalid")
 
                 elif pay_option == '3':
                     paymethood = Payment(order.customer.user_full_name,None,'Cash')
@@ -141,7 +140,7 @@ class StoreCLI:
                     print('Good bye')
                     return False
                 else:
-                    print("\n Invalid choice. Please try again.")
+                    print("\nInvalid choice. Please try again.")
 
     def change_status(self):
         print(f"{self.store.list_orders()}")
@@ -162,11 +161,11 @@ class StoreCLI:
 
     def display_product_type(self):
         print("Select Product type")
-        print("\n1.TV")
-        print("2.Computer")
-        print("3.Mobile Phone ")
+        print("\n1. TV")
+        print("2. Computer")
+        print("3. Mobile Phone ")
         print("Other")
-        choice = input("Enter Your Choice")
+        choice = input("\nEnter Your Choice: ")
         return choice
     def display_menu(self):
             print(" \n Electronic store Management System \n")
@@ -182,76 +181,75 @@ class StoreCLI:
             choice = input("Enter your choice: ")
             return choice
 
-    def pick_item(self,lst,item):
-        item_cheack = (False,item)
-        if len(lst)==0:
-           return item_cheack
-        if len(lst)==1:
-            return item_cheack
+    def pick_item(self, lst, item):
+        item_check = (False,item)
+
+        if len(lst) == 0 or len(lst) == 1:
+           return item_check
 
         for i in range(len(lst)):
             print(f"\n {lst[i]} \n  \n for {lst[i].name} Press  {i+1} \n", )
         print("Choose number or press other number to look for something more specific\n")
-        select = input("Enter your choice")
+        select = input("Enter your choice: ")
         if select.isdigit():
-            select = int(select)-1
+            select = int(select) - 1
             if select < len(lst):
-                item_cheack = (True,lst[select])
-                return item_cheack
+                item_check = (True,lst[select])
+                return item_check
             else:
-                return item_cheack
+                return item_check
 
 
     def search_system(self):
-        print("Welcome to the catalog")
+        print("\nWelcome to the catalog")
         count = 0
         new_item = Product()
-        tup_item = (False,new_item)
+        tup_item = (False, new_item)
         type_item = self.display_product_type()
-        type_search = self.store.search(None, type_item)
-        if len(type_search) >0:
-            tup_item = self.pick_item(type_search,new_item)
-            if tup_item[0] ==True:
+        type_search = self.store.search(None, type_item, None)
+        if len(type_search) > 0:
+            tup_item = self.pick_item(type_search, new_item)
+            if tup_item[0]:
                 new_item = tup_item[1]
                 return new_item
         if len(type_search) == 0:
             print("No products of this type were found in the system. Please try to search by the name of the product")
-
         else:
-            while tup_item[0] == False:
+            while not tup_item[0]:
                 print("Try to search for another product")
-                count +=1
+                count += 1
                 new_item = tup_item[1]
                 new_name = input("\nEnter Product name: ")
-                type_search_name = self.store.search(new_name,type_item)
-                tup_item= self.pick_item(type_search_name,new_item)
-                if tup_item[0]== False or tup_item:
-                    model = input("\nEnter model: ")
-                    type_search_name_model = self.store.search(new_name,type_item,model)
-                    tup_item = self.pick_item(type_search_name_model,new_item)
-                if tup_item[0] == True:
+                type_search_name = self.store.search(new_name, type_item)
+                tup_item= self.pick_item(type_search_name, new_item)
+                if not tup_item[0] or tup_item:
+                    model = input("Enter model: ")
+                    type_search_name_model = self.store.search(new_name, type_item, model)
+                    tup_item = self.pick_item(type_search_name_model, new_item)
+                if tup_item[0]:
                     new_item = tup_item[1]
                     return new_item
 
-                if count >5:
+                elif count > 3:
                     print("\nYou have exceeded the limit of search attempts")
-                    return False,
+                    return False
+
     def add_item(self, order):
         new_item = self.search_system()
-        if new_item!=False and new_item is not None:
+        if new_item and new_item is not None:
             print(f"Your choice:\n {new_item}")
             how_much = input("\nEnter a quantity of the following product: ")
             if how_much.isdigit():
                 how_much = int(how_much)
                 if how_much == 0:
                     print("No quantity provided")
-                if  self.store.add_item_order(new_item,how_much,order) == False:
+                if not self.store.add_item_order(new_item, how_much, order):
                     print(f"Sorry there is only {self.store.collection[new_item.name].quantity} of {new_item.name} in  the inventory")
                 else:
-                    print(f"\n{new_item.name}  {how_much}  added to your order !" )
+                    print(f"\n{how_much} {new_item.name} added to your order !" )
 
             else:
-                print(" \nError: Invalid quantity entered. ")
+                print("\nError: Invalid quantity entered.")
 
 
     def display_adding_products(self):
@@ -288,7 +286,7 @@ class StoreCLI:
                 product = Product(name, model, description, price, quantity)
                 self.store.add_product(product)
             else:
-                print("Price and Quantity must be a digit ")
+                print("Price and Quantity must be a digit")
 
     def place_order(self,user):
         new_order = Order(user)
@@ -304,11 +302,11 @@ class StoreCLI:
                 elif choice == '2':
                     break
                 else:
-                    print("Wrong choice,Try again ")
+                    print("Wrong choice,Try again")
 
         if new_order.total_amount > 0 or len(new_order.product_dict) > 0:
             payment = self.pay(new_order,user)
-            if payment != False:
+            if payment:
                     new_order.pay_order(payment)
                     self.store.place_order(new_order)
                     print(f" {new_order}\n {payment}\n The order was successfully completed ")
@@ -370,8 +368,8 @@ class StoreCLI:
                 elif sub_choice == '3':
                     self.place_order(user)
                 elif sub_choice == '4':
-                    for key,value in user.order_history.items():
-                        print(f"Order Number:{key}\n user.order_history[key]")
+                    for key, value in user.order_history.items():
+                        print(f"Order Number:{key}\n {user.order_history[key]}")
                 elif sub_choice == '5':
                     break
                 else:

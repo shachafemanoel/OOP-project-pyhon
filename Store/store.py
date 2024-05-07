@@ -13,13 +13,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         smart_tv = Tv("LG 52 Led","UR9000 Series"," Alexa Built-in 4K Smart TV (3840 x 2160),Bluetooth, Wi-Fi, USB, Ethernet, HDMI 60Hz Refresh Rate, AI-Powered 4K",7000,20,"65",'LED')
         macbook_air_13 = Computer('MacBook air 13', 'Air',"Liquid Retina display ",6000, 10,"13","256","M2")
         iphone_15_promax = Phone('Iphone 15', 'Pro max ', "The new Iphone 15 pro max ",5000, 10,"5.9",256)
-        macbook_air_15 = Computer('MacBook air 15', 'Air',"Liquid Retina display w",7000, 10,"15","256","M2")
+        macbook_air_15 = Computer('MacBook air 15', 'Air',"Liquid Retina display",7000, 10,"15","256","M2")
         iphone_14 = Phone('Iphone 14 pro max', 'Pro max ', " Iphone 14 pro max best value for money !",3000, 10,"6.7","256")
         admin = User(1111,"Admin",'1234')
         clinet1 = Client(2020, "Client Check", '1234', 'Address')
-        order1 = Order(clinet1,0,{macbook_air_13.name:3,iphone_15_promax.name:2})
+        order1 = Order(clinet1,0,{macbook_air_13.name : 3, iphone_15_promax.name : 2})
         clinet1.order_history[order1.order_number] =order1
-        self.collection = {macbook_air_13.name:macbook_air_13,iphone_15_promax.name:iphone_15_promax,iphone_14.name:iphone_14,macbook_air_15.name:macbook_air_15,smart_tv.name:smart_tv}  # קולקציית המוצרים שבחנות
+
+        self.collection = {macbook_air_13.name : macbook_air_13, iphone_15_promax.name : iphone_15_promax, iphone_14.name : iphone_14, macbook_air_15.name : macbook_air_15, smart_tv.name : smart_tv}  # קולקציית המוצרים שבחנות
         self.users = {1111:admin,2020:clinet1,}  # משתמשי החנות
         self.orders = {order1.order_number:order1,}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
@@ -28,14 +29,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def search(self,name = None,product_type = None,model = None):
         found = []
         for key, value in self.collection.items():
-            if name is not None and key.casefold()[0:3] == name.casefold()[0:3]:
-                if model is not None :
-                    if value.model.casefold()[0:3]== model.casefold()[0:3]:
+            if name is not None and key.casefold() == name.casefold():
+                if model:
+                    if value.model.casefold() == model.casefold():
                         found.append(value)
                 else:
                     found.append(value)
 
-            if product_type is not None :
+            if product_type is not None:
                 if product_type == "1":
                     if type(value) == Tv:
                         found.append(value)
@@ -46,7 +47,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     if type(value) == Phone:
                         found.append(value)
                 else:
-                    if type(value) ==Product:
+                    if type(value) == Product:
                         found.append(value)
 
 

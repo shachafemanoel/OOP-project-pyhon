@@ -33,4 +33,4 @@ class Product:
         return self.quantity >= how_many
 
     def __str__(self):
-        return f"Name: {self.name}\n Model: {self.model}\n Description  {self.description} \n "
+        return f"Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n"
