@@ -17,32 +17,38 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         iphone_14 = Phone('Iphone 14 pro max', 'Pro max ', " Iphone 14 pro max best value for money !",3000, 10,"6.7","256")
         admin = User(1111,"Admin",'1234')
         clinet1 = Client(2020, "Client Check", '1234', 'Address')
-        order1 = Order(clinet1,0,{macbook_air_13.name : 3, iphone_15_promax.name : 2})
+        order1 = Order(clinet1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2})
         clinet1.order_history[order1.order_number] =order1
 
-        self.collection = {macbook_air_13.name : macbook_air_13, iphone_15_promax.name : iphone_15_promax, iphone_14.name : iphone_14, macbook_air_15.name : macbook_air_15, smart_tv.name : smart_tv}  # קולקציית המוצרים שבחנות
+        self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax, iphone_14.get_key_name() : iphone_14, macbook_air_15.get_key_name() : macbook_air_15, smart_tv.get_key_name() : smart_tv,}  # קולקציית המוצרים שבחנות
         self.users = {1111:admin,2020:clinet1,}  # משתמשי החנות
         self.orders = {order1.order_number:order1,}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
 
     def search(self,name = None,product_type = None,model = None):
+        if name is not None:
+            cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        if model is not None:
+            cleaned_model =  model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         found = []
         for key, value in self.collection.items():
-            if name is not None and key.casefold() == name.casefold():
-                if model:
-                    if value.model.casefold() == model.casefold():
+            if name is not None:# חיפוש לפי שם
+                if value.get_key_name().casefold()[0:len(cleaned_name)] == cleaned_name.casefold():
+                    if model is not None and cleaned_model.casefold() == value.get_model_name()[0:len(cleaned_model)].casefold():# חיפוש לפי שם ומודל
                         found.append(value)
-                else:
-                    found.append(value)
+                    else:
+                        found.append(value)
 
-            if product_type is not None:
+
+
+            if product_type is not None and name is None:
                 if product_type == "1":
                     if type(value) == Tv:
                         found.append(value)
                 elif product_type == "2":
-                   if type(value) == Computer:
-                       found.append(value)
+                    if type(value) == Computer:
+                        found.append(value)
                 elif product_type == "3":
                     if type(value) == Phone:
                         found.append(value)
@@ -55,14 +61,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
 
     def add_product(self, product):
-        if len(self.search(product.name)) ==1 :
-                self.collection[product.name].add_quantity(product.quantity)
-                return "Product quantity updated successfully."
-        else:
-            len(self.search(product.name)) == 0
-            self.collection[product.name] = product
-            self.reporting.sold_products[product.name] = 0
-            return "Product added successfully."
+        self.collection[product.get_key_name()] = product
+        self.reporting.sold_products[product.name] = 0
+        return "Product added successfully."
 
 
 
@@ -74,14 +75,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         return False
 
     def remove(self, product_name):
-        if product_name in self.collection:
+        if len(self.search(product_name)) ==1:
             del self.collection[product_name]
             return True
         else:
             return False
 
     def add_item_order(self, product, how_many, order):
-        if self.collection[product.name].available(how_many):
+        if self.collection[product.get_key_name()].available(how_many):
             order.add_item_to_order(product, how_many)
             return True
         else:
@@ -109,7 +110,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def list_orders(self):
         return [(order_number, order.customer.user_full_name, order.total_amount, order.status) for order_number, order in
                 self.orders.items()]
-
 
 
 

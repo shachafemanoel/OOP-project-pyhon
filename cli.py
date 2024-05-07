@@ -56,7 +56,8 @@ class StoreCLI:
         print("2. New User? Sign up now ")
         print("3. Exit")
         choice = input("\nEnter your choice: ")
-        return choice
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
 
     def display_client(self):
         print("\n1. Change address")
@@ -66,7 +67,8 @@ class StoreCLI:
         #print("5 Rating products")
         print("5. Exit")
         choice = input("\nEnter your choice: ")
-        return choice
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
 
     def set_address(self,user):
         new_address = input("Enter your address: ")
@@ -78,7 +80,8 @@ class StoreCLI:
         print("\n 1.Add Item ")
         print("2.Check Out or Exit ")
         choice = input("\nEnter your choice: ")
-        return choice
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
 
     def display_payment(self,order):
         print(order)
@@ -88,7 +91,8 @@ class StoreCLI:
         print("3.Cash")
         print("4.Exit")
         choice = input("\nEnter your choice: ")
-        return choice
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
     def pay(self,order,user):
         print(f"{order.total_amount}₪\n {order.total_amount/3.711} $")
 
@@ -160,13 +164,14 @@ class StoreCLI:
             print("Wrong order number")
 
     def display_product_type(self):
-        print("Select Product type")
+        print(" Select Product type")
         print("\n1. TV")
         print("2. Computer")
         print("3. Mobile Phone ")
         print("Other")
         choice = input("\nEnter Your Choice: ")
-        return choice
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
     def display_menu(self):
             print(" \n Electronic store Management System \n")
             print("1. Add Product")
@@ -179,17 +184,16 @@ class StoreCLI:
             print("8. Reporting")
             print("9. Exit")
             choice = input("Enter your choice: ")
-            return choice
+            return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def pick_item(self, lst, item):
         item_check = (False,item)
-
-        if len(lst) == 0 or len(lst) == 1:
+        if len(lst) == 0:
            return item_check
-
+        print("Please select one of the options")
         for i in range(len(lst)):
-            print(f"\n {lst[i]} \n  \n for {lst[i].name} Press  {i+1} \n", )
-        print("Choose number or press other number to look for something more specific\n")
+            print(f"\n {lst[i]} \n  \n for {lst[i].name} Press =>  {i+1} \n", )
+        print("Choose number or press other number to look for something else\n")
         select = input("Enter your choice: ")
         if select.isdigit():
             select = int(select) - 1
@@ -216,13 +220,12 @@ class StoreCLI:
             print("No products of this type were found in the system. Please try to search by the name of the product")
         else:
             while not tup_item[0]:
-                print("Try to search for another product")
                 count += 1
                 new_item = tup_item[1]
                 new_name = input("\nEnter Product name: ")
                 type_search_name = self.store.search(new_name, type_item)
                 tup_item= self.pick_item(type_search_name, new_item)
-                if not tup_item[0] or tup_item:
+                if not tup_item[0]:
                     model = input("Enter model: ")
                     type_search_name_model = self.store.search(new_name, type_item, model)
                     tup_item = self.pick_item(type_search_name_model, new_item)
@@ -230,26 +233,33 @@ class StoreCLI:
                     new_item = tup_item[1]
                     return new_item
 
-                elif count > 3:
+                elif count > 8:
                     print("\nYou have exceeded the limit of search attempts")
-                    return False
-
+                    return None
+                else:
+                    print("\nTry to search for another product")
     def add_item(self, order):
         new_item = self.search_system()
-        if new_item and new_item is not None:
+        if new_item is not None:
             print(f"Your choice:\n {new_item}")
-            how_much = input("\nEnter a quantity of the following product: ")
-            if how_much.isdigit():
-                how_much = int(how_much)
-                if how_much == 0:
-                    print("No quantity provided")
-                if not self.store.add_item_order(new_item, how_much, order):
-                    print(f"Sorry there is only {self.store.collection[new_item.name].quantity} of {new_item.name} in  the inventory")
+            for i in range(5):
+                how_much = input("\nEnter a quantity of the following product: ")
+                if how_much.isdigit():
+                    how_much = int(how_much)
+                    if how_much == 0:
+                        print("No quantity provided")
+                    if not self.store.add_item_order(new_item, how_much, order):
+                        print(f"Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory")
+                    else:
+                        print(f"\n{new_item.name} ----- quantity {how_much} added to your order !" )
+                        break
                 else:
-                    print(f"\n{how_much} {new_item.name} added to your order !" )
+                    print(f"\nError: Invalid quantity entered.Try Again")
+                if i ==4:
+                    print("You have passed the possible amount of attempts")
 
-            else:
-                print("\nError: Invalid quantity entered.")
+
+
 
 
     def display_adding_products(self):
@@ -257,11 +267,13 @@ class StoreCLI:
         print("2. Add quantity to existing product")
         print("3. Return to primary display")
         choice = input("\nEnter your choice: ")
-        return choice
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
 
     def add_quantity_to_product(self):
         print(self.store.list_products())
         name = input("Enter Product Name: ")
+        item = self.search_system()
         quantity = input("Enter Quantity: ")
         if name in self.store.collection and quantity.isdigit() and int(quantity) > 0:
             self.store.collection[name].add_quantatiy(int(quantity))
@@ -270,21 +282,44 @@ class StoreCLI:
             print("Invalid input or product not found.\n")
 
     def add_product(self):
+        pro = Product()
         name = input("Enter Product Name: ")
         model = input("Enter Product Model: ")
-        if name in self.store.collection and self.store.collection[name].model == model:
-            print(f" {self.store.collection[name]}\n This product exists in the system. How much would you like to add to the inventory?")
-            quan = input("Add quantity: ")
-            self.store.collection[name].add_quantity(int(quan))
+        search = self.store.search(name,model)
+        if len(self.store.search(name,model)) >0:
+            print(f" {search}\n This products exists in the system.")
+            s = self.pick_item(search,pro)
+            if s[0]:
+                pro = s[1]
+                print(f"\n{pro}")
+                print("How much would you like to add to the inventory?")
+                quan = input("Add quantity: ")
+                self.store.collection[pro.get_key_name()].add_quantity(int(quan))
         else:
+
             description = input("Enter description: ")
             price = input("Enter Price: ")
             quantity = input("Enter Quantity: ")
+            catagory = self.display_product_type()
             if int(price) > 0 and price.isdigit() and quantity.isdigit():
                 price = float(price)
                 quantity = int(quantity)
-                product = Product(name, model, description, price, quantity)
-                self.store.add_product(product)
+                if catagory == 1 :
+                    size = input("Enter Screen size: ")
+                    tv_type = input("Enter TV type")
+                    pro =Tv(name,model,description,price,quantity,size,tv_type)
+                if catagory == 2 :
+                    chip = input("Enter Chip: ")
+                    size = input("Enter Screen size: ")
+                    storge = input("Enter Storge:")
+                    pro = Computer(name, model, description, price, quantity,size,storge,chip)
+                if catagory == 3:
+                    size = input("Enter Screen size: ")
+                    storge = input("Enter Storge:")
+                    pro = Phone(name, model, description, price, quantity,size,storge)
+                else:
+                    pro = Product(name, model, description, price, quantity, )
+                self.store.add_product(pro)
             else:
                 print("Price and Quantity must be a digit")
 
@@ -369,7 +404,7 @@ class StoreCLI:
                     self.place_order(user)
                 elif sub_choice == '4':
                     for key, value in user.order_history.items():
-                        print(f"Order Number:{key}\n {user.order_history[key]}")
+                        print(f"{key}\n {user.order_history[key]}")
                 elif sub_choice == '5':
                     break
                 else:

@@ -30,10 +30,10 @@ class Order:
         self.status = "Processing"
 
     def add_item_to_order(self, product, how_many):
-        if product.name not in self.product_dict:
-            self.product_dict[product.name] = how_many
+        if product.get_key_name() not in self.product_dict:
+            self.product_dict[product.get_key_name()] = how_many
         else:
-            self.product_dict[product.name] += how_many
+            self.product_dict[product.get_key_name()] += how_many
         self.total_amount += product.get_price(how_many)
 
     def __str__(self):

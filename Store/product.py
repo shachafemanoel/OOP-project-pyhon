@@ -6,9 +6,10 @@ class Product:
         self.price = price  # מחיר המוצר
         self.quantity = quantity  # הכמות המוצר
 
-    def get_name(self):
-        return self.name
-
+    def get_key_name(self):
+        return self.name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+    def get_model_name(self):
+        return self.model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
     def buy_product(self, many):  # הוצאת כמות מוצרים מהמלאי
         if self.available(many):
             self.quantity -= many
