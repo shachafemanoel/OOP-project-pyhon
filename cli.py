@@ -12,10 +12,10 @@ class StoreCLI:
     def __init__(self):
         self.store = Store()
 
-    def log_in(self,user):
+    def log_in(self, user):
         user_id = input("Enter User ID: ")
         password = input("Enter Password: ")
-        loggg = self.store.log(user_id,password)
+        loggg = self.store.log(user_id, password)
         if loggg is not None :
             user = loggg
             if type(user) == User:
@@ -25,14 +25,14 @@ class StoreCLI:
     def register(self, new_user=None):
         print("\nWelcome to the registration systemֿ\n")
         print(" User id must be a at least 4 digit ")
-        user_id = input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        user_id = (input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:")))
         if user_id.isdigit() and len(user_id) > 3:
             print("\n Full name must be at least 4 characters ")
             full_name = input("Enter your Full name: ")
             if len(full_name) > 3:
                 address = input("\nEnter your address: ")  # Move address input here
                 print("\n The password must contain at least 4 characters ")
-                pass_word = input("Enter your Password: ")
+                pass_word = str(input("Enter your Password: "))
                 if len(pass_word) > 3:
                     new_user = Client(user_id, full_name, pass_word, address)
                     if self.store.add_user(new_user):
@@ -48,11 +48,45 @@ class StoreCLI:
             print("\n User ID must be at least 4 digit.Try again ")
         return new_user
 
+    def change_password(self, user):
+        old_password = input("\nFor changing password please enter your old password: ")
+
+        if user.password == old_password:
+            print("\nThe password must contain at least 4 characters ")
+            new_user_password = input("Enter your new password: ")
+
+            if len(new_user_password) > 3:
+                user.change_user_password(new_user_password)
+                print("\nPassword changed successfully")
+            else:
+                print("\n The password must contain at least 4 characters. Please try again.")
+        else:
+            print("\n Wrong old password, please try again.")
+
+    def forgot_password(self):
+        id_check = input("\nFor password reset, please enter your ID: ")
+        name_check = input("Enter your full name: ")
+
+        user = self.store.users[id_check]
+
+        if user is not None and user.user_full_name.casefold() == name_check.casefold() and user.user_id == id_check:
+            print("\nThe password must contain at least 4 characters ")
+            new_user_password = input("Enter your new password: ")
+
+            if len(new_user_password) > 3:
+                user.change_user_password(new_user_password)
+                print("\nPassword changed successfully, you can now log in")
+            else:
+                print("\nThe password must contain at least 4 characters. Please try again.")
+        else:
+            print("\n Full name or ID is incorrect. Please try again.")
+
     def display_user(self):
         print("\n Welcome to Electronic Store Management System!\n ")
         print("1. Existing User? Log in")
         print("2. New User? Sign up now ")
-        print("3. Exit")
+        print("3. Forgot password? Reset here")
+        print("4. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -62,9 +96,9 @@ class StoreCLI:
         print("2. List of products")
         print("3. Place order")
         print("4. Historical orders")
-        #print("5 Rating products")
-        print("5. Logout")
-        print("6. Exit")
+        print("5. Change password")
+        print("6. Logout")
+        print("7. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -175,14 +209,15 @@ class StoreCLI:
             print(" \n Electronic store Management System \n")
             print("1. Add Product")
             print("2. Add User")
-            print("3. Place Order")
+            print("3. Change password")
             print("4. Update order status")
             print("5. Remove Product")
             print("6. List Product")
             print("7. List Orders")
             print("8. Reporting")
-            print("9. Exit")
-            choice = input("Enter your choice: ")
+            print("9. Logout")
+            print("10. Exit")
+            choice = input("\nEnter your choice: ")
             return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def pick_item(self, lst, item):
@@ -258,9 +293,6 @@ class StoreCLI:
                     print("You have passed the possible amount of attempts")
 
 
-
-
-
     def display_adding_products(self):
         print("\n1. Add new product")
         print("2. Add quantity to existing product")
@@ -284,10 +316,10 @@ class StoreCLI:
         pro = Product()
         name = input("Enter Product Name: ")
         model = input("Enter Product Model: ")
-        search = self.store.search(name,model)
-        if len(self.store.search(name,model)) >0:
+        search = self.store.search(name, model)
+        if len(self.store.search(name, model)) >0:
             print(f"\n This products exists in the system.")
-            s = self.pick_item(search,pro)
+            s = self.pick_item(search, pro)
             if s[0]:
                 pro = s[1]
                 print(f"\n{pro}")
@@ -381,6 +413,8 @@ class StoreCLI:
             elif selection == '2':
                 user = self.register(user)
             elif selection == '3':
+                self.forgot_password()
+            elif selection == '4':
                 print('Bye, Thank you')
                 return None
             else:
@@ -409,13 +443,14 @@ class StoreCLI:
                         elif sub_choice == '4':
                             for key, value in user.order_history.items():
                                 print(f"{key}\n {user.order_history[key]}")
-
                         elif sub_choice == '5':
+                            self.change_password(user)
 
+                        elif sub_choice == '6':
                             logged_out = user.logout()
                             break
 
-                        elif sub_choice == '6':
+                        elif sub_choice == '7':
                             return "Bye, have a nice day"
                         else:
                             print("\nInvalid choice. Please try again.")
@@ -438,7 +473,7 @@ class StoreCLI:
                                 elif choice == '2':
                                     self.register()
                                 elif choice == '3':
-                                    self.place_order(user)
+                                    self.change_password(user)
                                 elif choice == '4':
                                     self.change_status()
                                 elif choice == '5':
@@ -450,7 +485,13 @@ class StoreCLI:
                                 elif choice == '8':
                                     self.reporting()
                                 elif choice == '9':
-                                    return "Bye Thank you"
+
+                                    user.logout()
+                                    logged_out = True
+                                    break
+
+                                elif choice == '10':
+                                    return "Bye, have a nice day"
                                 else:
                                     print("\n Invalid choice. Please try again.")
 
