@@ -16,24 +16,24 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         macbook_air_15 = Computer('MacBook air 15', 'Air',"Liquid Retina display",7000, 10,"15","256","M2")
         iphone_14 = Phone('Iphone 14 pro max', 'Pro max ', " Iphone 14 pro max best value for money !",3000, 10,"6.7","256")
         admin = User("1111","Admin",'1234')
-        clinet1 = Client("2020", "Client Check", '1234', 'Address')
-        order1 = Order(clinet1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2})
-        clinet1.order_history[order1.order_number] =order1
+        client1 = Client("2020", "Client Check", '1234', 'Address')
+        order1 = Order(client1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2})
+        client1.order_history[order1.order_number] = order1
 
         self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax, iphone_14.get_key_name() : iphone_14, macbook_air_15.get_key_name() : macbook_air_15, smart_tv.get_key_name() : smart_tv,}  # קולקציית המוצרים שבחנות
-        self.users = {admin.user_id:admin,clinet1.user_id:clinet1,}  # משתמשי החנות
-        self.orders = {order1.order_number:order1,}  # הזמנות החנות
+        self.users = {admin.user_id:admin, client1.user_id:client1}  # משתמשי החנות
+        self.orders = {order1.order_number:order1}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
 
-    def search(self,name = None,product_type = None,model = None):
+    def search(self, name=None, product_type=None, model=None):
         if name is not None:
             cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         if model is not None:
-            cleaned_model =  model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+            cleaned_model = model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         found = []
         for key, value in self.collection.items():
-            if name is not None:# חיפוש לפי שם
+            if name is not None:     # חיפוש לפי שם
                 if value.get_key_name().casefold()[0:len(cleaned_name)] == cleaned_name.casefold():
                     if model is not None and cleaned_model.casefold() == value.get_model_name()[0:len(cleaned_model)].casefold():# חיפוש לפי שם ומודל
                         found.append(value)

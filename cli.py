@@ -110,7 +110,7 @@ class StoreCLI:
         print(f"New Address updated: {new_address}")
 
     def display_order(self):
-        print("\n 1.Add Item ")
+        print("\n1.Add Item ")
         print("2.Check Out or Exit ")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -119,17 +119,23 @@ class StoreCLI:
     def display_payment(self,order):
         print(order)
         print("How would you like to pay?")
-        print("1.Credit Card")
+        print("\n1.Credit Card")
         print("2.Paypal")
         print("3.Cash")
         print("4.Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def pay(self,order,user):
-        print(f"{order.total_amount}₪\n {order.total_amount/3.711} $")
-
+    def pay(self, order, user):
         paymethood = Payment
+        if len(user.order_history) == 0:
+            print("First order? Get 5% discount. Enjoy!\n")
+            order.total_amount = order.total_amount * 0.95
+
+        if len(user.order_history) == 3:
+            print("Feeling loyalty, Enjoy 10% discount.\n")
+            order.total_amount = order.total_amount * 0.9
+
         if user.payment is not None:
             print(f"for paying with:")
             print(user.payment)
@@ -139,17 +145,17 @@ class StoreCLI:
         else:
             pay_option = self.display_payment(order)
             while True:
-                if pay_option =='1':
+                if pay_option == '1':
                     card_holder = input("Name on card: ")
                     card_number = input("Card number: ")
-                    paymethood =Payment(card_holder,card_number,)
+                    paymethood = Payment(card_holder, card_number)
                     if paymethood.check_card():
 
                         print("\nWould you like to save your payment method for future orders?")
-                        print("\n1. Yes,save it")
+                        print("\n1. Yes, save it")
                         print("\n2 .No ")
                         save = input("Enter your choice: ")
-                        if save =='1':
+                        if save == '1':
                             self.store.users[user.user_id].payment = paymethood
                         return paymethood
                     else:
@@ -158,7 +164,7 @@ class StoreCLI:
                 elif pay_option == '2':
                     paypal_id = input("Enter your Paypal id: ")
                     if len(paypal_id) > 0:
-                        paymethood = Payment(paypal_id,None,'paypal')
+                        paymethood = Payment(paypal_id, None, 'paypal')
                         print("\nWould you like to save your payment method for future orders?")
                         print("1. Yes,save it")
                         print("2 .No ")
@@ -170,7 +176,7 @@ class StoreCLI:
                         print("Paypal id in invalid")
 
                 elif pay_option == '3':
-                    paymethood = Payment(order.customer.user_full_name,None,'Cash')
+                    paymethood = Payment(order.customer.user_full_name, None, 'Cash')
                     return paymethood
 
                 elif pay_option == '4':
@@ -289,7 +295,7 @@ class StoreCLI:
                         break
                 else:
                     print(f"\nError: Invalid quantity entered.Try Again")
-                if i ==4:
+                if i == 4:
                     print("You have passed the possible amount of attempts")
 
 
@@ -354,7 +360,7 @@ class StoreCLI:
             else:
                 print("Price and Quantity must be a digit")
 
-    def place_order(self,user):
+    def place_order(self, user):
         new_order = Order(user)
         if user.address is None:
             self.set_address(user)
@@ -371,7 +377,7 @@ class StoreCLI:
                     print("Wrong choice,Try again")
 
         if new_order.total_amount > 0 or len(new_order.product_dict) > 0:
-            payment = self.pay(new_order,user)
+            payment = self.pay(new_order, user)
             if payment:
                     new_order.pay_order(payment)
                     self.store.place_order(new_order)
