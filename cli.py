@@ -311,12 +311,10 @@ class StoreCLI:
 
 
     def add_quantity_to_product(self):
-        print(self.store.list_products())
-        name = input("Enter Product Name: ")
         item = self.search_system()
-        quantity = input("Enter Quantity: ")
-        if name in self.store.collection and quantity.isdigit() and int(quantity) > 0:
-            self.store.collection[name].add_quantatiy(int(quantity))
+        amount = int(input("\nEnter a quantity: "))
+        if item is not None and amount > 0:
+            item.add_quantity(amount)
             print(" * Quantity added successfully * \n")
         else:
             print("* Invalid input or product not found. * \n")
@@ -340,20 +338,20 @@ class StoreCLI:
             description = input("Enter description: ")
             price = input("Enter Price: ")
             quantity = input("Enter Quantity: ")
-            catagory = self.display_product_type()
+            category = self.display_product_type()
             if int(price) > 0 and price.isdigit() and quantity.isdigit():
                 price = float(price)
                 quantity = int(quantity)
-                if catagory == 1 :
+                if category == 1 :
                     size = input("Enter Screen size: ")
                     tv_type = input("Enter TV type")
                     pro =Tv(name,model,description,price,quantity,size,tv_type)
-                if catagory == 2 :
+                if category == 2 :
                     chip = input("Enter Chip: ")
                     size = input("Enter Screen size: ")
                     storge = input("Enter Storge:")
                     pro = Computer(name, model, description, price, quantity,size,storge,chip)
-                if catagory == 3:
+                if category == 3:
                     size = input("Enter Screen size: ")
                     storge = input("Enter Storge:")
                     pro = Phone(name, model, description, price, quantity,size,storge)
@@ -389,9 +387,15 @@ class StoreCLI:
 
 
     def remove_product(self):
-        pro = Product()
         removed_product = self.search_system()
         if removed_product is not None:
+            products_key_list = list(self.store.collection.keys())
+            products_value_list = list(self.store.collection.values())
+
+            position = products_value_list.index(removed_product)
+            removing = products_key_list[position]
+
+            self.store.collection.pop(removing)
             print(f"\n {removed_product.name} has been removed ")
         else:
             print(f"Good bye")
@@ -476,7 +480,7 @@ class StoreCLI:
                 else:
                     while True:
                                 if self.store.reporting.new_update > 0:
-                                  print(f"\n *There is a new {self.store.reporting.new_update} Updates in the reporting department *")
+                                    print(f"\n *There are a new {self.store.reporting.new_update} Updates in the reporting department *")
                                 choice = self.display_menu()
 
                                 if choice == '1':

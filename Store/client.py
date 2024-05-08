@@ -14,7 +14,7 @@ class Client(User):
 
     def update_client (self):
         if self.new_messege>0:
-            new = f"\n *There is a new {self.new_messege} Updates for you*\n{self.list_orders()}"
+            new = f"\n *There are a new {self.new_messege} Updates for you*\n{self.list_orders()}"
             for messe in range(self.new_messege-1,len(self.messege)):
                 new += f"\n{self.messege[messe]}"
             return  new

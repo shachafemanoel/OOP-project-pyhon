@@ -6,10 +6,11 @@ class Reporting:
         self.messege = []
         self.new_update = 0
 
-    def new_order(self,order):
+    def new_order(self, order):
             self.revenue += order.total_amount
             self.messege.append(f" ֿ\n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
             self.new_update += 1
+
     def best_sell_product(self):
         value = list(self.sold_products.values())
         key = list(self.sold_products.keys())
@@ -18,7 +19,6 @@ class Reporting:
         return f"\n * {self.best_sell} is the best selling product *\n"
 
     def sold(self):
-        print("Products sold on this store:")
         return [(product, amount) for product , amount in self.sold_products.items()]
 
     def total_revenue(self):
@@ -31,7 +31,6 @@ class Reporting:
 
 
     def __str__(self):
-        new = " "
         if self.new_update > 0:
             new = f"\n * There is a new {self.new_update} Updates for you *\n"
             for messe in self.messege:
@@ -39,6 +38,6 @@ class Reporting:
         else:
             new = "\n * There are no new notifications * "
         if self.revenue > 0 and len(self.sold_products) >0:
-            return  f" {new}\n \n* Reporting summery *\n Sold products: {self.sold()} \n Store revenue: {self.revenue}₪ \n {self.best_sell_product()}"
+            return f" {new}\n \n* Reporting summery *\n Sold products: {self.sold()} \n Store revenue: {self.revenue}₪ \n {self.best_sell_product()}"
         else:
             return f"{new}\n No purchase has been made from the store yet"
