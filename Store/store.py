@@ -78,9 +78,11 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         return False
 
     def remove(self, product):
-        del self.collection[product.get_key_name()]
-        return True
-
+        if product in self.collection.values():
+           self.collection.pop(product.get_key_name())
+           return True
+        else:
+            return False
 
     def add_item_order(self, product, how_many, order):
         if self.collection[product.get_key_name()].available(how_many):
@@ -111,6 +113,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         if len(self.collection) > 0:
             return [(product.name, product.model, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
                     self.collection.items()]
+        else:
+            return " No products in inventory yet!"
 
     def list_orders(self):
         return [[order_number, order.customer.user_full_name, order.total_amount, order.status] for order_number, order in

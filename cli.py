@@ -387,16 +387,13 @@ class StoreCLI:
 
 
     def remove_product(self):
+        removed_product = Product()
         removed_product = self.search_system()
         if removed_product is not None:
-            products_key_list = list(self.store.collection.keys())
-            products_value_list = list(self.store.collection.values())
-
-            position = products_value_list.index(removed_product)
-            removing = products_key_list[position]
-
-            self.store.collection.pop(removing)
-            print(f"\n {removed_product.name} has been removed ")
+            name = removed_product.name
+            removed_product = self.store.remove(removed_product)
+            if removed_product:
+                print(f"\n {name} has been removed ")
         else:
             print(f"Good bye")
 
@@ -413,11 +410,8 @@ class StoreCLI:
             print(' No orders placed yet ')
 
     def orders_history(self,user):
-        if  len(user.order_history) >0:
-            print(user.update_client())
-            user.new_messege = 0
-        else:
-            print(' No orders placed yet ')
+        print("\n Your orders \n")
+        print(user.update_client())
 
     def reporting(self):
         print(self.store.reporting)
