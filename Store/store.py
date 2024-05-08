@@ -25,7 +25,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.orders = {order1.order_number:order1}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
-
+        for key , item in self.collection.items():
+            self.reporting.sold_products[item.name] = 0
     def search(self, name=None, product_type=None, model=None):
         if name is not None:
             cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -71,6 +72,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         if user.user_id not in self.users:
             user = Client(user.user_id, user.user_full_name, user.password)
             self.users[user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))] = user
+            self.reporting.messege.append(f"  *There is a new client at your store* {user} ")
+            self.reporting.new_update +=1
             return True
         return False
 
@@ -94,19 +97,24 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             self.users[order.customer.user_id].order_history[order.order_number]=order
             for name , quant in order.product_dict.items():
                 self.collection[name].buy_product(quant)
+                if self.collection[name].get_quantity() <4:
+                    self.reporting.messege.append(f" *Less than {self.collection[name].get_quantity()}  left in stock* {self.collection[name]}")
+                    self.reporting.new_update +=1
                 if name is self.reporting.sold_products:
                     self.reporting.sold_products[name] += quant
                 else:
                     self.reporting.sold_products[name] = quant
             self.order_number += 1
+            self.reporting.messege.append(f" *A new order has entered the system*   {order}")
+            self.reporting.new_update +=1
 
     def list_products(self):
         if len(self.collection) > 0:
-            return [(name, product.model, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
+            return [(product.name, product.model, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
                     self.collection.items()]
 
     def list_orders(self):
-        return [(order_number, order.customer.user_full_name, order.total_amount, order.status) for order_number, order in
+        return [[order_number, order.customer.user_full_name, order.total_amount, order.status] for order_number, order in
                 self.orders.items()]
 
     def log (self,user_id,password):

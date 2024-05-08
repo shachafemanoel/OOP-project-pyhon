@@ -46,6 +46,7 @@ class StoreCLI:
                 print("\n Invalid full name. Try again ")
         else:
             print("\n User ID must be at least 4 digit.Try again ")
+
         return new_user
 
     def change_password(self, user):
@@ -381,7 +382,8 @@ class StoreCLI:
             if payment:
                     new_order.pay_order(payment)
                     self.store.place_order(new_order)
-                    print(f" {new_order}\n {payment}\n The order was successfully completed ")
+
+                    print(f" {new_order}\n {payment}\n *The order was successfully completed* ")
 
 
     def remove_product(self):
@@ -406,6 +408,7 @@ class StoreCLI:
 
     def reporting(self):
         print(self.store.reporting)
+        self.store.reporting.seen()
 
 
 
@@ -462,6 +465,8 @@ class StoreCLI:
                             print("\nInvalid choice. Please try again.")
                 else:
                     while True:
+                                if self.store.reporting.new_update > 0:
+                                  print(f"\n *There is a new {self.store.reporting.new_update} Updates in the reporting department *")
                                 choice = self.display_menu()
 
                                 if choice == '1':

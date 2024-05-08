@@ -2,7 +2,9 @@ class Reporting:
     def __init__(self):
         self.revenue = 0
         self.best_sell = None
-        self.sold_products = {'MacBook': 0,'Iphone 15': 0}
+        self.sold_products = {}
+        self.messege = []
+        self.new_update = 0
 
 
     def best_sell_product(self):
@@ -19,8 +21,18 @@ class Reporting:
     def total_revenue(self):
         return f"Total revenue of our store: {self.revenue} ₪"
 
-    def __str__(self):
-        if len(self.sold_products)>0:
-            return f"{self.sold()} \n Store revenue: {self.revenue}₪ \n {self.best_sell_product()}"
+    def seen(self):
+        self.new_update = 0
+    def update(self):
+        if self.new_update>0:
+            new = f"\n *There is a new {self.new_update} Updates for you*"
+            for messe in range(self.new_update-1,len(self.messege)):
+                new += f"\n{self.messege[messe]}"
+            return  new
         else:
-            return f"No products have been purchased from the store yet\n{self.total_revenue()}"
+            return "There are no new notifications"
+    def __str__(self):
+        if self.revenue>0:
+            return f"{self.update()} \n {self.sold()} \n Store revenue: {self.revenue}₪ \n {self.best_sell_product()}"
+        else:
+            return f"{self.update()}\n No purchase has been made from the store yet"
