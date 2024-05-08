@@ -93,8 +93,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         if order.payment != None:
             self.orders[self.order_number] = order
             order.order_number =self.order_number
-            self.reporting.revenue += order.total_amount
-            self.users[order.customer.user_id].order_history[order.order_number]=order
             for name , quant in order.product_dict.items():
                 self.collection[name].buy_product(quant)
                 if self.collection[name].get_quantity() <4:
@@ -104,9 +102,10 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     self.reporting.sold_products[name] += quant
                 else:
                     self.reporting.sold_products[name] = quant
+            self.users[order.customer.user_id].new_order(order)
+            self.reporting.new_order(order)
             self.order_number += 1
-            self.reporting.messege.append(f" *A new order has entered the system*   {order}")
-            self.reporting.new_update +=1
+
 
     def list_products(self):
         if len(self.collection) > 0:
@@ -123,6 +122,16 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return self.users[login]
         else:
             return None
+
+    def change_order(self,order_number,choice):
+        self.orders[order_number].change_status(choice)
+        order = self.orders[order_number]
+        user_id = order.customer.user_id
+        self.users[user_id].new_status(order)
+
+
+
+
 
 
 

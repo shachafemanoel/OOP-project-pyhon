@@ -6,7 +6,10 @@ class Reporting:
         self.messege = []
         self.new_update = 0
 
-
+    def new_order(self,order):
+            self.revenue += order.total_amount
+            self.messege.append(f" *A new order has entered the system*   {order}")
+            self.new_update += 1
     def best_sell_product(self):
         value = list(self.sold_products.values())
         key = list(self.sold_products.keys())
@@ -30,7 +33,7 @@ class Reporting:
                 new += f"\n{self.messege[messe]}"
             return  new
         else:
-            return "There are no new notifications"
+            return "\n * There are no new notifications * "
     def __str__(self):
         if self.revenue>0:
             return f"{self.update()} \n {self.sold()} \n Store revenue: {self.revenue}₪ \n {self.best_sell_product()}"

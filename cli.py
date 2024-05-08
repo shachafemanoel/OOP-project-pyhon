@@ -37,15 +37,15 @@ class StoreCLI:
                     new_user = Client(user_id, full_name, pass_word, address)
                     if self.store.add_user(new_user):
                         new_user.online = 1
-                        print("\nUser registered successfully.")
+                        print("\n * User registered successfully. * ")
                     else:
-                        print("\n User already exists please try to log in ")
+                        print("\n * User already exists please try to log in *")
                 else:
                     print("\n The password must contain at least 4 characters. Please try again ")
             else:
-                print("\n Invalid full name. Try again ")
+                print("\n * Invalid full name. Try again * ")
         else:
-            print("\n User ID must be at least 4 digit.Try again ")
+            print("\n * User ID must be at least 4 digit.Try again * ")
 
         return new_user
 
@@ -53,16 +53,16 @@ class StoreCLI:
         old_password = input("\nFor changing password please enter your old password: ")
 
         if user.password == old_password:
-            print("\nThe password must contain at least 4 characters ")
+            print("\n * The password must contain at least 4 characters *")
             new_user_password = input("Enter your new password: ")
 
             if len(new_user_password) > 3:
                 user.change_user_password(new_user_password)
-                print("\nPassword changed successfully")
+                print("\n* Password changed successfully* ")
             else:
-                print("\n The password must contain at least 4 characters. Please try again.")
+                print("\n * The password must contain at least 4 characters. Please try again. * ")
         else:
-            print("\n Wrong old password, please try again.")
+            print("\n *  Wrong old password, please try again. * ")
 
     def forgot_password(self):
         id_check = input("\nFor password reset, please enter your ID: ")
@@ -71,16 +71,16 @@ class StoreCLI:
         user = self.store.users[id_check]
 
         if user is not None and user.user_full_name.casefold() == name_check.casefold() and user.user_id == id_check:
-            print("\nThe password must contain at least 4 characters ")
+            print("\n * The password must contain at least 4 characters *")
             new_user_password = input("Enter your new password: ")
 
             if len(new_user_password) > 3:
                 user.change_user_password(new_user_password)
-                print("\nPassword changed successfully, you can now log in")
+                print("\n * Password changed successfully, you can now log in *")
             else:
-                print("\nThe password must contain at least 4 characters. Please try again.")
+                print("\n *The password must contain at least 4 characters. Please try again.* ")
         else:
-            print("\n Full name or ID is incorrect. Please try again.")
+            print("\n * Full name or ID is incorrect. Please try again. *")
 
     def display_user(self):
         print("\n Welcome to Electronic Store Management System!\n ")
@@ -107,7 +107,7 @@ class StoreCLI:
     def set_address(self,user):
         new_address = input("Enter your address: ")
         self.store.users[user.user_id].change_address(new_address)
-        print("\nAddress has been changed successfully")
+        print("\n * Address has been changed successfully *")
         print(f"New Address updated: {new_address}")
 
     def display_order(self):
@@ -160,7 +160,7 @@ class StoreCLI:
                             self.store.users[user.user_id].payment = paymethood
                         return paymethood
                     else:
-                        print("The card number is invalid")
+                        print("\n * The card number is invalid * ")
 
                 elif pay_option == '2':
                     paypal_id = input("Enter your Paypal id: ")
@@ -174,7 +174,7 @@ class StoreCLI:
                             self.store.users[user.user_id].payment = paymethood
                         return paymethood
                     else:
-                        print("Paypal id in invalid")
+                        print("\n * Paypal id in invalid * ")
 
                 elif pay_option == '3':
                     paymethood = Payment(order.customer.user_full_name, None, 'Cash')
@@ -184,7 +184,7 @@ class StoreCLI:
                     print('Good bye')
                     return False
                 else:
-                    print("\nInvalid choice. Please try again.")
+                    print("\n * Invalid choice. Please try again.* ")
 
     def change_status(self):
         print(f"{self.store.list_orders()}")
@@ -196,24 +196,24 @@ class StoreCLI:
             print("2, new status - Delivered")
             choice = input("Enter your choice: ")
             if choice == '1' or choice == '2':
-                self.store.orders[number].change_status(int(choice))
+                self.store.change_order(number,int(choice))
                 print(f"{self.store.orders[number]}")
             else:
-                print("Invalid choice.The status has not changed")
+                print("\n * Invalid choice.The status has not changed *")
         else:
-            print("Wrong order number")
+            print("\n * Wrong order number *")
 
     def display_product_type(self):
         print(" Select Product type")
         print("\n1. TV")
         print("2. Computer")
         print("3. Mobile Phone ")
-        print("Other")
+        print(" Other")
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def display_menu(self):
-            print(" \n Electronic store Management System \n")
+            print(" \n *  Electronic store Management System * \n")
             print("1. Add Product")
             print("2. Add User")
             print("3. Change password")
@@ -246,7 +246,7 @@ class StoreCLI:
 
 
     def search_system(self):
-        print("\nWelcome to the catalog")
+        print("\n * Welcome to the catalog *")
         count = 0
         new_item = Product()
         tup_item = (False, new_item)
@@ -288,16 +288,16 @@ class StoreCLI:
                 if how_much.isdigit():
                     how_much = int(how_much)
                     if how_much == 0:
-                        print("No quantity provided")
+                        print("* No quantity provided *")
                     if not self.store.add_item_order(new_item, how_much, order):
-                        print(f"Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory")
+                        print(f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
                     else:
-                        print(f"\n{new_item.name} ----- quantity {how_much} added to your order !" )
+                        print(f"* \n{new_item.name} ----- quantity {how_much} added to your order ! *")
                         break
                 else:
-                    print(f"\nError: Invalid quantity entered.Try Again")
+                    print(f"\n * Error: Invalid quantity entered.Try Again * ")
                 if i == 4:
-                    print("You have passed the possible amount of attempts")
+                    print("* You have passed the possible amount of attempts *")
 
 
     def display_adding_products(self):
@@ -315,9 +315,9 @@ class StoreCLI:
         quantity = input("Enter Quantity: ")
         if name in self.store.collection and quantity.isdigit() and int(quantity) > 0:
             self.store.collection[name].add_quantatiy(int(quantity))
-            print("Quantity added successfully\n")
+            print(" * Quantity added successfully * \n")
         else:
-            print("Invalid input or product not found.\n")
+            print("* Invalid input or product not found. * \n")
 
     def add_product(self):
         pro = Product()
@@ -325,7 +325,7 @@ class StoreCLI:
         model = input("Enter Product Model: ")
         search = self.store.search(name, model)
         if len(self.store.search(name, model)) >0:
-            print(f"\n This products exists in the system.")
+            print(f"* \n This products exists in the system. * ")
             s = self.pick_item(search, pro)
             if s[0]:
                 pro = s[1]
@@ -359,7 +359,7 @@ class StoreCLI:
                     pro = Product(name, model, description, price, quantity, )
                 self.store.add_product(pro)
             else:
-                print("Price and Quantity must be a digit")
+                print("* Price and Quantity must be a digit *")
 
     def place_order(self, user):
         new_order = Order(user)
@@ -375,7 +375,7 @@ class StoreCLI:
                 elif choice == '2':
                     break
                 else:
-                    print("Wrong choice,Try again")
+                    print(" * Wrong choice,Try again *")
 
         if new_order.total_amount > 0 or len(new_order.product_dict) > 0:
             payment = self.pay(new_order, user)
@@ -383,7 +383,7 @@ class StoreCLI:
                     new_order.pay_order(payment)
                     self.store.place_order(new_order)
 
-                    print(f" {new_order}\n {payment}\n *The order was successfully completed* ")
+                    print(f" {new_order}\n {payment}\n *The order was successfully completed * ")
 
 
     def remove_product(self):
@@ -403,6 +403,12 @@ class StoreCLI:
     def orders(self):
         if len(self.store.orders) > 0:
             print(self.store.list_orders())
+        else:
+            print(' No orders placed yet ')
+
+    def orders_history(self,user):
+        if len(self.store.orders) > 0 and len(user.order_history) >0:
+            print(user.list_orders())
         else:
             print(' No orders placed yet ')
 
@@ -427,7 +433,7 @@ class StoreCLI:
                 print('Bye, Thank you')
                 return None
             else:
-                print("\n Login failed. Please check your credentials and try again.\n ")
+                print("\n * Login failed. Please check your credentials and try again. * \n ")
         return user
 
     def run(self):
@@ -436,7 +442,7 @@ class StoreCLI:
             if user is None:
                 break
 
-            print(f"\nWelcome {user.user_full_name}! You are now connected.")
+            print(f"\n * Welcome {user.user_full_name}! You are now connected. *")
             logged_out = False
 
             while not logged_out:
@@ -450,8 +456,7 @@ class StoreCLI:
                         elif sub_choice == '3':
                             self.place_order(user)
                         elif sub_choice == '4':
-                            for key, value in user.order_history.items():
-                                print(f"{key}\n {user.order_history[key]}")
+                            self.orders_history(user)
                         elif sub_choice == '5':
                             self.change_password(user)
 
@@ -462,7 +467,7 @@ class StoreCLI:
                         elif sub_choice == '7':
                             return "Bye, have a nice day"
                         else:
-                            print("\nInvalid choice. Please try again.")
+                            print("\n * Invalid choice. Please try again. * ")
                 else:
                     while True:
                                 if self.store.reporting.new_update > 0:
@@ -479,7 +484,7 @@ class StoreCLI:
                                         elif sub_choice == '3':
                                             break
                                         else:
-                                            print("\n Invalid choice. Please try again.")
+                                            print("\n * Invalid choice. Please try again. * ")
 
                                 elif choice == '2':
                                     self.register()
@@ -504,7 +509,7 @@ class StoreCLI:
                                 elif choice == '10':
                                     return "Bye, have a nice day"
                                 else:
-                                    print("\n Invalid choice. Please try again.")
+                                    print("\n* Invalid choice. Please try again.* ")
 
 
 if __name__ == "__main__":
