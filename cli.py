@@ -131,14 +131,6 @@ class StoreCLI:
 
     def pay(self, order, user):
         paymethood = Payment
-        if len(user.order_history) == 0:
-            print("First order? Get 5% discount. Enjoy!\n")
-            order.total_amount = order.total_amount * 0.95
-
-        if len(user.order_history) == 3:
-            print("Feeling loyalty, Enjoy 10% discount.\n")
-            order.total_amount = order.total_amount * 0.9
-
         if user.payment is not None:
             print(f"for paying with:")
             print(user.payment)
@@ -156,7 +148,7 @@ class StoreCLI:
 
                         print("\nWould you like to save your payment method for future orders?")
                         print("\n1. Yes, save it")
-                        print("\n2 .No ")
+                        print("\n2. No ")
                         save = input("Enter your choice: ")
                         if save == '1':
                             self.store.users[user.user_id].payment = paymethood
@@ -210,6 +202,7 @@ class StoreCLI:
         print("\n1. TV")
         print("2. Computer")
         print("3. Mobile Phone ")
+        print("4. Accessories ")
         print(" Other")
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))

@@ -15,18 +15,25 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         iphone_15_promax = Phone('Iphone 15', 'Pro max ', "The new Iphone 15 pro max ",5000, 10,"5.9",256)
         macbook_air_15 = Computer('MacBook air 15', 'Air',"Liquid Retina display",7000, 10,"15","256","M2")
         iphone_14 = Phone('Iphone 14 pro max', 'Pro max ', " Iphone 14 pro max best value for money !",3000, 10,"6.7","256")
+        airpods_2 = Product('AirPods 2', '2nd generation', 'No wireless charging', 500, 10)
+        airpods_3 = Product('AirPods 3', '3rd generation', 'wireless charging - MagSafe', 750, 10)
+        apple_charger = Product('Apple charger', '20W', 'Fast charging', 100, 10)
         admin = User("1111","Admin",'1234')
         client1 = Client("2020", "Client Check", '1234', 'Address')
         order1 = Order(client1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2})
         client1.order_history[order1.order_number] = order1
 
-        self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax, iphone_14.get_key_name() : iphone_14, macbook_air_15.get_key_name() : macbook_air_15, smart_tv.get_key_name() : smart_tv,}  # קולקציית המוצרים שבחנות
+        self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax
+            , iphone_14.get_key_name() : iphone_14, macbook_air_15.get_key_name() : macbook_air_15, smart_tv.get_key_name() : smart_tv
+            , airpods_2.get_key_name() : airpods_2, airpods_3.get_key_name() : airpods_3, apple_charger.get_key_name() : apple_charger}
+
         self.users = {admin.user_id:admin, client1.user_id:client1}  # משתמשי החנות
         self.orders = {order1.order_number:order1}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
         for key , item in self.collection.items():
             self.reporting.sold_products[item.name] = 0
+
     def search(self, name=None, product_type=None, model=None):
         if name is not None:
             cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -53,9 +60,11 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                 elif product_type == "3":
                     if type(value) == Phone:
                         found.append(value)
-                else:
+                elif product_type == "4":
                     if type(value) == Product:
                         found.append(value)
+                else:
+                    return found
 
 
         return found

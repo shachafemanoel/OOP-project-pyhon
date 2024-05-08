@@ -32,7 +32,7 @@ class Reporting:
 
     def __str__(self):
         if self.new_update > 0:
-            new = f"\n * There is a new {self.new_update} Updates for you *\n"
+            new = f"\n * There are {self.new_update} new updates for you *\n"
             for messe in self.messege:
                 new += messe
         else:
