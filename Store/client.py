@@ -13,22 +13,23 @@ class Client(User):
         self.new_messege =0
 
     def update_client (self):
-        if self.new_messegee>0:
-            new = f"\n *There is a new {self.new_messege} Updates for you*"
+        if self.new_messege>0:
+            new = f"\n *There is a new {self.new_messege} Updates for you*\n{self.list_orders()}"
             for messe in range(self.new_messege-1,len(self.messege)):
                 new += f"\n{self.messege[messe]}"
             return  new
         else:
-            return "\n * There are no new notifications * "
+            new = f"\n * There are no new notifications * \n {self.list_orders()} "
+            return new
 
     def new_status(self,order):
         self.order_history[order.order_number] = order
-        self.messege.append(f"\n *{order.order_number} has been {order.status}")
+        self.messege.append(f"\n *Order Number:{order.order_number} has been {order.status} *")
         self.new_messege += 1
 
     def new_order(self,order):
         self.order_history[order.order_number] = order
-        self.messege.append(f" *A new order has entered the system*   {order}")
+        self.messege.append(f"\n *Thank you for your purchase!,  Order number {order.order_number} has been received! *\n")
         self.new_messege +=1
 
     def change_address(self, new_address):

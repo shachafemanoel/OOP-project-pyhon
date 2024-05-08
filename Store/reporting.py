@@ -8,14 +8,14 @@ class Reporting:
 
     def new_order(self,order):
             self.revenue += order.total_amount
-            self.messege.append(f" *A new order has entered the system*   {order}")
+            self.messege.append(f" ֿ\n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
             self.new_update += 1
     def best_sell_product(self):
         value = list(self.sold_products.values())
         key = list(self.sold_products.keys())
         self.best_sell = key[value.index(max(value))]
 
-        return f"{self.best_sell} is the best selling product"
+        return f"\n * {self.best_sell} is the best selling product *\n"
 
     def sold(self):
         print("Products sold on this store:")
@@ -26,16 +26,19 @@ class Reporting:
 
     def seen(self):
         self.new_update = 0
-    def update(self):
-        if self.new_update>0:
-            new = f"\n *There is a new {self.new_update} Updates for you*"
-            for messe in range(self.new_update-1,len(self.messege)):
-                new += f"\n{self.messege[messe]}"
-            return  new
-        else:
-            return "\n * There are no new notifications * "
+        self.messege = []
+
+
+
     def __str__(self):
-        if self.revenue>0:
-            return f"{self.update()} \n {self.sold()} \n Store revenue: {self.revenue}₪ \n {self.best_sell_product()}"
+        new = " "
+        if self.new_update > 0:
+            new = f"\n * There is a new {self.new_update} Updates for you *\n"
+            for messe in self.messege:
+                new += messe
         else:
-            return f"{self.update()}\n No purchase has been made from the store yet"
+            new = "\n * There are no new notifications * "
+        if self.revenue > 0 and len(self.sold_products) >0:
+            return  f" {new}\n \n* Reporting summery *\n Sold products: {self.sold()} \n Store revenue: {self.revenue}₪ \n {self.best_sell_product()}"
+        else:
+            return f"{new}\n No purchase has been made from the store yet"

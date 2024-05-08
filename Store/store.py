@@ -72,7 +72,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         if user.user_id not in self.users:
             user = Client(user.user_id, user.user_full_name, user.password)
             self.users[user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))] = user
-            self.reporting.messege.append(f"  *There is a new client at your store* {user} ")
+            self.reporting.messege.append(f" \n * A new customer has joined your store * \n customer name: {user.user_full_name}  ")
             self.reporting.new_update +=1
             return True
         return False
@@ -96,7 +96,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             for name , quant in order.product_dict.items():
                 self.collection[name].buy_product(quant)
                 if self.collection[name].get_quantity() <4:
-                    self.reporting.messege.append(f" *Less than {self.collection[name].get_quantity()}  left in stock* {self.collection[name]}")
+                    self.reporting.messege.append(f"\n * Warning:Less than {self.collection[name].get_quantity()} left in stock {self.collection[name].name} *\n")
                     self.reporting.new_update +=1
                 if name is self.reporting.sold_products:
                     self.reporting.sold_products[name] += quant

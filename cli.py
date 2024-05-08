@@ -68,20 +68,22 @@ class StoreCLI:
         id_check = input("\nFor password reset, please enter your ID: ")
         name_check = input("Enter your full name: ")
 
-        user = self.store.users[id_check]
+        if id_check  in self.store.users:
+            user = self.store.users[id_check]
 
-        if user is not None and user.user_full_name.casefold() == name_check.casefold() and user.user_id == id_check:
-            print("\n * The password must contain at least 4 characters *")
-            new_user_password = input("Enter your new password: ")
+            if user is not None and user.user_full_name.casefold() == name_check.casefold() and user.user_id == id_check:
+                print("\n * The password must contain at least 4 characters *")
+                new_user_password = input("Enter your new password: ")
 
-            if len(new_user_password) > 3:
-                user.change_user_password(new_user_password)
-                print("\n * Password changed successfully, you can now log in *")
+                if len(new_user_password) > 3:
+                    user.change_user_password(new_user_password)
+                    print("\n * Password changed successfully, you can now log in *")
+                else:
+                    print("\n *The password must contain at least 4 characters. Please try again.* ")
             else:
-                print("\n *The password must contain at least 4 characters. Please try again.* ")
+                print("\n * Full name or ID is incorrect. Please try again. *")
         else:
-            print("\n * Full name or ID is incorrect. Please try again. *")
-
+            print("Error,user id not found ")
     def display_user(self):
         print("\n Welcome to Electronic Store Management System!\n ")
         print("1. Existing User? Log in")
@@ -197,11 +199,11 @@ class StoreCLI:
             choice = input("Enter your choice: ")
             if choice == '1' or choice == '2':
                 self.store.change_order(number,int(choice))
-                print(f"{self.store.orders[number]}")
+                print(f"\n* Order number:{self.store.orders[number].order_number} New status:{self.store.orders[number].status} *\n")
             else:
-                print("\n * Invalid choice.The status has not changed *")
+                print("\n * Invalid choice.The status has not changed * \n")
         else:
-            print("\n * Wrong order number *")
+            print("\n * Wrong order number *\n")
 
     def display_product_type(self):
         print(" Select Product type")
@@ -292,7 +294,7 @@ class StoreCLI:
                     if not self.store.add_item_order(new_item, how_much, order):
                         print(f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
                     else:
-                        print(f"* \n{new_item.name} ----- quantity {how_much} added to your order ! *")
+                        print(f"\n * {new_item.name} ----- quantity {how_much} added to your order ! *")
                         break
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
@@ -407,8 +409,9 @@ class StoreCLI:
             print(' No orders placed yet ')
 
     def orders_history(self,user):
-        if len(self.store.orders) > 0 and len(user.order_history) >0:
-            print(user.list_orders())
+        if  len(user.order_history) >0:
+            print(user.update_client())
+            user.new_messege = 0
         else:
             print(' No orders placed yet ')
 
@@ -447,6 +450,8 @@ class StoreCLI:
 
             while not logged_out:
                 if type(user) == Client:
+                    if user.new_messege >0:
+                        print(f"\n * There is a new {user.new_messege} Updates on Historical orders ")
                     while True:
                         sub_choice = self.display_client()
                         if sub_choice == '1':
