@@ -11,7 +11,7 @@ class Client(User):
             self.order_history = order_history
         self.messege = []
         self.new_messege = 0
-        #self.coupon = coupon
+        self.coupon = coupon
 
     def update_client (self):
         if self.new_messege > 0 and len(self.order_history) >0:

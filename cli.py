@@ -132,7 +132,7 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def display_coupon(self, user):
-        print(f"Would you like to use your {user.coupon} coupon?")
+        print(f"\nWould you like to use your {user.coupon} coupon?")
         print('\n1. Yes')
         print('2. No')
         choice = input('\nEnter your choice: ')
