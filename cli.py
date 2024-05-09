@@ -1,3 +1,4 @@
+
 from Store.store import Store
 from Store.order import Order
 from Store.product import Product
@@ -37,7 +38,7 @@ class StoreCLI:
                     if self.store.add_user(new_user):
                         self.set_address(new_user)
                         new_user.online = 1
-                        new_user.coupon="5%"
+                        new_user.coupon = 5
                         self.store.users[user_id] = new_user
                         print("\n * User registered successfully. * ")
                         print("Thank you for register. Enjoy a 5% coupon !")
@@ -115,7 +116,7 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def display_coupon(self, user):
-        print(f"\nWould you like to use your {user.coupon} coupon?")
+        print(f"\nWould you like to use your {user.coupon}% coupon?")
         print('\n1. Yes')
         print('2. No')
         choice = input('\nEnter your choice: ')
@@ -131,7 +132,7 @@ class StoreCLI:
         new_address.replace(" ", "").translate(str.maketrans("", "", ".!?;:"))
         if len(new_address) > 3:
             user.change_address(new_address)
-            self.store.users[user.user_id]=user
+            self.store.users[user.user_id] = user
             print("\n * Address has been set successfully *")
             print(f"\n * New Address updated: *\n {new_address}")
         else:
@@ -225,12 +226,12 @@ class StoreCLI:
 
     def display_product_type(self):
         print(" Select Product type")
-        print("\n1. TV")
-        print("2. Computer")
-        print("3. Mobile Phone ")
-        print("4. Accessories ")
-        print("5. All  ")
-        print("0.Exit")
+        print('\n1. TV')
+        print('2. Computer')
+        print('3. Mobile Phone')
+        print('4. Accessories')
+        print('5. All')
+        print("0. Exit")
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
     def product_type(self):
@@ -238,30 +239,71 @@ class StoreCLI:
             choice = self.display_product_type()
             if choice in '1234':
                 return self.store.search(None, choice, None)
-            elif choice =="5":
+            elif choice == "5":
                 return self.list_products()
-            elif choice =="0":
+            elif choice == "0":
                 return None
             else:
                 print("Try Again")
         return None
+
+    def discount(self):
+        discount = int(input("Enter amount of % for discount: "))
+        return discount
+
+    def add_discount(self):
+        category = self.display_product_type()
+        discount = self.discount()
+
+        if category == '1':
+            for product in self.store.collection.values():
+                if isinstance(product, Tv) and 0 < discount < 100:
+                    price = product.price - (product.price * (discount / 100))
+                    product.update_price(price)
+
+        elif category == '2':
+            for product in self.store.collection.values():
+                if isinstance(product, Computer) and 0 < discount < 100:
+                    price = product.price - (product.price * (discount / 100))
+                    product.update_price(price)
+
+        elif category == '3':
+            for product in self.store.collection.values():
+                if isinstance(product, Phone) and 0 < discount < 100:
+                    price = product.price - (product.price * (discount / 100))
+                    product.update_price(price)
+
+        elif category == '4':
+            for product in self.store.collection.values():
+                if isinstance(product, Product) and 0 < discount < 100:
+                    price = product.price - (product.price * (discount / 100))
+                    product.update_price(price)
+
+        elif category == '5':
+            for product in self.store.collection.values():
+                if 0 < discount < 100:
+                    price = product.price - (product.price * (discount / 100))
+                    product.update_price(price)
+
+
     def display_menu(self,notifications):
         if notifications > 0:
-            print(f"\n * There is a new {notifications} notifications Reporting ")
+            print(f"\n * There are {notifications} new notifications Reporting ")
         print(" \n *  Electronic store Management System * \n")
         print("1. Add Product")
-        print("2. Add User")
-        print("3. Change password")
-        print("4. Update order status")
-        print("5. Remove Product")
-        print("6. List Product")
-        print("7. List Orders")
-        if notifications >0:
-            print(f"8. Reporting * {notifications} notifications *")
+        print("2. Add discount")
+        print("3. Add User")
+        print("4. Change password")
+        print("5. Update order status")
+        print("6. Remove Product")
+        print("7. List Product")
+        print("8. List Orders")
+        if notifications > 0:
+            print(f"9. Reporting * {notifications} notifications *")
         else:
-            print("8. Reporting")
-        print("9. Logout")
-        print("10. Exit")
+            print("9. Reporting")
+        print("10. Logout")
+        print("0. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -400,6 +442,21 @@ class StoreCLI:
             else:
                 print("* Price and Quantity must be a digit *")
 
+    def apply_coupon(self, order, user):
+        if user.coupon is not None:
+            for each in range(5):
+                choice_coupon = self.display_coupon(user)
+                if choice_coupon == '1':
+                    order.total_amount = order.total_amount * (1 - (user.coupon / 100))
+                    break
+                elif choice_coupon == '2':
+                    break
+                else:
+                    print("\n * Invalid choice. Try again. *")
+                    print(f" * You have left {4 - each} tries. *\n")
+
+            return choice_coupon
+
     def place_order(self, user):
         new_order = Order(user)
         if user.address is None:
@@ -417,26 +474,15 @@ class StoreCLI:
                     print(" * Wrong choice,Try again *")
 
         if new_order.total_amount > 0 or len(new_order.product_dict) > 0:
-            if user.coupon is not None:
-                for each in range(5):
-                    choice_coupon = self.display_coupon(user)
-                    if choice_coupon == '1':
-                        coupon = int(user.coupon.replace(" ", '').replace('%', '')) / 100
-                        new_order.total_amount = new_order.total_amount * (1 - coupon)
-                        user.use_coupon()
-                        break
-                    elif choice_coupon == '2':
-                        break
-                    else:
-                        print("\n * Invalid choice. Try again. *")
-                        print(f" * You have left {4 - each} tries. *\n")
+            coupon = self.apply_coupon(new_order, user)
 
             payment = self.pay(new_order, user)
             if payment:
-                    new_order.pay_order(payment)
-                    self.store.place_order(new_order)
-
-                    print(f" {new_order}\n {payment}\n *The order was successfully completed * ")
+                new_order.pay_order(payment)
+                self.store.place_order(new_order)
+                print(f" {new_order}\n {payment}\n * The order was successfully completed * ")
+                if coupon == 1:
+                    user.use_coupon()
 
 
     def remove_product(self):
@@ -538,28 +584,27 @@ class StoreCLI:
                                             break
                                         else:
                                             print("\n * Invalid choice. Please try again. * ")
-
                                 elif choice == '2':
-                                    self.register()
+                                    self.add_discount()
                                 elif choice == '3':
-                                    self.change_password(user)
+                                    self.register()
                                 elif choice == '4':
-                                    self.change_status()
+                                    self.change_password(user)
                                 elif choice == '5':
-                                    self.remove_product()
+                                    self.change_status()
                                 elif choice == '6':
-                                    self.list_products()
+                                    self.remove_product()
                                 elif choice == '7':
-                                    self.orders()
+                                    self.list_products()
                                 elif choice == '8':
-                                    self.reporting()
+                                    self.orders()
                                 elif choice == '9':
-
+                                    self.reporting()
+                                elif choice == '10':
                                     user.logout()
-                                    logged_out = True
                                     break
 
-                                elif choice == '10':
+                                elif choice == '0':
                                     return "Bye, have a nice day"
                                 else:
                                     print("\n* Invalid choice. Please try again.* ")
