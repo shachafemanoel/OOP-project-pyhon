@@ -16,8 +16,7 @@ class User:
 
     def logout(self):
         self.online = 0
-        print('Logged out successfully.')
-        return True
+        return 'Logged out successfully.'
 
     def change_user_password(self, new_password):
         self.password = new_password

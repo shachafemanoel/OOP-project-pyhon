@@ -36,8 +36,12 @@ class StoreCLI:
                     new_user = Client(user_id, full_name, pass_word)
                     if self.store.add_user(new_user):
                         self.set_address(new_user)
-                        self.store.users[new_user.user_id] = 1
+                        new_user.online = 1
+                        new_user.coupon="5%"
+                        self.store.users[user_id] = new_user
                         print("\n * User registered successfully. * ")
+                        print("Thank you for register. Enjoy a 5% coupon !")
+
                     else:
                         print("\n * User already exists please try to log in *")
                 else:
@@ -96,7 +100,7 @@ class StoreCLI:
 
     def display_client(self,notifications):
         if notifications > 0:
-            print(f"\n * There is a new {notifications} notifications Reporting ")
+            print(f"\n * There is a new {notifications} notifications on orders * ")
         print("\n1. Change address")
         print("2. List of products")
         print("3. Place order")
@@ -127,7 +131,7 @@ class StoreCLI:
         new_address.replace(" ", "").translate(str.maketrans("", "", ".!?;:"))
         if len(new_address) > 3:
             user.change_address(new_address)
-            self.store.users[user.user_id].change_address(new_address)
+            self.store.users[user.user_id]=user
             print("\n * Address has been set successfully *")
             print(f"\n * New Address updated: *\n {new_address}")
         else:
@@ -261,64 +265,58 @@ class StoreCLI:
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def pick_item(self, lst,):
+    def pick_item(self, lst, item):
+        item_check = (False, item)
         if len(lst) == 0:
-           return None
+            return item_check
         print("\nPlease select one of the options")
         for i in range(len(lst)):
-            print(f"\n {lst[i]} \n  \n for {lst[i].name} Press =>  {i+1} \n", )
-        print(" * Choose one of the options *\n 0.For Exit")
-        for i in range(8):
-            select = input("Enter your choice: ")
-            if select.isdigit():
-                select = int(select)
-                if select == 0:
-                    print("Good bye")
-                    return None
-                if select < len(lst) and select>0:
-                    return lst[select-1]
+            print(f"\n {lst[i]} \n  \n for {lst[i].name} Press =>  {i + 1} \n", )
+        print("Choose one of the options \n For exit, enter a different value from the options ")
+        select = input("Enter your choice: ")
+        if select.isdigit():
+            select = (int(select) - 1)
+            if select < len(lst):
+                item_check = (True, lst[select])
+                return item_check
             else:
-                print("\n * Invalid choice. Please try again. * ")
-        print("You have exceeded the maximum number of attempts")
-        return None
+                return item_check
 
     def manual_search(self):
-        for i in range(10):
             new_name = input("\nEnter Product name: ")
+            item = Product()
             search_name = self.store.search(new_name)
-            tup_item = self.pick_item(search_name)
-            if tup_item is None:
-                model = input("Enter model: ")
-                search_name_model = self.store.search(new_name, None,model)
-                tup_item = self.pick_item(search_name_model)
-            if tup_item is not None:
-                return tup_item
+            tup_item = (False,item)
+            tup_item = self.pick_item(search_name,item)
+            if tup_item is None or not tup_item[0]:
+                    model = input("Enter model: ")
+                    search_name_model = self.store.search(new_name, None,model)
+                    tup_item = self.pick_item(search_name_model,item)
 
-            if new_name =="0":
-                return None
+            if tup_item is not None and tup_item[0]:
+                item = tup_item[1]
+                return item
 
             else:
-                print("\nTry Again\n or 0.Exit")
-        return None
+                return None
 
     def search_system(self):
         print("\n * Welcome to the catalog *")
-        count = 0
         new_item = Product()
+        tup_item = (False,new_item)
         type_search = self.product_type()
         if type_search is not None:
-            new_item = self.pick_item(type_search)
-            if new_item is not None:
-                return new_item
-            else:
+            tup_item = self.pick_item(type_search,new_item)
+            if not tup_item[0] and tup_item is not None:
                 print("\n1.Manual search")
                 print("2.Exit")
                 select = input("\nEnter your choice: ")
-                if select ==1:
+                if select =="1":
                    new_item = self.manual_search()
-                   return new_item
-                else:
-                    return None
+            if tup_item[0] and tup_item is not None:
+                new_item = tup_item[1]
+        return new_item
+
     def add_item(self, order):
         new_item = self.search_system()
         if new_item is not None:
@@ -422,7 +420,7 @@ class StoreCLI:
                     if choice_coupon == '1':
                         coupon = int(user.coupon.replace(" ", '').replace('%', '')) / 100
                         new_order.total_amount = new_order.total_amount * (1 - coupon)
-                        user.coupon = None
+                        user.use_coupon()
                         break
                     elif choice_coupon == '2':
                         break
@@ -496,9 +494,9 @@ class StoreCLI:
                 break
 
             print(f"\n * Welcome {user.user_full_name}! You are now connected. *")
-            logged_out = False
+            user.online =1
 
-            while not logged_out:
+            while user.online ==1:
                 if type(user) == Client:
                     while True:
                         sub_choice = self.display_client(user.new_messege)
@@ -514,8 +512,8 @@ class StoreCLI:
                             self.change_password(user)
 
                         elif sub_choice == '6':
-                            logged_out = user.logout()
-                            break
+                           print(user.logout())
+                           break
 
                         elif sub_choice == '7':
                             return "Bye, have a nice day"

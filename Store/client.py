@@ -25,8 +25,8 @@ class Client(User):
         else:
             return f"\n * There are no new notifications *\n No orders placed yet "
 
-
-
+    def use_coupon(self):
+        self.coupon = None
     def new_status(self,order):
         self.order_history[order.order_number] = order
         self.messege.append(f"\n *Order Number:{order.order_number} has been {order.status} *")

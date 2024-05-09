@@ -76,7 +76,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def add_user(self, user:User):  # הוספת משתמש לחנות
         if user.user_id not in self.users:
-            user = Client(user.user_id, user.user_full_name, user.password)
             self.users[user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))] = user
             self.reporting.messege.append(f" \n * A new customer has joined your store * \n customer name: {user.user_full_name}  ")
             self.reporting.new_update +=1
