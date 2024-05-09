@@ -23,6 +23,11 @@ class Order:
         elif choice == 2:
             self.status = deli
 
+    def converter(self):
+        if self.customer.address[0:3].cassfold() != "israel"[0:3]:
+            return f"{self.total_amount}₪ILS   or {self.total_amount/3.7611} US$"
+        else:
+            return f"{self.total_amount}₪ILS"
 
 
     def pay_order(self,payme):
@@ -44,7 +49,6 @@ class Order:
             return result
     def __str__(self):
         if self.payment is not None:
-            return f"Order number: {self.order_number}\nCustomer: {self.customer.user_full_name}\nShipping address: {self.customer.address}\nItems: {self.product_dict}\nTotal amount: {self.total_amount}₪   or {self.total_amount/3.7611} $\nStatus:{self.status}"
+            return f"Order number: {self.order_number}\nCustomer: {self.customer.user_full_name}\nShipping address: {self.customer.address}\nItems: {self.product_dict}\nTotal amount: {self.converter()} \nStatus:{self.status}"
         else:
-            lst = self.list_products()
-            return f"{self.list_products()} \n {self.total_amount}₪ILS   or {self.total_amount/3.7611} US$\n "
+            return f"{self.list_products()} \nTotal amount: {self.converter()} \n "

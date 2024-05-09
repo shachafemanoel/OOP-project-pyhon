@@ -94,11 +94,16 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
 
-    def display_client(self):
+    def display_client(self,notifications):
+        if notifications > 0:
+            print(f"\n * There is a new {notifications} notifications Reporting ")
         print("\n1. Change address")
         print("2. List of products")
         print("3. Place order")
-        print("4. Historical orders")
+        if notifications > 0:
+            print(f"4. Orders  {notifications} notifications")
+        else:
+            print("4. Orders")
         print("5. Change password")
         print("6. Logout")
         print("7. Exit")
@@ -107,10 +112,15 @@ class StoreCLI:
 
 
     def set_address(self,user):
-        new_address = input("Enter your address: ")
+        print("\n * Please enter the details *\n")
+        new_address = input("Country: ")
+        city = input("City: ")
+        street = input("Street: ")
+        apt = input("Building,Apt,Floor: ")
+        new_address += f",{city},{street},{apt}"
         self.store.users[user.user_id].change_address(new_address)
         print("\n * Address has been changed successfully *")
-        print(f"New Address updated: {new_address}")
+        print(f"\n * New Address updated: *\n {new_address}")
 
     def display_order(self):
         print("\n1.Add Item ")
@@ -120,7 +130,7 @@ class StoreCLI:
 
 
     def display_payment(self,order):
-        print(order)
+        print(order.converter())
         print("How would you like to pay?")
         print("\n1.Credit Card")
         print("2.Paypal")
@@ -159,7 +169,7 @@ class StoreCLI:
                 elif pay_option == '2':
                     paypal_id = input("Enter your Paypal id: ")
                     if len(paypal_id) > 0:
-                        paymethood = Payment(paypal_id, None, 'paypal')
+                        paymethood = Payment(paypal_id, None, 'Paypal')
                         print("\nWould you like to save your payment method for future orders?")
                         print("1. Yes,save it")
                         print("2 .No ")
@@ -207,20 +217,25 @@ class StoreCLI:
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def display_menu(self):
-            print(" \n *  Electronic store Management System * \n")
-            print("1. Add Product")
-            print("2. Add User")
-            print("3. Change password")
-            print("4. Update order status")
-            print("5. Remove Product")
-            print("6. List Product")
-            print("7. List Orders")
+    def display_menu(self,notifications):
+        if notifications > 0:
+            print(f"\n * There is a new {notifications} notifications Reporting ")
+        print(" \n *  Electronic store Management System * \n")
+        print("1. Add Product")
+        print("2. Add User")
+        print("3. Change password")
+        print("4. Update order status")
+        print("5. Remove Product")
+        print("6. List Product")
+        print("7. List Orders")
+        if notifications >0:
+            print(f"8. Reporting  {notifications} notifications")
+        else:
             print("8. Reporting")
-            print("9. Logout")
-            print("10. Exit")
-            choice = input("\nEnter your choice: ")
-            return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        print("9. Logout")
+        print("10. Exit")
+        choice = input("\nEnter your choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def pick_item(self, lst, item):
         item_check = (False,item)
@@ -287,7 +302,7 @@ class StoreCLI:
                     if not self.store.add_item_order(new_item, how_much, order):
                         print(f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
                     else:
-                        print(f"\n * {new_item.name} ----- quantity {how_much} added to your order ! *")
+                        print(f"\n * {new_item.name} ----- quantity {how_much} added to your order ! *\n{order.converter()} ")
                         break
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
@@ -441,10 +456,8 @@ class StoreCLI:
 
             while not logged_out:
                 if type(user) == Client:
-                    if user.new_messege >0:
-                        print(f"\n * There is a new {user.new_messege} Updates on Historical orders ")
                     while True:
-                        sub_choice = self.display_client()
+                        sub_choice = self.display_client(user.new_messege)
                         if sub_choice == '1':
                             self.set_address(user)
                         elif sub_choice == '2':
