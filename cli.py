@@ -30,12 +30,12 @@ class StoreCLI:
             print("\n Full name must be at least 4 characters ")
             full_name = input("Enter your Full name: ")
             if len(full_name) > 3:
-                address = input("\nEnter your address: ")  # Move address input here
                 print("\n The password must contain at least 4 characters ")
                 pass_word = str(input("Enter your Password: "))
                 if len(pass_word) > 3:
                     new_user = Client(user_id, full_name, pass_word, address)
                     if self.store.add_user(new_user):
+                        self.set_address(new_user)
                         new_user.online = 1
                         print("\n * User registered successfully. * ")
                         print("Thank you for register. Enjoy a 5% coupon !")
@@ -103,7 +103,7 @@ class StoreCLI:
         print("2. List of products")
         print("3. Place order")
         if notifications > 0:
-            print(f"4. Orders  {notifications} notifications")
+            print(f"4. Orders * {notifications} notifications * ")
         else:
             print("4. Orders")
         print("5. Change password")
@@ -121,7 +121,7 @@ class StoreCLI:
         apt = input("Building,Apt,Floor: ")
         new_address += f",{city},{street},{apt}"
         self.store.users[user.user_id].change_address(new_address)
-        print("\n * Address has been changed successfully *")
+        print("\n * Address has been set successfully *")
         print(f"\n * New Address updated: *\n {new_address}")
 
     def display_order(self):
@@ -238,7 +238,7 @@ class StoreCLI:
         print("6. List Product")
         print("7. List Orders")
         if notifications >0:
-            print(f"8. Reporting  {notifications} notifications")
+            print(f"8. Reporting * {notifications} notifications *")
         else:
             print("8. Reporting")
         print("9. Logout")
@@ -253,15 +253,17 @@ class StoreCLI:
         print("\nPlease select one of the options")
         for i in range(len(lst)):
             print(f"\n {lst[i]} \n  \n for {lst[i].name} Press =>  {i+1} \n", )
-        print("Choose one of the options \n For exit, enter a different value from the options ")
+        print("Choose one of the options \n 0.For Exit ")
         select = input("Enter your choice: ")
         if select.isdigit():
-            select = (int(select) - 1)
-            if select < len(lst):
-                item_check = (True,lst[select])
+            select = (int(select)-1)
+            if select < len(lst) and select>-2:
+                item_check = (True,lst[select-1])
                 return item_check
-            else:
-                return item_check
+
+        else:
+            print("\n * Invalid choice. Please try again. * ")
+            return item_check
 
 
     def search_system(self):
@@ -279,7 +281,7 @@ class StoreCLI:
         if len(type_search) == 0:
             print("No products of this type were found in the system. Please try to search by the name of the product")
         else:
-            while not tup_item[0]:
+            while True:
                 count += 1
                 new_item = tup_item[1]
                 new_name = input("\nEnter Product name: ")
@@ -502,9 +504,8 @@ class StoreCLI:
                             print("\n * Invalid choice. Please try again. * ")
                 else:
                     while True:
-                                if self.store.reporting.new_update > 0:
-                                    print(f"\n *There are a new {self.store.reporting.new_update} Updates in the reporting department *")
-                                choice = self.display_menu()
+
+                                choice = self.display_menu(self.store.reporting.new_update)
 
                                 if choice == '1':
                                     while True:

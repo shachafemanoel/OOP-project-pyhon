@@ -64,7 +64,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     if type(value) == Product:
                         found.append(value)
                 else:
-                    return found
+                    return self.list_products()
 
 
         return found
