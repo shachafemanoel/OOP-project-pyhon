@@ -239,7 +239,7 @@ class StoreCLI:
             if choice in '1234':
                 return self.store.search(None, choice, None)
             elif choice =="5":
-                self.list_products()
+                return self.list_products()
             elif choice =="0":
                 return None
             else:
@@ -279,9 +279,8 @@ class StoreCLI:
             if select < len(lst):
                 item_check = (True, lst[select])
                 return item_check
-            else:
-                return item_check
 
+        return item_check
     def manual_search(self):
             new_name = input("\nEnter Product name: ")
             item = Product()
@@ -312,10 +311,14 @@ class StoreCLI:
                 print("2.Exit")
                 select = input("\nEnter your choice: ")
                 if select =="1":
-                   new_item = self.manual_search()
+                    new_item = self.manual_search()
+                    if new_item is not None:
+                        return new_item
             if tup_item[0] and tup_item is not None:
                 new_item = tup_item[1]
-        return new_item
+                return new_item
+
+
 
     def add_item(self, order):
         new_item = self.search_system()
