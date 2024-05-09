@@ -43,5 +43,8 @@ class Client(User):
         return [(order_number, f"Order total amount: {order.total_amount}", f"status: {order.status}") for
                 order_number, order in self.order_history.items()]
 
+    def use_coupon(self):
+        self.coupon = None
+
     def __str__(self):
         return super().__str__()

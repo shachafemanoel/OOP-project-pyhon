@@ -25,7 +25,7 @@ class Order:
 
 
 
-    def pay_order(self,payme):
+    def pay_order(self, payme):
         self.payment = payme
         self.status = "Processing"
 
