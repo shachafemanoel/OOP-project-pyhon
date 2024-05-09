@@ -13,6 +13,6 @@ class Payment:
 
     def __str__(self):
         if self.payment_method == "Credit Card":
-            return f"Payment method:  {self.info[-4:]} Credit Card"
+            return f"Payment method:  {self.info[-4:]} {self.payment_method}"
         else:
-            return f"Payment method: {self.payment_method}"
+            return f"Payment method: {self.payment_method} "

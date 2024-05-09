@@ -15,7 +15,7 @@ class Client(User):
 
     def update_client (self):
         if self.new_messege > 0 and len(self.order_history) >0:
-            new = f"\n * There are {self.new_messege} new updates for you *\n"
+            new = f"\n * There are {self.new_messege} new notifications for you *\n"
             for messe in self.messege:
                 new += messe
                 self.new_messege = 0
@@ -24,6 +24,7 @@ class Client(User):
 
         else:
             return f"\n * There are no new notifications *\n No orders placed yet "
+
 
 
     def new_status(self,order):
