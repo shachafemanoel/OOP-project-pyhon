@@ -33,10 +33,10 @@ class StoreCLI:
                 print("\n The password must contain at least 4 characters ")
                 pass_word = str(input("Enter your Password: "))
                 if len(pass_word) > 3:
-                    new_user = Client(user_id, full_name, pass_word, address)
+                    new_user = Client(user_id, full_name, pass_word)
                     if self.store.add_user(new_user):
                         self.set_address(new_user)
-                        new_user.online = 1
+                        self.store.users[new_user.user_id] = 1
                         print("\n * User registered successfully. * ")
                     else:
                         print("\n * User already exists please try to log in *")
@@ -118,9 +118,15 @@ class StoreCLI:
         street = input("Street: ")
         apt = input("Building,Apt,Floor: ")
         new_address += f",{city},{street},{apt}"
-        self.store.users[user.user_id].change_address(new_address)
-        print("\n * Address has been set successfully *")
-        print(f"\n * New Address updated: *\n {new_address}")
+        new_address.replace(" ", "").translate(str.maketrans("", "", ".!?;:"))
+        if len(new_address) > 3:
+            user.change_address(new_address)
+            self.store.users[user.user_id].change_address(new_address)
+            print("\n * Address has been set successfully *")
+            print(f"\n * New Address updated: *\n {new_address}")
+        else:
+            user.address = None
+            print("\n * Not enough details were entered for setting address. *")
 
     def display_order(self):
         print("\n1.Add Item ")
@@ -213,10 +219,22 @@ class StoreCLI:
         print("2. Computer")
         print("3. Mobile Phone ")
         print("4. Accessories ")
-        print(" Other")
+        print("5. All  ")
+        print("0.Exit")
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
+    def product_type(self):
+        for i in range(10):
+            choice = self.display_product_type()
+            if choice in '1234':
+                return self.store.search(None, choice, None)
+            elif choice =="5":
+                self.list_products()
+            elif choice =="0":
+                return None
+            else:
+                print("Try Again")
+        return None
     def display_menu(self,notifications):
         if notifications > 0:
             print(f"\n * There is a new {notifications} notifications Reporting ")
@@ -237,60 +255,64 @@ class StoreCLI:
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def pick_item(self, lst, item):
-        item_check = (False,item)
+    def pick_item(self, lst,):
         if len(lst) == 0:
-           return item_check
+           return None
         print("\nPlease select one of the options")
         for i in range(len(lst)):
             print(f"\n {lst[i]} \n  \n for {lst[i].name} Press =>  {i+1} \n", )
-        print("Choose one of the options \n 0.For Exit ")
-        select = input("Enter your choice: ")
-        if select.isdigit():
-            select = (int(select)-1)
-            if select < len(lst) and select>-2:
-                item_check = (True,lst[select-1])
-                return item_check
+        print(" * Choose one of the options *\n 0.For Exit")
+        for i in range(8):
+            select = input("Enter your choice: ")
+            if select.isdigit():
+                select = int(select)
+                if select == 0:
+                    print("Good bye")
+                    return None
+                if select < len(lst) and select>0:
+                    return lst[select-1]
+            else:
+                print("\n * Invalid choice. Please try again. * ")
+        print("You have exceeded the maximum number of attempts")
+        return None
 
-        else:
-            print("\n * Invalid choice. Please try again. * ")
-            return item_check
+    def manual_search(self):
+        for i in range(10):
+            new_name = input("\nEnter Product name: ")
+            search_name = self.store.search(new_name)
+            tup_item = self.pick_item(search_name)
+            if tup_item is None:
+                model = input("Enter model: ")
+                search_name_model = self.store.search(new_name, None,model)
+                tup_item = self.pick_item(search_name_model)
+            if tup_item is not None:
+                return tup_item
 
+            if new_name =="0":
+                return None
+
+            else:
+                print("\nTry Again\n or 0.Exit")
+        return None
 
     def search_system(self):
         print("\n * Welcome to the catalog *")
         count = 0
         new_item = Product()
-        tup_item = (False, new_item)
-        type_item = self.display_product_type()
-        type_search = self.store.search(None, type_item, None)
-        if len(type_search) > 0:
-            tup_item = self.pick_item(type_search, new_item)
-            if tup_item[0]:
-                new_item = tup_item[1]
+        type_search = self.product_type()
+        if type_search is not None:
+            new_item = self.pick_item(type_search)
+            if new_item is not None:
                 return new_item
-        if len(type_search) == 0:
-            print("No products of this type were found in the system. Please try to search by the name of the product")
-        else:
-            while True:
-                count += 1
-                new_item = tup_item[1]
-                new_name = input("\nEnter Product name: ")
-                type_search_name = self.store.search(new_name, type_item)
-                tup_item= self.pick_item(type_search_name, new_item)
-                if not tup_item[0]:
-                    model = input("Enter model: ")
-                    type_search_name_model = self.store.search(new_name, type_item, model)
-                    tup_item = self.pick_item(type_search_name_model, new_item)
-                if tup_item[0]:
-                    new_item = tup_item[1]
-                    return new_item
-
-                elif count > 8:
-                    print("\nYou have exceeded the limit of search attempts")
-                    return None
+            else:
+                print("\n1.Manual search")
+                print("2.Exit")
+                select = input("\nEnter your choice: ")
+                if select ==1:
+                   new_item = self.manual_search()
+                   return new_item
                 else:
-                    print("\nTry to search for another product")
+                    return None
     def add_item(self, order):
         new_item = self.search_system()
         if new_item is not None:
