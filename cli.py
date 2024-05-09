@@ -38,6 +38,8 @@ class StoreCLI:
                     if self.store.add_user(new_user):
                         new_user.online = 1
                         print("\n * User registered successfully. * ")
+                        print("Thank you for register. Enjoy a 5% coupon !")
+                        new_user.coupon = '5%'
                     else:
                         print("\n * User already exists please try to log in *")
                 else:
@@ -127,6 +129,13 @@ class StoreCLI:
         print("3.Cash")
         print("4.Exit")
         choice = input("\nEnter your choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+    def display_coupon(self, user):
+        print(f"Would you like to use your {user.coupon} coupon?")
+        print('\n1. Yes')
+        print('2. No')
+        choice = input('\nEnter your choice: ')
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def pay(self, order, user):
@@ -371,6 +380,20 @@ class StoreCLI:
                     print(" * Wrong choice,Try again *")
 
         if new_order.total_amount > 0 or len(new_order.product_dict) > 0:
+            if user.coupon is not None:
+                for each in range(5):
+                    choice_coupon = self.display_coupon(user)
+                    if choice_coupon == '1':
+                        coupon = int(user.coupon.replace(" ",'').replace('%', '')) / 100
+                        new_order.total_amount = new_order.total_amount * (1-coupon)
+                        user.coupon = None
+                        break
+                    elif choice_coupon == '2':
+                        break
+                    else:
+                        print("\n * Invalid choice. Try again. *")
+                        print(f" * You have left {4 - each} tries. *\n")
+
             payment = self.pay(new_order, user)
             if payment:
                     new_order.pay_order(payment)

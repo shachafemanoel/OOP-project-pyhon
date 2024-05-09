@@ -11,7 +11,7 @@ class Client(User):
             self.order_history = order_history
         self.messege = []
         self.new_messege = 0
-        self.coupon = coupon
+        #self.coupon = coupon
 
     def update_client (self):
         if self.new_messege > 0 and len(self.order_history) >0:
@@ -42,6 +42,9 @@ class Client(User):
     def list_orders(self):
         return [(order_number, f"Order total amount: {order.total_amount}", f"status: {order.status}") for
                 order_number, order in self.order_history.items()]
+
+    def use_coupon(self):
+        self.coupon = None
 
     def __str__(self):
         return super().__str__()

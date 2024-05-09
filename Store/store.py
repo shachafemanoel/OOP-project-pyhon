@@ -129,7 +129,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         return [[order_number, order.customer.user_full_name, order.total_amount, order.status] for order_number, order in
                 self.orders.items()]
 
-    def log (self,user_id,password):
+    def log(self,user_id,password):
         login = user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         if login in self.users and self.users[login].login(password):
             return self.users[login]
