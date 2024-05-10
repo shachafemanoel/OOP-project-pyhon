@@ -37,6 +37,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         for key , item in self.collection.items():
             self.reporting.sold_products[item.name] = 0
 
+    def new_discount(self,lst,discount):
+        if 0 < discount < 100:
+            for product in self.collection.values():
+                if product in lst:
+                    product.update_price(discount)
+
+
+
     def search(self, name=None, product_type=None, model=None):
         if name is not None:
             cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -55,16 +63,16 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
             if product_type is not None and name is None:
                 if product_type == "1":
-                    if type(value) == Tv:
+                    if isinstance(value, Tv):
                         found.append(value)
                 elif product_type == "2":
-                    if type(value) == Computer:
+                    if isinstance(value, Computer):
                         found.append(value)
                 elif product_type == "3":
-                    if type(value) == Phone:
+                    if isinstance(value, Phone):
                         found.append(value)
                 elif product_type == "4":
-                    if type(value) == Product:
+                    if isinstance(value, Product):
                         found.append(value)
 
         return found

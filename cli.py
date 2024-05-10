@@ -274,42 +274,16 @@ class StoreCLI:
         return None
 
     def discount(self):
-        discount = int(input("Enter amount of % for discount: "))
+        discount = input("Enter amount of % for discount: ")
+        if discount.isdigit():
+            discount = int(discount)
         return discount
 
     def add_discount(self):
-        category = self.display_product_type()
+        category = self.product_type()
         discount = self.discount()
+        self.store.new_discount(category,discount)
 
-        if category == '1':
-            for product in self.store.collection.values():
-                if isinstance(product, Tv) and 0 < discount < 100:
-                    price = product.price - (product.price * (discount / 100))
-                    product.update_price(price)
-
-        elif category == '2':
-            for product in self.store.collection.values():
-                if isinstance(product, Computer) and 0 < discount < 100:
-                    price = product.price - (product.price * (discount / 100))
-                    product.update_price(price)
-
-        elif category == '3':
-            for product in self.store.collection.values():
-                if isinstance(product, Phone) and 0 < discount < 100:
-                    price = product.price - (product.price * (discount / 100))
-                    product.update_price(price)
-
-        elif category == '4':
-            for product in self.store.collection.values():
-                if isinstance(product, Product) and 0 < discount < 100:
-                    price = product.price - (product.price * (discount / 100))
-                    product.update_price(price)
-
-        elif category == '5':
-            for product in self.store.collection.values():
-                if 0 < discount < 100:
-                    price = product.price - (product.price * (discount / 100))
-                    product.update_price(price)
 
 
     def display_menu(self,notifications):
