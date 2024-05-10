@@ -307,58 +307,65 @@ class StoreCLI:
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def pick_item(self, lst, item):
-        item_check = (False, item)
+    def pick_item(self, lst,):
         if len(lst) == 0:
-            return item_check
+            return -1
         print("\nPlease select one of the options")
         for i in range(len(lst)):
-            print(f"\n {lst[i]} \n  \n for {lst[i].name} Press =>  {i + 1} \n", )
+            print(f" {lst[i]} \n  \n * for {lst[i].name} Press =>  {i + 1} ", )
+            print("======================================")
         print("Choose one of the options \n For exit, enter a different value from the options ")
         select = input("Enter your choice: ")
         if select.isdigit():
             select = (int(select) - 1)
-            if select < len(lst):
-                item_check = (True, lst[select])
-                return item_check
-
-        return item_check
+            if select < len(lst) and select>=-1:
+                return select
+            else:
+                return -100
+        else:
+            return -100
     def manual_search(self):
             new_name = input("\nEnter Product name: ")
             item = Product()
             search_name = self.store.search(new_name)
-            tup_item = (False,item)
-            tup_item = self.pick_item(search_name,item)
-            if tup_item is None or not tup_item[0]:
+            choice = self.pick_item(search_name)
+            if choice == -100 and choice is not None:
                     model = input("Enter model: ")
                     search_name_model = self.store.search(new_name, None,model)
-                    tup_item = self.pick_item(search_name_model,item)
+                    choice = self.pick_item(search_name_model)
+                    if choice!= -100 and choice is not None:
+                        item = search_name_model[choice]
+                    else:
+                        item = None
 
-            if tup_item is not None and tup_item[0]:
-                item = tup_item[1]
-                return item
 
             else:
-                return None
+                item = search_name[choice]
+
+            return item
+
 
     def search_system(self):
         print("\n * Welcome to the catalog *")
         new_item = Product()
-        tup_item = (False,new_item)
         type_search = self.product_type()
         if type_search is not None:
-            tup_item = self.pick_item(type_search,new_item)
-            if not tup_item[0] and tup_item is not None:
+            choice = self.pick_item(type_search)
+            if choice ==-100 and choice is not None:
                 print("\n1.Manual search")
                 print("2.Exit")
                 select = input("\nEnter your choice: ")
                 if select =="1":
                     new_item = self.manual_search()
-                    if new_item is not None:
-                        return new_item
-            if tup_item[0] and tup_item is not None:
-                new_item = tup_item[1]
-                return new_item
+
+            else:
+                new_item = type_search[choice]
+
+        else:
+            new_item = None
+        return new_item
+
+
 
 
 

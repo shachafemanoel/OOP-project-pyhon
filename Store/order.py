@@ -49,6 +49,6 @@ class Order:
             return result
     def __str__(self):
         if self.payment is not None:
-            return f"Order number: {self.order_number}\nCustomer: {self.customer.user_full_name}\nShipping address: {self.customer.address}\nItems: {self.product_dict}\nTotal amount: {self.converter()} \nStatus:{self.status}"
+            return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n=================\nTotal amount: {self.converter()} \nStatus:{self.status}\n==================="
         else:
             return f"{self.list_products()} \nTotal amount: {self.converter()} \n "
