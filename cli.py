@@ -9,6 +9,7 @@ from Store.reporting import Reporting
 from Store.tv import Tv
 from Store.phone import Phone
 from Store.computer import Computer
+from Store.rating import Rating
 class StoreCLI:
     def __init__(self):
         self.store = Store()
@@ -97,6 +98,31 @@ class StoreCLI:
         print("4. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+
+    def add_review(self,order):
+        for key,value in order.product_dict.items():
+            print(key)
+            prod = self.store.collection[key]
+            star = input("Enter a rating between 1-5: ")
+            review = input("Enter your opinion: ")
+            new = Rating(star,review)
+            prod.add_review(new)
+            self.store.collection[key] = prod
+    def display_order_user(self,user):
+        order_number = input("Enter order number: ")
+        if order_number.isdigit() :
+            order_number = int(order_number)
+            if order_number>0 and order_number<len(user.order_history):
+                order = user.order_history[order_number]
+                print(order)
+                if order.status =='delivered':
+                    print("Are you interested in giving an review on the order?\n1. Yes!\n2.No")
+                    choice = input("Enter your choice: ")
+                    if choice == '1':
+                        self.add_review(order)
+
+
 
 
     def display_client(self,notifications):
@@ -518,6 +544,8 @@ class StoreCLI:
     def orders_history(self,user):
         print("\n Your orders \n")
         print(user.update_client())
+        if len(user.order_history) >0:
+            self.display_order_user(user)
 
     def reporting(self):
         print(self.store.reporting)

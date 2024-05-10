@@ -21,7 +21,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         apple_charger = Product('Apple charger', '20W', 'Fast charging', 100, 10)
         admin = User("1111","Admin",'1234')
         client1 = Client("2020", "Client Check", '1234', 'Address')
-        order1 = Order(client1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2})
+        order1 = Order(client1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2,})
+        order1.status ='delivered'
+        order1.payment = "admin"
         client1.order_history[order1.order_number] = order1
 
         self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax
