@@ -39,11 +39,15 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def new_discount(self,lst,discount):
         if 0 < discount < 100:
-            for product in self.collection.values():
-                if product in lst:
+            if isinstance(lst, list):
+                for product in self.collection.values():
+                    if product in lst:
+                        product.update_price(discount)
+
+            if isinstance(lst, Product) or isinstance(lst,Tv) or isinstance(lst, Computer) or isinstance(lst, Phone) :
+                    product = lst
                     product.update_price(discount)
-
-
+                    self.collection[product.get_key_name()] = product
 
     def search(self, name=None, product_type=None, model=None):
         if name is not None:

@@ -269,6 +269,7 @@ class StoreCLI:
                 return self.list_products()
             elif choice == "0":
                 return None
+                break
             else:
                 print("Try Again")
         return None
@@ -284,8 +285,22 @@ class StoreCLI:
 
     def add_discount(self):
         category = self.product_type()
-        discount = self.discount()
-        self.store.new_discount(category,discount)
+        if category is not None:
+            discount = self.discount()
+            self.store.new_discount(category,discount)
+        if category is None:
+            print("Are you interested in adding a discount to a specific product?t")
+            print("\n1.Yes")
+            print("2.Exit")
+            choice = input("Enter your choice:")
+            if choice =='1':
+                product = self.manual_search()
+                discount = self.discount()
+                self.store.new_discount(product,discount)
+
+            else:
+                print("Good bye")
+
 
     def display_manage_product(self):
         print("\n * Wellcome to manage product display *\n")

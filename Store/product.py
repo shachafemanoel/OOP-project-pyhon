@@ -23,7 +23,7 @@ class Product:
             return False
 
     def update_price(self, discount):  # שינוי מחיr
-        self.price -= (self.price * (discount / 100))
+        self.price -= (self.price * float(discount / 100))
 
     def change_quantity(self, new_quantity):  # שינוי המלאי לפי מלאי חדש
         self.quantity = new_quantity
