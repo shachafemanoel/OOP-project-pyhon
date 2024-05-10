@@ -284,8 +284,7 @@ class StoreCLI:
         discount = self.discount()
         self.store.new_discount(category,discount)
 
-    def d(self):
-        pass
+
 
     def display_menu(self,notifications):
         if notifications > 0:
