@@ -90,6 +90,7 @@ class StoreCLI:
                 print("\n * Full name or ID is incorrect. Please try again. *")
         else:
             print("Error,user id not found ")
+
     def display_user(self):
         print("\n Welcome to Electronic Store Management System!\n ")
         print("1. Existing User? Log in")
@@ -101,33 +102,32 @@ class StoreCLI:
 
 
     def add_review(self,order):
-        for key,value in order.product_dict.items():
+        for key, value in order.product_dict.items():
             print(key)
             prod = self.store.collection[key]
-            star = input("Enter a rating between 1-5: ")
+            star = input("\nEnter a rating between 1-5: ")
             review = input("Enter your opinion: ")
-            new = Rating(star,review)
+            new = Rating(star, review)
             prod.add_review(new)
             self.store.collection[key] = prod
+
     def display_order_user(self,user):
         order_number = input("Enter order number: ")
         if order_number.isdigit() :
             order_number = int(order_number)
-            if order_number>0 and order_number<len(user.order_history):
+            if 0 < order_number < len(user.order_history):
                 order = user.order_history[order_number]
                 print(order)
-                if order.status =='delivered':
-                    print("Are you interested in giving an review on the order?\n1. Yes!\n2.No")
+                if order.status == 'delivered':
+                    print("Are you interested in giving a review on the order?\n1. Yes!\n2. No")
                     choice = input("Enter your choice: ")
                     if choice == '1':
                         self.add_review(order)
 
 
-
-
     def display_client(self,notifications):
         if notifications > 0:
-            print(f"\n * There is a new {notifications} notifications on orders * ")
+            print(f"\n * There are {notifications} new notifications on orders * ")
         print("\n1. Change address")
         print("2. List of products")
         print("3. Place order")
@@ -277,35 +277,44 @@ class StoreCLI:
         discount = input("Enter amount of % for discount: ")
         if discount.isdigit():
             discount = int(discount)
-        return discount
+            return discount
+        else:
+            discount = 0
+            return discount
 
     def add_discount(self):
         category = self.product_type()
         discount = self.discount()
         self.store.new_discount(category,discount)
 
-
+    def display_manage_product(self):
+        print("\n * Wellcome to manage product display *\n")
+        print("1. Add Product")
+        print("2. Remove Product")
+        print("3. Add Discount")
+        print("4. Exit")
+        choice = input("\nEnter your choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def display_menu(self,notifications):
         if notifications > 0:
-            print(f"\n * There are {notifications} new notifications Reporting ")
+            print(f"\n * There are {notifications} new notifications Reporting *")
         print(" \n *  Electronic store Management System * \n")
-        print("1. Add Product")
-        print("2. Add discount")
-        print("3. Add User")
-        print("4. Change password")
-        print("5. Update order status")
-        print("6. Remove Product")
-        print("7. List Product")
-        print("8. List Orders")
+        print("1. Manage Product")
+        print("2. Add User")
+        print("3. Change password")
+        print("4. Update order status")
+        print("5. List Product")
+        print("6. List Orders")
         if notifications > 0:
-            print(f"9. Reporting * {notifications} notifications *")
+            print(f"7. Reporting * {notifications} notifications *")
         else:
-            print("9. Reporting")
-        print("10. Logout")
+            print("7. Reporting")
+        print("8. Logout")
         print("0. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
 
     def pick_item(self, lst,):
         if len(lst) == 0:
@@ -337,7 +346,6 @@ class StoreCLI:
                         item = search_name_model[choice]
                     else:
                         item = None
-
 
             else:
                 item = search_name[choice]
@@ -516,9 +524,9 @@ class StoreCLI:
             print(' No orders placed yet ')
 
     def orders_history(self,user):
-        print("\n Your orders \n")
+        print("\n Your orders \n\n")
         print(user.update_client())
-        if len(user.order_history) >0:
+        if len(user.order_history) > 0:
             self.display_order_user(user)
 
     def reporting(self):
@@ -583,33 +591,33 @@ class StoreCLI:
                                 choice = self.display_menu(self.store.reporting.new_update)
 
                                 if choice == '1':
+                                    sub_choice = self.display_manage_product()
                                     while True:
-                                        sub_choice = self.display_adding_products()
                                         if sub_choice == '1':
                                             self.add_product()
                                         elif sub_choice == '2':
-                                            self.add_quantity_to_product()
+                                            self.remove_product()
                                         elif sub_choice == '3':
+                                            self.add_discount()
+                                        elif sub_choice == '4':
                                             break
                                         else:
-                                            print("\n * Invalid choice. Please try again. * ")
+                                            print("\n * Invalid choice. Please try again. *\n")
+                                            sub_choice = self.display_manage_product()
+
                                 elif choice == '2':
-                                    self.add_discount()
-                                elif choice == '3':
                                     self.register()
-                                elif choice == '4':
+                                elif choice == '3':
                                     self.change_password(user)
-                                elif choice == '5':
+                                elif choice == '4':
                                     self.change_status()
-                                elif choice == '6':
-                                    self.remove_product()
-                                elif choice == '7':
+                                elif choice == '5':
                                     self.list_products()
-                                elif choice == '8':
+                                elif choice == '6':
                                     self.orders()
-                                elif choice == '9':
+                                elif choice == '7':
                                     self.reporting()
-                                elif choice == '10':
+                                elif choice == '8':
                                     user.logout()
                                     break
 

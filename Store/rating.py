@@ -1,5 +1,5 @@
 class Rating:
-    def __init__(self,rate,description):
+    def __init__(self, rate, description):
         self.rate = rate
         self.description = description
 
