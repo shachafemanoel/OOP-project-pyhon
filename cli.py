@@ -316,7 +316,7 @@ class StoreCLI:
         if notifications > 0:
             print(f"\n * There are {notifications} new notifications Reporting *")
         print(" \n *  Electronic store Management System * \n")
-        print("1. Manage Product")
+        print("1. Product Manager")
         print("2. Add User")
         print("3. Change password")
         print("4. Update order status")
@@ -368,7 +368,23 @@ class StoreCLI:
 
             return item
 
-
+    def product_manager(self):
+        while True:
+            sub_choice = self.display_manage_product()
+            if sub_choice == '1':
+                self.add_product()
+                break
+            elif sub_choice == '2':
+                self.remove_product()
+                break
+            elif sub_choice == '3':
+                self.add_discount()
+                break
+            elif sub_choice == '4':
+                break
+            else:
+                print("\n * Invalid choice. Please try again. *\n")
+                sub_choice = self.display_manage_product()
     def search_system(self):
         print("\n * Welcome to the catalog *")
         new_item = Product()
@@ -607,23 +623,7 @@ class StoreCLI:
                                 choice = self.display_menu(self.store.reporting.new_update)
 
                                 if choice == '1':
-                                    sub_choice = self.display_manage_product()
-                                    while True:
-                                        if sub_choice == '1':
-                                            self.add_product()
-                                            break
-                                        elif sub_choice == '2':
-                                            self.remove_product()
-                                            break
-                                        elif sub_choice == '3':
-                                            self.add_discount()
-                                            break
-                                        elif sub_choice == '4':
-                                            break
-                                        else:
-                                            print("\n * Invalid choice. Please try again. *\n")
-                                            sub_choice = self.display_manage_product()
-
+                                    self.product_manager()
                                 elif choice == '2':
                                     self.register()
                                 elif choice == '3':
