@@ -436,11 +436,11 @@ class StoreCLI:
         name = input("Enter Product Name: ")
         model = input("Enter Product Model: ")
         search = self.store.search(name, model)
-        if len(self.store.search(name, model)) >0:
-            print(f"* \n This products exists in the system. * ")
-            s = self.pick_item(search, pro)
-            if s[0]:
-                pro = s[1]
+        if len(search) >0:
+            print(f" \n * This products exists in the system. * ")
+            s = self.pick_item(search)
+            if s!= -100:
+                pro = search[s]
                 print(f"\n{pro}")
                 print("How much would you like to add to the inventory?")
                 quan = input("Add quantity: ")
