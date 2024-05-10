@@ -5,4 +5,4 @@ class Tv (Product):
         self.size = size
         self.type = type
     def __str__(self):
-        return super().__str__() + f" Display size:{self.size}-Inch\n  {self.type}\n {self.price}₪"
+        return f"======================================\nName: {self.name}\n Model: {self.model} \ndisplay size: {self.size}-Inch  \nDescription: {self.description} \n Price: {self.price}₪\n{self.review()}"

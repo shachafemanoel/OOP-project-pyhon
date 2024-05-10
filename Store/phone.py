@@ -6,4 +6,4 @@ class Phone (Product):
         self.storage = storage
 
     def __str__(self):
-        return super().__str__() + f" Display size:{self.size}-Inch\n Phone  Storge is {self.storage} GB\nPrice:{self.price}₪"
+        return f"======================================\nName: {self.name}\n Model: {self.model} Storge: {self.storge} \ndisplay size: {self.size}-Inch  \nDescription: {self.description} \n Price: {self.price}₪\n{self.review()}"

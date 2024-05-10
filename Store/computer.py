@@ -7,4 +7,4 @@ class Computer(Product):
         self.chip = chip
 
     def __str__(self):
-        return super().__str__() +f" Screen Size: {self.size}\n Storage: {self.storge}\n Chip: {self.chip}\n quantity:{self.quantity}\n Price:{self.price}₪ֿ"
+        return f"======================================\nName: {self.name}\n Model: {self.model} Storge: {self.storge} Chip: {self.chip}\ndisplay size: {self.size}-Inch  \nDescription: {self.description} \n Price: {self.price}₪\n{self.review()}"

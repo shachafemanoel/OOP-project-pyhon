@@ -6,6 +6,7 @@ class Reporting:
         self.messege = []
         self.new_update = 0
 
+
     def new_order(self, order):
             self.revenue += order.total_amount
             self.messege.append(f" ֿ\n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")

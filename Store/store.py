@@ -6,6 +6,7 @@ from Store.client import Client
 from Store.tv import Tv
 from Store.phone import Phone
 from Store.computer import Computer
+from Store.rating import Rating
 
 class Store:  # מחלקה שמממשת את החנות עצמה
 

@@ -1,3 +1,4 @@
+
 class Product:
     def __init__(self, name =None,model=None,description=None,price=None, quantity=None):  #
         self.name = name  # שם המוצר
@@ -5,6 +6,7 @@ class Product:
         self.description = description  # תיאור המוצר
         self.price = price  # מחיר המוצר
         self.quantity = quantity  # הכמות המוצר
+        self.rate = []
 
     def get_key_name(self):
         return self.name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -32,6 +34,21 @@ class Product:
         self.quantity += quantity
     def available(self, how_many):  # בדיקת זמינות של מוצר מסוים
         return self.quantity >= how_many
+    def add_review(self,review):
+        self.rate.append(review)
+        self.review_count+=1
+        return "Thank you for your opinion"
 
+
+    def review(self):
+        review = '=================Rating=====================\n'
+        if self.rate is not None and len(self.rate)>0:
+            for rate in self.rate:
+                review+=rate
+
+        else:
+            review +='There are no reviews yet'
+
+        return review
     def __str__(self):
-        return f" ======================================\nName: {self.name}\n Model: {self.model}\n Description: {self.description}\n Quantity: {self.quantity}\n Price: {self.price}₪"
+        return f" ======================================\nName: {self.name}\n Model: {self.model}\n Description: {self.description}\n \n Price: {self.price}₪\n{self.review()}"
