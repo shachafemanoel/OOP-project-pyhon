@@ -7,4 +7,4 @@ class Rating:
 
 
     def __str__(self):
-        return f"Rating:{self.rate} ⭐ \rReview:{self.description}======================================"
+        return f"Rating: {self.rate} ⭐ \nReview:{self.description}\n======================================"

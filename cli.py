@@ -39,9 +39,9 @@ class StoreCLI:
                     if self.store.add_user(new_user):
                         self.set_address(new_user)
                         new_user.online = 1
-                        new_user.coupon = 5
                         self.store.users[user_id] = new_user
                         print("\n * User registered successfully. * ")
+                        new_user.coupon = 5
                         print("Thank you for register. Enjoy a 5% coupon !")
 
                     else:
@@ -55,6 +55,37 @@ class StoreCLI:
 
         return new_user
 
+    def register_admin(self, new_admin=None):
+        print("\nAdding new admin\n")
+        print(" User ID must be at least 4 digits ")
+        user_id = input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+        if user_id.isdigit() and len(user_id) > 3:
+            print("\n Full name must be at least 4 characters ")
+            full_name = input("Enter the admin's full name: ")
+
+            if len(full_name) > 3:
+                print("\n The password must contain at least 4 characters ")
+                password = input("Enter the admin's password: ")
+
+                if len(password) > 3:
+                    new_admin = User(user_id, full_name, password)
+                    new_admin.online = 1
+                    self.store.users[user_id] = new_admin
+                    print("\n * Admin registered successfully. * ")
+                    return new_admin
+                else:
+                    print("\n The password must contain at least 4 characters. Please try again ")
+            else:
+                print("\n * Invalid full name. Try again * ")
+        else:
+            print("\n * User ID must be at least 4 digits. Try again * ")
+
+        return new_admin
+
+    def add_admin(self):
+        new_admin = self.register_admin()
+        return new_admin
     def change_password(self, user):
         old_password = input("\nFor changing password please enter your old password: ")
 
@@ -148,7 +179,7 @@ class StoreCLI:
         choice = input('\nEnter your choice: ')
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def set_address(self,user):
+    def set_address(self, user):
         print("\n * Please enter the details *\n")
         new_address = input("Country: ")
         city = input("City: ")
@@ -156,7 +187,7 @@ class StoreCLI:
         apt = input("Building,Apt,Floor: ")
         new_address += f",{city},{street},{apt}"
         new_address.replace(" ", "").translate(str.maketrans("", "", ".!?;:"))
-        if len(new_address) > 3:
+        if len(new_address) > 3 and isinstance(user, Client):
             user.change_address(new_address)
             self.store.users[user.user_id] = user
             print("\n * Address has been set successfully *")
