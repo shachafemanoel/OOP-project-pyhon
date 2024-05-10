@@ -295,8 +295,9 @@ class StoreCLI:
             choice = input("Enter your choice:")
             if choice =='1':
                 product = self.manual_search()
-                discount = self.discount()
-                self.store.new_discount(product,discount)
+                if product is not None and product !=-100:
+                    discount = self.discount()
+                    self.store.new_discount(product,discount)
 
             else:
                 print("Good bye")
@@ -610,10 +611,13 @@ class StoreCLI:
                                     while True:
                                         if sub_choice == '1':
                                             self.add_product()
+                                            break
                                         elif sub_choice == '2':
                                             self.remove_product()
+                                            break
                                         elif sub_choice == '3':
                                             self.add_discount()
+                                            break
                                         elif sub_choice == '4':
                                             break
                                         else:
