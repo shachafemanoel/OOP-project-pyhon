@@ -122,6 +122,32 @@ class StoreCLI:
         else:
             print("Error,user id not found ")
 
+    def display_manage_user(self):
+        print("\n * Wellcome to manage users display *\n")
+        print("1. Add user")
+        print("2. Add admin")
+        print("3. Change password")
+        print("4. Exit")
+        choice = input("\nEnter your choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+    def user_manager(self):
+        while True:
+            sub_choice = self.display_manage_user()
+            if sub_choice == '1':
+                self.register()
+                break
+            elif sub_choice == '2':
+                self.register_admin()
+                break
+            elif sub_choice == '3':
+                self.change_password()
+            elif sub_choice == '4':
+                break
+            else:
+                print("\n * Invalid choice. Please try again. *\n")
+                sub_choice = self.display_manage_product()
+
     def display_user(self):
         print("\n Welcome to Electronic Store Management System!\n ")
         print("1. Existing User? Log in")
@@ -291,6 +317,7 @@ class StoreCLI:
         print("0. Exit")
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
     def product_type(self):
         for i in range(10):
             choice = self.display_product_type()
@@ -348,16 +375,15 @@ class StoreCLI:
             print(f"\n * There are {notifications} new notifications Reporting *")
         print(" \n *  Electronic store Management System * \n")
         print("1. Product Manager")
-        print("2. Add User")
-        print("3. Change password")
-        print("4. Update order status")
-        print("5. List Product")
-        print("6. List Orders")
+        print("2. User Manager")
+        print("3. Update order status")
+        print("4. List Product")
+        print("5. List Orders")
         if notifications > 0:
             print(f"7. Reporting * {notifications} notifications *")
         else:
-            print("7. Reporting")
-        print("8. Logout")
+            print("6. Reporting")
+        print("7. Logout")
         print("0. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -656,18 +682,16 @@ class StoreCLI:
                                 if choice == '1':
                                     self.product_manager()
                                 elif choice == '2':
-                                    self.register()
+                                    self.user_manager()
                                 elif choice == '3':
-                                    self.change_password(user)
-                                elif choice == '4':
                                     self.change_status()
-                                elif choice == '5':
+                                elif choice == '4':
                                     self.list_products()
-                                elif choice == '6':
+                                elif choice == '5':
                                     self.orders()
-                                elif choice == '7':
+                                elif choice == '6':
                                     self.reporting()
-                                elif choice == '8':
+                                elif choice == '7':
                                     user.logout()
                                     break
 
