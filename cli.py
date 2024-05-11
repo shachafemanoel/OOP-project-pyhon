@@ -239,6 +239,8 @@ class StoreCLI:
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
+
+
     def pay(self, order, user):
         paymethood = Payment
         if user.payment is not None:
@@ -248,12 +250,13 @@ class StoreCLI:
             if s == '1':
                 return user.payment
         else:
-            pay_option = self.display_payment(order)
-            while True:
+
+            for i in range(4):
+                pay_option = self.display_payment(order)
                 if pay_option == '1':
                     card_holder = input("Name on card: ")
                     card_number = input("Card number: ")
-                    paymethood = Payment(card_holder, card_number)
+                    paymethood = Payment(card_holder, card_number,"Credit Card")
                     if paymethood.check_card():
 
                         print("\nWould you like to save your payment method for future orders?")
@@ -269,7 +272,7 @@ class StoreCLI:
                 elif pay_option == '2':
                     paypal_id = input("Enter your Paypal id: ")
                     if len(paypal_id) > 0:
-                        paymethood = Payment(paypal_id, None, 'Paypal')
+                        paymethood = Payment(user.user_full_name, None, 'PayPal')
                         print("\nWould you like to save your payment method for future orders?")
                         print("1. Yes,save it")
                         print("2 .No ")
@@ -288,7 +291,10 @@ class StoreCLI:
                     print('Good bye')
                     return False
                 else:
+
                     print("\n * Invalid choice. Please try again.* ")
+
+
 
     def change_status(self):
         print(f"{self.store.list_orders()}")
@@ -319,7 +325,7 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def product_type(self):
-        for i in range(10):
+        for i in range(5):
             choice = self.display_product_type()
             if choice in '1234':
                 return self.store.search(None, choice, None)
@@ -327,7 +333,7 @@ class StoreCLI:
                 return self.list_products()
             elif choice == "0":
                 return None
-                break
+
             else:
                 print("Try Again")
         return None
@@ -391,7 +397,7 @@ class StoreCLI:
 
     def pick_item(self, lst,):
         if len(lst) == 0:
-            return -1
+            return -100
         print("\nPlease select one of the options")
         for i in range(len(lst)):
             print(f" {lst[i]} \n  \n * for {lst[i].name} Press =>  {i + 1} ", )
@@ -399,13 +405,16 @@ class StoreCLI:
         print("Choose one of the options \n For exit, enter a different value from the options ")
         select = input("Enter your choice: ")
         if select.isdigit():
-            select = (int(select) - 1)
-            if select < len(lst) and select>=-1:
-                return select
+            select = int(select)
+            if select>0:
+                select -= 1
+                if select < len(lst) and select>=-1:
+                    return select
             else:
                 return -100
         else:
             return -100
+
     def manual_search(self):
             new_name = input("\nEnter Product name: ")
             item = Product()
@@ -425,6 +434,7 @@ class StoreCLI:
 
             return item
 
+
     def product_manager(self):
         while True:
             sub_choice = self.display_manage_product()
@@ -441,30 +451,29 @@ class StoreCLI:
                 break
             else:
                 print("\n * Invalid choice. Please try again. *\n")
-                sub_choice = self.display_manage_product()
+
     def search_system(self):
         print("\n * Welcome to the catalog *")
         new_item = Product()
         type_search = self.product_type()
         if type_search is not None:
             choice = self.pick_item(type_search)
-            if choice ==-100 and choice is not None:
-                print("\n1.Manual search")
-                print("2.Exit")
-                select = input("\nEnter your choice: ")
-                if select =="1":
-                    new_item = self.manual_search()
-
-            else:
+            if choice != -100 and choice is not None:
                 new_item = type_search[choice]
+        if type_search is None:
+            print("\n1.Manual search")
+            print("2.Exit")
+            select = input("\nEnter your choice: ")
+            if select == "1":
+                new_item = self.manual_search()
+            else:
+                new_item = None
 
-        else:
-            new_item = None
+
+
+
+
         return new_item
-
-
-
-
 
     def add_item(self, order):
         new_item = self.search_system()

@@ -24,8 +24,8 @@ class Order:
             self.status = deli
 
     def converter(self):
-        if self.customer.address[0:3].casefold() != "israel"[0:3]:
-            return f"{self.total_amount}₪ILS   or {self.total_amount/3.7611} US$"
+        if self.customer.address[0:3].casefold() != "isr":
+            return f"{self.total_amount}₪ILS   or {int(self.total_amount/3.7611)} US$"
         else:
             return f"{self.total_amount}₪ILS"
 
