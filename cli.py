@@ -184,7 +184,7 @@ class StoreCLI:
 
     def display_client(self,notifications):
         if notifications > 0:
-            print(f"\n * There are {notifications} new notifications on orders * ")
+            print(f"\n * There are {notifications} new notifications on orders * \n")
         print("\n1. Change address")
         print("2. List of products")
         print("3. Place order")
@@ -231,6 +231,7 @@ class StoreCLI:
 
     def display_payment(self,order):
         print(order.converter())
+        print(order.payments())
         print("How would you like to pay?")
         print("\n1.Credit Card")
         print("2.Paypal")
@@ -351,7 +352,7 @@ class StoreCLI:
         category = self.product_type()
         if category is not None:
             discount = self.discount()
-            self.store.new_discount(category,discount)
+            self.store.new_discount(category, discount)
         if category is None:
             print("\nAre you interested in adding a discount to a specific product?")
             print("\n1. Yes")
@@ -362,9 +363,29 @@ class StoreCLI:
                 if product is not None and product != -100:
                     discount = self.discount()
                     self.store.new_discount(product, discount)
-
             else:
                 print("\nGood bye")
+
+    def display_remove_discount(self):
+        print("\nChoose an option:")
+        print("\n1. Remove discount from a category")
+        print("2. Remove discount from a specific product")
+        choice = input("\nEnter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        return choice
+    def remove_discount(self):
+        choice = self.display_remove_discount()
+
+        if choice == "1":
+            category = self.display_product_type()
+            self.store.remove_discount(category)
+        elif choice == "2":
+            product_name = self.manual_search()
+            if product_name is not None and product_name != -100:
+                self.store.remove_discount(product_name)
+            else:
+                print("\nProduct not found.")
+        else:
+            print("Invalid choice.")
 
 
     def display_manage_product(self):
@@ -372,7 +393,8 @@ class StoreCLI:
         print("1. Add Product")
         print("2. Remove Product")
         print("3. Add Discount")
-        print("4. Exit")
+        print("4. Remove Discount")
+        print("5. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -448,6 +470,8 @@ class StoreCLI:
                 self.add_discount()
                 break
             elif sub_choice == '4':
+                self.remove_discount()
+            elif sub_choice == '5':
                 break
             else:
                 print("\n * Invalid choice. Please try again. *\n")

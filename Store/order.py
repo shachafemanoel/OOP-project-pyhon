@@ -25,10 +25,12 @@ class Order:
 
     def converter(self):
         if self.customer.address[0:3].casefold() != "isr":
-            return f"{self.total_amount}₪ILS   or {int(self.total_amount/3.7611)} US$"
+            return f"{self.total_amount}₪ILS   or {round(self.total_amount / 3.7611, 2)} US$"
         else:
             return f"{self.total_amount}₪ILS"
 
+    def payments(self):
+        return f"{self.total_amount}ILS or {round(self.total_amount / 12, 2)}/ 12/mo. for 12 mo.*"
 
     def pay_order(self,payme):
         self.payment = payme

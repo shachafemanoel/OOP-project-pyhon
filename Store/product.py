@@ -1,9 +1,10 @@
 
 class Product:
-    def __init__(self, name =None,model=None,description=None,price=None, quantity=None,rate=None):  #
+    def __init__(self, name=None, model=None, description=None, price=None, quantity=None, rate=None):  #
         self.name = name  # שם המוצר
         self.model = model # דגם
         self.description = description  # תיאור המוצר
+        self.original_price = price
         self.price = price  # מחיר המוצר
         self.quantity = quantity  # הכמות המוצר
         if rate is None:
@@ -15,6 +16,7 @@ class Product:
         return self.name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
     def get_model_name(self):
         return self.model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
     def buy_product(self, many):  # הוצאת כמות מוצרים מהמלאי
         if self.available(many):
             self.quantity -= many
@@ -24,6 +26,9 @@ class Product:
 
     def update_price(self, discount):  # שינוי מחיr
         self.price -= (self.price * float(discount / 100))
+
+    def remove_discount(self):
+        self.price = self.original_price
 
     def change_quantity(self, new_quantity):  # שינוי המלאי לפי מלאי חדש
         self.quantity = new_quantity
@@ -46,11 +51,12 @@ class Product:
         review = '=================Rating=====================\n'
         if self.rate is not None and len(self.rate)>0:
             for rate in self.rate:
-                review+=f"\n{rate}"
+                review += f"\n{rate}"
 
         else:
-            review +='There are no reviews yet'
+            review += 'There are no reviews yet'
 
         return review
+
     def __str__(self):
-        return f" ======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n \n Price: {self.price}₪\n{self.review()}"
+        return f" ======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n \n Price: {self.price}₪\n{self.review()}\n"

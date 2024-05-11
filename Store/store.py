@@ -44,10 +44,22 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     if product in lst:
                         product.update_price(discount)
 
-            if isinstance(lst, Product) or isinstance(lst,Tv) or isinstance(lst, Computer) or isinstance(lst, Phone) :
+            if isinstance(lst, Product) or isinstance(lst, Tv) or isinstance(lst, Computer) or isinstance(lst, Phone) :
                     product = lst
                     product.update_price(discount)
                     self.collection[product.get_key_name()] = product
+
+    def remove_discount(self, item=None):
+        if item:
+            for product in self.collection.values():
+               if isinstance(product, Product):
+                    product.remove_discount()
+
+        elif isinstance(item, Product):
+            item.remove_discount()
+
+        else:
+            print("Invalid item.")
 
     def search(self, name=None, product_type=None, model=None):
         if name is not None:
