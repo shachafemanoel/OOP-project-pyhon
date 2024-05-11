@@ -353,7 +353,7 @@ class StoreCLI:
             discount = self.discount()
             self.store.new_discount(category,discount)
         if category is None:
-            print("Are you interested in adding a discount to a specific product?t")
+            print("Are you interested in adding a discount to a specific product?")
             print("\n1.Yes")
             print("2.Exit")
             choice = input("Enter your choice:")
