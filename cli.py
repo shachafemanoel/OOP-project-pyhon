@@ -183,6 +183,9 @@ class StoreCLI:
 
 
     def display_client(self,notifications):
+        if len(self.store.sales) > 0:
+            for sale in self.store.sales:
+                print(sale)
         if notifications > 0:
             print(f"\n * There are {notifications} new notifications on orders * \n")
         print("\n1. Change address")
@@ -325,18 +328,21 @@ class StoreCLI:
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def product_type(self):
-        for i in range(5):
+    def product_type(self,choice = None):
+        if choice ==None:
             choice = self.display_product_type()
+
+        for i in range(5):
             if choice in '1234':
                 return self.store.search(None, choice, None)
             elif choice == "5":
                 return self.list_products()
             elif choice == "0":
-                return None
+                    return None
 
             else:
                 print("Try Again")
+                choice = self.display_product_type()
         return None
 
     def discount(self):
@@ -349,9 +355,11 @@ class StoreCLI:
             return discount
 
     def add_discount(self):
-        category = self.product_type()
+        choice = self.display_product_type()
+        category = self.product_type(choice)
         if category is not None:
             discount = self.discount()
+            self.store.sale_prodduct_type(choice,discount)
             self.store.new_discount(category, discount)
         if category is None:
             print("\nAre you interested in adding a discount to a specific product?")
@@ -662,7 +670,6 @@ class StoreCLI:
 
     def wellcome_page(self):
         user = Client()
-
         while user.online == 0:
             selection = self.display_user()
             if selection == '1':

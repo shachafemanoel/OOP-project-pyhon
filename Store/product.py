@@ -5,6 +5,7 @@ class Product:
         self.model = model # דגם
         self.description = description  # תיאור המוצר
         self.original_price = price
+        self.sale=0
         self.price = price  # מחיר המוצר
         self.quantity = quantity  # הכמות המוצר
         if rate is None:
@@ -24,11 +25,13 @@ class Product:
         else:
             return False
 
-    def update_price(self, discount):  # שינוי מחיr
+    def update_price(self, discount):
+        self.sale =discount
         self.price -= (self.price * float(discount / 100))
 
     def remove_discount(self):
         self.price = self.original_price
+        self.sale = 0
 
     def change_quantity(self, new_quantity):  # שינוי המלאי לפי מלאי חדש
         self.quantity = new_quantity
@@ -59,4 +62,9 @@ class Product:
         return review
 
     def __str__(self):
-        return f" ======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n \n Price: {self.price}₪\n{self.review()}\n"
+        if self.sale >0:
+            return f" ======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n \nPrice:{self.original_price} -{self.sale}% Off {self.price}₪ ILS\n{self.review()}"
+
+
+        else:
+            return f" ======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n \n Price: {self.price}₪\n{self.review()}\n"

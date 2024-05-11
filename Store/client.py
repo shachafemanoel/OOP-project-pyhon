@@ -25,6 +25,7 @@ class Client(User):
         else:
             return f"\n * There are no new notifications *\n No orders placed yet "
 
+
     def use_coupon(self):
         self.coupon = None
     def new_status(self,order):

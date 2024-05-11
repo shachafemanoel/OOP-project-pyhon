@@ -36,21 +36,35 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.reporting = Reporting()
         for key , item in self.collection.items():
             self.reporting.sold_products[item.name] = 0
+        self.sales = []
 
+
+
+    def sale_prodduct_type(self,product_type,discount):
+
+        if product_type == "1":
+               self.sales.append(f"\n * -{discount}% discount on all TVs\n * ")
+        elif product_type == "2":
+            self.sales.append(f"\n * -{discount}% discount on all Computers * \n")
+        elif product_type == "3":
+            self.sales.append(f"\n * -{discount}% discount on all Phones * \n")
+        elif product_type == "4":
+            self.sales.append(f"\n * -{discount}% discount on all Accessories *\n ")
     def new_discount(self,lst,discount):
         if 0 < discount < 100:
-            if isinstance(lst, list):
+            if isinstance(lst, list):# הנחה על מחלקה שלמה
                 for product in self.collection.values():
                     if product in lst:
                         product.update_price(discount)
 
-            if isinstance(lst, Product) or isinstance(lst, Tv) or isinstance(lst, Computer) or isinstance(lst, Phone) :
+            if isinstance(lst, Product) or isinstance(lst, Tv) or isinstance(lst, Computer) or isinstance(lst, Phone) :#הנחה על מוצר ספציפי
                     product = lst
                     product.update_price(discount)
                     self.collection[product.get_key_name()] = product
 
     def remove_discount(self, item=None):
         if item:
+            self.sales = []
             for product in self.collection.values():
                if isinstance(product, Product):
                     product.remove_discount()
@@ -74,8 +88,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                         found.append(value)
                     else:
                         found.append(value)
-
-
 
             if product_type is not None and name is None:
                 if product_type == "1":

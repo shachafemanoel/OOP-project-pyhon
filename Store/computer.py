@@ -7,4 +7,7 @@ class Computer(Product):
         self.chip = chip
 
     def __str__(self):
-        return f"======================================\nName: {self.name}\n Model: {self.model} Storge: {self.storge} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n Price: {self.price}₪\n{self.review()}"
+        if self.sale>0:
+            return f"======================================\nName: {self.name}\n Model: {self.model} Storge: {self.storge} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n Price:-{self.sale}% Off {self.price}₪ ILS\n{self.review()}"
+        else:
+            return f"======================================\nName: {self.name}\n Model: {self.model} Storge: {self.storge} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n Price: {self.price}₪\n{self.review()}"
