@@ -41,15 +41,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
 
     def sale_prodduct_type(self,product_type,discount):
-
         if product_type == "1":
-               self.sales.append(f"\n * -{discount}% discount on all TVs\n * ")
+               self.sales.append(f" * -{discount}% discount on all TVs * ")
         elif product_type == "2":
-            self.sales.append(f"\n * -{discount}% discount on all Computers * \n")
+            self.sales.append(f" * -{discount}% discount on all Computers * ")
         elif product_type == "3":
-            self.sales.append(f"\n * -{discount}% discount on all Phones * \n")
+            self.sales.append(f" * -{discount}% discount on all Phones * ")
         elif product_type == "4":
-            self.sales.append(f"\n * -{discount}% discount on all Accessories *\n ")
+            self.sales.append(f" * -{discount}% discount on all Accessories * ")
     def new_discount(self,lst,discount):
         if 0 < discount < 100:
             if isinstance(lst, list):# הנחה על מחלקה שלמה

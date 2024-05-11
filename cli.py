@@ -183,9 +183,6 @@ class StoreCLI:
 
 
     def display_client(self,notifications):
-        if len(self.store.sales) > 0:
-            for sale in self.store.sales:
-                print(sale)
         if notifications > 0:
             print(f"\n * There are {notifications} new notifications on orders * \n")
         print("\n1. Change address")
@@ -357,11 +354,15 @@ class StoreCLI:
     def add_discount(self):
         choice = self.display_product_type()
         category = self.product_type(choice)
-        if category is not None:
-            discount = self.discount()
-            self.store.sale_prodduct_type(choice,discount)
-            self.store.new_discount(category, discount)
-        if category is None:
+        if category is not None :
+            if category[0].sale == 0:
+                discount = self.discount()
+                self.store.sale_prodduct_type(choice,discount)
+                self.store.new_discount(category, discount)
+            else:
+                category = None
+                print("There is a sale for this department")
+        if category is None :
             print("\nAre you interested in adding a discount to a specific product?")
             print("\n1. Yes")
             print("For exit, enter a different value from the options ")
@@ -485,7 +486,11 @@ class StoreCLI:
                 print("\n * Invalid choice. Please try again. *\n")
 
     def search_system(self):
-        print("\n * Welcome to the catalog *")
+        print("\n * Welcome to the catalog * \n ")
+        if len(self.store.sales) > 0:
+            print("   *   New deals   * ")
+            for sale in self.store.sales:
+                print(sale)
         new_item = Product()
         type_search = self.product_type()
         if type_search is not None:

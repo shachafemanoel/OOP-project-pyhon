@@ -26,8 +26,9 @@ class Product:
             return False
 
     def update_price(self, discount):
-        self.sale =discount
-        self.price -= (self.price * float(discount / 100))
+        if self.sale ==0:
+            self.sale =discount
+            self.price -= (self.price * float(discount / 100))
 
     def remove_discount(self):
         self.price = self.original_price
