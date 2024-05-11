@@ -314,13 +314,13 @@ class StoreCLI:
             print("\n * Wrong order number *\n")
 
     def display_product_type(self):
-        print(" Select Product type")
+        print("\n * Select Product type *")
         print('\n1. TV')
         print('2. Computer')
         print('3. Mobile Phone')
         print('4. Accessories')
         print('5. All')
-        print("0. Exit")
+        print("0. Exit Or Manual Search")
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -353,18 +353,18 @@ class StoreCLI:
             discount = self.discount()
             self.store.new_discount(category,discount)
         if category is None:
-            print("Are you interested in adding a discount to a specific product?")
-            print("\n1.Yes")
-            print("2.Exit")
-            choice = input("Enter your choice:")
-            if choice =='1':
+            print("\nAre you interested in adding a discount to a specific product?")
+            print("\n1. Yes")
+            print("For exit, enter a different value from the options ")
+            choice = input("\nEnter your choice: ")
+            if choice == '1':
                 product = self.manual_search()
-                if product is not None and product !=-100:
+                if product is not None and product != -100:
                     discount = self.discount()
-                    self.store.new_discount(product,discount)
+                    self.store.new_discount(product, discount)
 
             else:
-                print("Good bye")
+                print("\nGood bye")
 
 
     def display_manage_product(self):
@@ -460,6 +460,8 @@ class StoreCLI:
             choice = self.pick_item(type_search)
             if choice != -100 and choice is not None:
                 new_item = type_search[choice]
+            else:
+                new_item = None
         if type_search is None:
             print("\n1.Manual search")
             print("2.Exit")
@@ -518,29 +520,30 @@ class StoreCLI:
         name = input("Enter Product Name: ")
         model = input("Enter Product Model: ")
         search = self.store.search(name, model)
-        if len(search) >0:
-            print(f" \n * This products exists in the system. * ")
+        if len(search) > 0:
+            print(f" \n * This products exists in the system please choose product for adding amount. * ")
             s = self.pick_item(search)
-            if s!= -100:
+            if s != -100:
                 pro = search[s]
                 print(f"\n{pro}")
                 print("How much would you like to add to the inventory?")
                 quan = input("Add quantity: ")
                 self.store.collection[pro.get_key_name()].add_quantity(int(quan))
+                print("\n * Quantity added successfully *")
         else:
 
             description = input("Enter description: ")
             price = input("Enter Price: ")
             quantity = input("Enter Quantity: ")
             category = self.display_product_type()
-            if int(price) > 0 and price.isdigit() and quantity.isdigit():
+            if price.isdigit() and int(price) > 0 and quantity.isdigit():
                 price = float(price)
                 quantity = int(quantity)
-                if category == 1 :
+                if category == 1:
                     size = input("Enter Screen size: ")
                     tv_type = input("Enter TV type")
                     pro =Tv(name,model,description,price,quantity,size,tv_type)
-                if category == 2 :
+                if category == 2:
                     chip = input("Enter Chip: ")
                     size = input("Enter Screen size: ")
                     storge = input("Enter Storge:")
