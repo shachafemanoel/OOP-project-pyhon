@@ -13,7 +13,7 @@ from Store.rating import Rating
 class StoreCLI:
     def __init__(self):
         self.store = Store()
-        self.user = User()
+        self.user = Client()
         self.exit =False
 
     def log_in(self):
@@ -39,10 +39,10 @@ class StoreCLI:
                 if len(pass_word) > 3:
                     new_user = Client(user_id, full_name, pass_word)
                     if self.store.add_user(new_user):
-                        self.set_address(new_user)
-                        self.store.users[user_id] = new_user
-                        new_user.online =1
                         self.user = new_user
+                        self.set_address()
+                        self.store.users[user_id] = new_user
+                        self.user.online =1
                         print("\n * User registered successfully. * ")
                         self.user.coupon = 5
                         print("Thank you for register. Enjoy a 5% coupon !")
@@ -88,15 +88,15 @@ class StoreCLI:
     def add_admin(self):
         new_admin = self.register_admin()
         return new_admin
-    def change_password(self, user):
+    def change_password(self):
         old_password = input("\nFor changing password please enter your old password: ")
 
-        if user.password == old_password:
+        if self.user.password == old_password:
             print("\n * The password must contain at least 4 characters *")
             new_user_password = input("Enter your new password: ")
 
             if len(new_user_password) > 3:
-                user.change_user_password(new_user_password)
+                self.user.change_user_password(new_user_password)
                 print("\n* Password changed successfully* ")
             else:
                 print("\n * The password must contain at least 4 characters. Please try again. * ")
@@ -116,6 +116,7 @@ class StoreCLI:
 
                 if len(new_user_password) > 3:
                     user.change_user_password(new_user_password)
+                    self.user = user
                     print("\n * Password changed successfully, you can now log in *")
                 else:
                     print("\n *The password must contain at least 4 characters. Please try again.* ")
@@ -170,12 +171,12 @@ class StoreCLI:
             prod.add_review(new)
             self.store.collection[key] = prod
 
-    def display_order_user(self,user):
+    def display_order_user(self):
         order_number = input("Enter order number: ")
         if order_number.isdigit() :
             order_number = int(order_number)
-            if 0 < order_number < len(user.order_history):
-                order = user.order_history[order_number]
+            if 0 < order_number < len(self.user.order_history):
+                order = self.user.order_history[order_number]
                 print(order)
                 if order.status == 'delivered':
                     print("Are you interested in giving a review on the order?\n1. Yes!\n2. No")
@@ -200,14 +201,14 @@ class StoreCLI:
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def display_coupon(self, user):
-        print(f"\nWould you like to use your {user.coupon}% coupon?")
+    def display_coupon(self):
+        print(f"\nWould you like to use your {self.user.coupon}% coupon?")
         print('\n1. Yes')
         print('2. No')
         choice = input('\nEnter your choice: ')
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def set_address(self, user):
+    def set_address(self):
         print("\n * Please enter the details *\n")
         new_address = input("Country: ")
         city = input("City: ")
@@ -215,13 +216,12 @@ class StoreCLI:
         apt = input("Building,Apt,Floor: ")
         new_address += f",{city},{street},{apt}"
         new_address.replace(" ", "").translate(str.maketrans("", "", ".!?;:"))
-        if len(new_address) > 3 and isinstance(user, Client):
-            user.change_address(new_address)
-            self.store.users[user.user_id] = user
+        if len(new_address) > 3:
+            self.user.change_address(new_address)
             print("\n * Address has been set successfully *")
             print(f"\n * New Address updated: *\n {new_address}")
         else:
-            user.address = None
+            self.user.address = None
             print("\n * Not enough details were entered for setting address. *")
 
     def display_order(self):
@@ -244,14 +244,14 @@ class StoreCLI:
 
 
 
-    def pay(self, order, user):
+    def pay(self, order):
         paymethood = Payment
-        if user.payment is not None:
+        if self.user.payment is not None:
             print(f"for paying with:")
-            print(user.payment)
+            print(self.user.payment)
             s = input(" \n Press 1:")
             if s == '1':
-                return user.payment
+                return self.user.payment
         else:
 
             for i in range(4):
@@ -267,7 +267,7 @@ class StoreCLI:
                         print("\n2. No ")
                         save = input("Enter your choice: ")
                         if save == '1':
-                            self.store.users[user.user_id].payment = paymethood
+                            self.user = paymethood
                         return paymethood
                     else:
                         print("\n * The card number is invalid * ")
@@ -275,19 +275,19 @@ class StoreCLI:
                 elif pay_option == '2':
                     paypal_id = input("Enter your Paypal id: ")
                     if len(paypal_id) > 0:
-                        paymethood = Payment(user.user_full_name, None, 'PayPal')
+                        paymethood = Payment(self.user.user_full_name, None, 'PayPal')
                         print("\nWould you like to save your payment method for future orders?")
                         print("1. Yes,save it")
                         print("2 .No ")
                         save = input("Enter your choice: ")
                         if save == '1':
-                            self.store.users[user.user_id].payment = paymethood
+                            self.user.payment = paymethood
                         return paymethood
                     else:
                         print("\n * Paypal id in invalid * ")
 
                 elif pay_option == '3':
-                    paymethood = Payment(order.customer.user_full_name, None, 'Cash')
+                    paymethood = Payment(self.user.user_full_name, None, 'Cash')
                     return paymethood
 
                 elif pay_option == '4':
@@ -401,7 +401,7 @@ class StoreCLI:
 
     def display_manage_product(self):
         print("\n * Wellcome to manage product display *\n")
-        print("1. Add Product")
+        print("1. Add Product or Adding a quantity to an existing product ")
         print("2. Remove Product")
         print("3. Add Discount")
         print("4. Remove Discount")
@@ -473,13 +473,13 @@ class StoreCLI:
             sub_choice = self.display_manage_product()
             if sub_choice == '1':
                 self.add_product()
-                break
+
             elif sub_choice == '2':
                 self.remove_product()
-                break
+
             elif sub_choice == '3':
                 self.add_discount()
-                break
+
             elif sub_choice == '4':
                 self.remove_discount()
             elif sub_choice == '5':
@@ -547,10 +547,11 @@ class StoreCLI:
 
     def add_quantity_to_product(self):
         item = self.search_system()
-        amount = int(input("\nEnter a quantity: "))
-        if item is not None and amount > 0:
-            item.add_quantity(amount)
-            print(" * Quantity added successfully * \n")
+        amount = input("\nEnter a quantity: ")
+        if amount.isdigit():
+            if item is not None and amount > 0:
+                item.add_quantity(amount)
+                print(" * Quantity added successfully * \n")
         else:
             print("* Invalid input or product not found. * \n")
 
@@ -567,42 +568,46 @@ class StoreCLI:
                 print(f"\n{pro}")
                 print("How much would you like to add to the inventory?")
                 quan = input("Add quantity: ")
-                self.store.collection[pro.get_key_name()].add_quantity(int(quan))
-                print("\n * Quantity added successfully *")
-        else:
-
-            description = input("Enter description: ")
-            price = input("Enter Price: ")
-            quantity = input("Enter Quantity: ")
-            category = self.display_product_type()
-            if price.isdigit() and int(price) > 0 and quantity.isdigit():
-                price = float(price)
-                quantity = int(quantity)
-                if category == 1:
-                    size = input("Enter Screen size: ")
-                    tv_type = input("Enter TV type")
-                    pro =Tv(name,model,description,price,quantity,size,tv_type)
-                if category == 2:
-                    chip = input("Enter Chip: ")
-                    size = input("Enter Screen size: ")
-                    storge = input("Enter Storge:")
-                    pro = Computer(name, model, description, price, quantity,size,storge,chip)
-                if category == 3:
-                    size = input("Enter Screen size: ")
-                    storge = input("Enter Storge:")
-                    pro = Phone(name, model, description, price, quantity,size,storge)
+                if quan.isdigit():
+                    self.store.collection[pro.get_key_name()].add_quantity(int(quan))
+                    print("\n * Quantity added successfully *")
                 else:
-                    pro = Product(name, model, description, price, quantity, )
-                self.store.add_product(pro)
-            else:
-                print("* Price and Quantity must be a digit *")
+                    print("Quantity must be a digit!")
 
-    def apply_coupon(self, order, user):
-        if user.coupon is not None:
+            else:
+
+                description = input("Enter description: ")
+                price = input("Enter Price: ")
+                quantity = input("Enter Quantity: ")
+                category = self.display_product_type()
+                if price.isdigit() and int(price) > 0 and quantity.isdigit():
+                    price = float(price)
+                    quantity = int(quantity)
+                    if category == 1:
+                        size = input("Enter Screen size: ")
+                        tv_type = input("Enter TV type")
+                        pro =Tv(name,model,description,price,quantity,size,tv_type)
+                    if category == 2:
+                        chip = input("Enter Chip: ")
+                        size = input("Enter Screen size: ")
+                        storge = input("Enter Storge:")
+                        pro = Computer(name, model, description, price, quantity,size,storge,chip)
+                    if category == 3:
+                        size = input("Enter Screen size: ")
+                        storge = input("Enter Storge:")
+                        pro = Phone(name, model, description, price, quantity,size,storge)
+                    else:
+                        pro = Product(name, model, description, price, quantity, )
+                    self.store.add_product(pro)
+                else:
+                    print("* Price and Quantity must be a digit *")
+
+    def apply_coupon(self, order):
+        if self.user.coupon is not None:
             for each in range(5):
-                choice_coupon = self.display_coupon(user)
+                choice_coupon = self.display_coupon()
                 if choice_coupon == '1':
-                    order.total_amount = order.total_amount * (1 - (user.coupon / 100))
+                    order.total_amount = order.total_amount * (1 - (self.user.coupon / 100))
                     break
                 elif choice_coupon == '2':
                     break
@@ -612,11 +617,10 @@ class StoreCLI:
 
             return choice_coupon
 
-    def place_order(self, user):
-        new_order = Order(user)
-        if user.address is None:
-            self.set_address(user)
-
+    def place_order(self):
+        new_order = Order(self.user)
+        if self.user.address is None:
+            self.set_address()
         else:
             self.add_item(new_order)
             while True:
@@ -629,15 +633,15 @@ class StoreCLI:
                     print(" * Wrong choice,Try again *")
 
         if new_order.total_amount > 0 or len(new_order.product_dict) > 0:
-            coupon = self.apply_coupon(new_order, user)
+            coupon = self.apply_coupon(new_order)
 
-            payment = self.pay(new_order, user)
+            payment = self.pay(new_order)
             if payment:
                 new_order.pay_order(payment)
                 self.store.place_order(new_order)
                 print(f" {new_order}\n {payment}\n * The order was successfully completed * ")
                 if coupon == 1:
-                    user.use_coupon()
+                    self.user.use_coupon()
 
 
     def remove_product(self):
@@ -663,16 +667,19 @@ class StoreCLI:
         else:
             print(' No orders placed yet ')
 
-    def orders_history(self,user):
+    def orders_history(self):
         print("\n Your orders \n\n")
-        print(user.update_client())
-        if len(user.order_history) > 0:
-            self.display_order_user(user)
+        print(self.user.update_client())
+        if len(self.user.order_history) > 0:
+            self.display_order_user()
 
     def reporting(self):
         print(self.store.reporting)
         self.store.reporting.seen()
 
+    def logout(self):
+        self.user.logout()
+        self.store.users[self.user.user_id] = self.user
 
 
     def wellcome_page(self):
@@ -689,7 +696,7 @@ class StoreCLI:
             else:
                 print("\n * Login failed. Please check your credentials and try again. * \n ")
 
-    def mmanagement_menu(self):
+    def management_menu(self):
         choice = self.display_menu(self.store.reporting.new_update)
 
         if choice == '1':
@@ -717,21 +724,20 @@ class StoreCLI:
     def customer_menu(self):
         sub_choice = self.display_client(self.user.new_messege)
         if sub_choice == '1':
-            self.set_address(self.user)
+            self.set_address()
         elif sub_choice == '2':
             self.list_products()
         elif sub_choice == '3':
-            self.place_order(self.user)
+            self.place_order()
         elif sub_choice == '4':
-            self.orders_history(self.user)
+            self.orders_history()
         elif sub_choice == '5':
-            self.change_password(self.user)
+            self.change_password()
 
         elif sub_choice == '6':
-            self.user.logout()
-            self.store.users[self.user.user_id] = self.user
-
+            self.logout()
         elif sub_choice == '7':
+            self.logout()
             self.exit =True
             print("Bye, have a nice day")
         else:
@@ -741,14 +747,14 @@ class StoreCLI:
 
     def run(self):
         while self.exit ==False:
-            self.wellcome_page()
+            if self.user.online ==0:
+                self.wellcome_page()
             if self.user.online ==1:
-
                 print(f"\n * Welcome {self.user.user_full_name}! You are now connected. *")
                 if type(self.user) == Client:
-                     self.customer_menu()
+                        self.customer_menu()
                 else:
-                    self.mmanagement_menu()
+                    self.management_menu()
 
 
 
