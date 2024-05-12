@@ -24,16 +24,36 @@ class Order:
             self.status = deli
 
     def converter(self):
-        if self.customer.address[0:3].casefold() != "isr":
-            return f"{self.total_amount}₪ILS   or {round(self.total_amount/3.7611,2)} US$"
-        else:
-            return f"{self.total_amount}₪ILS"
+        if self.customer.address is not None:
+            if self.customer.address[0:3].casefold() != "isr":
+                return f"{self.total_amount}₪ILS   or {round(self.total_amount/3.7611,2)} US$"
+
+
+        return f"{self.total_amount}₪ILS"
 
     def payments(self):
         return f"{self.total_amount}ILS or {round(self.total_amount/12,2)}₪ILS 12/mo. for 12 mo.*"
     def pay_order(self,payme):
         self.payment = payme
         self.status = "Processing"
+
+    def search(self,name):
+        found = []
+        cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        for key in self.product_dict.keys():
+            if key.casefold()[0:len(cleaned_name)] ==cleaned_name.casefold:
+                found.append(key)
+        return key
+    def remove(self, product,how_many):
+            if product.get_key_name() in self.product_dict.keys():
+                if how_many > 0:
+                    self.product_dict[product.get_key_name()] = how_many
+                if how_many ==0:
+                    self.product_dict.pop(product.get_key_name())
+                    return True
+
+                else:
+                    return False
 
     def add_item_to_order(self, product, how_many):
         if product.get_key_name() not in self.product_dict:
@@ -52,4 +72,4 @@ class Order:
         if self.payment is not None:
             return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n=================\nTotal amount: {self.converter()} \nStatus:{self.status}\n==================="
         else:
-            return f"{self.list_products()} \nTotal amount: {self.converter()} \n "
+            return f"{self.list_products()} \nSubtotal ({len(self.product_dict)}): {self.converter()} \n "

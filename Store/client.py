@@ -3,12 +3,9 @@ from Store.order import Order
 
 
 class Client(User):
-    def __init__(self, user_id=None, full_name=None, password=None, address=None, order_history=None, online=0, payment=None, coupon=None):
+    def __init__(self, user_id=None, full_name=None, password=None, address=None, online=0, payment=None, coupon=None):
         super().__init__(user_id, full_name, password, online, address, payment)
-        if order_history is None:
-            self.order_history = {}
-        else:
-            self.order_history = order_history
+        self.order_history = []
         self.messege = []
         self.new_messege = 0
         self.coupon = coupon
@@ -41,9 +38,7 @@ class Client(User):
     def change_address(self, new_address):
         self.address = new_address
 
-    def list_orders(self):
-        return [(f"Order:number: {order_number}", f"Order total amount: {order.total_amount}", f"status: {order.status}") for
-                order_number, order in self.order_history.items()]
+
 
     def __str__(self):
         return super().__str__()

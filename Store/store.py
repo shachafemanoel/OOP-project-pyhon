@@ -24,7 +24,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         order1 = Order(client1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2,})
         order1.status ='delivered'
         order1.payment = "admin"
-        client1.order_history[order1.order_number] = order1
+        client1.order_history.append(order1)
 
         self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax
             , iphone_14.get_key_name() : iphone_14, macbook_air_15.get_key_name() : macbook_air_15, smart_tv.get_key_name() : smart_tv
@@ -74,6 +74,12 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         else:
             print("Invalid item.")
 
+
+    def lst_search(self,lst):
+        found =[]
+        for name in lst:
+           found.extend(self.search(name))
+        return found
     def search(self, name=None, product_type=None, model=None):
         if name is not None:
             cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -127,9 +133,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         else:
             return False
 
-    def add_item_order(self, product, how_many, order):
+    def add_item_order(self, product, how_many):
         if self.collection[product.get_key_name()].available(how_many):
-            order.add_item_to_order(product, how_many)
             return True
         else:
             return False
