@@ -170,6 +170,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         else:
             return None
 
+
+
     def change_order(self,order_number,choice):
         self.orders[order_number].change_status(choice)
         order = self.orders[order_number]

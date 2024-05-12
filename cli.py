@@ -14,6 +14,7 @@ class StoreCLI:
     def __init__(self):
         self.store = Store()
         self.user = User()
+        self.exit =False
 
     def log_in(self):
         user_id = input("Enter User ID: ")
@@ -675,7 +676,6 @@ class StoreCLI:
 
 
     def wellcome_page(self):
-        while self.user.online == 0:
             selection = self.display_user()
             if selection == '1':
                 self.log_in()
@@ -684,67 +684,72 @@ class StoreCLI:
             elif selection == '3':
                 self.forgot_password()
             elif selection == '4':
+                self.exit=True
                 print('Bye, Thank you')
-                self.user = None
             else:
                 print("\n * Login failed. Please check your credentials and try again. * \n ")
 
+    def mmanagement_menu(self):
+        choice = self.display_menu(self.store.reporting.new_update)
+
+        if choice == '1':
+            self.product_manager()
+        elif choice == '2':
+            self.user_manager()
+        elif choice == '3':
+            self.change_status()
+        elif choice == '4':
+            self.list_products()
+        elif choice == '5':
+            self.orders()
+        elif choice == '6':
+            self.reporting()
+        elif choice == '7':
+            self.user.logout()
+        elif choice == '0':
+            print("Bye, have a nice day")
+            self.exit =True
+        else:
+            print("\n* Invalid choice. Please try again.* ")
+
+
+
+    def customer_menu(self):
+        sub_choice = self.display_client(self.user.new_messege)
+        if sub_choice == '1':
+            self.set_address(self.user)
+        elif sub_choice == '2':
+            self.list_products()
+        elif sub_choice == '3':
+            self.place_order(self.user)
+        elif sub_choice == '4':
+            self.orders_history(self.user)
+        elif sub_choice == '5':
+            self.change_password(self.user)
+
+        elif sub_choice == '6':
+            self.user.logout()
+            self.store.users[self.user.user_id] = self.user
+
+        elif sub_choice == '7':
+            self.exit =True
+            print("Bye, have a nice day")
+        else:
+            print("\n * Invalid choice. Please try again. * ")
+
+
+
     def run(self):
-        while True:
+        while self.exit ==False:
             self.wellcome_page()
-            if self.user is None:
-                break
+            if self.user.online ==1:
 
-            print(f"\n * Welcome {self.user.user_full_name}! You are now connected. *")
-
-            while self.user.online ==1:
+                print(f"\n * Welcome {self.user.user_full_name}! You are now connected. *")
                 if type(self.user) == Client:
-                    while True:
-                        sub_choice = self.display_client(self.user.new_messege)
-                        if sub_choice == '1':
-                            self.set_address(self.user)
-                        elif sub_choice == '2':
-                            self.list_products()
-                        elif sub_choice == '3':
-                            self.place_order(self.user)
-                        elif sub_choice == '4':
-                            self.orders_history(self.user)
-                        elif sub_choice == '5':
-                            self.change_password(self.user)
-
-                        elif sub_choice == '6':
-                           self.user.logout()
-                           break
-
-                        elif sub_choice == '7':
-                            return "Bye, have a nice day"
-                        else:
-                            print("\n * Invalid choice. Please try again. * ")
+                     self.customer_menu()
                 else:
-                    while True:
+                    self.mmanagement_menu()
 
-                                choice = self.display_menu(self.store.reporting.new_update)
-
-                                if choice == '1':
-                                    self.product_manager()
-                                elif choice == '2':
-                                    self.user_manager()
-                                elif choice == '3':
-                                    self.change_status()
-                                elif choice == '4':
-                                    self.list_products()
-                                elif choice == '5':
-                                    self.orders()
-                                elif choice == '6':
-                                    self.reporting()
-                                elif choice == '7':
-                                    self.user.logout()
-                                    break
-
-                                elif choice == '0':
-                                    return "Bye, have a nice day"
-                                else:
-                                    print("\n* Invalid choice. Please try again.* ")
 
 
 if __name__ == "__main__":
