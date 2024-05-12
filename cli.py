@@ -13,18 +13,19 @@ from Store.rating import Rating
 class StoreCLI:
     def __init__(self):
         self.store = Store()
+        self.user = User()
 
-    def log_in(self, user):
+    def log_in(self):
         user_id = input("Enter User ID: ")
         password = input("Enter Password: ")
         loggg = self.store.log(user_id, password)
         if loggg is not None :
-            user = loggg
-            if type(user) == User:
-                user.__class__ = User
-        return user
+            self.user = loggg
+            if type(self.user) == User:
+                self.user.__class__ = User
+                print("Login successful!")
 
-    def register(self, new_user=None):
+    def register(self):
         print("\nWelcome to the registration systemֿ\n")
         print(" User id must be a at least 4 digit ")
         user_id = (input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:")))
@@ -38,10 +39,11 @@ class StoreCLI:
                     new_user = Client(user_id, full_name, pass_word)
                     if self.store.add_user(new_user):
                         self.set_address(new_user)
-                        new_user.online = 1
                         self.store.users[user_id] = new_user
+                        new_user.online =1
+                        self.user = new_user
                         print("\n * User registered successfully. * ")
-                        new_user.coupon = 5
+                        self.user.coupon = 5
                         print("Thank you for register. Enjoy a 5% coupon !")
 
                     else:
@@ -53,7 +55,6 @@ class StoreCLI:
         else:
             print("\n * User ID must be at least 4 digit.Try again * ")
 
-        return new_user
 
     def register_admin(self, new_admin=None):
         print("\nAdding new admin\n")
@@ -674,48 +675,45 @@ class StoreCLI:
 
 
     def wellcome_page(self):
-        user = Client()
-        while user.online == 0:
+        while self.user.online == 0:
             selection = self.display_user()
             if selection == '1':
-                user = self.log_in(user)
+                self.log_in()
             elif selection == '2':
-                user = self.register(user)
+                self.register()
             elif selection == '3':
                 self.forgot_password()
             elif selection == '4':
                 print('Bye, Thank you')
-                return None
+                self.user = None
             else:
                 print("\n * Login failed. Please check your credentials and try again. * \n ")
-        return user
 
     def run(self):
         while True:
-            user = self.wellcome_page()
-            if user is None:
+            self.wellcome_page()
+            if self.user is None:
                 break
 
-            print(f"\n * Welcome {user.user_full_name}! You are now connected. *")
-            user.online =1
+            print(f"\n * Welcome {self.user.user_full_name}! You are now connected. *")
 
-            while user.online ==1:
-                if type(user) == Client:
+            while self.user.online ==1:
+                if type(self.user) == Client:
                     while True:
-                        sub_choice = self.display_client(user.new_messege)
+                        sub_choice = self.display_client(self.user.new_messege)
                         if sub_choice == '1':
-                            self.set_address(user)
+                            self.set_address(self.user)
                         elif sub_choice == '2':
                             self.list_products()
                         elif sub_choice == '3':
-                            self.place_order(user)
+                            self.place_order(self.user)
                         elif sub_choice == '4':
-                            self.orders_history(user)
+                            self.orders_history(self.user)
                         elif sub_choice == '5':
-                            self.change_password(user)
+                            self.change_password(self.user)
 
                         elif sub_choice == '6':
-                           print(user.logout())
+                           self.user.logout()
                            break
 
                         elif sub_choice == '7':
@@ -740,7 +738,7 @@ class StoreCLI:
                                 elif choice == '6':
                                     self.reporting()
                                 elif choice == '7':
-                                    user.logout()
+                                    self.user.logout()
                                     break
 
                                 elif choice == '0':
