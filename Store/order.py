@@ -45,7 +45,6 @@ class Order:
                 found.append(key)
         return key
     def remove(self, product,how_many):
-            if product.get_key_name() in self.product_dict.keys():
                 if how_many > 0:
                     self.product_dict[product.get_key_name()] = how_many
                 if how_many ==0:
@@ -69,7 +68,10 @@ class Order:
                 result += key + f" -------- quantity  {str(value)} \n"
             return result
     def __str__(self):
-        if self.payment is not None:
-            return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n=================\nTotal amount: {self.converter()} \nStatus:{self.status}\n==================="
+        if len(self.product_dict) >0:
+            if self.payment is not None:
+                return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n=================\nTotal amount: {self.converter()} \nStatus:{self.status}\n==================="
+            else:
+                return f"{self.list_products()} \nSubtotal: {self.converter()} \n "
         else:
-            return f"{self.list_products()} \nSubtotal ({len(self.product_dict)}): {self.converter()} \n "
+            return "Empty cart"

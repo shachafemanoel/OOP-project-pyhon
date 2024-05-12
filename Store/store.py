@@ -24,14 +24,13 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         order1 = Order(client1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2,})
         order1.status ='delivered'
         order1.payment = "admin"
-        client1.order_history.append(order1)
 
         self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax
             , iphone_14.get_key_name() : iphone_14, macbook_air_15.get_key_name() : macbook_air_15, smart_tv.get_key_name() : smart_tv
             , airpods_2.get_key_name() : airpods_2, airpods_3.get_key_name() : airpods_3, apple_charger.get_key_name() : apple_charger}
 
         self.users = {admin.user_id:admin, client1.user_id:client1}  # משתמשי החנות
-        self.orders = {order1.order_number:order1}  # הזמנות החנות
+        self.orders = {order1.order_number:order1,}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
         for key , item in self.collection.items():
@@ -75,11 +74,12 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             print("Invalid item.")
 
 
-    def lst_search(self,lst):
-        found =[]
-        for name in lst:
-           found.extend(self.search(name))
-        return found
+    def lst_search(self,order):
+        temp = []
+        for key in order.product_dict.keys():
+           temp.append(self.collection[key])
+
+        return temp
     def search(self, name=None, product_type=None, model=None):
         if name is not None:
             cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -152,7 +152,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     self.reporting.sold_products[name] += quant
                 else:
                     self.reporting.sold_products[name] = quant
-            self.users[order.customer.user_id].new_order(order)
             self.reporting.new_order(order)
             self.order_number += 1
 

@@ -5,7 +5,7 @@ from Store.order import Order
 class Client(User):
     def __init__(self, user_id=None, full_name=None, password=None, address=None, online=0, payment=None, coupon=None):
         super().__init__(user_id, full_name, password, online, address, payment)
-        self.order_history = []
+        self.order_history = {}
         self.messege = []
         self.new_messege = 0
         self.coupon = coupon
@@ -17,7 +17,7 @@ class Client(User):
                 new += messe
                 self.new_messege = 0
                 self.messege = []
-            return f"{new}\n \n* Your Orders *\n {self.list_orders()}"
+            return f"{new}\n \n* Your Orders *\n "
 
         else:
             return f"\n * There are no new notifications *\n No orders placed yet "
