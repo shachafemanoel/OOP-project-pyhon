@@ -11,16 +11,16 @@ class Client(User):
         self.coupon = coupon
 
     def update_client (self):
-        if self.new_messege > 0 and len(self.order_history) >0:
+        if self.new_messege > 0:
             new = f"\n * There are {self.new_messege} new notifications for you *\n"
             for messe in self.messege:
                 new += messe
                 self.new_messege = 0
                 self.messege = []
-            return f"{new}\n \n* Your Orders *\n "
+            return f"{new}\n"
 
         else:
-            return f"\n * There are no new notifications *\n No orders placed yet "
+            return f"\n * There are no new notifications *\n "
 
 
     def use_coupon(self):
@@ -34,6 +34,11 @@ class Client(User):
         self.order_history[order.order_number] = order
         self.messege.append(f"\n * Thank you for your purchase!,  Order number: {order.order_number} has been received! *\n")
         self.new_messege +=1
+
+    def list_orders_client(self):
+        return [[f"Order Number: {order_number}",f"Total amount: {order.converter()}",f"Status: {order.status}"] for order_number, order
+                in self.order_history.items()]
+
 
     def change_address(self, new_address):
         self.address = new_address

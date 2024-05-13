@@ -15,7 +15,7 @@ class StoreCLI:
         self.store = Store()
         self.user = Client()
         self.count_item = 0
-        self.cart = Order(self.user)
+        self.cart = Order()
         self.exit =False
 
     def log_in(self):
@@ -167,26 +167,46 @@ class StoreCLI:
         for key, value in order.product_dict.items():
             print(key)
             prod = self.store.collection[key]
-            star = input("\nEnter a rating between 1-5: ")
+            print("1. ⭐")
+            print("2. ⭐⭐")
+            print("3. ⭐⭐⭐")
+            print("4. ⭐⭐⭐⭐")
+            print("5. ⭐⭐⭐⭐⭐")
+            star = input("\nEnter your choice: : ")
             review = input("Enter your opinion: ")
-            new = Rating(star, review)
-            prod.add_review(new)
-            self.store.collection[key] = prod
+            if star.isdigit():
+                star = int(star)
+                if 1<star<6:
+                    new = Rating(star, review)
+                    prod.add_review(new)
+                    self.store.collection[key] = prod
+                else:
+                    print("Wrong choice")
+            else:
+                print("Wrong choice")
 
-    def display_order_user(self):
-        for i in self.user.order_history:
-            print(i)
+    def choice_order(self):
         order_number = input("Enter order number: ")
-        if order_number.isdigit() :
+        if order_number.isdigit():
             order_number = int(order_number)
-            if 0 < order_number < len(self.user.order_history):
+            if 0 < order_number < self.store.order_number + 1:
                 order = self.user.order_history[order_number]
                 print(order)
                 if order.status == 'delivered':
-                    print("Are you interested in giving a review on the order?\n1. Yes!\n2. No")
-                    choice = input("Enter your choice: ")
-                    if choice == '1':
+                    print("Are you interested in giving a review on the order?\n1. Yes!")
+                    option = input("Enter your choice: ")
+                    if option == '1':
                         self.add_review(order)
+
+    def display_order_user(self):
+        if len(self.user.order_history)>0:
+            while True:
+                choice =self.orders_history()
+                if choice =='1':
+                  self.choice_order()
+                else:
+                    print("Return to Main menu")
+                    break
 
 
     def display_client(self):
@@ -238,10 +258,9 @@ class StoreCLI:
 
     def display_order(self):
         print("\n1. Add Item ")
-        if self.count_item ==0:
-            print("2. Exit ")
-        else:
+        if self.count_item >0:
             print(f"2.Cart({self.count_item})")
+        print("3. Exit ")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -433,7 +452,7 @@ class StoreCLI:
         print("4. List Product")
         print("5. List Orders")
         if self.store.reporting.new_update > 0:
-            print(f"7. Reporting * {self.store.reporting.new_update} notifications *")
+            print(f"6. Reporting * {self.store.reporting.new_update} notifications *")
         else:
             print("6. Reporting")
         print("7. Logout")
@@ -531,6 +550,7 @@ class StoreCLI:
         return new_item
 
     def add_item(self):
+        self.cart.customer = self.user
         new_item = self.search_system()
         if new_item is not None:
             print(f"Your choice:\n {new_item}")
@@ -636,6 +656,7 @@ class StoreCLI:
     def remove_item_order(self):
             new_item = self.pick_item_order()
             if new_item is not None:
+                print("Update the quantity for the product or 0 to remove from your cart")
                 how_much = input("\nEnter a quantity of the following product: ")
                 if how_much.isdigit():
                     how_much = int(how_much)
@@ -682,8 +703,7 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def cart_check_out(self):
-        if self.count_item>0 :
-            while True:
+            while  self.count_item>0:
                 choice = self.cart_display()
                 if choice == '1':
                     self.check_out()
@@ -696,8 +716,8 @@ class StoreCLI:
                 elif choice =='4':
                     print("Good bye ")
                     break
-        else:
-                print("Your Cart is empty.")
+
+            print("Your Cart is empty.")
 
 
 
@@ -708,11 +728,13 @@ class StoreCLI:
             coupon = self.apply_coupon()
             payment = self.pay()
             if payment:
-                self.cart.pay_order(payment)
-                self.store.place_order(self.cart)
-                self.user.new_order(self.cart)
-                print(f" {self.cart}\n {payment}\n * The order was successfully completed * ")
-                self.cart = Order(self.user, None, None)
+                order = self.cart
+                order.pay_order(payment)
+                self.store.place_order(order)
+                print(f" {order}\n {payment}\n * The order was successfully completed * ")
+                self.cart = Order()
+                self.count_item = 0
+                self.user.new_order(order)
                 if coupon == 1:
                     self.user.use_coupon()
 
@@ -723,10 +745,15 @@ class StoreCLI:
                 if choice == '1':
                     self.add_item()
                 elif choice == '2':
+                    if self.count_item>0:
+                        self.cart_check_out()
+                        break
+                if choice =='3':
                     break
                 else:
                     print(" * Wrong choice,Try again *")
-            self.cart_check_out()
+
+
 
 
 
@@ -754,10 +781,13 @@ class StoreCLI:
             print(' No orders placed yet ')
 
     def orders_history(self):
-        print("\n Your orders \n\n")
         print(self.user.update_client())
-        if len(self.user.order_history) > 0:
-            self.display_order_user()
+        print("\n * Your orders *\n")
+        print(self.user.list_orders_client())
+        print("1.View order details")
+        print("2.Exit")
+        choice = input("Enter your choice: ")
+        return choice
 
     def reporting(self):
         print(self.store.reporting)
@@ -783,7 +813,7 @@ class StoreCLI:
                 print("\n * Login failed. Please check your credentials and try again. * \n ")
 
     def management_menu(self):
-        choice = self.display_menu(self.store.reporting.new_update)
+        choice = self.display_menu()
 
         if choice == '1':
             self.product_manager()
@@ -816,7 +846,7 @@ class StoreCLI:
         elif sub_choice == '3':
             self.catalog()
         elif sub_choice == '4':
-            self.orders_history()
+            self.display_order_user()
         elif sub_choice == '5':
             self.change_password()
         elif sub_choice == '6':

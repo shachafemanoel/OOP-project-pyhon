@@ -141,8 +141,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def place_order(self, order):
         if order.payment != None:
+            order.order_number = self.order_number
             self.orders[self.order_number] = order
-            order.order_number =self.order_number
             for name , quant in order.product_dict.items():
                 self.collection[name].buy_product(quant)
                 if self.collection[name].get_quantity() <4:
