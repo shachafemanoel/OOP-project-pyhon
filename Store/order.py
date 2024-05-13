@@ -41,13 +41,19 @@ class Order:
         found = []
         cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         for key in self.product_dict.keys():
-            if key.casefold()[0:len(cleaned_name)] ==cleaned_name.casefold:
+            if key.casefold()[0:3] ==cleaned_name.casefold[0:3]:
                 found.append(key)
         return key
     def remove(self, product,how_many):
                 if how_many > 0:
-                    self.product_dict[product.get_key_name()] = how_many
+                   how_much_removed = self.product_dict[product.get_key_name()] -how_many
+                   if how_much_removed >0:
+                        how_much_removed = how_much_removed*-1
+                        self.total_amount+=product.price*how_much_removed
+                   if how_much_removed>0:
+                       self.total_amount-=product.price*how_much_removed
                 if how_many ==0:
+                    self.total_amount -= product.price * self.product_dict[product.get_key_name()]
                     self.product_dict.pop(product.get_key_name())
                     return True
 
@@ -65,12 +71,12 @@ class Order:
         if len(self.product_dict) > 0:
             result = ""
             for key,value in self.product_dict.items():
-                result += key + f" -------- quantity  {str(value)} \n"
+                result += key + f" -------- quantity  {str(value)}\n"
             return result
     def __str__(self):
         if len(self.product_dict) >0:
             if self.payment is not None:
-                return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n=================\nTotal amount: {self.converter()} \nStatus:{self.status}\n==================="
+                return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n=================\nTotal amount: {self.converter()} \nStatus:{self.status}\n===================\n{self.payment}"
             else:
                 return f"{self.list_products()} \nSubtotal: {self.converter()} \n "
         else:

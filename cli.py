@@ -199,7 +199,7 @@ class StoreCLI:
                         self.add_review(order)
 
     def display_order_user(self):
-        if len(self.user.order_history)>0:
+        if len(self.user.order_history)>0 and self.cart.total_amount>0:
             while True:
                 choice =self.orders_history()
                 if choice =='1':
@@ -301,7 +301,7 @@ class StoreCLI:
                         print("\n2. No ")
                         save = input("Enter your choice: ")
                         if save == '1':
-                            self.user = paymethood
+                            self.user.payment = paymethood
                         return paymethood
                     else:
                         print("\n * The card number is invalid * ")
@@ -565,7 +565,7 @@ class StoreCLI:
                     else:
                         self.cart.add_item_to_order(new_item,how_much)
                         self.count_item+=how_much
-                        print(f"\n * {new_item.name} ----- quantity {how_much} has been successfully updated ! *\n{self.cart.converter()} ")
+                        print(f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.price*how_much} has been successfully updated ! *\n{self.cart.converter()} ")
                         break
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
@@ -656,13 +656,14 @@ class StoreCLI:
     def remove_item_order(self):
             new_item = self.pick_item_order()
             if new_item is not None:
+                print(f"{new_item.name}============{new_item.quantity}")
                 print("Update the quantity for the product or 0 to remove from your cart")
                 how_much = input("\nEnter a quantity of the following product: ")
                 if how_much.isdigit():
                     how_much = int(how_much)
                     if how_much == 0:
                         print("* The item has been removed from your cart *")
-                        self.cart.remove(new_item)
+                        self.cart.remove(new_item,0)
                         self.count_item -=1
 
                     if not self.store.add_item_order(new_item, how_much):
@@ -675,14 +676,14 @@ class StoreCLI:
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
 
-
+            if self.cart.total_amount <0:
+                self.cart =Order()
 
 
 
 
 
     def pick_item_order(self):
-        new_name = input("\nEnter Product name: ")
         lst =self.store.lst_search(self.cart)
         choice = self.pick_item(lst)
         if choice != -100 and choice is not None:
