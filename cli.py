@@ -353,7 +353,8 @@ class StoreCLI:
             else:
                 print("\n * Invalid choice.The status has not changed * \n")
         else:
-            print("\n * Wrong order number *\n")
+            print("\n * Order did not exist. Please try again. *")
+
 
     def display_product_type(self):
         print("\n * Select Product type *")
@@ -448,20 +449,39 @@ class StoreCLI:
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
+    def display_manage_order(self):
+        print("\n * Wellcome to manage order display *\n")
+        print("1. Update order status")
+        print("2. List Orders")
+        print("3. Exit")
+        choice = input("\nEnter your choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+    def order_manager(self):
+        choice = self.display_manage_order()
+        while True:
+            if choice == "1":
+                self.change_status()
+            elif choice == "2":
+                self.orders()
+            elif choice == "3":
+                break
+            else:
+                print("\n * Invalid choice. Please try again. *\n")
+
     def display_menu(self):
         if self.store.reporting.new_update > 0:
             print(f"\n * There are {self.store.reporting.new_update} new notifications Reporting *")
         print(" \n *  Electronic store Management System * \n")
         print("1. Product Manager")
         print("2. User Manager")
-        print("3. Update order status")
+        print("3. Order Manager")
         print("4. List Product")
-        print("5. List Orders")
         if self.store.reporting.new_update > 0:
-            print(f"6. Reporting * {self.store.reporting.new_update} notifications *")
+            print(f"5. Reporting * {self.store.reporting.new_update} notifications *")
         else:
-            print("6. Reporting")
-        print("7. Logout")
+            print("5. Reporting")
+        print("6. Logout")
         print("0. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -811,11 +831,9 @@ class StoreCLI:
         elif choice == '2':
             self.user_manager()
         elif choice == '3':
-            self.change_status()
+            self.order_manager()
         elif choice == '4':
             self.list_products()
-        elif choice == '5':
-            self.orders()
         elif choice == '6':
             self.reporting()
         elif choice == '7':

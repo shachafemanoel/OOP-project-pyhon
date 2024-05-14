@@ -26,8 +26,8 @@ class Product:
             return False
 
     def update_price(self, discount):
-        if self.sale ==0:
-            self.sale =discount
+        if self.sale == 0:
+            self.sale = discount
             self.price -= (self.price * float(discount / 100))
 
     def remove_discount(self):
@@ -42,10 +42,13 @@ class Product:
 
     def get_quantity(self):  # לראות רק את הכמות של המוצר
         return self.quantity
+
     def add_quantity(self, quantity):
         self.quantity += quantity
+
     def available(self, how_many):  # בדיקת זמינות של מוצר מסוים
         return self.quantity >= how_many
+
     def add_review(self,review):
         self.rate.append(review)
         return "Thank you for your opinion"

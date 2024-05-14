@@ -30,7 +30,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             , airpods_2.get_key_name() : airpods_2, airpods_3.get_key_name() : airpods_3, apple_charger.get_key_name() : apple_charger}
 
         self.users = {admin.user_id:admin, client1.user_id:client1}  # משתמשי החנות
-        self.orders = {order1.order_number:order1,}  # הזמנות החנות
+        self.orders = {order1.order_number:order1}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
         for key , item in self.collection.items():
@@ -123,7 +123,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         if user.user_id not in self.users:
             self.users[user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))] = user
             self.reporting.messege.append(f" \n * A new customer has joined your store * \n customer name: {user.user_full_name}  ")
-            self.reporting.new_update +=1
+            self.reporting.new_update += 1
             return True
         return False
 

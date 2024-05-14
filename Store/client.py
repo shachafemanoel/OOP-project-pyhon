@@ -25,7 +25,7 @@ class Client(User):
     def use_coupon(self):
         self.coupon = None
 
-    def new_status(self,order):
+    def new_status(self, order):
         self.order_history[order.order_number] = order
         self.messege.append(f"\n *Order Number:{order.order_number} has been {order.status} *")
         self.new_messege += 1
@@ -33,7 +33,7 @@ class Client(User):
     def new_order(self,order):
         self.order_history[order.order_number] = order
         self.messege.append(f"\n * Thank you for your purchase!,  Order number: {order.order_number} has been received! *")
-        self.new_messege +=1
+        self.new_messege += 1
 
     def list_orders_client(self):
         return [[f"Order Number: {order_number}",f"Total amount: {order.converter()}",f"Status: {order.status}"] for order_number, order
