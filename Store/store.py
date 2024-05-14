@@ -39,7 +39,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
 
 
-    def sale_prodduct_type(self,product_type,discount):
+    def sale_prodduct_type(self, product_type, discount):
         if product_type == "1":
                self.sales.append(f" * -{discount}% discount on all TVs * ")
         elif product_type == "2":
@@ -144,7 +144,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         if order.payment is not None:
             order.order_number = self.order_number
             self.orders[self.order_number] = order
-            for name , quant in order.product_dict.items():
+            for name, quant in order.product_dict.items():
                 self.collection[name].buy_product(quant)
                 if self.collection[name].get_quantity() <4:
                     self.reporting.messege.append(f"\n * Warning:Less than {self.collection[name].get_quantity()} left in stock {self.collection[name].name} *\n")
@@ -174,7 +174,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return self.users[login]
         else:
             return None
-
 
     def change_order(self, order_number, choice):
         self.orders[order_number].change_status(choice)
