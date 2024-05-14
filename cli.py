@@ -834,9 +834,9 @@ class StoreCLI:
             self.order_manager()
         elif choice == '4':
             self.list_products()
-        elif choice == '6':
+        elif choice == '5':
             self.reporting()
-        elif choice == '7':
+        elif choice == '6':
             self.user.logout()
         elif choice == '0':
             print("Bye, have a nice day")

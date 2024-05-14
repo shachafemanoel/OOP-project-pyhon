@@ -41,25 +41,27 @@ class Order:
         found = []
         cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         for key in self.product_dict.keys():
-            if key.casefold()[0:3] == cleaned_name.casefold[0:3]:
+            if key.casefold()[0:3] == cleaned_name.casefold()[0:3]:
                 found.append(key)
         return key
 
     def remove(self, product, how_many):
-                if how_many > 0:
-                   how_much_removed = self.product_dict[product.get_key_name()] - how_many
-                   if how_much_removed > 0:
-                        how_much_removed = how_much_removed*-1
-                        self.total_amount += product.price*how_much_removed
-                   if how_much_removed > 0:
-                       self.total_amount -= product.price*how_much_removed
-                if how_many == 0:
-                    self.total_amount -= product.price * self.product_dict[product.get_key_name()]
-                    self.product_dict.pop(product.get_key_name())
+        product_key = product.get_key_name()
+        if product_key in self.product_dict:
+            if how_many > 0:
+                if self.product_dict[product_key] >= how_many:
+                    self.product_dict[product_key] -= how_many
+                    self.total_amount += product.price * how_many
+                    product.quantity -= how_many
+                    if self.product_dict[product_key] == 0:
+                        del self.product_dict[product_key]
                     return True
-
-                else:
-                    return False
+                return False
+            elif how_many == 0:
+                self.total_amount -= product.price * self.product_dict[product_key]
+                self.product_dict.pop(product.get_key_name())
+                return True
+        return False
 
     def add_item_to_order(self, product, how_many):
         if product.get_key_name() not in self.product_dict:

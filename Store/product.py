@@ -14,9 +14,9 @@ class Product:
             self.rate = rate
 
     def get_key_name(self):
-        return self.name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        return self.name.replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
     def get_model_name(self):
-        return self.model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        return self.model.replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
 
     def buy_product(self, many):  # הוצאת כמות מוצרים מהמלאי
         if self.available(many):
