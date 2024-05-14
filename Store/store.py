@@ -105,7 +105,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     if isinstance(value, Phone):
                         found.append(value)
                 elif product_type == "4":
-                    if isinstance(value, Product):
+                    if type(value)!=Tv and type(value)!= Phone and type(value)!= Computer:
                         found.append(value)
 
         return found

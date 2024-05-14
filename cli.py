@@ -199,7 +199,7 @@ class StoreCLI:
                         self.add_review(order)
 
     def display_order_user(self):
-        if len(self.user.order_history)>0 and self.cart.total_amount>0:
+        if len(self.user.order_history)>0 :
             while True:
                 choice =self.orders_history()
                 if choice =='1':
@@ -279,12 +279,16 @@ class StoreCLI:
 
 
     def pay(self):
-        paymethood = Payment
+        paymethood = Payment()
         if self.user.payment is not None:
-            print(f"for paying with:")
+            self.user.payment.amount_of_payments =1
+            print(f"\n===================\nfor paying with:\n")
             print(self.user.payment)
-            s = input(" \n Press 1:")
+            s = input("Press 1:")
             if s == '1':
+                how_much = input("how many payments would you like to spread the deal?")
+                if how_much.isdigit():
+                    self.user.payment.amount_of_payments = int(how_much)
                 return self.user.payment
         else:
 
@@ -293,8 +297,10 @@ class StoreCLI:
                 if pay_option == '1':
                     card_holder = input("Name on card: ")
                     card_number = input("Card number: ")
-                    paymethood = Payment(card_holder, card_number,"Credit Card")
-                    if paymethood.check_card():
+                    how_much = input("how many payments would you like to spread the deal?")
+                    if card_number.isdigit() and how_much.isdigit():
+                        paymethood = Payment(card_holder, card_number,"Credit Card")
+                    if paymethood.check_card(how_much):
 
                         print("\nWould you like to save your payment method for future orders?")
                         print("\n1. Yes, save it")
@@ -732,10 +738,11 @@ class StoreCLI:
                 order = self.cart
                 order.pay_order(payment)
                 self.store.place_order(order)
+                self.user.new_order(order)
                 print(f" {order}\n {payment}\n * The order was successfully completed * ")
                 self.cart = Order()
                 self.count_item = 0
-                self.user.new_order(order)
+
                 if coupon == 1:
                     self.user.use_coupon()
 

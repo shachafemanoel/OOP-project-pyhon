@@ -32,7 +32,7 @@ class Client(User):
 
     def new_order(self,order):
         self.order_history[order.order_number] = order
-        self.messege.append(f"\n * Thank you for your purchase!,  Order number: {order.order_number} has been received! *\n")
+        self.messege.append(f"\n * Thank you for your purchase!,  Order number: {order.order_number} has been received! *")
         self.new_messege +=1
 
     def list_orders_client(self):
