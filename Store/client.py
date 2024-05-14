@@ -22,9 +22,9 @@ class Client(User):
         else:
             return f"\n * There are no new notifications *\n "
 
-
     def use_coupon(self):
         self.coupon = None
+
     def new_status(self,order):
         self.order_history[order.order_number] = order
         self.messege.append(f"\n *Order Number:{order.order_number} has been {order.status} *")
@@ -39,11 +39,8 @@ class Client(User):
         return [[f"Order Number: {order_number}",f"Total amount: {order.converter()}",f"Status: {order.status}"] for order_number, order
                 in self.order_history.items()]
 
-
     def change_address(self, new_address):
         self.address = new_address
-
-
 
     def __str__(self):
         return super().__str__()

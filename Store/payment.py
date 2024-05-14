@@ -12,9 +12,6 @@ class Payment:
         else:
             return False
 
-
-
-
     def __str__(self):
         if self.payment_method == "Credit Card":
             return f"Payment method:  {self.info[-4:]} {self.payment_method}\nNumber of payments:{self.amount_of_payments}\n==================="

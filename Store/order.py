@@ -1,5 +1,5 @@
 class Order:
-    def __init__(self,customer=None,order_number = None,product_dict=None,payment = None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
+    def __init__(self, customer=None, order_number=None, product_dict=None, payment=None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
         self.order_number = order_number
         self.customer = customer
         self.total_amount = 0
@@ -26,33 +26,35 @@ class Order:
     def converter(self):
         if self.customer.address is not None:
             if self.customer.address[0:3].casefold() != "isr":
-                return f"{self.total_amount}₪ILS   or {round(self.total_amount/3.7611,2)} US$"
+                return f"{self.total_amount}₪ILS   or  {round(self.total_amount/3.7611, 2)} US$"
 
 
         return f"{self.total_amount}₪ILS"
 
     def payments(self):
-        return f"{self.total_amount}ILS or {round(self.total_amount/12,2)}₪ILS 12/mo. for 12 mo.*"
-    def pay_order(self,payme):
+        return f"{self.total_amount}ILS or {round(self.total_amount/12, 2)}₪ILS 12/mo. for 12 mo.*"
+
+    def pay_order(self, payme):
         self.payment = payme
         self.status = "Processing"
 
-    def search(self,name):
+    def search(self, name):
         found = []
         cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         for key in self.product_dict.keys():
-            if key.casefold()[0:3] ==cleaned_name.casefold[0:3]:
+            if key.casefold()[0:3] == cleaned_name.casefold[0:3]:
                 found.append(key)
         return key
-    def remove(self, product,how_many):
+
+    def remove(self, product, how_many):
                 if how_many > 0:
-                   how_much_removed = self.product_dict[product.get_key_name()] -how_many
-                   if how_much_removed >0:
+                   how_much_removed = self.product_dict[product.get_key_name()] - how_many
+                   if how_much_removed > 0:
                         how_much_removed = how_much_removed*-1
-                        self.total_amount+=product.price*how_much_removed
-                   if how_much_removed>0:
-                       self.total_amount-=product.price*how_much_removed
-                if how_many ==0:
+                        self.total_amount += product.price*how_much_removed
+                   if how_much_removed > 0:
+                       self.total_amount -= product.price*how_much_removed
+                if how_many == 0:
                     self.total_amount -= product.price * self.product_dict[product.get_key_name()]
                     self.product_dict.pop(product.get_key_name())
                     return True
@@ -70,11 +72,12 @@ class Order:
     def list_products(self):
         if len(self.product_dict) > 0:
             result = ""
-            for key,value in self.product_dict.items():
+            for key, value in self.product_dict.items():
                 result += key + f" -------- quantity  {str(value)}\n"
             return result
+
     def __str__(self):
-        if len(self.product_dict) >0:
+        if len(self.product_dict) > 0:
             if self.payment is not None:
                 return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n=================\nTotal amount: {self.converter()} \nStatus:{self.status}\n===================\n{self.payment}"
             else:

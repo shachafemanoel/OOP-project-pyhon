@@ -22,7 +22,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         admin = User("1111","Admin",'1234')
         client1 = Client("2020", "Client Check", '1234', 'Address')
         order1 = Order(client1,0,{macbook_air_13.get_key_name() : 3, iphone_15_promax.get_key_name() : 2,})
-        order1.status ='delivered'
+        order1.status = 'delivered'
         order1.payment = "admin"
 
         self.collection = {macbook_air_13.get_key_name() : macbook_air_13, iphone_15_promax.get_key_name() : iphone_15_promax
@@ -48,9 +48,10 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             self.sales.append(f" * -{discount}% discount on all Phones * ")
         elif product_type == "4":
             self.sales.append(f" * -{discount}% discount on all Accessories * ")
-    def new_discount(self,lst,discount):
+
+    def new_discount(self, lst, discount):
         if 0 < discount < 100:
-            if isinstance(lst, list):# הנחה על מחלקה שלמה
+            if isinstance(lst, list):   # הנחה על מחלקה שלמה
                 for product in self.collection.values():
                     if product in lst:
                         product.update_price(discount)
@@ -105,7 +106,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     if isinstance(value, Phone):
                         found.append(value)
                 elif product_type == "4":
-                    if type(value)!=Tv and type(value)!= Phone and type(value)!= Computer:
+                    if type(value) != Tv and type(value) != Phone and type(value) != Computer:
                         found.append(value)
 
         return found
@@ -140,7 +141,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return False
 
     def place_order(self, order):
-        if order.payment != None:
+        if order.payment is not None:
             order.order_number = self.order_number
             self.orders[self.order_number] = order
             for name , quant in order.product_dict.items():
@@ -167,7 +168,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         return [[order_number, order.customer.user_full_name, order.total_amount, order.status] for order_number, order in
                 self.orders.items()]
 
-    def log (self,user_id,password):
+    def log(self, user_id, password):
         login = user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         if login in self.users and self.users[login].login(password):
             return self.users[login]
@@ -175,8 +176,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return None
 
 
-
-    def change_order(self,order_number,choice):
+    def change_order(self, order_number, choice):
         self.orders[order_number].change_status(choice)
         order = self.orders[order_number]
         user_id = order.customer.user_id

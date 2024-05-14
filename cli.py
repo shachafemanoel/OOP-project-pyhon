@@ -10,19 +10,22 @@ from Store.tv import Tv
 from Store.phone import Phone
 from Store.computer import Computer
 from Store.rating import Rating
+
 class StoreCLI:
     def __init__(self):
         self.store = Store()
         self.user = Client()
         self.count_item = 0
         self.cart = Order()
-        self.exit =False
+        self.exit = False
 
     def log_in(self):
         user_id = input("Enter User ID: ")
         password = input("Enter Password: ")
         loggg = self.store.log(user_id, password)
-        if loggg is not None :
+        if loggg is not None:
+            self.cart = Order()
+            self.count_item = 0
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
@@ -44,7 +47,7 @@ class StoreCLI:
                         self.user = new_user
                         self.set_address()
                         self.store.users[user_id] = new_user
-                        self.user.online =1
+                        self.user.online = 1
                         print("\n * User registered successfully. * ")
                         self.user.coupon = 5
                         print("Thank you for register. Enjoy a 5% coupon !")
@@ -90,6 +93,7 @@ class StoreCLI:
     def add_admin(self):
         new_admin = self.register_admin()
         return new_admin
+
     def change_password(self):
         old_password = input("\nFor changing password please enter your old password: ")
 
@@ -163,7 +167,7 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
 
-    def add_review(self,order):
+    def add_review(self, order):
         for key, value in order.product_dict.items():
             print(key)
             prod = self.store.collection[key]
@@ -176,7 +180,7 @@ class StoreCLI:
             review = input("Enter your opinion: ")
             if star.isdigit():
                 star = int(star)
-                if 1<star<6:
+                if 0 < star < 6:
                     new = Rating(star, review)
                     prod.add_review(new)
                     self.store.collection[key] = prod
@@ -202,7 +206,7 @@ class StoreCLI:
         if len(self.user.order_history)>0 :
             while True:
                 choice =self.orders_history()
-                if choice =='1':
+                if choice == '1' :
                   self.choice_order()
                 else:
                     print("Return to Main menu")
@@ -210,14 +214,14 @@ class StoreCLI:
 
 
     def display_client(self):
-        if self.user.new_messege> 0:
+        if self.user.new_messege > 0:
             print(f"\n * There are {self.user.new_messege} new notifications on orders * \n")
         print("\n1. Change address")
-        if self.count_item >0:
+        if self.count_item > 0:
             print(f"2. Cart({self.count_item})")
         else:
             print("2. Cart(0)")
-        if len(self.store.sales)>0:
+        if len(self.store.sales) > 0:
             print("3.   Collection * new sale *")
         else:
             print("3. Collection")
@@ -255,10 +259,9 @@ class StoreCLI:
             print("\n * Not enough details were entered for setting address. *")
 
 
-
     def display_order(self):
         print("\n1. Add Item ")
-        if self.count_item >0:
+        if self.count_item > 0:
             print(f"2.Cart({self.count_item})")
         print("3. Exit ")
         choice = input("\nEnter your choice: ")
@@ -275,8 +278,6 @@ class StoreCLI:
         print("4.Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
-
 
     def pay(self):
         paymethood = Payment()
@@ -337,8 +338,6 @@ class StoreCLI:
 
                     print("\n * Invalid choice. Please try again.* ")
 
-
-
     def change_status(self):
         print(f"{self.store.list_orders()}")
         order_num = input("\nPlease Enter the order number: ")
@@ -349,7 +348,7 @@ class StoreCLI:
             print("2, new status - Delivered")
             choice = input("Enter your choice: ")
             if choice == '1' or choice == '2':
-                self.store.change_order(number,int(choice))
+                self.store.change_order(number, int(choice))
                 print(f"\n* Order number:{self.store.orders[number].order_number} New status:{self.store.orders[number].status} *\n")
             else:
                 print("\n * Invalid choice.The status has not changed * \n")
@@ -367,8 +366,8 @@ class StoreCLI:
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def product_type(self,choice = None):
-        if choice ==None:
+    def product_type(self, choice=None):
+        if choice is None:
             choice = self.display_product_type()
 
         for i in range(5):
@@ -422,6 +421,7 @@ class StoreCLI:
         print("2. Remove discount from a specific product")
         choice = input("\nEnter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         return choice
+
     def remove_discount(self):
         choice = self.display_remove_discount()
 
@@ -467,7 +467,7 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
 
-    def pick_item(self, lst,):
+    def pick_item(self, lst):
         if len(lst) == 0:
             return -100
         print("\nPlease select one of the options")
@@ -480,7 +480,7 @@ class StoreCLI:
             select = int(select)
             if select>0:
                 select -= 1
-                if select < len(lst) and select>=-1:
+                if len(lst) > select >= -1:
                     return select
             else:
                 return -100
@@ -496,7 +496,7 @@ class StoreCLI:
                     model = input("Enter model: ")
                     search_name_model = self.store.search(new_name, None,model)
                     choice = self.pick_item(search_name_model)
-                    if choice!= -100 and choice is not None:
+                    if choice != -100 and choice is not None:
                         item = search_name_model[choice]
                     else:
                         item = None
@@ -549,17 +549,13 @@ class StoreCLI:
             else:
                 new_item = None
 
-
-
-
-
         return new_item
 
     def add_item(self):
         self.cart.customer = self.user
         new_item = self.search_system()
         if new_item is not None:
-            print(f"Your choice:\n {new_item}")
+            print(f"\nYour choice:\n {new_item}")
             for i in range(5):
                 how_much = input("\nEnter a quantity of the following product: ")
                 if how_much.isdigit():
@@ -570,7 +566,7 @@ class StoreCLI:
                         print(f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
                     else:
                         self.cart.add_item_to_order(new_item,how_much)
-                        self.count_item+=how_much
+                        self.count_item += how_much
                         print(f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.price*how_much} has been successfully updated ! *\n{self.cart.converter()} ")
                         break
                 else:
@@ -578,14 +574,12 @@ class StoreCLI:
                 if i == 4:
                     print("* You have passed the possible amount of attempts *")
 
-
     def display_adding_products(self):
         print("\n1. Add new product")
         print("2. Add quantity to existing product")
         print("3. Return to primary display")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
 
     def add_quantity_to_product(self):
         item = self.search_system()
@@ -628,7 +622,7 @@ class StoreCLI:
                     if category == 1:
                         size = input("Enter Screen size: ")
                         tv_type = input("Enter TV type")
-                        pro =Tv(name,model,description,price,quantity,size,tv_type)
+                        pro = Tv(name,model, description, price, quantity, size, tv_type)
                     if category == 2:
                         chip = input("Enter Chip: ")
                         size = input("Enter Screen size: ")
@@ -669,11 +663,11 @@ class StoreCLI:
                     how_much = int(how_much)
                     if how_much == 0:
                         print("* The item has been removed from your cart *")
-                        self.cart.remove(new_item,0)
-                        self.count_item -=1
+                        self.cart.remove(new_item, 0)
+                        self.count_item -= 1
 
                     if not self.store.add_item_order(new_item, how_much):
-                        print( f" * Sorry there is only {new_item.quantity} of {new_item.name} in  the inventory *")
+                        print(f" * Sorry there is only {new_item.quantity} of {new_item.name} in  the inventory *")
 
                     else:
                         self.cart.add_item_to_order(new_item, how_much)
@@ -682,21 +676,17 @@ class StoreCLI:
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
 
-            if self.cart.total_amount <0:
-                self.cart =Order()
-
-
-
+            if self.cart.total_amount < 0:
+                self.cart = Order()
 
 
     def pick_item_order(self):
-        lst =self.store.lst_search(self.cart)
+        lst = self.store.lst_search(self.cart)
         choice = self.pick_item(lst)
         if choice != -100 and choice is not None:
             return lst[choice]
         else:
             return None
-
 
 
     def cart_display(self):
@@ -710,27 +700,26 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def cart_check_out(self):
-            while  self.count_item>0:
+            while self.count_item > 0:
                 choice = self.cart_display()
                 if choice == '1':
                     self.check_out()
-                elif choice =='2':
+                elif choice == '2':
                     self.remove_item_order()
-                elif choice =='3':
-                    self.cart = Order(self.user,None,None,None)
-                    self.count_item=0
+                elif choice == '3':
+                    self.cart = Order(self.user, None, None, None)
+                    self.count_item = 0
                     break
-                elif choice =='4':
+                elif choice == '4':
                     print("Good bye ")
                     break
 
             print("Your Cart is empty.")
 
 
-
     def check_out(self):
         if self.user.address is None:
-            self.user.set_address()
+            User.set_address()
         if self.cart.total_amount > 0 or len(self.cart.product_dict) > 0:
             coupon = self.apply_coupon()
             payment = self.pay()
@@ -747,23 +736,18 @@ class StoreCLI:
                     self.user.use_coupon()
 
     def catalog(self):
-
             while True:
                 choice = self.display_order()
                 if choice == '1':
                     self.add_item()
                 elif choice == '2':
-                    if self.count_item>0:
+                    if self.count_item > 0:
                         self.cart_check_out()
                         break
-                if choice =='3':
+                elif choice == '3':
                     break
                 else:
                     print(" * Wrong choice,Try again *")
-
-
-
-
 
     def remove_product(self):
         removed_product = Product()
@@ -805,7 +789,6 @@ class StoreCLI:
         self.user.logout()
         self.store.users[self.user.user_id] = self.user
 
-
     def wellcome_page(self):
             selection = self.display_user()
             if selection == '1':
@@ -815,7 +798,7 @@ class StoreCLI:
             elif selection == '3':
                 self.forgot_password()
             elif selection == '4':
-                self.exit=True
+                self.exit = True
                 print('Bye, Thank you')
             else:
                 print("\n * Login failed. Please check your credentials and try again. * \n ")
@@ -839,7 +822,7 @@ class StoreCLI:
             self.user.logout()
         elif choice == '0':
             print("Bye, have a nice day")
-            self.exit =True
+            self.exit = True
         else:
             print("\n* Invalid choice. Please try again.* ")
 
@@ -861,7 +844,7 @@ class StoreCLI:
             self.logout()
         elif sub_choice == '7':
             self.logout()
-            self.exit =True
+            self.exit = True
             print("Bye, have a nice day")
         else:
             print("\n * Invalid choice. Please try again. * ")
@@ -869,10 +852,10 @@ class StoreCLI:
 
 
     def run(self):
-        while self.exit ==False:
-            if self.user.online ==0:
+        while not self.exit:
+            if self.user.online == 0:
                 self.wellcome_page()
-            if self.user.online ==1:
+            if self.user.online == 1:
                 print(f"\n * Welcome {self.user.user_full_name}! You are now connected. *")
                 if type(self.user) == Client:
                         self.customer_menu()
