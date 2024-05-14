@@ -5,7 +5,7 @@ class Product:
         self.model = model # דגם
         self.description = description  # תיאור המוצר
         self.original_price = price
-        self.sale=0
+        self.sale = 0
         self.price = price  # מחיר המוצר
         self.quantity = quantity  # הכמות המוצר
         if rate is None:
@@ -49,13 +49,13 @@ class Product:
     def available(self, how_many):  # בדיקת זמינות של מוצר מסוים
         return self.quantity >= how_many
 
-    def add_review(self,review):
+    def add_review(self, review):
         self.rate.append(review)
         return "Thank you for your opinion"
 
 
     def review(self):
-        review = '=================Rating=====================\n'
+        review = '=================Rating====================='
         if self.rate is not None and len(self.rate)>0:
             for rate in self.rate:
                 review += f"\n{rate}"
@@ -66,9 +66,8 @@ class Product:
         return review
 
     def __str__(self):
-        if self.sale >0:
-            return f" ======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n \nPrice:{self.original_price} -{self.sale}% Off {self.price}₪ ILS\n{self.review()}"
-
+        if self.sale > 0:
+            return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n Price:{self.original_price} -{self.sale}% Off {self.price}₪ ILS\n{self.review()}"
 
         else:
-            return f" ======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n \n Price: {self.price}₪\n{self.review()}\n"
+            return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n Price: {self.price}₪\n {self.review()}\n"
