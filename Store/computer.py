@@ -1,13 +1,13 @@
 from Store.product import Product
 class Computer(Product):
-    def __init__(self, name =None,model=None,description=None, price=None, quantity=None,size=None,storge=None,chip=None):
-        super().__init__(name,model,description,price,quantity)
+    def __init__(self, name =None, model=None, description=None, price=None, quantity=None, size=None, storge=None, chip=None):
+        super().__init__(name, model, description, price, quantity)
         self.size = size
         self.storge = storge
         self.chip = chip
 
     def __str__(self):
-        if self.sale>0:
-            return f"======================================\nName: {self.name}\n Model: {self.model} Storge: {self.storge} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n Price:-{self.sale}% Off {self.price}₪ ILS\n{self.review()}"
+        if self.sale > 0:
+            return f"======================================\n Name: {self.name}\n Model: {self.model} Storge: {self.storge} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n Price:-{self.sale}% Off {self.price}₪ ILS\n{self.review()}"
         else:
-            return f"======================================\nName: {self.name}\n Model: {self.model} Storge: {self.storge} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n Price: {self.price}₪\n{self.review()}"
+            return f"======================================\n Name: {self.name}\n Model: {self.model} Storge: {self.storge} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n Price: {self.price}₪\n{self.review()}"
