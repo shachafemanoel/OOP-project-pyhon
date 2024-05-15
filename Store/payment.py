@@ -3,7 +3,7 @@ class Payment:
         self.owner = owner
         self.info = info
         self.payment_method = payment_method
-        self.amount_of_payments =1
+        self.amount_of_payments = 1
     def check_card(self,how_much):
         if len(self.owner) > 0 and len(self.info) >= 8:
             self.payment_method = "Credit Card"
@@ -17,4 +17,4 @@ class Payment:
             return f"Payment method:  {self.info[-4:]} {self.payment_method}\nNumber of payments:{self.amount_of_payments}\n==================="
 
         else:
-            return f"Payment method: {self.payment_method}\n=================== "
+            return f"Payment method: {self.payment_method}\n==================="
