@@ -20,6 +20,7 @@ class StoreCLI:
         self.exit = False
 
     def log_in(self):
+        # פונקציית התחברות למערכת הפונקציה מקבלת שם משתמש וסיסמא קוראת לפונקציה בחנות במידה והערכים תקינים יחזור משתמש אם המשתמש מנהל הפונקציה תחבר אותו בתור מנהל
         user_id = input("Enter User ID: ")
         password = input("Enter Password: ")
         loggg = self.store.log(user_id, password)
@@ -622,7 +623,7 @@ class StoreCLI:
             print("* Invalid input or product not found. * \n")
 
 
-    def add_prudct_categoty(self,name,model,description,price,quantity):
+    def add_pruduct_categoty(self,name,model,description,price,quantity):
         category = self.display_product_type()
         pro = Product()
         if category == '1':
@@ -669,7 +670,7 @@ class StoreCLI:
                 if price.isdigit() and int(price) > 0 and quantity.isdigit():
                     price = float(price)
                     quantity = int(quantity)
-                    self.add_prudct_categoty(name,model,description,price,quantity)
+                    self.add_pruduct_categoty(name,model,description,price,quantity)
 
 
                 else:
@@ -823,6 +824,7 @@ class StoreCLI:
         self.store.reporting.seen()
 
     def logout(self):
+        #פונקציית התנתקות תבצע התנתקות למשתמש עצמו דרך הפונקציה במחלקה שלו ולאחר מכן תשמור בחנות את המשתמש החדש כדי לשמור את הנתונים החדשים שלו
         self.user.logout()
         self.store.users[self.user.user_id] = self.user
 
