@@ -279,8 +279,59 @@ class StoreCLI:
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def pay(self):
+
+    def new_card(self,paymethood):
+        card_holder = input("Name on card: ")
+        card_number = input("Card number: ")
+        how_much = input("how many payments would you like to spread the deal?")
+        if card_number.isdigit() and how_much.isdigit():
+            paymethood = Payment(card_holder, card_number, "Credit Card")
+        if paymethood.check_card(how_much):
+            print("\nWould you like to save your payment method for future orders?")
+            print("\n1. Yes, save it")
+            print("\n2. No ")
+            save = input("Enter your choice: ")
+            if save == '1':
+                self.user.payment = paymethood
+            return paymethood
+        else:
+            print("\n * The card number is invalid * ")
+
+
+    def new_paypal(self,paymethood):
+        paypal_id = input("Enter your Paypal id: ")
+        if len(paypal_id) > 0:
+            paymethood = Payment(self.user.user_full_name, None, 'PayPal')
+            print("\nWould you like to save your payment method for future orders?")
+            print("1. Yes,save it")
+            print("2 .No ")
+            save = input("Enter your choice: ")
+            if save == '1':
+                self.user.payment = paymethood
+            return paymethood
+        else:
+            print("\n * Paypal id in invalid * ")
+
+    def new_payment(self):
         paymethood = Payment()
+        for i in range(4):
+            pay_option = self.display_payment()
+            if pay_option == '1':
+               return self.new_card(paymethood)
+            elif pay_option == '2':
+               return self.new_paypal(paymethood)
+            elif pay_option == '3':
+                paymethood = Payment(self.user.user_full_name, None, 'Cash')
+                return paymethood
+
+            elif pay_option == '4':
+                print('Good bye')
+                return False
+            else:
+
+                print("\n * Invalid choice. Please try again.* ")
+
+    def pay(self):
         if self.user.payment is not None:
             self.user.payment.amount_of_payments =1
             print(f"\n===================\nfor paying with:\n")
@@ -292,69 +343,28 @@ class StoreCLI:
                     self.user.payment.amount_of_payments = int(how_much)
                 return self.user.payment
         else:
+                return self.new_payment()
 
-            for i in range(4):
-                pay_option = self.display_payment()
-                if pay_option == '1':
-                    card_holder = input("Name on card: ")
-                    card_number = input("Card number: ")
-                    how_much = input("how many payments would you like to spread the deal?")
-                    if card_number.isdigit() and how_much.isdigit():
-                        paymethood = Payment(card_holder, card_number,"Credit Card")
-                    if paymethood.check_card(how_much):
-
-                        print("\nWould you like to save your payment method for future orders?")
-                        print("\n1. Yes, save it")
-                        print("\n2. No ")
-                        save = input("Enter your choice: ")
-                        if save == '1':
-                            self.user.payment = paymethood
-                        return paymethood
-                    else:
-                        print("\n * The card number is invalid * ")
-
-                elif pay_option == '2':
-                    paypal_id = input("Enter your Paypal id: ")
-                    if len(paypal_id) > 0:
-                        paymethood = Payment(self.user.user_full_name, None, 'PayPal')
-                        print("\nWould you like to save your payment method for future orders?")
-                        print("1. Yes,save it")
-                        print("2 .No ")
-                        save = input("Enter your choice: ")
-                        if save == '1':
-                            self.user.payment = paymethood
-                        return paymethood
-                    else:
-                        print("\n * Paypal id in invalid * ")
-
-                elif pay_option == '3':
-                    paymethood = Payment(self.user.user_full_name, None, 'Cash')
-                    return paymethood
-
-                elif pay_option == '4':
-                    print('Good bye')
-                    return False
-                else:
-
-                    print("\n * Invalid choice. Please try again.* ")
 
     def change_status(self):
         print(f"{self.store.list_orders()}")
-        order_num = input("\nPlease Enter the order number: ")
-        number = int(order_num)
-        if number in self.store.orders:
-            print(f"{self.store.orders[number]}")
-            print("1, new status - Shipped")
-            print("2, new status - Delivered")
-            choice = input("Enter your choice: ")
-            if choice == '1' or choice == '2':
-                self.store.change_order(number, int(choice))
-                print(f"\n* Order number:{self.store.orders[number].order_number} New status:{self.store.orders[number].status} *\n")
+        number = input("\nPlease Enter the order number: ")
+        if number.isdigit():
+            number = int(number)
+            if number in self.store.orders:
+                print(f"{self.store.orders[number]}")
+                print("1, new status - Shipped")
+                print("2, new status - Delivered")
+                choice = input("Enter your choice: ")
+                if choice == '1' or choice == '2':
+                    self.store.change_order(number, int(choice))
+                    print(f"\n* Order number:{self.store.orders[number].order_number} New status:{self.store.orders[number].status} *\n")
+                else:
+                    print("\n * Invalid choice.The status has not changed * \n")
             else:
-                print("\n * Invalid choice.The status has not changed * \n")
+                print("\n * Order did not exist. Please try again. *")
         else:
-            print("\n * Order did not exist. Please try again. *")
-
+                print("\n * Invalid order number")
 
     def display_product_type(self):
         print("\n * Select Product type *")
@@ -458,8 +468,8 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def order_manager(self):
-        choice = self.display_manage_order()
         while True:
+            choice = self.display_manage_order()
             if choice == "1":
                 self.change_status()
             elif choice == "2":
@@ -611,8 +621,29 @@ class StoreCLI:
         else:
             print("* Invalid input or product not found. * \n")
 
-    def add_product(self):
+
+    def add_prudct_categoty(self,name,model,description,price,quantity):
+        category = self.display_product_type()
         pro = Product()
+        if category == '1':
+            size = input("Enter Screen size: ")
+            tv_type = input("Enter TV type")
+            pro = Tv(name, model, description, price, quantity, size, tv_type)
+        if category == '2':
+            chip = input("Enter Chip: ")
+            size = input("Enter Screen size: ")
+            storge = input("Enter Storge:")
+            pro = Computer(name, model, description, price, quantity, size, storge, chip)
+        if category == '3':
+            size = input("Enter Screen size: ")
+            storge = input("Enter Storge:")
+            pro = Phone(name, model, description, price, quantity, size, storge)
+        else:
+            pro = Product(name, model, description, price, quantity, )
+        self.store.add_product(pro)
+
+
+    def add_product(self):
         name = input("Enter Product Name: ")
         model = input("Enter Product Model: ")
         search = self.store.search(name, model)
@@ -623,9 +654,9 @@ class StoreCLI:
                 pro = search[s]
                 print(f"\n{pro}")
                 print("How much would you like to add to the inventory?")
-                quan = input("Add quantity: ")
-                if quan.isdigit():
-                    self.store.collection[pro.get_key_name()].add_quantity(int(quan))
+                quantity = input("Add quantity: ")
+                if quantity.isdigit():
+                    self.store.collection[pro.get_key_name()].add_quantity(int(quantity))
                     print("\n * Quantity added successfully *")
                 else:
                     print("Quantity must be a digit!")
@@ -635,26 +666,12 @@ class StoreCLI:
                 description = input("Enter description: ")
                 price = input("Enter Price: ")
                 quantity = input("Enter Quantity: ")
-                category = self.display_product_type()
                 if price.isdigit() and int(price) > 0 and quantity.isdigit():
                     price = float(price)
                     quantity = int(quantity)
-                    if category == 1:
-                        size = input("Enter Screen size: ")
-                        tv_type = input("Enter TV type")
-                        pro = Tv(name,model, description, price, quantity, size, tv_type)
-                    if category == 2:
-                        chip = input("Enter Chip: ")
-                        size = input("Enter Screen size: ")
-                        storge = input("Enter Storge:")
-                        pro = Computer(name, model, description, price, quantity,size,storge,chip)
-                    if category == 3:
-                        size = input("Enter Screen size: ")
-                        storge = input("Enter Storge:")
-                        pro = Phone(name, model, description, price, quantity,size,storge)
-                    else:
-                        pro = Product(name, model, description, price, quantity, )
-                    self.store.add_product(pro)
+                    self.add_prudct_categoty(name,model,description,price,quantity)
+
+
                 else:
                     print("* Price and Quantity must be a digit *")
 
