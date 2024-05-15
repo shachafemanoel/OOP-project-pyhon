@@ -18,7 +18,6 @@ class StoreCLI:
         self.count_item = 0
         self.cart = Order()
         self.exit = False
-
     def log_in(self):
         # פונקציית התחברות למערכת הפונקציה מקבלת שם משתמש וסיסמא קוראת לפונקציה בחנות במידה והערכים תקינים יחזור משתמש אם המשתמש מנהל הפונקציה תחבר אותו בתור מנהל
         user_id = input("Enter User ID: ")
@@ -263,7 +262,7 @@ class StoreCLI:
     def display_order(self):
         print("\n1. Add Item ")
         if self.count_item > 0:
-            print(f"2.Cart({self.count_item})")
+            print(f"2. Cart({self.count_item})")
         print("3. Exit ")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -757,7 +756,7 @@ class StoreCLI:
 
     def check_out(self):
         if self.user.address is None:
-            User.set_address()
+            self.user.set_address()
         if self.cart.total_amount > 0 or len(self.cart.product_dict) > 0:
             coupon = self.apply_coupon()
             payment = self.pay()
@@ -766,7 +765,7 @@ class StoreCLI:
                 order.pay_order(payment)
                 self.store.place_order(order)
                 self.user.new_order(order)
-                print(f" {order}\n {payment}\n * The order was successfully completed * ")
+                print(f" {order}\n * The order was successfully completed * ")
                 self.cart = Order()
                 self.count_item = 0
 
