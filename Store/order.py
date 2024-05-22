@@ -5,7 +5,7 @@ class Order:
         self.total_amount = 0
         self.payment = payment
         if self.payment is None:
-            self.status = "Not Paid "
+            self.status = "Not Paid"
         else:
             self.status = "Processing"
         if product_dict is None:
@@ -17,24 +17,34 @@ class Order:
     def change_status(self, choice: int):
         ship = 'shipped'
         deli = 'delivered'
-
         if choice == 1:
             self.status = ship
         elif choice == 2:
             self.status = deli
 
+
+
+
+    def order_completed(self):
+        self.status = 'completed'
+
     def converter(self):
         if self.customer.address is not None:
             if self.customer.address[0:3].casefold() != "isr":
-                return f"{self.total_amount}₪ILS   or  {round(self.total_amount/3.7611, 2)} US$"
+                return f"{round(self.total_amount/3.7611, 2)} US$"
             else:
                 return f"{self.total_amount} ₪ILS"
 
-    def payments(self):
-        return f"{self.total_amount}ILS or {round(self.total_amount/12, 2)}₪ILS 12/mo. for 12 mo.*"
 
-    def pay_order(self, payme):
-        self.payment = payme
+
+    def payments(self):
+        if self.payment.amount_of_payments ==1:
+            return f"{self.total_amount}ILS"
+        else:
+            return f"{round(self.total_amount/self.payment.amount_of_payments, 2)} ₪ILS {self.payment.amount_of_payments}/mo. for {self.payment.amount_of_payments} mo.*"
+
+    def pay_order(self, payment):
+        self.payment = payment
         self.status = "Processing"
 
     def search(self, name):
@@ -80,7 +90,7 @@ class Order:
     def __str__(self):
         if len(self.product_dict) > 0:
             if self.payment is not None:
-                return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n=================\nTotal amount: {self.converter()} \nStatus:{self.status}\n===================\n{self.payment}"
+                return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n================= \nStatus:{self.status}\n===================\n{self.payment}\n{self.payments()}\nTotal amount: {self.converter()}\n==================="
             else:
                 return f"{self.list_products()} \nSubtotal: {self.converter()} \n "
         else:

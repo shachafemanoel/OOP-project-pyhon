@@ -188,6 +188,7 @@ class StoreCLI:
                     print("Wrong choice")
             else:
                 print("Wrong choice")
+        order.order_completed()
 
     def choice_order(self):
         order_number = input("Enter order number: ")
@@ -201,6 +202,7 @@ class StoreCLI:
                     option = input("Enter your choice: ")
                     if option == '1':
                         self.add_review(order)
+
 
     def display_order_user(self):
         if len(self.user.order_history)>0 :
@@ -270,7 +272,6 @@ class StoreCLI:
 
     def display_payment(self):
         print(self.cart.converter())
-        print(self.cart.payments())
         print("How would you like to pay?")
         print("\n1.Credit Card")
         print("2.Paypal")
@@ -285,15 +286,15 @@ class StoreCLI:
         card_number = input("Card number: ")
         how_much = input("how many payments would you like to spread the deal?")
         if card_number.isdigit() and how_much.isdigit():
-            paymethood = Payment(card_holder, card_number, "Credit Card")
-        if paymethood.check_card(how_much):
+            paymethod = Payment(card_holder, card_number, "Credit Card")
+        if paymethod.check_card(int(how_much)):
             print("\nWould you like to save your payment method for future orders?")
             print("\n1. Yes, save it")
             print("\n2. No ")
             save = input("Enter your choice: ")
             if save == '1':
-                self.user.payment = paymethood
-            return paymethood
+                self.user.payment = paymethod
+            return paymethod
         else:
             print("\n * The card number is invalid * ")
 
@@ -301,28 +302,28 @@ class StoreCLI:
     def new_paypal(self,paymethood):
         paypal_id = input("Enter your Paypal id: ")
         if len(paypal_id) > 0:
-            paymethood = Payment(self.user.user_full_name, None, 'PayPal')
+            paymethod = Payment(self.user.user_full_name,paypal_id, 'PayPal')
             print("\nWould you like to save your payment method for future orders?")
             print("1. Yes,save it")
             print("2 .No ")
             save = input("Enter your choice: ")
             if save == '1':
-                self.user.payment = paymethood
-            return paymethood
+                self.user.payment = paymethod
+            return paymethod
         else:
             print("\n * Paypal id in invalid * ")
 
     def new_payment(self):
-        paymethood = Payment()
+        paymethod = Payment()
         for i in range(4):
             pay_option = self.display_payment()
             if pay_option == '1':
-               return self.new_card(paymethood)
+               return self.new_card(paymethod)
             elif pay_option == '2':
-               return self.new_paypal(paymethood)
+               return self.new_paypal(paymethod)
             elif pay_option == '3':
-                paymethood = Payment(self.user.user_full_name, None, 'Cash')
-                return paymethood
+                paymethod = Payment(self.user.user_full_name, None, 'Cash')
+                return paymethod
 
             elif pay_option == '4':
                 print('Good bye')
