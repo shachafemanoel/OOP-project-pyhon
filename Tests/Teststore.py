@@ -40,7 +40,7 @@ class TestStore(unittest.TestCase):
         new_user = User("2021", "New User", 'password')
         self.assertTrue(self.store.add_user(new_user))
         self.assertIn("2021", self.store.users)
-        self.assertIn(f" \n * A new customer has joined your store * \n customer name: {new_user.user_full_name}  ",self.store.reporting.messege)
+        self.assertIn(f" \n * A new customer has joined your store * \n customer name: {new_user.user_full_name}  ", self.store.reporting.message)
         self.assertFalse(self.store.add_user(new_user))
 
     def test_remove_product(self):

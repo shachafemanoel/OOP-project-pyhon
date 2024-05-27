@@ -3,13 +3,13 @@ class Reporting:
         self.revenue = 0
         self.best_sell = None
         self.sold_products = {}
-        self.messege = []
+        self.message = []
         self.new_update = 0
 
 
     def new_order(self, order):
             self.revenue += order.total_amount
-            self.messege.append(f" ֿ\n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
+            self.message.append(f" ֿ\n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
             self.new_update += 1
 
     def best_sell_product(self):
@@ -27,14 +27,14 @@ class Reporting:
 
     def seen(self):
         self.new_update = 0
-        self.messege = []
+        self.message = []
 
 
 
     def __str__(self):
         if self.new_update > 0:
             new = f"\n * There are {self.new_update} new updates for you *\n"
-            for messe in self.messege:
+            for messe in self.message:
                 new += messe
         else:
             new = "\n * There are no new notifications * "

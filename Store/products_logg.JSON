@@ -1,0 +1,5 @@
+[
+    {"type": "Tv", "name": "LG 52 Led", "model": "UR9000 Series", "description": "Alexa Built-in 4K Smart TV (3840 x 2160),Bluetooth, Wi-Fi, USB, Ethernet, HDMI 60Hz Refresh Rate, AI-Powered 4K", "price": 7000, "quantity": 20, "size": "65", "display_type": "LED"},
+    {"type": "Computer", "name": "MacBook air 13", "model": "Air", "description": "Liquid Retina display", "price": 6000, "quantity": 10, "screen_size": "13", "storage": "256", "processor": "M2"},
+
+]

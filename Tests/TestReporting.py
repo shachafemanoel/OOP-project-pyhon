@@ -20,18 +20,18 @@ class TestReporting(unittest.TestCase):
         self.assertEqual(self.reporting.revenue, 0)
         self.assertIsNone(self.reporting.best_sell)
         self.assertEqual(self.reporting.sold_products, {})
-        self.assertEqual(self.reporting.messege, [])
+        self.assertEqual(self.reporting.message, [])
         self.assertEqual(self.reporting.new_update, 0)
 
     def test_new_order(self):
         self.reporting.new_order(self.order1)
         self.assertEqual(self.reporting.revenue, 10000)
         self.assertEqual(self.reporting.new_update, 1)
-        self.assertIn("Order number: 1", self.reporting.messege[0])
+        self.assertIn("Order number: 1", self.reporting.message[0])
         self.reporting.new_order(self.order2)
         self.assertEqual(self.reporting.revenue, 22000)
         self.assertEqual(self.reporting.new_update, 2)
-        self.assertIn("Order number: 2", self.reporting.messege[1])
+        self.assertIn("Order number: 2", self.reporting.message[1])
 
     def test_best_sell_product(self):
         self.reporting.sold_products = {'Macbook16': 5, 'Iphone13': 3}
@@ -47,10 +47,10 @@ class TestReporting(unittest.TestCase):
 
     def test_seen(self):
         self.reporting.new_update = 2
-        self.reporting.messege = ["Message 1", "Message 2"]
+        self.reporting.message = ["Message 1", "Message 2"]
         self.reporting.seen()
         self.assertEqual(self.reporting.new_update, 0)
-        self.assertEqual(self.reporting.messege, [])
+        self.assertEqual(self.reporting.message, [])
 
 
 if __name__ == '__main__':

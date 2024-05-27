@@ -39,23 +39,20 @@ class StoreCLI:
             print("\n Full name must be at least 4 characters ")
             full_name = input("Enter your Full name: ")
             if len(full_name) > 3:
-                print("\n The password must contain at least 4 characters ")
-                pass_word = str(input("Enter your Password: "))
-                if len(pass_word) > 3:
-                    new_user = Client(user_id, full_name, pass_word)
-                    if self.store.add_user(new_user):
-                        self.user = new_user
-                        self.set_address()
-                        self.store.users[user_id] = new_user
-                        self.user.online = 1
-                        print("\n * User registered successfully. * ")
-                        self.user.coupon = 5
-                        print("Thank you for register. Enjoy a 5% coupon !")
+                new_user = Client(user_id, full_name)
+                self.set_password(new_user)
+                if self.store.add_user(new_user):
+                    self.user = new_user
+                    self.set_address()
+                    self.store.users[user_id] = new_user
+                    self.user.online = 1
+                    print("\n * User registered successfully. * ")
+                    self.user.coupon = 5
+                    print("Thank you for register. Enjoy a 5% coupon !")
 
-                    else:
-                        print("\n * User already exists please try to log in *")
                 else:
-                    print("\n The password must contain at least 4 characters. Please try again ")
+                        print("\n * User already exists please try to log in *")
+
             else:
                 print("\n * Invalid full name. Try again * ")
         else:
@@ -94,18 +91,24 @@ class StoreCLI:
         new_admin = self.register_admin()
         return new_admin
 
+
+    def set_password(self,user =None):
+        print("\n * The password must contain at least 4 characters *")
+        new_user_password = input("Enter your new password: ")
+
+        if len(new_user_password) > 3:
+            if user is None:
+                self.user.change_user_password(new_user_password)
+                print("\n* Password set successfully* ")
+            else:
+                user.change_user_password(new_user_password)
+        else:
+            print("\n * The password must contain at least 4 characters. Please try again. * ")
+
     def change_password(self):
         old_password = input("\nFor changing password please enter your old password: ")
-
         if self.user.password == old_password:
-            print("\n * The password must contain at least 4 characters *")
-            new_user_password = input("Enter your new password: ")
-
-            if len(new_user_password) > 3:
-                self.user.change_user_password(new_user_password)
-                print("\n* Password changed successfully* ")
-            else:
-                print("\n * The password must contain at least 4 characters. Please try again. * ")
+            self.set_password()
         else:
             print("\n *  Wrong old password, please try again. * ")
 
