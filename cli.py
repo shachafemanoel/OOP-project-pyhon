@@ -636,12 +636,12 @@ class StoreCLI:
         if category == '2':
             chip = input("Enter Chip: ")
             size = input("Enter Screen size: ")
-            storge = input("Enter Storge:")
-            pro = Computer(name, model, description, price, quantity, size, storge, chip)
+            storage = input("Enter storage:")
+            pro = Computer(name, model, description, price, quantity, size, storage, chip)
         if category == '3':
             size = input("Enter Screen size: ")
-            storge = input("Enter Storge:")
-            pro = Phone(name, model, description, price, quantity, size, storge)
+            storage = input("Enter storage:")
+            pro = Phone(name, model, description, price, quantity, size, storage)
         else:
             pro = Product(name, model, description, price, quantity, )
         self.store.add_product(pro)

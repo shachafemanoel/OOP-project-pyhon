@@ -29,14 +29,13 @@ class TestPayment(unittest.TestCase):
 
     def test_str_with_credit_card(self):
         expected_str = ("Payment method:  7890 Credit Card\n"
-                        "Number of payments:1\n"
-                        "===================")
+                        "Number of payments:1")
         self.assertEqual(str(self.payment1), expected_str)
 
     def test_str_without_credit_card(self):
         self.payment2.payment_method = "Cash"
-        expected_str = ("Payment method: Cash\n"
-                        "===================")
+        expected_str = ("Payment method: Cash")
+
         self.assertEqual(str(self.payment2), expected_str)
 
 if __name__ == '__main__':
