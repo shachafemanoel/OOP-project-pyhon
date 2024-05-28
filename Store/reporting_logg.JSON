@@ -1,13 +1,14 @@
 {
-    "revenue": 8600.0,
+    "revenue": 10400.0,
     "best_sell": "Product1",
     "sold_products": {
         "Product1": 4,
-        "Product2": 10
+        "Product2": 1
     },
     "message": [
-        " \u05bf\n * A new order has been placed * \n Order number: 2    total amount: 3600.0 "
+        " \u05bf\n * A new order has been placed * \n Order number: 2    total amount: 3600.0 ",
+        " \u05bf\n * A new order has been placed * \n Order number: 3    total amount: 1800.0 "
     ],
-    "new_update": 1,
+    "new_update": 2,
     "sales": []
 }

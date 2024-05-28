@@ -348,6 +348,9 @@ class StoreCLI:
                 if how_much.isdigit():
                     self.user.payment.amount_of_payments = int(how_much)
                 return self.user.payment
+
+            else:
+                return  self.new_payment()
         else:
                 return self.new_payment()
 

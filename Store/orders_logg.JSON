@@ -24,5 +24,18 @@
             "info": "1234567812345678",
             "payment_method": "Credit Card"
         }
+    },
+    {
+        "order_number": 3,
+        "customer_id": "2020",
+        "product_dict": {
+            "Product2": 1
+        },
+        "status": "Processing",
+        "payment": {
+            "owner": "Client Check",
+            "info": null,
+            "payment_method": "Cash"
+        }
     }
 ]
