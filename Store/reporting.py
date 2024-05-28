@@ -5,6 +5,9 @@ class Reporting:
         self.sold_products = {}
         self.message = []
         self.new_update = 0
+        self.sales = []
+
+
 
 
     def new_order(self, order):

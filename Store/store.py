@@ -7,6 +7,7 @@ from Store.tv import Tv
 from Store.phone import Phone
 from Store.computer import Computer
 from Store.rating import Rating
+from Store.json import DataManager
 
 class Store:  # מחלקה שמממשת את החנות עצמה
 
@@ -33,10 +34,24 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.orders = {order1.order_number:order1}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
-        for key , item in self.collection.items():
-            self.reporting.sold_products[item.name] = 0
         self.sales = []
 
+
+    def load_files(self):
+        self.users = DataManager.load_users()
+        self.collection = DataManager.load_products()
+        self.orders = DataManager.load_orders(self.users)
+        self.reporting = DataManager.load_reporting()
+        self.sales = DataManager.load_sales()
+        self.order_number = len(self.orders) +1
+
+
+
+    def save_files(self):
+        DataManager.save_users(self.users)
+        DataManager.save_orders(self.orders)
+        DataManager.save_products(self.collection)
+        DataManager.save_reporting(self.reporting,self.sales)
 
 
     def sale_prodduct_type(self, product_type, discount):

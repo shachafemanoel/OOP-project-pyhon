@@ -8,5 +8,6 @@
     "message": [
         " \n * A new order has been placed * \n Order number: 0    total amount: 5000 "
     ],
-    "new_update": 1
+    "new_update": 1,
+    "sales":[]
 }

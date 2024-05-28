@@ -1,6 +1,6 @@
 import json
 import logging
-from Store.store import Store
+import Store
 from Store.order import Order
 from Store.product import Product
 from Store.user import User
@@ -38,10 +38,11 @@ class DataManager:
             logging.error(f"Error saving data to file {filename}: {e}")
 
     @staticmethod
-    def load_orders(filename, store):
-        orders_data = DataManager.load_data(filename)
+    def load_orders(users:dict):
+        orders = {}
+        orders_data = DataManager.load_data('orders_logg.JSON')
         for order_data in orders_data:
-            customer = store.users.get(order_data['customer_id'])
+            customer = users.get(order_data['customer_id'])
             if customer:
                 order = Order(
                     order_number=order_data['order_number'],
@@ -49,12 +50,11 @@ class DataManager:
                     product_dict=order_data['product_dict'],
                     status=order_data['status']
                 )
-                store.orders[order.get_order_number()] = order
-                store.order_number = max(store.order_number, order.get_order_number() + 1)
-        logging.info(f"Orders loaded from {filename}.")
-
+                orders[order.get_order_number()] = order
+        logging.info(f"Orders loaded from {'orders_logg.JSON'}.")
+        return  orders
     @staticmethod
-    def save_orders(filename, orders):
+    def save_orders(orders):
         orders_data = [
             {
                 'order_number': order.get_order_number(),
@@ -63,13 +63,14 @@ class DataManager:
                 'status': order.get_status()
             } for order in orders.values()
         ]
-        DataManager.save_data(orders_data, filename)
+        DataManager.save_data(orders_data, 'orders_logg.JSON')
 
     @staticmethod
-    def load_products(filename, store):
-        products_data = DataManager.load_data(filename)
+    def load_products():
+        products_data = DataManager.load_data('products_logg.JSON')
+        collection = {}
         for prod_data in products_data:
-            product_type = prod_data.get('product_type')
+            product_type = prod_data.get('type')
             if product_type == 'Tv':
                 product = Tv(
                     name=prod_data.get('name'),
@@ -110,12 +111,12 @@ class DataManager:
                     quantity=prod_data.get('quantity'),
                     rate=prod_data.get('rate')
                 )
-            store.collection[product.get_key_name()] = product
-            store.reporting.sold_products[product.name] = 0
-        logging.info(f"Products loaded from {filename}.")
+            collection[product.get_key_name()] = product
+        logging.info(f"Products loaded from {'products_logg.JSON'}.")
+        return collection
 
     @staticmethod
-    def save_products(filename, products):
+    def save_products(products):
         products_data = []
         for product in products.values():
             product_data = {
@@ -144,11 +145,12 @@ class DataManager:
                     'storage': product.storage
                 })
             products_data.append(product_data)
-        DataManager.save_data(products_data, filename)
+        DataManager.save_data(products_data,'products_logg.JSON')
 
     @staticmethod
-    def load_users(filename, store):
-        users_data = DataManager.load_data(filename)
+    def load_users():
+        users = {}
+        users_data = DataManager.load_data('users_logg.JSON')
         for user_data in users_data:
             user_type = user_data.get('type')
             if user_type == 'User':  # Assuming 'User' indicates an Admin
@@ -169,11 +171,11 @@ class DataManager:
             else:
                 logging.warning(f"Unknown user type: {user_type}")
                 continue
-            store.users[user.user_id] = user
-        logging.info(f"Users loaded from {filename}.")
-
+            users[user.user_id] = user
+        logging.info(f"Users loaded from {'users_logg.JSON'}.")
+        return  users
     @staticmethod
-    def save_users(filename, users):
+    def save_users(users:dict):
         users_data = []
         for user in users.values():
             if isinstance(user, Client):
@@ -194,26 +196,36 @@ class DataManager:
                     'password': user.password
                 }
             users_data.append(user_data)
-        DataManager.save_data(users_data, filename)
+        DataManager.save_data(users_data,'users_logg.JSON')
 
     @staticmethod
-    def load_reporting(filename, store):
-        reporting_data = DataManager.load_data(filename)
+    def load_reporting():
+        reporting_data = DataManager.load_data('Store/reporting_logg.JSON')
+        reporting = Reporting()
         if reporting_data:
-            store.reporting.revenue = reporting_data.get('revenue', 0)
-            store.reporting.best_sell = reporting_data.get('best_sell', '')
-            store.reporting.sold_products = reporting_data.get('sold_products', {})
-            store.reporting.message = reporting_data.get('message', '')
-            store.reporting.new_update = reporting_data.get('new_update', False)
-        logging.info(f"Reporting data loaded from {filename}.")
-
+            reporting.revenue = reporting_data['revenue']
+            reporting.best_sell = reporting_data['best_sell']
+            reporting.sold_products = reporting_data['sold_products']
+            reporting.message = reporting_data['message']
+            reporting.new_update = reporting_data['new_update']
+        logging.info(f"Reporting data loaded from {'reporting_logg.JSON'}.")
+        return  reporting
     @staticmethod
-    def save_reporting(filename, reporting):
+    def save_reporting(reporting,sales):
         reporting_data = {
             'revenue': reporting.revenue,
             'best_sell': reporting.best_sell,
             'sold_products': reporting.sold_products,
             'message': reporting.message,
-            'new_update': reporting.new_update
+            'new_update': reporting.new_update,
+            'sales': sales
         }
-        DataManager.save_data(reporting_data, filename)
+        DataManager.save_data(reporting_data, 'Store/reporting_logg.JSON')
+
+
+    def load_sales():
+        sales_data = DataManager.load_data('Store/reporting_logg.JSON')
+        sales = []
+        if sales_data:
+            sales = sales_data['sales']
+            return sales

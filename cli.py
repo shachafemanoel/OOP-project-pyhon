@@ -10,6 +10,7 @@ from Store.tv import Tv
 from Store.phone import Phone
 from Store.computer import Computer
 from Store.rating import Rating
+from Store.json import DataManager
 
 class StoreCLI:
     def __init__(self):
@@ -18,6 +19,7 @@ class StoreCLI:
         self.count_item = 0
         self.cart = Order()
         self.exit = False
+
     def log_in(self):
         # פונקציית התחברות למערכת הפונקציה מקבלת שם משתמש וסיסמא קוראת לפונקציה בחנות במידה והערכים תקינים יחזור משתמש אם המשתמש מנהל הפונקציה תחבר אותו בתור מנהל
         user_id = input("Enter User ID: ")
@@ -893,6 +895,7 @@ class StoreCLI:
 
     def run(self):
         while not self.exit:
+            self.store.load_files()
             if self.user.online == 0:
                 self.wellcome_page()
             if self.user.online == 1:
@@ -901,7 +904,7 @@ class StoreCLI:
                         self.customer_menu()
                 else:
                     self.management_menu()
-
+        self.store.save_files()
 
 
 if __name__ == "__main__":
