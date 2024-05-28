@@ -6,6 +6,14 @@ class Payment:
         self.amount_of_payments = 1
 
 
+
+
+    def payment_to_dict(self):
+        dict = {}
+        dict['owner'] = self.owner
+        dict['info'] = self.info
+        dict['payment_method'] = self.payment_method
+        return dict
     def check_card(self,how_much):
         if len(self.owner) > 0 and len(self.info) >= 8:
             self.payment_method = "Credit Card"

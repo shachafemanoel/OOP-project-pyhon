@@ -1,8 +1,13 @@
 {
-    "revenue": 5000,
+    "revenue": 8600.0,
     "best_sell": "Product1",
-    "sold_products": {"Product1": 20, "Product2": 10},
-    "message": "Monthly report",
-    "new_update": "All systems operational",
+    "sold_products": {
+        "Product1": 4,
+        "Product2": 10
+    },
+    "message": [
+        " \u05bf\n * A new order has been placed * \n Order number: 2    total amount: 3600.0 "
+    ],
+    "new_update": 1,
     "sales": []
 }

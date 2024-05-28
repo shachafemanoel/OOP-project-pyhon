@@ -2,8 +2,27 @@
     {
         "order_number": "123",
         "customer_id": "2020",
-        "customer_name": "Client Check",
-        "product_dict": {"Product1": 2},
-        "status": "Shipped"
+        "product_dict": {
+            "Product1": 2
+        },
+        "status": "Shipped",
+        "payment": {
+            "owner": "Client Check",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card"
+        }
+    },
+    {
+        "order_number": 2,
+        "customer_id": "2020",
+        "product_dict": {
+            "Product1": 4
+        },
+        "status": "Processing",
+        "payment": {
+            "owner": "Client Check",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card"
+        }
     }
 ]

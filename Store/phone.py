@@ -1,7 +1,7 @@
 from Store.product import Product
 class Phone (Product):
-    def __init__(self, name =None, model=None, description=None, price=None, quantity=None, size=None, storage=None):
-        super().__init__(name, model, description, price,quantity)
+    def __init__(self, name =None, model=None, description=None, price=None, quantity=None, size=None, storage=None,rate =None):
+        super().__init__(name, model, description, price,quantity,rate)
         self.size = size
         self.storage = storage
 

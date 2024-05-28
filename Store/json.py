@@ -19,12 +19,17 @@ class DataManager:
     def load_data(filename):
         try:
             with open(filename, 'r') as file:
-                return json.load(file)
+                data = json.load(file)
+                print(f"Loaded data from {filename}:")
+                return data
         except FileNotFoundError:
             logging.warning(f"File {filename} not found.")
             return []
-        except json.JSONDecodeError:
-            logging.error(f"Error decoding JSON from file {filename}.")
+        except json.JSONDecodeError as e:
+            logging.error(f"Error decoding JSON from file {filename}: {e}")
+            return []
+        except Exception as e:
+            logging.error(f"An error occurred while reading file {filename}: {e}")
             return []
 
     @staticmethod
@@ -47,20 +52,22 @@ class DataManager:
                     order_number=order_data['order_number'],
                     customer=customer,
                     product_dict=order_data['product_dict'],
+                    payment= Payment(**order_data['payment']),
                 )
                 order.status = order_data['status']
                 orders[order.order_number] = order
-        logging.info(f"Orders loaded from {'Store/orders_logg.JSON'}.")
+
         return orders
 
     @staticmethod
     def save_orders(orders):
         orders_data = [
             {
-                'order_number': order.get_order_number(),
-                'customer_id': order.get_customer().user_id,
-                'product_dict': order.get_product_dict(),
-                'status': order.get_status()
+                'order_number': order.order_number,
+                'customer_id': order.customer.user_id,
+                'product_dict': order.product_dict,
+                'status': order.status,
+                'payment':order.payment.payment_to_dict()
             } for order in orders.values()
         ]
         DataManager.save_data(orders_data, 'Store/orders_logg.JSON')
@@ -70,6 +77,8 @@ class DataManager:
         products_data = DataManager.load_data('Store/products_logg.JSON')
         collection = {}
         for prod_data in products_data:
+            ratings_data = prod_data.get('ratings', [])
+            ratings = [Rating(**rating_dict) for rating_dict in ratings_data]
             product_type = prod_data.get('product_type')
             if product_type == 'Tv':
                 product = Tv(
@@ -79,7 +88,9 @@ class DataManager:
                     price=prod_data.get('price'),
                     quantity=prod_data.get('quantity'),
                     size=prod_data.get('size'),
-                    type=prod_data.get('type')
+                    type=prod_data.get('type'),
+                    rate=ratings
+
                 )
             elif product_type == 'Computer':
                 product = Computer(
@@ -90,7 +101,9 @@ class DataManager:
                     quantity=prod_data.get('quantity'),
                     size=prod_data.get('size'),
                     storage=prod_data.get('storage'),
-                    chip=prod_data.get('chip')
+                    chip=prod_data.get('chip'),
+                    rate = ratings
+
                 )
             elif product_type == 'Phone':
                 product = Phone(
@@ -100,7 +113,9 @@ class DataManager:
                     price=prod_data.get('price'),
                     quantity=prod_data.get('quantity'),
                     size=prod_data.get('size'),
-                    storage=prod_data.get('storage')
+                    storage=prod_data.get('storage'),
+                    rate = ratings
+                   ,
                 )
             else:
                 product = Product(
@@ -109,10 +124,12 @@ class DataManager:
                     description=prod_data.get('description'),
                     price=prod_data.get('price'),
                     quantity=prod_data.get('quantity'),
-                    rate=prod_data.get('rate')
+                    rate= ratings
+
                 )
+
+                product.rate = ratings
             collection[product.get_key_name()] = product
-        logging.info(f"Products loaded from {'Store/products_logg.JSON'}.")
         return collection
 
     @staticmethod
@@ -126,7 +143,7 @@ class DataManager:
                 'description': product.description,
                 'price': product.price,
                 'quantity': product.quantity,
-                'rate': getattr(product, 'rate', None)
+                'rate': [product.rate.rate_to_dict() for rating in product.rate]
             }
             if isinstance(product, Tv):
                 product_data.update({
@@ -165,14 +182,13 @@ class DataManager:
                     user_full_name=user_data['user_full_name'],  # Adjusted full_name to match JSON
                     password=user_data['password'],
                     address=user_data.get('address'),
-                    payment=user_data.get('payment'),
+                    payment=Payment(**user_data['payment']),
                     coupon=user_data.get('coupon')
                 )
             else:
                 logging.warning(f"Unknown user type: {user_type}")
                 continue
             users[user.user_id] = user
-        logging.info(f"Users loaded from {'Store/users_logg.JSON'}.")
         return users
 
     @staticmethod
@@ -183,10 +199,10 @@ class DataManager:
                 user_data = {
                     'user_id': user.user_id,
                     'type': 'Client',
-                    'user_full_name': user.full_name,  # Adjusted to match JSON
+                    'user_full_name': user.user_full_name,  # Adjusted to match JSON
                     'password': user.password,
                     'address': user.address,
-                    'payment': user.payment,
+                    'payment': user.payment.payment_to_dict(),
                     'coupon': user.coupon
                 }
             else:  # Assuming the only other type is Admin
@@ -209,7 +225,6 @@ class DataManager:
             reporting.sold_products = reporting_data['sold_products']
             reporting.message = reporting_data['message']
             reporting.new_update = reporting_data['new_update']
-        logging.info(f"Reporting data loaded from {'Store/reporting_logg.JSON'}.")
         return reporting
 
     @staticmethod

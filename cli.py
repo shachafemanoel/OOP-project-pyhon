@@ -894,8 +894,8 @@ class StoreCLI:
 
 
     def run(self):
+        self.store.load_files()
         while not self.exit:
-            self.store.load_files()
             if self.user.online == 0:
                 self.wellcome_page()
             if self.user.online == 1:
