@@ -3,8 +3,8 @@ from Store.order import Order
 
 
 class Client(User):
-    def __init__(self, user_id=None, full_name=None, password=None, address=None, online=0, payment=None, coupon=None):
-        super().__init__(user_id, full_name, password, online, address, payment)
+    def __init__(self, user_id=None, user_full_name=None, password=None, address=None, online=0, payment=None, coupon=None):
+        super().__init__(user_id,user_full_name, password, online, address, payment)
         self.order_history = {}
         self.messege = []
         self.new_messege = 0

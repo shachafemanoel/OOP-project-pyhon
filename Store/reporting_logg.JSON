@@ -1,13 +1,8 @@
 {
-    "revenue": 10000,
-    "best_sell": "MacBook air 13",
-    "sold_products": {
-        "MacBook air 13": 5,
-        "Iphone 15": 3
-    },
-    "message": [
-        " \n * A new order has been placed * \n Order number: 0    total amount: 5000 "
-    ],
-    "new_update": 1,
-    "sales":[]
+    "revenue": 5000,
+    "best_sell": "Product1",
+    "sold_products": {"Product1": 20, "Product2": 10},
+    "message": "Monthly report",
+    "new_update": "All systems operational",
+    "sales": []
 }

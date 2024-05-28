@@ -1,4 +1,9 @@
 [
-    {"order_number": 0, "customer_id": "2020", "product_dict": {"MacBook air 13": 3, "Iphone 15": 2}, "payment": "admin", "status": "delivered"}
-
+    {
+        "order_number": "123",
+        "customer_id": "2020",
+        "customer_name": "Client Check",
+        "product_dict": {"Product1": 2},
+        "status": "Shipped"
+    }
 ]

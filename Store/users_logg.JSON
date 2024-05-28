@@ -1,4 +1,17 @@
 [
-    {"type": "Admin", "user_id": "1111", "user_full_name": "Admin", "password": "1234"},
-    {"type": "Client", "user_id": "2020", "user_full_name": "Client Check", "password": "1234", "address": "Address"}
+    {
+        "type": "Admin",
+        "user_id": "1111",
+        "user_full_name": "Admin",
+        "password": "1234"
+    },
+    {
+        "type": "Client",
+        "user_id": "2020",
+        "user_full_name": "Client Check",
+        "password": "1234",
+        "address": "Address",
+        "payment": "Credit Card",
+        "coupon": "DISCOUNT10"
+    }
 ]
