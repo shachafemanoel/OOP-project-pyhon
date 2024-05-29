@@ -1,4 +1,4 @@
-import pandas as pd
+
 
 class Reporting:
     def __init__(self):
@@ -18,43 +18,41 @@ class Reporting:
         value = list(self.sold_products.values())
         key = list(self.sold_products.keys())
         self.best_sell = key[value.index(max(value))]
-        return f"\n * {self.best_sell} is the best selling product *\n"
+        return f"* {self.best_sell}is the best selling product *\n"
 
     def sold(self):
         return [(product, amount) for product, amount in self.sold_products.items()]
 
-    def total_revenue(self):
-        return f"Total revenue of our store: {self.revenue} ₪"
+
 
     def seen(self):
         self.new_update = 0
         self.message = []
 
     def get_sales_report_string(self):
-        # המרת הנתונים ל-DataFrame
-        df = pd.DataFrame(list(self.sold_products.items()), columns=['Product', 'Sold'])
-        # מיון הטבלה לפי הערך של Sold מהגדול לקטן
-        df = df.sort_values(by='Sold', ascending=False)
-        # הוספת שורת Store revenue
-        store_revenue_df = pd.DataFrame([{'Product': 'Store revenue', 'Sold': self.revenue}])
-        df = pd.concat([df, store_revenue_df], ignore_index=True)
+        # המרת הנתונים לרשימה של tuples
+        products = list(self.sold_products.items())
+        products.append(("Store revenue", self.revenue))
 
-        # יצירת מחרוזת הטבלה עם מסגרת מסביב
-        table_str = df.to_string(index=False, justify='center')
-        lines = table_str.split('\n')
-        width = len(lines[0])
+        # מציאת האורך המקסימלי של השם והכמות
+        max_name_length = max(len(str(product[0])) for product in products)
+        max_sold_length = max(len(str(product[1])) for product in products)
 
-        # בניית מחרוזת התוצאה
+        # בניית המחרוזת של הטבלה
         result = []
-        result.append("Product table".center(width))
-        result.append('-' * width)
+        table_width = max_name_length + max_sold_length + 7  # 7 למרווחים ומסגרת
 
-        # הוספת השורות עם מסגרת
-        for line in lines:
-            result.append(f'| {line} {""*width}|')
+        result.append("Product table".center(table_width))
+        result.append('-' * table_width)
+        header = f"| {'Product'.ljust(max_name_length)} | {'Sold'.rjust(max_sold_length)} |"
+        result.append(header)
+        result.append('-' * table_width)
 
-        # הוספת תחתית הטבלה
-        result.append('-' * width)
+        for product, sold in products:
+            row = f"| {product.ljust(max_name_length)} | {str(sold).rjust(max_sold_length)} |"
+            result.append(row)
+
+        result.append('-' * table_width)
 
         return '\n'.join(result)
 
@@ -66,7 +64,7 @@ class Reporting:
         else:
             new = "\n * There are no new notifications * "
         if self.revenue > 0 and len(self.sold_products) > 0:
-            return f"{new}\n\n* Reporting summary *\n{self.best_sell_product()}\n{self.get_sales_report_string()}"
+            return f" \n    **** Reporting summary **** {new}\n{self.best_sell_product()}\n{self.get_sales_report_string()}"
         else:
             return f"{new}\nNo purchase has been made from the store yet"
 
