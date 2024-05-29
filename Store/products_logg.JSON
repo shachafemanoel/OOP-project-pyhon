@@ -5,7 +5,7 @@
         "model": "air",
         "description": "A14 Bionic chip, 10.9-inch Liquid Retina Display, 64GB, Wi-Fi 6, 12MP front/12MP Back Camera, Touch ID, All-Day Battery Life \u2013 Blue ",
         "price": 2000,
-        "quantity": 4,
+        "quantity": 1,
         "rate": [],
         "size": "10.9",
         "storage": "528",
@@ -90,30 +90,38 @@
     },
     {
         "name": "Laptop Dell",
-        "product_type": "Product",
+        "product_type": "Computer",
         "model": "dell xp25",
         "description": "great laptop for home users ",
         "price": 3000.0,
         "quantity": 20,
-        "rate": []
+        "rate": [],
+        "size": null,
+        "storage": null,
+        "chip": null
     },
     {
         "name": "dell",
-        "product_type": "Product",
+        "product_type": "Computer",
         "model": "pc",
         "description": "pc",
         "price": 2000.0,
         "quantity": 50,
-        "rate": []
+        "rate": [],
+        "size": null,
+        "storage": null,
+        "chip": null
     },
     {
-        "name": "samsing",
-        "product_type": "Product",
+        "name": "samsung",
+        "product_type": "Tv",
         "model": "tv",
         "description": "tv",
         "price": 2000.0,
         "quantity": 50,
-        "rate": []
+        "rate": [],
+        "size": null,
+        "tv_type": null
     },
     {
         "name": "mi",
@@ -124,7 +132,7 @@
         "quantity": 20,
         "rate": [],
         "size": "50",
-        "tv_type": "led"
+        "tv_type": null
     },
     {
         "name": "my comp",
@@ -132,7 +140,7 @@
         "model": "comp",
         "description": "cmp",
         "price": 4000.0,
-        "quantity": 30,
+        "quantity": 28,
         "rate": [],
         "size": "5",
         "storage": "5",

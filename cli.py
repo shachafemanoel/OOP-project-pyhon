@@ -899,7 +899,7 @@ class StoreCLI:
         while not self.exit:
             if self.user.online == 0:
                 self.wellcome_page()
-            if self.user.online == 1:
+            elif self.user.online == 1:
                 print(f"\n * Welcome {self.user.user_full_name}! You are now connected. *")
                 if type(self.user) == Client:
                         self.customer_menu()

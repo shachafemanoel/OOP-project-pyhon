@@ -1,9 +1,7 @@
 {
-    "revenue": 10400.0,
-    "best_sell": "Product1",
+    "revenue": 5400.0,
+    "best_sell": "Ipadair10",
     "sold_products": {
-        "Product1": 4,
-        "Product2": 1,
         "LG TV 55 ": 0,
         "Macbook 15": 0,
         "Iphone 15 pro": 0,
@@ -13,14 +11,12 @@
         "iphone 13": 0,
         "Laptop Dell": 0,
         "dell": 0,
-        "samsing": 0,
+        "samsung": 0,
         "mi": 0,
-        "my comp": 0
+        "my comp": 0,
+        "Ipadair10": 3
     },
-    "message": [
-        " \u05bf\n * A new order has been placed * \n Order number: 2    total amount: 3600.0 ",
-        " \u05bf\n * A new order has been placed * \n Order number: 3    total amount: 1800.0 "
-    ],
-    "new_update": 2,
+    "message": [],
+    "new_update": 0,
     "sales": []
 }
