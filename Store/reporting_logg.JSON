@@ -3,7 +3,19 @@
     "best_sell": "Product1",
     "sold_products": {
         "Product1": 4,
-        "Product2": 1
+        "Product2": 1,
+        "LG TV 55 ": 0,
+        "Macbook 15": 0,
+        "Iphone 15 pro": 0,
+        "ipad": 0,
+        "galaxy 24": 0,
+        "airpods pro ": 0,
+        "iphone 13": 0,
+        "Laptop Dell": 0,
+        "dell": 0,
+        "samsing": 0,
+        "mi": 0,
+        "my comp": 0
     },
     "message": [
         " \u05bf\n * A new order has been placed * \n Order number: 2    total amount: 3600.0 ",

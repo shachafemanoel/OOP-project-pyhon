@@ -1,25 +1,141 @@
 [
     {
-        "name": "Product1",
-        "product_type": "Tv",
-        "model": "Model1",
-        "description": "Description1",
-        "price": 1000,
-        "quantity": 6,
-        "rate": [],
-        "size": "55 inches",
-        "type": "LED"
-    },
-    {
-        "name": "Product2",
+        "name": "Ipad air 10",
         "product_type": "Computer",
-        "model": "Model2",
-        "description": "Description2",
+        "model": "air",
+        "description": "A14 Bionic chip, 10.9-inch Liquid Retina Display, 64GB, Wi-Fi 6, 12MP front/12MP Back Camera, Touch ID, All-Day Battery Life \u2013 Blue ",
         "price": 2000,
         "quantity": 4,
         "rate": [],
-        "size": "15 inches",
-        "storage": "512GB",
-        "chip": "i7"
+        "size": "10.9",
+        "storage": "528",
+        "chip": "M3"
+    },
+    {
+        "name": "LG TV 55 ",
+        "product_type": "Tv",
+        "model": "QLED 555",
+        "description": "big tv 4k smart ",
+        "price": 5500.0,
+        "quantity": 12,
+        "rate": [],
+        "size": null,
+        "tv_type": null
+    },
+    {
+        "name": "Macbook 15",
+        "product_type": "Computer",
+        "model": "air",
+        "description": "Apple 2024 MacBook Air 15-inch Laptop with M3 chip: 15.3-inch Liquid Retina Display, 8GB Unified Memory, 256GB SSD Storage, Backlit Keyboard, 1080p FaceTime HD Camera, Touch ID; Midnight",
+        "price": 5000.0,
+        "quantity": 5,
+        "rate": [],
+        "size": null,
+        "storage": "1000",
+        "chip": "M3"
+    },
+    {
+        "name": "Iphone 15 pro",
+        "product_type": "Phone",
+        "model": "pro",
+        "description": "Apple iPhone 15 Pro 256GB - Black Titanium - 1 Year Warranty by the Official Distributor",
+        "price": 6000.0,
+        "quantity": 20,
+        "rate": [],
+        "size": null,
+        "storage": null
+    },
+    {
+        "name": "ipad",
+        "product_type": "Computer",
+        "model": "pro ",
+        "description": "the new ipad pro 256 gb",
+        "price": 5000.0,
+        "quantity": 50,
+        "rate": [],
+        "size": "10.9",
+        "storage": "256",
+        "chip": "M2"
+    },
+    {
+        "name": "galaxy 24",
+        "product_type": "Phone",
+        "model": "ultra",
+        "description": "hhhhh",
+        "price": 5000.0,
+        "quantity": 20,
+        "rate": [],
+        "size": "6",
+        "storage": "256"
+    },
+    {
+        "name": "airpods pro ",
+        "product_type": "Product",
+        "model": "pro ",
+        "description": "the best airpods on market",
+        "price": 800.0,
+        "quantity": 50,
+        "rate": []
+    },
+    {
+        "name": "iphone 13",
+        "product_type": "Phone",
+        "model": "pro",
+        "description": "the best value for money ",
+        "price": 2500.0,
+        "quantity": 12,
+        "rate": [],
+        "size": "5",
+        "storage": "256"
+    },
+    {
+        "name": "Laptop Dell",
+        "product_type": "Product",
+        "model": "dell xp25",
+        "description": "great laptop for home users ",
+        "price": 3000.0,
+        "quantity": 20,
+        "rate": []
+    },
+    {
+        "name": "dell",
+        "product_type": "Product",
+        "model": "pc",
+        "description": "pc",
+        "price": 2000.0,
+        "quantity": 50,
+        "rate": []
+    },
+    {
+        "name": "samsing",
+        "product_type": "Product",
+        "model": "tv",
+        "description": "tv",
+        "price": 2000.0,
+        "quantity": 50,
+        "rate": []
+    },
+    {
+        "name": "mi",
+        "product_type": "Tv",
+        "model": "pc",
+        "description": "pc",
+        "price": 5000.0,
+        "quantity": 20,
+        "rate": [],
+        "size": "50",
+        "tv_type": "led"
+    },
+    {
+        "name": "my comp",
+        "product_type": "Computer",
+        "model": "comp",
+        "description": "cmp",
+        "price": 4000.0,
+        "quantity": 30,
+        "rate": [],
+        "size": "5",
+        "storage": "5",
+        "chip": "5"
     }
 ]

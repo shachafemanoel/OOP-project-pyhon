@@ -88,7 +88,7 @@ class DataManager:
                     price=prod_data.get('price'),
                     quantity=prod_data.get('quantity'),
                     size=prod_data.get('size'),
-                    type=prod_data.get('type'),
+                    tv_type=prod_data.get('type'),
                     rate=ratings
 
                 )
@@ -127,8 +127,9 @@ class DataManager:
                     rate= ratings
 
                 )
-
-                product.rate = ratings
+                if prod_data.get('sale') is not None:
+                    product.sale = prod_data.get('sale')
+                    product.original_price = prod_data.get('original_price')
             collection[product.get_key_name()] = product
         return collection
 
@@ -143,12 +144,14 @@ class DataManager:
                 'description': product.description,
                 'price': product.price,
                 'quantity': product.quantity,
-                'rate': [product.rate.rate_to_dict() for rating in product.rate]
+                'rate': [rating.rate_to_dict() for rating in product.rate]
             }
+
+            # Check if the product is an instance of a subclass of Product and add specific details
             if isinstance(product, Tv):
                 product_data.update({
                     'size': product.size,
-                    'type': product.type
+                    'tv_type': product.tv_type
                 })
             elif isinstance(product, Computer):
                 product_data.update({
@@ -161,7 +164,9 @@ class DataManager:
                     'size': product.size,
                     'storage': product.storage
                 })
+
             products_data.append(product_data)
+
         DataManager.save_data(products_data, 'Store/products_logg.JSON')
 
     @staticmethod

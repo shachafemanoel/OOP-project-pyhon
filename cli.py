@@ -630,25 +630,23 @@ class StoreCLI:
         else:
             print("* Invalid input or product not found. * \n")
 
-
-    def add_pruduct_categoty(self,name,model,description,price,quantity):
+    def add_pruduct_categoty(self, name, model, description, price, quantity):
         category = self.display_product_type()
-        pro = Product()
         if category == '1':
             size = input("Enter Screen size: ")
-            tv_type = input("Enter TV type")
+            tv_type = input("Enter TV type: ")
             pro = Tv(name, model, description, price, quantity, size, tv_type)
-        if category == '2':
+        elif category == '2':
             chip = input("Enter Chip: ")
             size = input("Enter Screen size: ")
-            storage = input("Enter storage:")
+            storage = input("Enter storage: ")
             pro = Computer(name, model, description, price, quantity, size, storage, chip)
-        if category == '3':
+        elif category == '3':
             size = input("Enter Screen size: ")
-            storage = input("Enter storage:")
+            storage = input("Enter storage: ")
             pro = Phone(name, model, description, price, quantity, size, storage)
         else:
-            pro = Product(name, model, description, price, quantity, )
+            pro = Product(name, model, description, price, quantity)
         self.store.add_product(pro)
 
 
@@ -670,18 +668,18 @@ class StoreCLI:
                 else:
                     print("Quantity must be a digit!")
 
-            else:
+        else:
 
-                description = input("Enter description: ")
-                price = input("Enter Price: ")
-                quantity = input("Enter Quantity: ")
-                if price.isdigit() and int(price) > 0 and quantity.isdigit():
+            description = input("Enter description: ")
+            price = input("Enter Price: ")
+            quantity = input("Enter Quantity: ")
+            if price.isdigit() and int(price) > 0 and quantity.isdigit():
                     price = float(price)
                     quantity = int(quantity)
                     self.add_pruduct_categoty(name,model,description,price,quantity)
 
 
-                else:
+            else:
                     print("* Price and Quantity must be a digit *")
 
     def apply_coupon(self):
