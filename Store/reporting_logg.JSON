@@ -1,5 +1,5 @@
 {
-    "revenue": 5400.0,
+    "revenue": 33200.0,
     "best_sell": "Ipadair10",
     "sold_products": {
         "LG TV 55 ": 0,
@@ -11,17 +11,27 @@
         "iphone 13": 0,
         "Laptop Dell": 0,
         "dell": 0,
-        "samsung": 0,
-        "mi": 0,
+        "samsung": 2,
+        "mi": 2,
         "my comp": 0,
         "Ipadair10": 3,
-        "\u05de\u05d7\u05e9\u05d1": 0
+        "\u05de\u05d7\u05e9\u05d1": 0,
+        "iphone13": 1,
+        "Macbook15": 2,
+        "LGTV55": 1
     },
     "message": [
         " \n * A new customer has joined your store * \n customer name: \u05e9\u05d7\u05e3 \u05e2\u05de\u05e0\u05d5\u05d0\u05dc   ",
-        " \n * A new customer has joined your store * \n customer name: ssssss  "
+        " \n * A new customer has joined your store * \n customer name: ssssss  ",
+        " \n * A new order has been placed * \n Order number: 1    total amount: 3600.0 ",
+        " \n * A new order has been placed * \n Order number: 2    total amount: 9000.0 ",
+        " \n * A new customer has joined your store * \n customer name: nirel jano   ",
+        " \n * A new order has been placed * \n Order number: 3    total amount: 2375.0 ",
+        "\n * Warning:Less than 3 left in stock Macbook 15 *\n",
+        " \n * A new order has been placed * \n Order number: 4    total amount: 7600.0 ",
+        " \n * A new order has been placed * \n Order number: 5    total amount: 5225.0 "
     ],
-    "new_update": 2,
+    "new_update": 9,
     "sales": [
         " * -20% discount on all Computers * "
     ]

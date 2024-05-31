@@ -27,5 +27,10 @@ class User:
         return True
 
 
+    def __eq__(self, other):
+        if self.user_id == other.user_id and self.user_full_name == other.user_full_name and self.password == other.password:
+            return True
+
+
     def __str__(self):
         return f"User: {self.user_full_name}\nID: {self.user_id}"

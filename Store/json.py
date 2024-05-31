@@ -53,6 +53,7 @@ class DataManager:
                     customer=customer,
                     product_dict=order_data['product_dict'],
                     payment= Payment(**order_data['payment']),
+                    total_amount = order_data.get('total_amount')
                 )
                 order.status = order_data['status']
                 orders[order.order_number] = order
@@ -67,7 +68,8 @@ class DataManager:
                 'customer_id': order.customer.user_id,
                 'product_dict': order.product_dict,
                 'status': order.status,
-                'payment':order.payment.payment_to_dict()
+                'payment':order.payment.payment_to_dict(),
+                'total_amount':order.total_amount
             } for order in orders.values()
         ]
         DataManager.save_data(orders_data, 'Store/orders_logg.JSON')
@@ -189,7 +191,6 @@ class DataManager:
                     address=user_data.get('address'),
                     payment=Payment(**user_data['payment']),
                     coupon=user_data.get('coupon'),
-                    order_history=user_data.get('order_history')
                 )
             else:
                 logging.warning(f"Unknown user type: {user_type}")
@@ -210,7 +211,6 @@ class DataManager:
                     'address': user.address,
                     'payment': user.payment.payment_to_dict(),
                     'coupon': user.coupon,
-                    'order_history': user.order_history
                 }
             else:
                 user_data = {

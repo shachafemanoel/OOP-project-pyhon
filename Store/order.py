@@ -1,8 +1,11 @@
 class Order:
-    def __init__(self, customer=None, order_number=None, product_dict=None, payment=None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
+    def __init__(self, customer=None, order_number=None, product_dict=None, payment=None,total_amount = None):  # כדי ליצור אובייקט יש לקבל שם לקוח ומילון של שמות מוצרים שהמפתח הוא השם והערך הוא הכמות
         self.order_number = order_number
         self.customer = customer
-        self.total_amount = 0
+        if total_amount is None:
+            self.total_amount = 0
+        else:
+            self.total_amount = total_amount
         self.payment = payment
         if self.payment is None:
             self.status = "Not Paid"
@@ -22,6 +25,15 @@ class Order:
         elif choice == 2:
             self.status = deli
 
+
+
+    def order_to_dict(self):
+        dict = {}
+        dict['order_number'] = self.order_number
+        dict['customer'] = self.customer
+        dict['total_amount'] = self.total_amount
+        dict['payment'] = self.payment.payment_to_dict()
+        return dict
 
 
 

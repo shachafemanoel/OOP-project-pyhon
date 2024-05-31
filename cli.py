@@ -31,7 +31,7 @@ class StoreCLI:
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
-                print("Login successful!")
+            print("Login successful!")
 
     def register(self):
         print("\nWelcome to the registration systemֿ\n")
@@ -270,7 +270,7 @@ class StoreCLI:
     def display_order(self):
         print("\n1. Add Item ")
         if self.count_item > 0:
-            print(f"2. Cart({self.count_item})")
+            print(f"2. Go to Cart({self.count_item})")
         print("3. Exit ")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -777,8 +777,8 @@ class StoreCLI:
                 self.cart = Order()
                 self.count_item = 0
 
-                if coupon == 1:
-                    self.user.use_coupon()
+                if coupon == '1':
+                    self.store.use_coupon(self.user)
 
     def catalog(self):
             while True:
@@ -903,6 +903,7 @@ class StoreCLI:
             elif self.user.online == 1:
                 print(f"\n * Welcome {self.user.user_full_name}! You are now connected. *")
                 if type(self.user) == Client:
+
                         self.customer_menu()
                 else:
                     self.management_menu()

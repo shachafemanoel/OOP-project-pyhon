@@ -30,13 +30,21 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.order_number = len(self.orders) +1
 
 
-
+    def user_order_history(self, user):
+        user_orders_dict = {}
+        for order in self.orders.values():
+            if order.customer == user:
+                user_orders_dict[order.order_number] = order
+        return user_orders_dict
     def save_files(self):
         DataManager.save_users(self.users)
         DataManager.save_orders(self.orders)
         DataManager.save_products(self.collection)
         DataManager.save_reporting(self.reporting,self.sales)
 
+
+    def use_coupon(self,user):
+        self.users[user.user_id].use_coupon()
 
     def sale_prodduct_type(self, product_type, discount):
         if product_type == "1":
@@ -170,7 +178,12 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def log(self, user_id, password):
         login = user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         if login in self.users and self.users[login].login(password):
-            return self.users[login]
+            if type(self.users[login]) == User:
+                return self.users[login]
+            else:
+                history = self.user_order_history(self.users[login])
+                self.users[login].order_history = history
+                return self.users[login]
         else:
             return None
 

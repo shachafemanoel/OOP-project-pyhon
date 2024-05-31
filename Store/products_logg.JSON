@@ -17,7 +17,7 @@
         "model": "QLED 555",
         "description": "big tv 4k smart ",
         "price": 5500.0,
-        "quantity": 12,
+        "quantity": 11,
         "rate": [],
         "size": null,
         "tv_type": null
@@ -28,7 +28,7 @@
         "model": "air",
         "description": "Apple 2024 MacBook Air 15-inch Laptop with M3 chip: 15.3-inch Liquid Retina Display, 8GB Unified Memory, 256GB SSD Storage, Backlit Keyboard, 1080p FaceTime HD Camera, Touch ID; Midnight",
         "price": 4000.0,
-        "quantity": 5,
+        "quantity": 3,
         "rate": [],
         "size": null,
         "storage": "1000",
@@ -83,7 +83,7 @@
         "model": "pro",
         "description": "the best value for money ",
         "price": 2500.0,
-        "quantity": 12,
+        "quantity": 11,
         "rate": [],
         "size": "5",
         "storage": "256"
@@ -118,7 +118,7 @@
         "model": "tv",
         "description": "tv",
         "price": 2000.0,
-        "quantity": 50,
+        "quantity": 48,
         "rate": [],
         "size": null,
         "tv_type": null
@@ -129,7 +129,7 @@
         "model": "pc",
         "description": "pc",
         "price": 5000.0,
-        "quantity": 20,
+        "quantity": 18,
         "rate": [],
         "size": "50",
         "tv_type": null

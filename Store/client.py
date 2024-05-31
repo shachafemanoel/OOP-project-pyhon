@@ -6,14 +6,13 @@ from Store.order import Order
 class Client(User):
     def __init__(self, user_id=None, user_full_name=None, password=None, address=None, online=0, payment=None, coupon=None,order_history=None):
         super().__init__(user_id,user_full_name, password, online, address, payment)
-        if order_history is not None:
-            self.order_history = {}
-        else:
-            self.order_history = order_history
         self.messege = []
         self.new_messege = 0
         self.coupon = coupon
-
+        if order_history:
+            self.order_history = order_history
+        else:
+            self.order_history ={}
     def update_client (self):
         if self.new_messege > 0:
             new = f"\n * There are {self.new_messege} new notifications for you *\n"
@@ -27,7 +26,7 @@ class Client(User):
             return f"\n * There are no new notifications *\n "
 
     def use_coupon(self):
-        self.coupon = None
+        self.coupon = 0
 
     def new_status(self, order):
         self.order_history[order.order_number] = order
@@ -40,8 +39,15 @@ class Client(User):
         self.new_messege += 1
 
     def list_orders_client(self):
-        return [[f"Order Number: {order_number}",f"Total amount: {order.converter()}",f"Status: {order.status}"] for order_number, order
+        if self.order_history is not None:
+         return [[f"Order Number: {order_number}",f"Total amount: {order.converter()}",f"Status: {order.status}"] for order_number, order
                 in self.order_history.items()]
+        else:
+            return []
+
+    def list_orders_to_dict(self,lst):
+        for item in lst:
+            self.order_history[item.order_number] = Order(**item)
 
     def change_address(self, new_address):
         self.address = new_address
