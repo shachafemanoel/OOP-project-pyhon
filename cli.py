@@ -48,6 +48,7 @@ class StoreCLI:
                     self.set_address()
                     self.store.users[user_id] = new_user
                     self.user.online = 1
+
                     print("\n * User registered successfully. * ")
                     self.user.coupon = 5
                     print("Thank you for register. Enjoy a 5% coupon !")
@@ -338,7 +339,7 @@ class StoreCLI:
                 print("\n * Invalid choice. Please try again.* ")
 
     def pay(self):
-        if self.user.payment is not None:
+        if self.user.payment.info is not None:
             self.user.payment.amount_of_payments =1
             print(f"\n===================\nfor paying with:\n")
             print(self.user.payment)

@@ -1,11 +1,15 @@
+from Store.payment import Payment
 from Store.user import User
 from Store.order import Order
 
 
 class Client(User):
-    def __init__(self, user_id=None, user_full_name=None, password=None, address=None, online=0, payment=None, coupon=None):
+    def __init__(self, user_id=None, user_full_name=None, password=None, address=None, online=0, payment=None, coupon=None,order_history=None):
         super().__init__(user_id,user_full_name, password, online, address, payment)
-        self.order_history = {}
+        if order_history is not None:
+            self.order_history = {}
+        else:
+            self.order_history = order_history
         self.messege = []
         self.new_messege = 0
         self.coupon = coupon

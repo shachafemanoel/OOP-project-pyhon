@@ -17,8 +17,11 @@
         "Ipadair10": 3,
         "\u05de\u05d7\u05e9\u05d1": 0
     },
-    "message": [],
-    "new_update": 0,
+    "message": [
+        " \n * A new customer has joined your store * \n customer name: \u05e9\u05d7\u05e3 \u05e2\u05de\u05e0\u05d5\u05d0\u05dc   ",
+        " \n * A new customer has joined your store * \n customer name: ssssss  "
+    ],
+    "new_update": 2,
     "sales": [
         " * -20% discount on all Computers * "
     ]

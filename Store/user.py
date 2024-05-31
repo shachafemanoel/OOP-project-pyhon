@@ -1,3 +1,4 @@
+from Store.payment import Payment
 class User:
     def __init__(self, user_id=None, user_full_name=None, password=None, online=0, address=None, payment=None):
         self.user_id = user_id
@@ -5,7 +6,10 @@ class User:
         self.password = password
         self.online = online
         self.address = address
-        self.payment = payment
+        if payment is not None:
+            self.payment = payment
+        else:
+            self.payment = Payment()
 
     def login(self, entered_password):
         if self.password == entered_password:

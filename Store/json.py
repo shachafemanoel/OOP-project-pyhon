@@ -169,26 +169,27 @@ class DataManager:
 
         DataManager.save_data(products_data, 'Store/products_logg.JSON')
 
-    @staticmethod
+
     def load_users():
         users = {}
         users_data = DataManager.load_data('Store/users_logg.JSON')
         for user_data in users_data:
             user_type = user_data.get('type')
-            if user_type == 'Admin':  # Adjusted type to match JSON
+            if user_type == 'Admin':
                 user = User(
                     user_id=user_data['user_id'],
-                    user_full_name=user_data['user_full_name'],  # Adjusted name to match JSON
+                    user_full_name=user_data['user_full_name'],
                     password=user_data['password']
                 )
             elif user_type == 'Client':
                 user = Client(
                     user_id=user_data['user_id'],
-                    user_full_name=user_data['user_full_name'],  # Adjusted full_name to match JSON
+                    user_full_name=user_data['user_full_name'],
                     password=user_data['password'],
                     address=user_data.get('address'),
                     payment=Payment(**user_data['payment']),
-                    coupon=user_data.get('coupon')
+                    coupon=user_data.get('coupon'),
+                    order_history=user_data.get('order_history')
                 )
             else:
                 logging.warning(f"Unknown user type: {user_type}")
@@ -204,22 +205,22 @@ class DataManager:
                 user_data = {
                     'user_id': user.user_id,
                     'type': 'Client',
-                    'user_full_name': user.user_full_name,  # Adjusted to match JSON
+                    'user_full_name': user.user_full_name,
                     'password': user.password,
                     'address': user.address,
                     'payment': user.payment.payment_to_dict(),
-                    'coupon': user.coupon
+                    'coupon': user.coupon,
+                    'order_history': user.order_history
                 }
-            else:  # Assuming the only other type is Admin
+            else:
                 user_data = {
                     'user_id': user.user_id,
-                    'type': 'Admin',  # Adjusted type to match JSON
-                    'user_full_name': user.user_full_name,  # Adjusted to match JSON
+                    'type': 'Admin',
+                    'user_full_name': user.user_full_name,
                     'password': user.password
                 }
             users_data.append(user_data)
         DataManager.save_data(users_data, 'Store/users_logg.JSON')
-
     @staticmethod
     def load_reporting():
         reporting_data = DataManager.load_data('Store/reporting_logg.JSON')

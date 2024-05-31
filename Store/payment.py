@@ -9,6 +9,8 @@ class Payment:
 
 
     def payment_to_dict(self):
+        if self.payment_method is None:
+            return {}
         dict = {}
         dict['owner'] = self.owner
         dict['info'] = self.info
