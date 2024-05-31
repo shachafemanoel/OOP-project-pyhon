@@ -68,5 +68,19 @@
             "payment_method": "Cash"
         },
         "total_amount": 5225.0
+    },
+    {
+        "order_number": 6,
+        "customer_id": "2020",
+        "product_dict": {
+            "iphone13": 2
+        },
+        "status": "Processing",
+        "payment": {
+            "owner": "Client Check",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card"
+        },
+        "total_amount": 2205.0
     }
 ]

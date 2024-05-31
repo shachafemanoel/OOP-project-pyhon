@@ -91,7 +91,8 @@ class DataManager:
                     quantity=prod_data.get('quantity'),
                     size=prod_data.get('size'),
                     tv_type=prod_data.get('type'),
-                    rate=ratings
+                    rate=ratings,
+                    sale = prod_data.get('sale')
 
                 )
             elif product_type == 'Computer':
@@ -104,7 +105,9 @@ class DataManager:
                     size=prod_data.get('size'),
                     storage=prod_data.get('storage'),
                     chip=prod_data.get('chip'),
-                    rate = ratings
+                    rate = ratings,
+                    sale=prod_data.get('sale')
+
 
                 )
             elif product_type == 'Phone':
@@ -116,7 +119,8 @@ class DataManager:
                     quantity=prod_data.get('quantity'),
                     size=prod_data.get('size'),
                     storage=prod_data.get('storage'),
-                    rate = ratings
+                    rate = ratings,
+                    sale = prod_data.get('sale')
                    ,
                 )
             else:
@@ -126,12 +130,13 @@ class DataManager:
                     description=prod_data.get('description'),
                     price=prod_data.get('price'),
                     quantity=prod_data.get('quantity'),
-                    rate= ratings
-
+                    rate= ratings,
+                    sale=prod_data.get('sale')
                 )
-                if prod_data.get('sale') is not None:
-                    product.sale = prod_data.get('sale')
-                    product.original_price = prod_data.get('original_price')
+
+
+
+
             collection[product.get_key_name()] = product
         return collection
 
@@ -144,9 +149,10 @@ class DataManager:
                 'product_type': product.__class__.__name__,
                 'model': product.model,
                 'description': product.description,
-                'price': product.price,
+                'price': product.original_price,
                 'quantity': product.quantity,
-                'rate': [rating.rate_to_dict() for rating in product.rate]
+                'rate': [rating.rate_to_dict() for rating in product.rate],
+                'sale':product.sale,
             }
 
             # Check if the product is an instance of a subclass of Product and add specific details

@@ -1,5 +1,5 @@
 {
-    "revenue": 33200.0,
+    "revenue": 35405.0,
     "best_sell": "Ipadair10",
     "sold_products": {
         "LG TV 55 ": 0,
@@ -16,7 +16,7 @@
         "my comp": 0,
         "Ipadair10": 3,
         "\u05de\u05d7\u05e9\u05d1": 0,
-        "iphone13": 1,
+        "iphone13": 2,
         "Macbook15": 2,
         "LGTV55": 1
     },
@@ -29,10 +29,9 @@
         " \n * A new order has been placed * \n Order number: 3    total amount: 2375.0 ",
         "\n * Warning:Less than 3 left in stock Macbook 15 *\n",
         " \n * A new order has been placed * \n Order number: 4    total amount: 7600.0 ",
-        " \n * A new order has been placed * \n Order number: 5    total amount: 5225.0 "
+        " \n * A new order has been placed * \n Order number: 5    total amount: 5225.0 ",
+        " \n * A new order has been placed * \n Order number: 6    total amount: 2205.0 "
     ],
-    "new_update": 9,
-    "sales": [
-        " * -20% discount on all Computers * "
-    ]
+    "new_update": 10,
+    "sales": []
 }

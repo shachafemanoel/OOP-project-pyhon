@@ -1,12 +1,13 @@
-
 class Product:
-    def __init__(self, name=None, model=None, description=None, price=None, quantity=None, rate=None):  #
+    def __init__(self, name=None, model=None, description=None, price=None, quantity=None, rate=None,sale=0):  #
         self.name = name  # שם המוצר
         self.model = model # דגם
         self.description = description  # תיאור המוצר
         self.original_price = price
-        self.sale = 0
         self.price = price  # מחיר המוצר
+        self.sale = sale
+        if self.sale >0:
+            self.update_price(sale)
         self.quantity = quantity  # הכמות המוצר
         if rate is None:
             self.rate = []
@@ -26,9 +27,8 @@ class Product:
             return False
 
     def update_price(self, discount):
-        if self.sale == 0:
             self.sale = discount
-            self.price -= (self.price * float(discount / 100))
+            self.price -= (self.original_price * float(discount / 100))
 
     def remove_discount(self):
         self.price = self.original_price
