@@ -32,6 +32,8 @@ class StoreCLI:
             if type(self.user) == User:
                 self.user.__class__ = User
             logging.error("Login successful!")
+        else:
+            logging.error("Login failed!\n")
 
     def register(self):
         print("\nWelcome to the registration systemֿ\n")
@@ -848,7 +850,7 @@ class StoreCLI:
                 self.exit = True
                 print('Bye, Thank you')
             else:
-                logging("\n * Login failed. Please check your credentials and try again. * \n ")
+                print("\n * Login failed. Please check your credentials and try again. * \n ")
 
     def management_menu(self):
         choice = self.display_menu()
