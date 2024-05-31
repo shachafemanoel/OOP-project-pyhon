@@ -11,7 +11,7 @@ from Store.phone import Phone
 from Store.computer import Computer
 from Store.rating import Rating
 from Store.json import DataManager
-
+import logging
 class StoreCLI:
     def __init__(self):
         self.store = Store()
@@ -31,7 +31,7 @@ class StoreCLI:
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
-            print("Login successful!")
+            logging.error("Login successful!")
 
     def register(self):
         print("\nWelcome to the registration systemֿ\n")
@@ -200,7 +200,7 @@ class StoreCLI:
         order_number = input("Enter order number: ")
         if order_number.isdigit():
             order_number = int(order_number)
-            if 0 < order_number < self.store.order_number + 1:
+            if 0 < order_number < self.store.order_number + 1 and order_number in self.user.order_history:
                 order = self.user.order_history[order_number]
                 print(order)
                 if order.status == 'delivered':
@@ -208,7 +208,8 @@ class StoreCLI:
                     option = input("Enter your choice: ")
                     if option == '1':
                         self.add_review(order)
-
+            else:
+                print("\n *Order number is not valid")
 
     def display_order_user(self):
         if len(self.user.order_history)>0 :
@@ -602,7 +603,7 @@ class StoreCLI:
                     how_much = int(how_much)
                     if how_much <= 0:
                         print("* No quantity provided *")
-                    if not self.store.add_item_order(new_item, how_much):
+                    elif not self.store.add_item_order(new_item, how_much):
                         print(f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
                     else:
                         self.cart.add_item_to_order(new_item,how_much)
@@ -847,7 +848,7 @@ class StoreCLI:
                 self.exit = True
                 print('Bye, Thank you')
             else:
-                print("\n * Login failed. Please check your credentials and try again. * \n ")
+                logging("\n * Login failed. Please check your credentials and try again. * \n ")
 
     def management_menu(self):
         choice = self.display_menu()
