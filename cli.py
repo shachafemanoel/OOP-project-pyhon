@@ -280,7 +280,6 @@ class StoreCLI:
 
 
     def display_payment(self):
-        print(self.cart.converter())
         print("How would you like to pay?")
         print("\n1.Credit Card")
         print("2.Paypal")
@@ -690,7 +689,7 @@ class StoreCLI:
                     print("* Price and Quantity must be a digit *")
 
     def apply_coupon(self):
-        if self.user.coupon is not None:
+        if self.user.coupon != 0:
             for each in range(5):
                 choice_coupon = self.display_coupon()
                 if choice_coupon == '1':
