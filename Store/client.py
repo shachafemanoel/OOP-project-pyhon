@@ -4,11 +4,18 @@ from Store.order import Order
 
 
 class Client(User):
-    def __init__(self, user_id=None, user_full_name=None, password=None, address=None, online=0, payment=None, coupon=None,order_history=None):
+    def __init__(self, user_id=None, user_full_name=None, password=None, address=None, online=0, payment=None, coupon=None,order_history=None,messege = None,new_messege=None):
         super().__init__(user_id, user_full_name, password, online, address, payment)
-        self.messege = []
-        self.new_messege = 0
-        self.coupon = coupon
+        if messege is not None:
+            self.messege = messege
+            self.new_messege = len(messege)
+        else:
+            self.messege = []
+            self.new_messege = 0
+        if coupon is not None:
+         self.coupon = coupon
+        else:
+            self.coupon = 0
         if order_history:
             self.order_history = order_history
         else:
@@ -55,6 +62,14 @@ class Client(User):
 
     def change_address(self, new_address):
         self.address = new_address
+
+    def to_dict(self):
+        dict = {"messege":self.messege,"new_messege":self.new_messege,"coupon":self.coupon}
+        dict = {**super().to_dict(),**dict}
+        dict ["user_type"] = "Client"
+        return dict
+
+
 
     def __str__(self):
         return super().__str__() + f"\nCoupon: {self.coupon}\nOrder History: {len(self.order_history)} orders"

@@ -182,25 +182,17 @@ class DataManager:
         users = {}
         users_data = DataManager.load_data('Store/users_logg.JSON')
         for user_data in users_data:
-            user_type = user_data.get('type')
+            user_type = user_data.pop('user_type')
+            payment = user_data.pop('payment',None)
             if user_type == 'Admin':
-                user = User(
-                    user_id=user_data['user_id'],
-                    user_full_name=user_data['user_full_name'],
-                    password=user_data['password']
-                )
+                user = User(**user_data)
             elif user_type == 'Client':
-                user = Client(
-                    user_id=user_data['user_id'],
-                    user_full_name=user_data['user_full_name'],
-                    password=user_data['password'],
-                    address=user_data.get('address'),
-                    payment=Payment(**user_data['payment']),
-                    coupon=user_data.get('coupon'),
-                )
+                user = Client(**user_data)
             else:
                 logging.warning(f"Unknown user type: {user_type}")
                 continue
+            if payment is not None:
+                user.payment = Payment(**payment)
             users[user.user_id] = user
         return users
 
@@ -208,24 +200,7 @@ class DataManager:
     def save_users(users: dict):
         users_data = []
         for user in users.values():
-            if isinstance(user, Client):
-                user_data = {
-                    'user_id': user.user_id,
-                    'type': 'Client',
-                    'user_full_name': user.user_full_name,
-                    'password': user.password,
-                    'address': user.address,
-                    'payment': user.payment.payment_to_dict(),
-                    'coupon': user.coupon,
-                }
-            else:
-                user_data = {
-                    'user_id': user.user_id,
-                    'type': 'Admin',
-                    'user_full_name': user.user_full_name,
-                    'password': user.password
-                }
-            users_data.append(user_data)
+            users_data.append(user.to_dict())
         DataManager.save_data(users_data, 'Store/users_logg.JSON')
     @staticmethod
     def load_reporting():
@@ -241,14 +216,7 @@ class DataManager:
 
     @staticmethod
     def save_reporting(reporting, sales):
-        reporting_data = {
-            'revenue': reporting.revenue,
-            'best_sell': reporting.best_sell,
-            'sold_products': reporting.sold_products,
-            'message': reporting.message,
-            'new_update': reporting.new_update,
-            'sales': sales
-        }
+        reporting_data =reporting.repoting_do_dict(sales)
         DataManager.save_data(reporting_data, 'Store/reporting_logg.JSON')
 
     @staticmethod

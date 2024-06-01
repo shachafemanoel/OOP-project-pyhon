@@ -1,14 +1,13 @@
 [
     {
         "user_id": "1111",
-        "type": "Admin",
-        "user_full_name": "Admin",
-        "password": "1234"
+        "password": "1234",
+        "address": null,
+        "payment": {},
+        "user_type": "Admin"
     },
     {
         "user_id": "2020",
-        "type": "Client",
-        "user_full_name": "Client Check",
         "password": "1234",
         "address": "Address",
         "payment": {
@@ -16,15 +15,19 @@
             "info": "1234567812345678",
             "payment_method": "Credit Card"
         },
+        "user_type": "Client",
+        "messege": [],
+        "new_messege": 0,
         "coupon": 10
     },
     {
         "user_id": "7777",
-        "type": "Client",
-        "user_full_name": "nirel jano ",
         "password": "1234",
         "address": "israel,haifa,shalom ,4",
         "payment": {},
+        "user_type": "Client",
+        "messege": [],
+        "new_messege": 0,
         "coupon": 0
     }
 ]

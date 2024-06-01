@@ -138,6 +138,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def remove(self, product):
         if product in self.collection.values():
            self.collection.pop(product.get_key_name())
+           self.reporting.remove(product.get_key_name(),price)
            return True
         else:
             return False

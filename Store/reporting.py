@@ -3,8 +3,8 @@
 class Reporting:
     def __init__(self):
         self.revenue = 0
-        self.best_sell = None
         self.sold_products = {}
+        self.best_sell = None
         self.message = []
         self.new_update = 0
         self.sales = []
@@ -18,7 +18,6 @@ class Reporting:
         value = list(self.sold_products.values())
         key = list(self.sold_products.keys())
         self.best_sell = key[value.index(max(value))]
-        return f"* {self.best_sell}is the best selling product *\n"
 
     def sold(self):
         return [(product, amount) for product, amount in self.sold_products.items()]
@@ -56,6 +55,24 @@ class Reporting:
 
         return '\n'.join(result)
 
+
+    def repoting_do_dict(self,sales):
+        self.best_sell_product()
+        reporting_data = {
+            'revenue': self.revenue,
+            'best_sell': self.best_sell,
+            'sold_products': self.sold_products,
+            'message': self.message,
+            'new_update': self.new_update,
+            'sales': sales
+        }
+
+        return reporting_data
+
+    def remove(self,product_name,price):
+        self.revenue -= price*self.sold_products[product_name]
+        self.sold_products.pop(product_name)
+        self.best_sell_product()
     def __str__(self):
         if self.new_update > 0:
             new = f"\n * There are {self.new_update} new updates for you *\n"
@@ -64,7 +81,7 @@ class Reporting:
         else:
             new = "\n * There are no new notifications * "
         if self.revenue > 0 and len(self.sold_products) > 0:
-            return f" \n    **** Reporting summary **** {new}\n{self.best_sell_product()}\n{self.get_sales_report_string()}"
+            return f" \n    **** Reporting summary **** {new}\n* {self.best_sell}is the best selling product *\n{self.get_sales_report_string()}"
         else:
             return f"{new}\nNo purchase has been made from the store yet"
 
