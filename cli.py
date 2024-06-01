@@ -290,13 +290,14 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
 
-    def new_card(self,paymethood):
+    def new_card(self, paymethod):
         card_holder = input("Name on card: ")
         card_number = input("Card number: ")
-        how_much = input("how many payments would you like to spread the deal?")
+        how_much = input("how many payments would you like to spread the deal?: ")
+        paymethod = None
         if card_number.isdigit() and how_much.isdigit():
             paymethod = Payment(card_holder, card_number, "Credit Card")
-        if paymethod.check_card(int(how_much)):
+        if paymethod and paymethod.check_card(int(how_much)):
             print("\nWould you like to save your payment method for future orders?")
             print("\n1. Yes, save it")
             print("\n2. No ")
@@ -305,7 +306,7 @@ class StoreCLI:
                 self.user.payment = paymethod
             return paymethod
         else:
-            print("\n * The card number is invalid * ")
+            print("\n * The card details are invalid * ")
 
 
     def new_paypal(self,paymethood):
@@ -605,12 +606,14 @@ class StoreCLI:
                     how_much = int(how_much)
                     if how_much <= 0:
                         print("* No quantity provided *")
-                    elif not self.store.add_item_order(new_item, how_much):
-                        print(f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
+                    if not self.store.add_item_order(new_item, how_much):
+                        print(
+                            f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
                     else:
-                        self.cart.add_item_to_order(new_item,how_much)
+                        self.cart.add_item_to_order(new_item, how_much)
                         self.count_item += how_much
-                        print(f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.price*how_much} has been successfully updated ! *\n{self.cart.converter()} ")
+                        print(
+                            f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.price * how_much} has been successfully updated ! *\n{self.cart.converter_payments()} ")
                         break
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
