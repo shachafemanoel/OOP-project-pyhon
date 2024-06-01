@@ -16,7 +16,7 @@
             "info": "1234567812345678",
             "payment_method": "Credit Card"
         },
-        "coupon": 0
+        "coupon": 10
     },
     {
         "user_id": "7777",

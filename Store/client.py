@@ -5,7 +5,7 @@ from Store.order import Order
 
 class Client(User):
     def __init__(self, user_id=None, user_full_name=None, password=None, address=None, online=0, payment=None, coupon=None,order_history=None):
-        super().__init__(user_id,user_full_name, password, online, address, payment)
+        super().__init__(user_id, user_full_name, password, online, address, payment)
         self.messege = []
         self.new_messege = 0
         self.coupon = coupon
@@ -27,6 +27,10 @@ class Client(User):
 
     def use_coupon(self):
         self.coupon = 0
+
+    def update_coupon(self, amount):
+        self.coupon = amount
+
 
     def new_status(self, order):
         self.order_history[order.order_number] = order
@@ -53,4 +57,4 @@ class Client(User):
         self.address = new_address
 
     def __str__(self):
-        return super().__str__()
+        return super().__str__() + f"\nCoupon: {self.coupon}\nOrder History: {len(self.order_history)} orders"

@@ -36,6 +36,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             if order.customer == user:
                 user_orders_dict[order.order_number] = order
         return user_orders_dict
+
     def save_files(self):
         DataManager.save_users(self.users)
         DataManager.save_orders(self.orders)

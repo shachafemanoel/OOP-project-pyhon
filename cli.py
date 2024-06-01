@@ -144,7 +144,8 @@ class StoreCLI:
         print("1. Add user")
         print("2. Add admin")
         print("3. Change password")
-        print("4. Exit")
+        print("4. Gift Coupon")
+        print("5. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -160,6 +161,8 @@ class StoreCLI:
             elif sub_choice == '3':
                 self.change_password()
             elif sub_choice == '4':
+                self.choose_client()
+            elif sub_choice == '5':
                 break
             else:
                 print("\n * Invalid choice. Please try again. *\n")
@@ -687,6 +690,35 @@ class StoreCLI:
 
             else:
                     print("* Price and Quantity must be a digit *")
+    def choose_client(self):
+        clients_lst = []
+        id_lst = []
+        for id, details in self.store.users.items():
+            if isinstance(details, Client):
+                user = self.store.users.get(str(id))
+                client_details = {"Name":details.user_full_name, "ID":details.user_id, "Copuon": details.coupon, "Orders": len(self.store.user_order_history(user))}
+                clients_lst.append(client_details)
+                id_lst.append(id)
+
+        print(clients_lst)
+        choice = input("\nChoose Client ID: ")
+        if str(choice) in id_lst:
+            user = self.store.users.get(str(choice))
+            self.apply_coupon_to_client(user)
+        else:
+            return "Invalid Client ID"
+
+    def apply_coupon_to_client(self, user):
+        for i in range(3):
+            amount = input("Enter coupon value: ")
+            if amount.isdigit() and 0 < int(amount) < 100:
+                user.update_coupon(int(amount))
+                print("\n * Coupon has been successfully updated! *")
+                break
+            else:
+                print("\n * Invalid coupon value. Please enter a number between 1 and 99 *")
+            if i == 2:
+                print("* You have exceeded the maximum number of attempts *")
 
     def apply_coupon(self):
         if self.user.coupon != 0:
