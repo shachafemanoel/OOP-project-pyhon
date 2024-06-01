@@ -1,6 +1,7 @@
 [
     {
         "user_id": "1111",
+        "user_full_name": "Admin",
         "password": "1234",
         "address": null,
         "payment": {},
@@ -8,6 +9,7 @@
     },
     {
         "user_id": "2020",
+        "user_full_name": "Shachaf Emanoel",
         "password": "1234",
         "address": "Address",
         "payment": {
@@ -22,6 +24,7 @@
     },
     {
         "user_id": "7777",
+        "user_full_name": "Nirel jano",
         "password": "1234",
         "address": "israel,haifa,shalom ,4",
         "payment": {},

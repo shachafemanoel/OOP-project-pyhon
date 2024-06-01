@@ -72,6 +72,7 @@ class User:
     def to_dict(self):
         return {
             'user_id': self.user_id,
+            'user_full_name': self.user_full_name,
             'password': self.__password,
             'address': self.__address,
             'payment': self.payment.payment_to_dict(),

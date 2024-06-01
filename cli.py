@@ -31,7 +31,7 @@ class StoreCLI:
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
-            logging.error("Login successful!")
+            logging.error("Login successful!\n")
         else:
             logging.error("Login failed!\n")
 

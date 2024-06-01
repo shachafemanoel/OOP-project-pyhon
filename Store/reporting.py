@@ -40,7 +40,7 @@ class Reporting:
         # בניית המחרוזת של הטבלה
         result = []
         table_width = max_name_length + max_sold_length + 7  # 7 למרווחים ומסגרת
-
+        result.append('-' * table_width)
         result.append("Product table".center(table_width))
         result.append('-' * table_width)
         header = f"| {'Product'.ljust(max_name_length)} | {'Sold'.rjust(max_sold_length)} |"
