@@ -73,7 +73,7 @@ class User:
             'user_full_name': self.user_full_name,
             'password': self.__password,
             'address': self.__address,
-            'payment': self.payment.payment_to_dict(),
+            'payment': self.payment.payment_to_dict_user(),
             'user_type':'Admin'
         }
     def __eq__(self, other):

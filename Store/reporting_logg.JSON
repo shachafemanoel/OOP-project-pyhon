@@ -1,29 +1,11 @@
 {
-    "best_sell": "mi",
+    "best_sell": "mycomp",
     "sold_products": {
-        "LG TV 55 ": 0,
-        "Macbook 15": 0,
-        "Iphone 15 pro": 0,
-        "ipad": 0,
-        "galaxy 24": 0,
-        "airpods pro ": 0,
-        "iphone 13": 0,
-        "Laptop Dell": 0,
-        "dell": 0,
-        "samsung": 0,
-        "mi": 2,
-        "my comp": 0,
-        "Ipadair10": 0,
-        "iphone13": 0,
-        "Macbook15": 0,
-        "LGTV55": 0,
-        "mycomp": 2,
-        "airpodspro": 2
+        "mycomp": 5
     },
     "message": [
-        " \n * A new order has been placed * \n Order number: 1    total amount: 1600.0 ",
-        " \n * A new order has been placed * \n Order number: 2    total amount: 6400.0 "
+        " \n * A new order has been placed * \n Order number: 1    total amount: 16000.0 "
     ],
-    "new_update": 2,
+    "new_update": 1,
     "sales": []
 }

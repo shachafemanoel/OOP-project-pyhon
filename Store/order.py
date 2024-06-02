@@ -36,7 +36,7 @@ class Order:
         dict['order_number'] = self.order_number
         dict['customer_id'] = self.customer.user_id
         dict['total_amount'] = self.total_amount
-        dict['payment'] = self.payment.payment_to_dict()
+        dict['payment'] = self.payment.payment_to_dict_order()
         dict['status'] = self.status
         dict['product_dict'] = self.product_dict
         return dict

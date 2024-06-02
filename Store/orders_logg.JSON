@@ -2,29 +2,16 @@
     {
         "order_number": 1,
         "customer_id": "2020",
-        "total_amount": 1600.0,
+        "total_amount": 16000.0,
         "payment": {
             "owner": "Client Check",
             "info": "1234567812345678",
-            "payment_method": "Credit Card"
-        },
-        "status": "Processing",
-        "product_dict": {
-            "airpodspro": 2
-        }
-    },
-    {
-        "order_number": 2,
-        "customer_id": "2020",
-        "total_amount": 6400.0,
-        "payment": {
-            "owner": "Client Check",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card"
+            "payment_method": "Credit Card",
+            "amount_of_payments": 1
         },
         "status": "completed",
         "product_dict": {
-            "mycomp": 2
+            "mycomp": 5
         }
     }
 ]

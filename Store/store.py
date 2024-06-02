@@ -128,7 +128,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def add_product(self, product):
         self.collection[product.get_key_name()] = product
-        self.reporting.sold_products[product.name] = 0
         return "Product added successfully."
 
 

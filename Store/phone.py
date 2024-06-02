@@ -5,6 +5,17 @@ class Phone (Product):
         self.size = size
         self.storage = storage
 
+
+    def product_to_dict(self):
+        dict = {
+            "size": self.size,
+            "storage": self.storage,
+        }
+
+        dict={**super().product_to_dict(),**dict}
+
+        dict["product_type"] = "Phone"
+        return dict
     def __str__(self):
         if self.sale > 0:
             return f"======================================\nName: {self.name}\nModel: {self.model} Storge: {self.storage}\ndisplay size: {self.size}-Inch\nDescription: {self.description}\nPrice:-{self.sale}% Off {self.get_price(1)}₪ ILS\n{self.review()}"

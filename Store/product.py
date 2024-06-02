@@ -10,10 +10,7 @@ class Product:
         if self.sale >0:
             self.update_price(sale)
         self.quantity = quantity  # הכמות המוצר
-        if rate is None:
-            self.rate = []
-        else:
-            self.rate = rate
+        self.rate = rate
 
     def get_key_name(self):
         return self.name.replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
@@ -58,14 +55,17 @@ class Product:
 
     def product_to_dict(self):
         dict = {}
+        dict['product_type'] = "Product"
         dict['name'] = self.name
+        dict["model"] = self.model
         dict['description'] = self.description
         dict['original_price'] = self.original_price
         dict['price'] = self.price
         dict['sale'] = self.sale
         dict['quantity'] = self.quantity
-        dict['rate'] = self.rate
-
+        if self.rate is not None and len(self.rate)>0:
+            dict['rate'] = [rate.rate_to_dict() for rate in self.rate]
+        return dict
     def review(self):
         review = '=================Rating====================='
         if self.rate is not None and len(self.rate)>0:

@@ -1,5 +1,5 @@
 class Payment:
-    def __init__(self, owner=None, info=None, payment_method=None):
+    def __init__(self, owner=None, info=None, payment_method=None,amount_of_payments = None):
         self.owner = owner
         self.info = info
         self.payment_method = payment_method
@@ -8,7 +8,7 @@ class Payment:
 
 
 
-    def payment_to_dict(self):
+    def payment_to_dict_order(self):
         if self.payment_method is None:
             return {}
         dict = {}
@@ -16,6 +16,15 @@ class Payment:
         dict['info'] = self.info
         dict['payment_method'] = self.payment_method
         dict['amount_of_payments'] = self.amount_of_payments
+        return dict
+
+    def payment_to_dict_user(self):
+        if self.payment_method is None:
+            return {}
+        dict = {}
+        dict['owner'] = self.owner
+        dict['info'] = self.info
+        dict['payment_method'] = self.payment_method
         return dict
     def check_card(self,how_much):
         if len(self.owner) > 0 and len(self.info) >= 8:

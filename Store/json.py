@@ -70,11 +70,10 @@ class DataManager:
         products_data = DataManager.load_data('Store/products_logg.JSON')
         collection = {}
         for prod_data in products_data:
-            ratings_data = prod_data.pop('ratings',[])
-            if len(ratings_data) >0:
-                ratings = [Rating(**rating_dict) for rating_dict in ratings_data]
-            else:
-                ratings = None
+            ratings_data = prod_data.get('rate', None)
+            if ratings_data is not None and len(ratings_data) > 0:
+                for rate in range(0, len(ratings_data)):
+                    ratings_data[rate] = Rating(**ratings_data[rate])
             product_type = prod_data.get('product_type')
             if product_type == 'Tv':
                 product = Tv(
@@ -84,10 +83,8 @@ class DataManager:
                     price=prod_data.get('price'),
                     quantity=prod_data.get('quantity'),
                     size=prod_data.get('size'),
-                    tv_type=prod_data.get('type'),
-                    rate=ratings,
-                    sale = prod_data.get('sale')
-
+                    tv_type=prod_data.get('tv_type'),
+                    sale=prod_data.get('sale')
                 )
             elif product_type == 'Computer':
                 product = Computer(
@@ -99,10 +96,7 @@ class DataManager:
                     size=prod_data.get('size'),
                     storage=prod_data.get('storage'),
                     chip=prod_data.get('chip'),
-                    rate = ratings,
                     sale=prod_data.get('sale')
-
-
                 )
             elif product_type == 'Phone':
                 product = Phone(
@@ -113,9 +107,7 @@ class DataManager:
                     quantity=prod_data.get('quantity'),
                     size=prod_data.get('size'),
                     storage=prod_data.get('storage'),
-                    rate = ratings,
-                    sale = prod_data.get('sale')
-                   ,
+                    sale=prod_data.get('sale')
                 )
             else:
                 product = Product(
@@ -124,51 +116,22 @@ class DataManager:
                     description=prod_data.get('description'),
                     price=prod_data.get('price'),
                     quantity=prod_data.get('quantity'),
-                    rate= ratings,
-                    sale=prod_data.get('sale')
                 )
 
+            # הוספת דירוגים למוצר
+            if ratings_data is not None:
+                product.rate = ratings_data
 
-
-
+            # הוספת המוצר לאוסף
             collection[product.get_key_name()] = product
+
         return collection
 
     @staticmethod
     def save_products(products):
         products_data = []
         for product in products.values():
-            product_data = {
-                'name': product.name,
-                'product_type': product.__class__.__name__,
-                'model': product.model,
-                'description': product.description,
-                'price': product.original_price,
-                'quantity': product.quantity,
-                'rate': [rating.rate_to_dict() for rating in product.rate],
-                'sale':product.sale,
-            }
-
-            # Check if the product is an instance of a subclass of Product and add specific details
-            if isinstance(product, Tv):
-                product_data.update({
-                    'size': product.size,
-                    'tv_type': product.tv_type
-                })
-            elif isinstance(product, Computer):
-                product_data.update({
-                    'size': product.size,
-                    'storage': product.storage,
-                    'chip': product.chip
-                })
-            elif isinstance(product, Phone):
-                product_data.update({
-                    'size': product.size,
-                    'storage': product.storage
-                })
-
-            products_data.append(product_data)
-
+            products_data.append(product.product_to_dict())
         DataManager.save_data(products_data, 'Store/products_logg.JSON')
 
 

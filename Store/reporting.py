@@ -15,9 +15,10 @@ class Reporting:
         self.new_update += 1
 
     def best_sell_product(self):
-        value = list(self.sold_products.values())
-        key = list(self.sold_products.keys())
-        self.best_sell = key[value.index(max(value))]
+        if len(self.sold_products)>0:
+            value = list(self.sold_products.values())
+            key = list(self.sold_products.keys())
+            self.best_sell = key[value.index(max(value))]
 
     def sold(self):
         return [(product, amount) for product, amount in self.sold_products.items()]
