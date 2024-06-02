@@ -73,6 +73,7 @@ class Reporting:
         self.revenue -= price*self.sold_products[product_name]
         self.sold_products.pop(product_name)
         self.best_sell_product()
+
     def __str__(self):
         if self.new_update > 0:
             new = f"\n * There are {self.new_update} new updates for you *\n"

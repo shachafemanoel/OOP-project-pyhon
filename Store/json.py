@@ -52,7 +52,7 @@ class DataManager:
                 order = Order(**order_data)
                 order.customer = customer
                 if len(payment)>0:
-                    order.payment = Payment(**payment)
+                    order.__payment = Payment(**payment)
                 orders[order.order_number] = order
 
         return orders
@@ -144,7 +144,7 @@ class DataManager:
                 logging.warning(f"Unknown user type: {user_type}")
                 continue
             if payment is not None:
-                user.payment = Payment(**payment)
+                user.__payment = Payment(**payment)
             users[user.user_id] = user
         return users
 

@@ -14,6 +14,7 @@ from Store.json import DataManager
 import logging
 class StoreCLI:
     def __init__(self):
+        self.payment = None
         self.store = Store()
         self.user = Client()
         self.count_item = 0
@@ -192,7 +193,7 @@ class StoreCLI:
             if star.isdigit():
                 star = int(star)
                 if 0 < star < 6:
-                    new = Rating(star, review)
+                    new = Rating(star)
                     self.store.add_review(prod, new)
                 else:
                     print("Wrong choice")
@@ -208,7 +209,7 @@ class StoreCLI:
                 order = self.user.order_history[order_number]
                 print(order)
                 if order.status == 'delivered':
-                    print("Are you interested in giving a review on the order?\n1. Yes!")
+                    print("Are you interested in giving a review on the order?\n1. Yes!\nOr go back py pressing another button")
                     option = input("Enter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
                     if option == '1':
                         self.add_review(order)
@@ -346,7 +347,7 @@ class StoreCLI:
 
     def pay(self):
         if self.user.payment.info is not None:
-            self.user.payment.amount_of_payments =1
+            self.user.payment.amount_of_payments = 1
             print(f"\n===================\nfor paying with:\n")
             print(self.user.payment)
             s = input("Press 1:")
@@ -357,7 +358,7 @@ class StoreCLI:
                 return self.user.payment
 
             else:
-                return  self.new_payment()
+                return self.new_payment()
         else:
                 return self.new_payment()
 
@@ -801,7 +802,7 @@ class StoreCLI:
 
     def check_out(self):
         if self.user.address is None:
-            self.user.set_address()
+            self.set_address()
         if self.cart.total_amount > 0 or len(self.cart.product_dict) > 0:
             coupon = self.apply_coupon()
             payment = self.pay()

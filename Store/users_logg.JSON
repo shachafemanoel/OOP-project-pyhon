@@ -12,14 +12,13 @@
         "user_full_name": "Shachaf Emanoel",
         "password": "1234",
         "address": "Address",
-        "payment": {
-            "owner": "Client Check",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card"
-        },
+        "payment": {},
         "user_type": "Client",
-        "messege": [],
-        "new_messege": 0,
+        "messege": [
+            "\n *Order Number:1 has been delivered *",
+            "\n *Order Number:1 has been shipped *"
+        ],
+        "new_messege": 2,
         "coupon": 0
     },
     {
@@ -28,6 +27,21 @@
         "password": "1234",
         "address": "israel,haifa,shalom ,4",
         "payment": {},
+        "user_type": "Client",
+        "messege": [],
+        "new_messege": 0,
+        "coupon": 0
+    },
+    {
+        "user_id": "9999",
+        "user_full_name": "Yossi Cohen",
+        "password": "1234",
+        "address": null,
+        "payment": {
+            "owner": "yossi cohen",
+            "info": "4580923476883060",
+            "payment_method": "Credit Card"
+        },
         "user_type": "Client",
         "messege": [],
         "new_messege": 0,

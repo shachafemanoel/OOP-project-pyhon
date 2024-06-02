@@ -20,6 +20,7 @@ class Order:
             self.product_dict = {}
         else:
             self.product_dict = product_dict
+
     # להוסיף פונקציה שמעדכנת סטטוס הזמנה
     def change_status(self, choice: int):
         ship = 'shipped'
@@ -36,7 +37,9 @@ class Order:
         dict['order_number'] = self.order_number
         dict['customer_id'] = self.customer.user_id
         dict['total_amount'] = self.total_amount
-        dict['payment'] = self.payment.payment_to_dict_order()
+        if self.payment is not None:
+            dict['payment'] = self.payment.payment_to_dict_order()
+        dict['payment'] = 'None'
         dict['status'] = self.status
         dict['product_dict'] = self.product_dict
         return dict
@@ -47,12 +50,12 @@ class Order:
         self.status = 'completed'
 
     def converter(self):
-        if self.payment is not None and self.payment.amount_of_payments != 1:
+        if self.customer.address and self.payment is not None and self.payment.amount_of_payments != 1:
             if self.customer.address[0:3].casefold() != "isr":
                 return f"\nTotal amount: {round(self.total_amount/3.7611,2)} US$ \n * {round((self.total_amount / 3.7611 / self.payment.amount_of_payments), 2)} US$ /mo for {self.payment.amount_of_payments} month *"
             else:
                 return f"\nTotal amount: {self.total_amount}  ₪ILS\n * {round(self.total_amount / self.payment.amount_of_payments, 2)} ₪ILS /mo for {self.payment.amount_of_payments} month *"
-        elif  self.customer.address[0:3].casefold() != "isr":
+        elif self.customer.address is None or self.customer.address[0:3].casefold() != "isr":
                 return f" * {round(self.total_amount / 3.7611, 2)} US$ *\n"
         else:
                 return f" * {self.total_amount} ₪ILS *\n"

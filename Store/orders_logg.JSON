@@ -3,15 +3,20 @@
         "order_number": 1,
         "customer_id": "2020",
         "total_amount": 16000.0,
-        "payment": {
-            "owner": "Client Check",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 1
-        },
-        "status": "completed",
+        "payment": "None",
+        "status": "shipped",
         "product_dict": {
             "mycomp": 5
+        }
+    },
+    {
+        "order_number": 2,
+        "customer_id": "9999",
+        "total_amount": 9120.0,
+        "payment": "None",
+        "status": "Processing",
+        "product_dict": {
+            "LaptopDell": 4
         }
     }
 ]

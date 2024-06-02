@@ -1,3 +1,4 @@
+from Store import payment
 from Store.payment import Payment
 class User:
     def __init__(self, user_id=None, user_full_name=None, password=None, online=0, address=None, payment=None):
@@ -7,9 +8,9 @@ class User:
         self.__online = online
         self.__address = address
         if payment is not None:
-            self.payment = payment
+            self.__payment = payment
         else:
-            self.payment = Payment()
+            self.__payment = Payment()
 
 
     @property
@@ -50,6 +51,15 @@ class User:
     def address(self, address):
         self.__address = address
 
+    @property
+    def payment(self):
+        return self.__payment
+
+    @payment.setter
+    def payment(self, payment_method):
+        if payment_method is not None:
+            self.__payment = payment_method
+        return "No payment method provided"
 
 
     def login(self, entered_password):

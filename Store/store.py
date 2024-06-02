@@ -23,7 +23,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
 
     def add_review(self,product,rating:Rating):
-        self.collection[product.get_key_name()].add_review(rating)
+        self.collection[product].add_review(rating)
 
 
     def load_files(self):
