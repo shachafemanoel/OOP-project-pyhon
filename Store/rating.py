@@ -26,7 +26,7 @@ class Rating:
         if self.ratings and sum(len(v) for v in self.ratings.values()) > 0:
             for star, reviews in self.ratings.items():
                 for review in reviews:
-                    review_summary += f"\n{star} ⭐ : {review}"
+                    review_summary += f"\n{int(star) * "⭐"} review:  {review}"
             review_summary += f"\n Average Rating: {self.weighted_average_rating()} ⭐"
         else:
             review_summary += '\nThere are no reviews yet'
