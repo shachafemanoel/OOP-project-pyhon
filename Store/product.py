@@ -1,3 +1,4 @@
+from Store.rating import Rating
 class Product:
     def __init__(self, name=None, model=None, description=None, price=None, quantity=None, rate=None,sale=0):  #
         self.name = name  # שם המוצר
@@ -53,6 +54,17 @@ class Product:
         self.rate.append(review)
         return "Thank you for your opinion"
 
+
+
+    def product_to_dict(self):
+        dict = {}
+        dict['name'] = self.name
+        dict['description'] = self.description
+        dict['original_price'] = self.original_price
+        dict['price'] = self.price
+        dict['sale'] = self.sale
+        dict['quantity'] = self.quantity
+        dict['rate'] = self.rate
 
     def review(self):
         review = '=================Rating====================='

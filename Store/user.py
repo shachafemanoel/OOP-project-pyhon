@@ -51,8 +51,6 @@ class User:
         self.__address = address
 
 
-    def address(self):
-        return self.__address
 
     def login(self, entered_password):
         if self.password == entered_password:

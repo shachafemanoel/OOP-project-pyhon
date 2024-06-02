@@ -8,6 +8,7 @@ from Store.phone import Phone
 from Store.computer import Computer
 from Store.rating import Rating
 from Store.json import DataManager
+from Store.rating import Rating
 
 class Store:  # מחלקה שמממשת את החנות עצמה
 
@@ -21,6 +22,10 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.sales = []
 
 
+    def add_review(self,product,rating:Rating):
+        self.collection[product.get_key_name()].add_review(rating)
+
+
     def load_files(self):
         self.users = DataManager.load_users()
         self.collection = DataManager.load_products()
@@ -28,7 +33,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.reporting = DataManager.load_reporting()
         self.sales = DataManager.load_sales()
         self.order_number = len(self.orders) +1
-
+        for order in self.orders.values():
+            self.reporting.revenue+=order.total_amount
 
     def user_order_history(self, user):
         user_orders_dict = {}

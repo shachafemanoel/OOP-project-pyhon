@@ -67,7 +67,7 @@
         "model": "pro ",
         "description": "the best airpods on market",
         "price": 800.0,
-        "quantity": 50,
+        "quantity": 48,
         "rate": [],
         "sale": 0
     },
@@ -127,7 +127,7 @@
         "model": "pc",
         "description": "pc",
         "price": 5000.0,
-        "quantity": 18,
+        "quantity": 16,
         "rate": [],
         "sale": 0,
         "size": "50",
@@ -139,8 +139,13 @@
         "model": "comp",
         "description": "cmp",
         "price": 3200.0,
-        "quantity": 28,
-        "rate": [],
+        "quantity": 22,
+        "rate": [
+            {
+                "rate": 4,
+                "description": "great"
+            }
+        ],
         "sale": 0,
         "size": "5",
         "storage": "5",

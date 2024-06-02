@@ -1,6 +1,5 @@
 {
-    "revenue": 35405.0,
-    "best_sell": "Ipadair10",
+    "best_sell": "mi",
     "sold_products": {
         "LG TV 55 ": 0,
         "Macbook 15": 0,
@@ -11,15 +10,20 @@
         "iphone 13": 0,
         "Laptop Dell": 0,
         "dell": 0,
-        "samsung": 2,
+        "samsung": 0,
         "mi": 2,
         "my comp": 0,
-        "Ipadair10": 3,
-        "iphone13": 2,
-        "Macbook15": 2,
-        "LGTV55": 1
+        "Ipadair10": 0,
+        "iphone13": 0,
+        "Macbook15": 0,
+        "LGTV55": 0,
+        "mycomp": 2,
+        "airpodspro": 2
     },
-    "message": [],
-    "new_update": 0,
+    "message": [
+        " \n * A new order has been placed * \n Order number: 1    total amount: 1600.0 ",
+        " \n * A new order has been placed * \n Order number: 2    total amount: 6400.0 "
+    ],
+    "new_update": 2,
     "sales": []
 }

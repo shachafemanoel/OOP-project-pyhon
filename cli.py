@@ -193,8 +193,7 @@ class StoreCLI:
                 star = int(star)
                 if 0 < star < 6:
                     new = Rating(star, review)
-                    prod.add_review(new)
-                    self.store.collection[key] = prod
+                    self.store.add_review(prod, new)
                 else:
                     print("Wrong choice")
             else:
@@ -205,18 +204,19 @@ class StoreCLI:
         order_number = input("Enter order number: ")
         if order_number.isdigit():
             order_number = int(order_number)
-            if 0 < order_number < self.store.order_number + 1 and order_number in self.user.order_history:
+            if 0 < order_number < self.store.order_number and order_number in self.user.order_history:
                 order = self.user.order_history[order_number]
                 print(order)
                 if order.status == 'delivered':
                     print("Are you interested in giving a review on the order?\n1. Yes!")
-                    option = input("Enter your choice: ")
+                    option = input("Enter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
                     if option == '1':
                         self.add_review(order)
             else:
                 print("\n *Order number is not valid")
 
     def display_order_user(self):
+        print(self.user.update_client())
         if len(self.user.order_history)>0 :
             while True:
                 choice =self.orders_history()
@@ -615,7 +615,7 @@ class StoreCLI:
                         self.cart.add_item_to_order(new_item, how_much)
                         self.count_item += how_much
                         print(
-                            f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.price * how_much} has been successfully updated ! *\n{self.cart.converter_payments()} ")
+                            f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.price * how_much}  ₪ILS  has been successfully add to cart  ! *\n{self.cart.converter()} ")
                         break
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
@@ -855,7 +855,6 @@ class StoreCLI:
             print(' No orders placed yet ')
 
     def orders_history(self):
-        print(self.user.update_client())
         print("\n * Your orders *\n")
         print(self.user.list_orders_client())
         print("1.View order details")

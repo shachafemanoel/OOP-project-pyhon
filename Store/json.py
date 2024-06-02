@@ -46,16 +46,13 @@ class DataManager:
         orders = {}
         orders_data = DataManager.load_data('Store/orders_logg.JSON')
         for order_data in orders_data:
-            customer = users.get(order_data['customer_id'])
-            if customer:
-                order = Order(
-                    order_number=order_data['order_number'],
-                    customer=customer,
-                    product_dict=order_data['product_dict'],
-                    payment= Payment(**order_data['payment']),
-                    total_amount = order_data.get('total_amount')
-                )
-                order.status = order_data['status']
+            customer = users.get(order_data.pop('customer_id',None))
+            if customer is not None:
+                payment = order_data.pop('payment',{})
+                order = Order(**order_data)
+                order.customer = customer
+                if len(payment)>0:
+                    order.payment = Payment(**payment)
                 orders[order.order_number] = order
 
         return orders
@@ -63,14 +60,8 @@ class DataManager:
     @staticmethod
     def save_orders(orders):
         orders_data = [
-            {
-                'order_number': order.order_number,
-                'customer_id': order.customer.user_id,
-                'product_dict': order.product_dict,
-                'status': order.status,
-                'payment':order.payment.payment_to_dict(),
-                'total_amount':order.total_amount
-            } for order in orders.values()
+            order.order_to_dict()
+            for order in orders.values()
         ]
         DataManager.save_data(orders_data, 'Store/orders_logg.JSON')
 
@@ -79,8 +70,11 @@ class DataManager:
         products_data = DataManager.load_data('Store/products_logg.JSON')
         collection = {}
         for prod_data in products_data:
-            ratings_data = prod_data.get('ratings', [])
-            ratings = [Rating(**rating_dict) for rating_dict in ratings_data]
+            ratings_data = prod_data.pop('ratings',[])
+            if len(ratings_data) >0:
+                ratings = [Rating(**rating_dict) for rating_dict in ratings_data]
+            else:
+                ratings = None
             product_type = prod_data.get('product_type')
             if product_type == 'Tv':
                 product = Tv(
@@ -207,7 +201,6 @@ class DataManager:
         reporting_data = DataManager.load_data('Store/reporting_logg.JSON')
         reporting = Reporting()
         if reporting_data:
-            reporting.revenue = reporting_data['revenue']
             reporting.best_sell = reporting_data['best_sell']
             reporting.sold_products = reporting_data['sold_products']
             reporting.message = reporting_data['message']

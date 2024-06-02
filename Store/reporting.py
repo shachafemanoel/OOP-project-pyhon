@@ -59,7 +59,6 @@ class Reporting:
     def repoting_do_dict(self,sales):
         self.best_sell_product()
         reporting_data = {
-            'revenue': self.revenue,
             'best_sell': self.best_sell,
             'sold_products': self.sold_products,
             'message': self.message,
@@ -80,7 +79,7 @@ class Reporting:
                 new += messe
         else:
             new = "\n * There are no new notifications * "
-        if self.revenue > 0 and len(self.sold_products) > 0:
+        if  len(self.sold_products) > 0:
             return f" \n    **** Reporting summary **** {new}\n* {self.best_sell}is the best selling product *\n{self.get_sales_report_string()}"
         else:
             return f"{new}\nNo purchase has been made from the store yet"
