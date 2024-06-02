@@ -18,7 +18,7 @@ class Phone (Product):
         return dict
     def __str__(self):
         if self.sale > 0:
-            return f"======================================\nName: {self.name}\nModel: {self.model} Storge: {self.storage}\ndisplay size: {self.size}-Inch\nDescription: {self.description}\nPrice:-{self.sale}% Off {self.get_price(1)}₪ ILS\n{self.review()}"
+            return f"======================================\nName: {self.name}\nModel: {self.model} Storge: {self.storage}\ndisplay size: {self.size}-Inch\nDescription: {self.description}\nPrice:-{self.sale}% Off {self.get_price(1)}₪ ILS\n{self.rate}"
         else:
 
-            return f"======================================\nName: {self.name}\n Model: {self.model} Storge: {self.storage} \ndisplay size: {self.size}-Inch  \nDescription: {self.description} \n Price: {self.price}₪\n{self.review()}"
+            return f"======================================\nName: {self.name}\n Model: {self.model} Storge: {self.storage} \ndisplay size: {self.size}-Inch  \nDescription: {self.description} \n Price: {self.price}₪\n{self.rate}"

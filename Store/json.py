@@ -70,10 +70,6 @@ class DataManager:
         products_data = DataManager.load_data('Store/products_logg.JSON')
         collection = {}
         for prod_data in products_data:
-            ratings_data = prod_data.get('rate', None)
-            if ratings_data is not None and len(ratings_data) > 0:
-                for rate in range(0, len(ratings_data)):
-                    ratings_data[rate] = Rating(**ratings_data[rate])
             product_type = prod_data.get('product_type')
             if product_type == 'Tv':
                 product = Tv(
@@ -118,9 +114,8 @@ class DataManager:
                     quantity=prod_data.get('quantity'),
                 )
 
-            # הוספת דירוגים למוצר
-            if ratings_data is not None:
-                product.rate = ratings_data
+            product.rate = Rating(prod_data.get('rate'))
+
 
             # הוספת המוצר לאוסף
             collection[product.get_key_name()] = product

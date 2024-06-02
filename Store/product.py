@@ -12,6 +12,7 @@ class Product:
         self.quantity = quantity  # הכמות המוצר
         self.rate = rate
 
+
     def get_key_name(self):
         return self.name.replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
     def get_model_name(self):
@@ -47,8 +48,8 @@ class Product:
     def available(self, how_many):  # בדיקת זמינות של מוצר מסוים
         return self.quantity >= how_many
 
-    def add_review(self, review):
-        self.rate.append(review)
+    def add_review(self,stars, review):
+        self.rate.add_review(stars,review)
         return "Thank you for your opinion"
 
 
@@ -63,23 +64,13 @@ class Product:
         dict['price'] = self.price
         dict['sale'] = self.sale
         dict['quantity'] = self.quantity
-        if self.rate is not None and len(self.rate)>0:
-            dict['rate'] = [rate.rate_to_dict() for rate in self.rate]
+        dict['rate'] = self.rate.ratings
         return dict
-    def review(self):
-        review = '=================Rating====================='
-        if self.rate is not None and len(self.rate)>0:
-            for rate in self.rate:
-                review += f"\n{rate}"
 
-        else:
-            review += 'There are no reviews yet'
-
-        return review
 
     def __str__(self):
         if self.sale > 0:
-            return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n Price:{self.original_price} -{self.sale}% Off {self.price}₪ ILS\n{self.review()}"
+            return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n Price:{self.original_price} -{self.sale}% Off {self.price}₪ ILS\n{self.rate}"
 
         else:
-            return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n Price: {self.price}₪\n {self.review()}\n"
+            return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n Price: {self.price}₪\n {self.rate}\n"

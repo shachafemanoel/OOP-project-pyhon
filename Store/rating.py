@@ -1,17 +1,33 @@
 class Rating:
-    def __init__(self, rate, description):
-        self.rate = rate
-        self.description = description
+    def __init__(self,ratings=None):
+        if ratings is None:
+            self.ratings = {1: [], 2: [], 3: [], 4: [], 5: []}
+        elif type(ratings) is dict:
+            self.ratings = ratings
 
-    def rate_to_dict(self):
-        dictionary = {}
-        dictionary['rate'] = self.rate
-        dictionary['description'] = self.description
-        return dictionary
 
-    def rate_calcu(self):
-        return self.rate*"⭐"
+    def add_review(self, stars:int, review):
+        if stars in self.ratings:
+            self.ratings[stars].append(review)
+
+
+    def weighted_average_rating(self):
+        total_reviews = sum(len(v) for v in self.ratings.values())
+        if total_reviews == 0:
+            return 0
+        weighted_sum = sum(int(star) * len(reviews) for star, reviews in self.ratings.items())
+        average = weighted_sum / total_reviews
+        return round(average * 2 )/2
+
 
 
     def __str__(self):
-        return f"Rating: {self.rate} \nReview:{self.description}\n======================================"
+        review_summary = '=================Rating====================='
+        if self.ratings and sum(len(v) for v in self.ratings.values()) > 0:
+            for star, reviews in self.ratings.items():
+                for review in reviews:
+                    review_summary += f"\n{star} ⭐ : {review}"
+            review_summary += f"\n Average Rating: {self.weighted_average_rating()} ⭐"
+        else:
+            review_summary += '\nThere are no reviews yet'
+        return review_summary
