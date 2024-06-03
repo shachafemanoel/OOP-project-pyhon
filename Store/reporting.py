@@ -41,7 +41,7 @@ class Reporting:
     def get_sales_report_string(self):
         # המרת הנתונים לרשימה של tuples
         products = list(self.sold_products.items())
-        products.append(("Store revenue", self.revenue))
+        products.append(("Store revenue", f"{self.revenue} ₪ILS "))
 
         # מציאת האורך המקסימלי של השם והכמות
         max_name_length = max(len(str(product[0])) for product in products)
