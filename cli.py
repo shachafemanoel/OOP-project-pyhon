@@ -31,9 +31,9 @@ class StoreCLI:
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
-            logging.error("Login successful!\n")
+            logging.info(f" Welcome  {self.user.user_full_name}. you are now connected\n")
         else:
-            logging.error("Login failed!\n")
+            logging.info("Login failed!\n")
 
     def register(self):
         print("\nWelcome to the registration systemֿ\n")
@@ -227,6 +227,7 @@ class StoreCLI:
 
 
     def display_client(self):
+        print("\n * Welcome to Electronic Store Management Main menu * \n ")
         if self.user.new_messege > 0:
             print(f"\n * There are {self.user.new_messege} new notifications on orders * \n")
         print("\n1. Change address")
@@ -251,12 +252,12 @@ class StoreCLI:
     def display_coupon(self):
         print(f"\nWould you like to use your {self.user.coupon}% coupon?")
         print('\n1. Yes')
-        print('2. No')
+        print('\n2. No')
         choice = input('\nEnter your choice: ')
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def set_address(self):
-        print("\n * Please enter the details *\n")
+        print(" Add a new address \n * Please enter the details *\n")
         new_address = input("Country: ")
         city = input("City: ")
         street = input("Street: ")
@@ -273,7 +274,8 @@ class StoreCLI:
 
 
     def display_order(self):
-        print("\n1. Add Item ")
+        print("\n * Order menu *")
+        print("\n1. Catalog ")
         if self.count_item > 0:
             print(f"2. Go to Cart({self.count_item})")
         print("3. Exit ")
@@ -497,7 +499,7 @@ class StoreCLI:
     def display_menu(self):
         if self.store.reporting.new_update > 0:
             print(f"\n * There are {self.store.reporting.new_update} new notifications Reporting *")
-        print(" \n *  Electronic store Management System * \n")
+        print(" \n *  Electronic store Management Menu * \n")
         print("1. Product Manager")
         print("2. User Manager")
         print("3. Order Manager")
@@ -799,6 +801,7 @@ class StoreCLI:
 
 
     def check_out(self):
+        print("\n * Check Out  *\n")
         if self.user.address is None:
             self.set_address()
         if self.cart.total_amount > 0 or len(self.cart.product_dict) > 0:
@@ -869,6 +872,7 @@ class StoreCLI:
         #פונקציית התנתקות תבצע התנתקות למשתמש עצמו דרך הפונקציה במחלקה שלו ולאחר מכן תשמור בחנות את המשתמש החדש כדי לשמור את הנתונים החדשים שלו
         self.user.logout()
         self.store.users[self.user.user_id] = self.user
+        logging.info("Logged out successfully\n")
 
     def wellcome_page(self):
             selection = self.display_user()
@@ -936,7 +940,6 @@ class StoreCLI:
             if self.user.online == 0:
                 self.wellcome_page()
             elif self.user.online == 1:
-                print(f"\n * Welcome {self.user.user_full_name}! You are now connected. *")
                 if type(self.user) == Client:
 
                         self.customer_menu()
