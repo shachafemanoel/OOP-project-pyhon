@@ -4,7 +4,6 @@
         "name": "Ipad air 10",
         "model": "air",
         "description": "A14 Bionic chip, 10.9-inch Liquid Retina Display, 64GB, Wi-Fi 6, 12MP front/12MP Back Camera, Touch ID, All-Day Battery Life \u2013 Blue ",
-        "original_price": 1600.0,
         "price": 1600.0,
         "sale": 0,
         "quantity": 1,
@@ -16,7 +15,7 @@
             "5": []
         },
         "size": "10.9",
-        "storge": null,
+        "storage": null,
         "chip": "M3"
     },
     {
@@ -24,7 +23,6 @@
         "name": "LG TV 55 ",
         "model": "QLED 555",
         "description": "big tv 4k smart ",
-        "original_price": 5500.0,
         "price": 5500.0,
         "sale": 0,
         "quantity": 11,
@@ -43,7 +41,6 @@
         "name": "Iphone 15 pro",
         "model": "pro",
         "description": "Apple iPhone 15 Pro 256GB - Black Titanium - 1 Year Warranty by the Official Distributor",
-        "original_price": 4200.0,
         "price": 4200.0,
         "sale": 0,
         "quantity": 20,
@@ -62,7 +59,6 @@
         "name": "ipad",
         "model": "pro ",
         "description": "the new ipad pro 256 gb",
-        "original_price": 4000.0,
         "price": 4000.0,
         "sale": 0,
         "quantity": 50,
@@ -74,7 +70,7 @@
             "5": []
         },
         "size": "10.9",
-        "storge": null,
+        "storage": null,
         "chip": "M2"
     },
     {
@@ -82,7 +78,6 @@
         "name": "galaxy 24",
         "model": "ultra",
         "description": "hhhhh",
-        "original_price": 3500.0,
         "price": 3500.0,
         "sale": 0,
         "quantity": 20,
@@ -101,7 +96,6 @@
         "name": "airpods pro ",
         "model": "pro ",
         "description": "the best airpods on market",
-        "original_price": 800.0,
         "price": 800.0,
         "sale": 0,
         "quantity": 43,
@@ -118,7 +112,6 @@
         "name": "iphone 13",
         "model": "pro",
         "description": "the best value for money ",
-        "original_price": 1750.0,
         "price": 1750.0,
         "sale": 0,
         "quantity": 7,
@@ -139,7 +132,6 @@
         "name": "Laptop Dell",
         "model": "dell xp25",
         "description": "great laptop for home users ",
-        "original_price": 2400.0,
         "price": 2400.0,
         "sale": 0,
         "quantity": 16,
@@ -151,7 +143,7 @@
             "5": []
         },
         "size": 15,
-        "storge": null,
+        "storage": null,
         "chip": "AMD"
     },
     {
@@ -159,7 +151,6 @@
         "name": "dell",
         "model": "pc",
         "description": "pc",
-        "original_price": 1600.0,
         "price": 1600.0,
         "sale": 0,
         "quantity": 50,
@@ -171,7 +162,7 @@
             "5": []
         },
         "size": "14",
-        "storge": null,
+        "storage": null,
         "chip": "I7"
     },
     {
@@ -179,7 +170,6 @@
         "name": "samsung",
         "model": "tv",
         "description": "tv",
-        "original_price": 2000.0,
         "price": 2000.0,
         "sale": 0,
         "quantity": 48,
@@ -198,7 +188,6 @@
         "name": "LG C3 Series 55-Inch",
         "model": "C3 Series 55-Inch",
         "description": "Class OLED evo 4K Processor Smart Flat Screen TV for Gaming with Magic Remote AI-Powered OLED55C3PUA, 120Hz Refresh rate, 2023 with Alexa Built-in",
-        "original_price": 5000.0,
         "price": 5000.0,
         "sale": 0,
         "quantity": 16,
@@ -217,7 +206,6 @@
         "name": "my comp",
         "model": "comp",
         "description": "cmp",
-        "original_price": 3200.0,
         "price": 3200.0,
         "sale": 0,
         "quantity": 22,
@@ -238,7 +226,23 @@
             ]
         },
         "size": "5",
-        "storge": null,
+        "storage": null,
         "chip": "5"
+    },
+    {
+        "product_type": "Product",
+        "name": "Apple charger",
+        "model": "new appale usb - c charger with a fast charging ",
+        "description": "",
+        "price": 100.0,
+        "sale": 0,
+        "quantity": 50,
+        "rate": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
     }
 ]

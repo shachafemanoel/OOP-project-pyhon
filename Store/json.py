@@ -65,60 +65,10 @@ class DataManager:
 
     @staticmethod
     def load_products():
-        products_data = DataManager.load_data('Store/products_logg.JSON')
-        collection = {}
-        for prod_data in products_data:
-            product_type = prod_data.get('product_type')
-            if product_type == 'Tv':
-                product = Tv(
-                    name=prod_data.get('name'),
-                    model=prod_data.get('model'),
-                    description=prod_data.get('description'),
-                    price=prod_data.get('price'),
-                    quantity=prod_data.get('quantity'),
-                    size=prod_data.get('size'),
-                    tv_type=prod_data.get('tv_type'),
-                    sale=prod_data.get('sale')
-                )
-            elif product_type == 'Computer':
-                product = Computer(
-                    name=prod_data.get('name'),
-                    model=prod_data.get('model'),
-                    description=prod_data.get('description'),
-                    price=prod_data.get('price'),
-                    quantity=prod_data.get('quantity'),
-                    size=prod_data.get('size'),
-                    storage=prod_data.get('storage'),
-                    chip=prod_data.get('chip'),
-                    sale=prod_data.get('sale')
-                )
-            elif product_type == 'Phone':
-                product = Phone(
-                    name=prod_data.get('name'),
-                    model=prod_data.get('model'),
-                    description=prod_data.get('description'),
-                    price=prod_data.get('price'),
-                    quantity=prod_data.get('quantity'),
-                    size=prod_data.get('size'),
-                    storage=prod_data.get('storage'),
-                    sale=prod_data.get('sale')
-                )
-            else:
-                product = Product(
-                    name=prod_data.get('name'),
-                    model=prod_data.get('model'),
-                    description=prod_data.get('description'),
-                    price=prod_data.get('price'),
-                    quantity=prod_data.get('quantity'),
-                )
-
-            product.rate = Rating(prod_data.get('rate'))
+        return  DataManager.load_data('Store/products_logg.JSON')
 
 
-            # הוספת המוצר לאוסף
-            collection[product.get_key_name()] = product
 
-        return collection
 
     @staticmethod
     def save_products(products):
@@ -127,7 +77,7 @@ class DataManager:
             products_data.append(product.product_to_dict())
         DataManager.save_data(products_data, 'Store/products_logg.JSON')
 
-
+    @staticmethod
     def load_users():
         users = {}
         users_data = DataManager.load_data('Store/users_logg.JSON')

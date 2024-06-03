@@ -10,7 +10,7 @@ class Product:
         if self.sale >0:
             self.update_price(sale)
         self.quantity = quantity  # הכמות המוצר
-        self.rate = rate
+        self.rate = Rating(rate)
 
 
     def get_key_name(self):
@@ -56,11 +56,10 @@ class Product:
         dict['name'] = self.name
         dict["model"] = self.model
         dict['description'] = self.description
-        dict['original_price'] = self.original_price
-        dict['price'] = self.price
+        dict['price'] = self.original_price
         dict['sale'] = self.sale
         dict['quantity'] = self.quantity
-        dict['rate'] = self.rate.ratings
+        dict['rate'] =  self.rate.ratings
         return dict
 
 

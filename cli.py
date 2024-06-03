@@ -640,26 +640,33 @@ class StoreCLI:
         else:
             print("* Invalid input or product not found. * \n")
 
-    def add_pruduct_categoty(self, name, model, description, price, quantity):
+    def add_pruduct_categoty(self,dict_new_product):
         category = self.display_product_type()
         if category == '1':
             size = input("Enter Screen size: ")
             tv_type = input("Enter TV type: ")
-            pro = Tv(name, model, description, price, quantity, size, tv_type)
+            dict_new_product["size"] = size
+            dict_new_product["tv_type"] = tv_type
+            dict_new_product["product_type"] = "Tv"
         elif category == '2':
             chip = input("Enter Chip: ")
             size = input("Enter Screen size: ")
             storage = input("Enter storage: ")
-            pro = Computer(name, model, description, price, quantity, size, storage, chip)
+            dict_new_product["size"] = size
+            dict_new_product["chip"] = chip
+            dict_new_product["storage"] = storage
+            dict_new_product["product_type"] = 'Computer'
         elif category == '3':
             size = input("Enter Screen size: ")
             storage = input("Enter storage: ")
-            pro = Phone(name, model, description, price, quantity, size, storage)
+            dict_new_product["size"] = size
+            dict_new_product["storage"] = storage
+            dict_new_product["product_type"] = 'Phone'
+        if  self.store.add_product(dict_new_product):
+            print("Product added successfully")
+
         else:
-            pro = Product(name, model, description, price, quantity)
-        self.store.add_product(pro)
-
-
+            print("\n * One of the entered values is Invalid *\n")
     def add_product(self):
         name = input("Enter Product Name: ")
         model = input("Enter Product Model: ")
@@ -686,7 +693,9 @@ class StoreCLI:
             if price.isdigit() and int(price) > 0 and quantity.isdigit():
                     price = float(price)
                     quantity = int(quantity)
-                    self.add_pruduct_categoty(name,model,description,price,quantity)
+                    dict_new_product = {"name": name, "model": model, "description": description, "price": price,
+                                        "quantity": quantity}
+                    self.add_pruduct_categoty(dict_new_product)
 
 
             else:

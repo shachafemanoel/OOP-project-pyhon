@@ -28,7 +28,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def load_files(self):
         self.users = DataManager.load_users()
-        self.collection = DataManager.load_products()
+        collection = DataManager.load_products()
+        for product in collection:
+            self.add_product(product)
         self.orders = DataManager.load_orders(self.users)
         self.reporting = DataManager.load_reporting()
         self.sales = DataManager.load_sales()
@@ -126,10 +128,22 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         return found
 
 
-    def add_product(self, product):
-        self.collection[product.get_key_name()] = product
-        return "Product added successfully."
+    def add_product(self, product_dict):
+        if product_dict.get("name",None) is not None and product_dict.get("price",None) is not None and product_dict.get("quantity",None) is not None:
+            product_type = product_dict.pop("product_type",None)
+            if product_type == "Tv":
+                new_product = Tv(**product_dict)
+            elif product_type == "Computer":
+                new_product = Computer(**product_dict)
+            elif product_type == "Phone":
+                new_product = Phone(**product_dict)
+            else:
+                new_product = Product(**product_dict)
 
+            self.collection[new_product.get_key_name()] = new_product
+            return True
+        else:
+            return False
 
 
     def add_user(self, user:User):  # הוספת משתמש לחנות

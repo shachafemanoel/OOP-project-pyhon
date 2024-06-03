@@ -9,7 +9,7 @@ class Computer(Product):
     def product_to_dict(self):
         dict = {
             "size": self.size,
-            "storge": self.storage,
+            "storage": self.storage,
             "chip": self.chip,
         }
 
