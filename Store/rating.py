@@ -5,10 +5,12 @@ class Rating:
         elif type(ratings) is dict:
             self.ratings = ratings
 
-
-    def add_review(self, stars:int, review):
+    def add_review(self, stars, review=None,):
+        if review is None or review.strip() == "":
+            review = "No review provided"
         if stars in self.ratings:
             self.ratings[stars].append(review)
+        return "Thank you for your opinion"
 
 
     def weighted_average_rating(self):

@@ -2,12 +2,11 @@
     "best_sell": "mycomp",
     "sold_products": {
         "mycomp": 5,
-        "LaptopDell": 4
+        "LaptopDell": 4,
+        "airpodspro": 2,
+        "iphone13": 2
     },
-    "message": [
-        " \n * A new order has been placed * \n Order number: 1    total amount: 16000.0 ",
-        " \n * A new order has been placed * \n Order number: 2    total amount: 9120.0 "
-    ],
-    "new_update": 2,
+    "message": [],
+    "new_update": 0,
     "sales": []
 }

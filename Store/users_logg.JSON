@@ -4,7 +4,7 @@
         "user_full_name": "Admin",
         "password": "1234",
         "address": null,
-        "payment": {},
+        "payment": null,
         "user_type": "Admin"
     },
     {
@@ -12,13 +12,14 @@
         "user_full_name": "Shachaf Emanoel",
         "password": "1234",
         "address": "Address",
-        "payment": {},
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card"
+        },
         "user_type": "Client",
-        "messege": [
-            "\n *Order Number:1 has been delivered *",
-            "\n *Order Number:1 has been shipped *"
-        ],
-        "new_messege": 2,
+        "messege": [],
+        "new_messege": 0,
         "coupon": 0
     },
     {
@@ -26,7 +27,7 @@
         "user_full_name": "Nirel jano",
         "password": "1234",
         "address": "israel,haifa,shalom ,4",
-        "payment": {},
+        "payment": null,
         "user_type": "Client",
         "messege": [],
         "new_messege": 0,
@@ -37,11 +38,7 @@
         "user_full_name": "Yossi Cohen",
         "password": "1234",
         "address": null,
-        "payment": {
-            "owner": "yossi cohen",
-            "info": "4580923476883060",
-            "payment_method": "Credit Card"
-        },
+        "payment": null,
         "user_type": "Client",
         "messege": [],
         "new_messege": 0,

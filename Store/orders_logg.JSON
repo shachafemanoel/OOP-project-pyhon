@@ -3,7 +3,12 @@
         "order_number": 1,
         "customer_id": "2020",
         "total_amount": 16000.0,
-        "payment": "None",
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 1
+        },
         "status": "shipped",
         "product_dict": {
             "mycomp": 5
@@ -13,10 +18,60 @@
         "order_number": 2,
         "customer_id": "9999",
         "total_amount": 9120.0,
-        "payment": "None",
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 1
+        },
         "status": "Processing",
         "product_dict": {
             "LaptopDell": 4
+        }
+    },
+    {
+        "order_number": 3,
+        "customer_id": "2020",
+        "total_amount": 2400.0,
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 1
+        },
+        "status": "Processing",
+        "product_dict": {
+            "airpodspro": 3
+        }
+    },
+    {
+        "order_number": 4,
+        "customer_id": "2020",
+        "total_amount": 1600.0,
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 1
+        },
+        "status": "Processing",
+        "product_dict": {
+            "airpodspro": 2
+        }
+    },
+    {
+        "order_number": 5,
+        "customer_id": "2020",
+        "total_amount": 3500.0,
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 2
+        },
+        "status": "completed",
+        "product_dict": {
+            "iphone13": 2
         }
     }
 ]

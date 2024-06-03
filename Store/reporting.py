@@ -7,9 +7,19 @@ class Reporting:
         self.best_sell = None
         self.message = []
         self.new_update = 0
-        self.sales = []
 
-    def new_order(self, order):
+
+
+
+    def new_sold(self,name,quant):
+        if name is self.sold_products:
+            self.sold_products[name] += quant
+        else:
+            self.sold_products[name] = quant
+
+
+
+    def new_order(self,order):
         self.revenue += order.total_amount
         self.message.append(f" \n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
         self.new_update += 1
@@ -20,8 +30,7 @@ class Reporting:
             key = list(self.sold_products.keys())
             self.best_sell = key[value.index(max(value))]
 
-    def sold(self):
-        return [(product, amount) for product, amount in self.sold_products.items()]
+
 
 
 
@@ -42,7 +51,7 @@ class Reporting:
         result = []
         table_width = max_name_length + max_sold_length + 7  # 7 למרווחים ומסגרת
         result.append('-' * table_width)
-        result.append("Product table".center(table_width))
+        result.append("Product sold  table".center(table_width))
         result.append('-' * table_width)
         header = f"| {'Product'.ljust(max_name_length)} | {'Sold'.rjust(max_sold_length)} |"
         result.append(header)
@@ -69,8 +78,7 @@ class Reporting:
 
         return reporting_data
 
-    def remove(self,product_name,price):
-        self.revenue -= price*self.sold_products[product_name]
+    def remove(self,product_name):
         self.sold_products.pop(product_name)
         self.best_sell_product()
 

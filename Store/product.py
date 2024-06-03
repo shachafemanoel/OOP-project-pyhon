@@ -19,11 +19,8 @@ class Product:
         return self.model.replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
 
     def buy_product(self, many):  # הוצאת כמות מוצרים מהמלאי
-        if self.available(many):
             self.quantity -= many
-            return True
-        else:
-            return False
+
 
     def update_price(self, discount):
             self.sale = discount
@@ -48,9 +45,8 @@ class Product:
     def available(self, how_many):  # בדיקת זמינות של מוצר מסוים
         return self.quantity >= how_many
 
-    def add_review(self,stars, review):
-        self.rate.add_review(stars,review)
-        return "Thank you for your opinion"
+    def add_review(self, stars, review):
+         self.rate.add_review(stars, review)
 
 
 

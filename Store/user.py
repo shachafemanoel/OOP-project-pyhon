@@ -7,10 +7,8 @@ class User:
         self.__password = password
         self.__online = online
         self.__address = address
-        if payment is not None:
-            self.__payment = payment
-        else:
-            self.__payment = Payment()
+        self.payment = Payment()
+
 
 
     @property
@@ -51,15 +49,7 @@ class User:
     def address(self, address):
         self.__address = address
 
-    @property
-    def payment(self):
-        return self.__payment
 
-    @payment.setter
-    def payment(self, payment_method):
-        if payment_method is not None:
-            self.__payment = payment_method
-        return "No payment method provided"
 
 
     def login(self, entered_password):
@@ -83,7 +73,7 @@ class User:
             'user_full_name': self.user_full_name,
             'password': self.__password,
             'address': self.__address,
-            'payment': self.payment.payment_to_dict_user(),
+            'payment': self.payment.payment_to_dict_user() if self.payment else None,
             'user_type':'Admin'
         }
     def __eq__(self, other):

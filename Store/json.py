@@ -48,11 +48,9 @@ class DataManager:
         for order_data in orders_data:
             customer = users.get(order_data.pop('customer_id',None))
             if customer is not None:
-                payment = order_data.pop('payment',{})
                 order = Order(**order_data)
                 order.customer = customer
-                if len(payment)>0:
-                    order.__payment = Payment(**payment)
+                order.payment = Payment(**order_data.get('payment')) if order_data.get('payment') else None
                 orders[order.order_number] = order
 
         return orders
@@ -135,7 +133,6 @@ class DataManager:
         users_data = DataManager.load_data('Store/users_logg.JSON')
         for user_data in users_data:
             user_type = user_data.pop('user_type')
-            payment = user_data.pop('payment',None)
             if user_type == 'Admin':
                 user = User(**user_data)
             elif user_type == 'Client':
@@ -143,8 +140,7 @@ class DataManager:
             else:
                 logging.warning(f"Unknown user type: {user_type}")
                 continue
-            if payment is not None:
-                user.__payment = Payment(**payment)
+            user.payment = Payment(**user_data.get('payment')) if user_data.get('payment') else None
             users[user.user_id] = user
         return users
 

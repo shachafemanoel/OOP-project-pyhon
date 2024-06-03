@@ -104,7 +104,7 @@
         "original_price": 800.0,
         "price": 800.0,
         "sale": 0,
-        "quantity": 48,
+        "quantity": 43,
         "rate": {
             "1": [],
             "2": [],
@@ -121,13 +121,15 @@
         "original_price": 1750.0,
         "price": 1750.0,
         "sale": 0,
-        "quantity": 9,
+        "quantity": 7,
         "rate": {
             "1": [],
             "2": [],
             "3": [],
             "4": [],
-            "5": []
+            "5": [
+                "No review provided"
+            ]
         },
         "size": "5GB",
         "storage": "256"
@@ -231,7 +233,8 @@
                 "x",
                 "y",
                 "x",
-                "y"
+                "y",
+                "No review provided"
             ]
         },
         "size": "5",

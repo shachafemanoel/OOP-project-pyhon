@@ -22,8 +22,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.sales = []
 
 
-    def add_review(self,product,rating:Rating):
-        self.collection[product].add_review(rating)
+    def add_review(self,product, stars, review=None):
+        self.collection[product].add_review(stars,review)
 
 
     def load_files(self):
@@ -143,7 +143,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def remove(self, product):
         if product in self.collection.values():
            self.collection.pop(product.get_key_name())
-           self.reporting.remove(product.get_key_name(),price)
+           self.reporting.remove(product.get_key_name())
            return True
         else:
             return False
@@ -159,14 +159,11 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             order.order_number = self.order_number
             self.orders[self.order_number] = order
             for name, quant in order.product_dict.items():
-                self.collection[name].buy_product(quant)
-                if self.collection[name].get_quantity() <4:
-                    self.reporting.message.append(f"\n * Warning:Less than {self.collection[name].get_quantity()} left in stock {self.collection[name].name} *\n")
-                    self.reporting.new_update +=1
-                if name is self.reporting.sold_products:
-                    self.reporting.sold_products[name] += quant
-                else:
-                    self.reporting.sold_products[name] = quant
+               if self.collection[name].available(quant):
+                    self.collection[name].buy_product(quant)
+                    self.reporting.new_sold(name,quant)
+                    if self.collection[name].get_quantity() <4:
+                        self.reporting.message.append(f"\n * Warning:Less than {self.collection[name].get_quantity()} left in stock {self.collection[name].name} *\n")
             self.reporting.new_order(order)
             self.order_number += 1
 

@@ -3,44 +3,48 @@ class Payment:
         self.__owner = owner
         self.__info = info
         self.__payment_method = payment_method
-        self.__amount_of_payments = 1
+        self.__amount_of_payments = int(amount_of_payments) if amount_of_payments  else 1
+
 
 
     @property
     def owner(self):
         return self.__owner
-
+    @owner.setter
+    def owner(self, owner):
+        self.__owner = owner
     @property
     def info(self):
-        return self.__info
-
+       return self.__info
+    @info.setter
+    def info(self, info):
+        self.__info = info
     @property
     def payment_method(self):
         return self.__payment_method
-
+    @payment_method.setter
+    def payment_method(self, payment_method):
+        self.__payment_method = payment_method
     @property
     def amount_of_payments(self):
         return self.__amount_of_payments
-
+    @amount_of_payments.setter
+    def amount_of_payments(self, amount_of_payments):
+        self.__amount_of_payments = amount_of_payments
     def payment_to_dict_order(self):
-        if self.__payment_method is None:
-            return {}
-        dict = {}
-        dict['owner'] = self.__owner
-        dict['info'] = self.__info
-        dict['payment_method'] = self.__payment_method
-        dict['amount_of_payments'] = self.__amount_of_payments
-        return dict
+        return {
+            'owner': self.owner,
+            'info': self.info,
+            'payment_method': self.payment_method,
+            'amount_of_payments': self.amount_of_payments
+        }
 
     def payment_to_dict_user(self):
-        if self.__payment_method is None:
-            return {}
-        dict = {}
-        dict['owner'] = self.__owner
-        dict['info'] = self.__info
-        dict['payment_method'] = self.__payment_method
-        return dict
-
+        return {
+            'owner': self.owner,
+            'info': self.info,
+            'payment_method': self.payment_method
+        }
     def check_card(self, how_much):
         if len(self.__owner) > 0 and len(self.__info) >= 8:
             self.__payment_method = "Credit Card"
@@ -50,7 +54,7 @@ class Payment:
             return False
 
     def __str__(self):
-        if self.__payment_method == "Credit Card" and self.__info:
-            return f"**** **** **** {self.__info[-4:]}"
+        if self.__payment_method == "Credit Card":
+            return f" Amount of payments: {self.__amount_of_payments}\n ******* {self.__info[:4]} {self.payment_method}"
         else:
-            return self.__info
+            return f"  {self.__info} {self.payment_method}"
