@@ -41,21 +41,18 @@ class StoreCLI:
         user_id = (input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:")))
         if user_id.isdigit() and len(user_id) > 3:
             print("\n Full name must be at least 4 characters ")
-            full_name = input("Enter your Full name: ")
-            if len(full_name) > 3:
-                new_user = Client(user_id, full_name)
-                self.set_password(new_user)
-                if self.store.add_user(new_user):
-                    self.user = new_user
-                    self.set_address()
-                    self.store.users[user_id] = new_user
-                    self.user.online = 1
-
-                    print("\n * User registered successfully. * ")
-                    self.user.coupon = 5
-                    print("Thank you for register. Enjoy a 5% coupon !")
-
-                else:
+            user_full_name = input("Enter your Full name: ")
+            if len(user_full_name) > 3:
+                new_user = self.set_password(user_id, user_full_name)
+                if new_user:
+                    new_user["user_type"] = "Client"
+                    if self.store.add_user(new_user):
+                        self.user = self.store.log(new_user["user_id"], new_user["password"])
+                        self.set_address()
+                        print("\n * User registered successfully. * ")
+                        print("Thank you for register. Enjoy a 5% coupon !")
+                        logging.info(f"\n{self.user.user_full_name} are now connected\n")
+                    else:
                         print("\n * User already exists please try to log in *")
 
             else:
@@ -64,52 +61,45 @@ class StoreCLI:
             print("\n * User ID must be at least 4 digit.Try again * ")
 
 
-    def register_admin(self, new_admin=None):
+    def register_admin(self,):
         print("\nAdding new admin\n")
         print(" User ID must be at least 4 digits ")
         user_id = input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
         if user_id.isdigit() and len(user_id) > 3:
             print("\n Full name must be at least 4 characters ")
-            full_name = input("Enter the admin's full name: ")
-
-            if len(full_name) > 3:
+            user_full_name = input("Enter the admin's full name: ")
+            if len(user_full_name) > 3:
                 print("\n The password must contain at least 4 characters ")
-                password = input("Enter the admin's password: ")
-
-                if len(password) > 3:
-                    new_admin = User(user_id, full_name, password)
-                    new_admin.online = 1
-                    self.store.users[user_id] = new_admin
-                    print("\n * Admin registered successfully. * ")
-                    return new_admin
+                new_user = self.set_password(user_id, user_full_name)
+                if new_user:
+                    new_user["user_type"] = "Admin"
+                    if self.store.add_user(new_user):
+                        print("\n * Admin registered successfully. * ")
                 else:
-                    print("\n The password must contain at least 4 characters. Please try again ")
+                    print("\n * User already exists please try to log in *")
             else:
                 print("\n * Invalid full name. Try again * ")
         else:
             print("\n * User ID must be at least 4 digits. Try again * ")
 
-        return new_admin
-
-    def add_admin(self):
-        new_admin = self.register_admin()
-        return new_admin
 
 
-    def set_password(self,user =None):
+
+
+    def set_password(self,user_id = None,user_full_name = None):
         print("\n * The password must contain at least 4 characters *")
         new_user_password = input("Enter your new password: ")
-
         if len(new_user_password) > 3:
-            if user is None:
-                self.user.change_user_password(new_user_password)
+            if user_id is not None and user_full_name is not None:
+                user = {"user_id": user_id, "user_full_name": user_full_name}
+                user["password"] = new_user_password
                 print("\n* Password set successfully* ")
+                return user
             else:
-                user.change_user_password(new_user_password)
+                self.user.change_user_password(new_user_password)
         else:
             print("\n * The password must contain at least 4 characters. Please try again. * ")
-
+            return None
     def change_password(self):
         old_password = input("\nFor changing password please enter your old password: ")
         if self.user.password == old_password:
@@ -265,11 +255,10 @@ class StoreCLI:
         new_address += f",{city},{street},{apt}"
         new_address.replace(" ", "").translate(str.maketrans("", "", ".!?;:"))
         if len(new_address) > 3:
-            self.user.change_address(new_address)
-            print("\n * Address has been set successfully *")
-            print(f"\n * New Address updated: *\n {new_address}")
+            if self.store.set_address(self.user.user_id,new_address):
+                print("\n * Address has been set successfully *")
+                print(f"\n * New Address updated: *\n {new_address}")
         else:
-            self.user.address = None
             print("\n * Not enough details were entered for setting address. *")
 
 

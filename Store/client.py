@@ -87,8 +87,7 @@ class Client(User):
         for item in lst:
             self.__order_history[item.order_number] = Order(**item)
 
-    def change_address(self, new_address):
-        self.__address = new_address
+
 
     def to_dict(self):
         dict = {"messege":self.__messege,"new_messege":self.new_messege,"coupon":self.__coupon}

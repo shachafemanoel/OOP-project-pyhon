@@ -146,10 +146,17 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return False
 
 
-    def add_user(self, user:User):  # הוספת משתמש לחנות
-        if user.user_id not in self.users:
-            self.users[user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))] = user
-            self.reporting.message.append(f" \n * A new customer has joined your store * \n customer name: {user.user_full_name}  ")
+    def add_user(self, user:dict):  # הוספת משתמש לחנות
+        if user.get("user_id") not in self.users:
+            user_type = user.pop("user_type")
+            if user_type == 'Admin':
+                new_user = User(**user)
+            elif user_type == 'Client':
+                new_user = Client(**user)
+                new_user.coupon = 5
+            new_user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+            self.users[new_user.user_id] = new_user
+            self.reporting.message.append(f" \n * A new {user_type} has joined your store * \n customer name: {new_user.user_full_name}  ")
             self.reporting.new_update += 1
             return True
         return False
@@ -212,8 +219,12 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.users[user_id].new_status(order)
 
 
-
-
+    def set_address(self, user_id, address):
+        if user_id in self.users:
+            self.users[user_id].change_address(address)
+            return True
+        else:
+            return False
 
 
 

@@ -11,7 +11,7 @@
         "user_id": "2020",
         "user_full_name": "Shachaf Emanoel",
         "password": "1234",
-        "address": "Address",
+        "address": "usa,new yorl,men,4",
         "payment": {
             "owner": "John Doe",
             "info": "1234567812345678",
@@ -43,5 +43,47 @@
         "messege": [],
         "new_messege": 0,
         "coupon": 0
+    },
+    {
+        "user_id": "5555",
+        "user_full_name": "shahc",
+        "password": "1234",
+        "address": null,
+        "payment": {
+            "owner": null,
+            "info": null,
+            "payment_method": null
+        },
+        "user_type": "Client",
+        "messege": [],
+        "new_messege": 0,
+        "coupon": 5
+    },
+    {
+        "user_id": "0000",
+        "user_full_name": "\u05e9\u05d7\u05e3 \u05e2\u05de\u05e0\u05d5\u05d0\u05dc",
+        "password": "1234",
+        "address": null,
+        "payment": {
+            "owner": null,
+            "info": null,
+            "payment_method": null
+        },
+        "user_type": "Client",
+        "messege": [],
+        "new_messege": 0,
+        "coupon": 5
+    },
+    {
+        "user_id": "1234",
+        "user_full_name": "shachaf",
+        "password": "1234",
+        "address": null,
+        "payment": {
+            "owner": null,
+            "info": null,
+            "payment_method": null
+        },
+        "user_type": "Admin"
     }
 ]

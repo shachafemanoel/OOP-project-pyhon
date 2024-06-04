@@ -49,7 +49,8 @@ class User:
     def address(self, address):
         self.__address = address
 
-
+    def change_address(self, new_address):
+        self.__address = new_address
 
 
     def login(self, entered_password):
@@ -65,7 +66,6 @@ class User:
 
     def change_user_password(self, new_password):
         self.password = new_password
-        return True
 
     def to_dict(self):
         return {
