@@ -156,7 +156,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                 new_user.coupon = 5
             new_user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
             self.users[new_user.user_id] = new_user
-            self.reporting.message.append(f" \n * A new {user_type} has joined your store * \n customer name: {new_user.user_full_name}  ")
+            self.reporting.message.append(f" \n * A new {user_type} has joined your store * \n full name: {new_user.user_full_name}  ")
             self.reporting.new_update += 1
             return True
         return False
