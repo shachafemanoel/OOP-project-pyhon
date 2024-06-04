@@ -114,7 +114,7 @@
         "description": "the best value for money ",
         "price": 1750.0,
         "sale": 0,
-        "quantity": 7,
+        "quantity": 26,
         "rate": {
             "1": [],
             "2": [],
@@ -126,25 +126,6 @@
         },
         "size": "5GB",
         "storage": "256"
-    },
-    {
-        "product_type": "Computer",
-        "name": "Laptop Dell",
-        "model": "dell xp25",
-        "description": "great laptop for home users ",
-        "price": 2400.0,
-        "sale": 0,
-        "quantity": 16,
-        "rate": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": []
-        },
-        "size": 15,
-        "storage": null,
-        "chip": "AMD"
     },
     {
         "product_type": "Computer",
@@ -200,34 +181,6 @@
         },
         "size": "55",
         "tv_type": "OLED"
-    },
-    {
-        "product_type": "Computer",
-        "name": "my comp",
-        "model": "comp",
-        "description": "cmp",
-        "price": 3200.0,
-        "sale": 0,
-        "quantity": 22,
-        "rate": {
-            "1": [
-                "x",
-                "y"
-            ],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": [
-                "x",
-                "y",
-                "x",
-                "y",
-                "No review provided"
-            ]
-        },
-        "size": "5",
-        "storage": null,
-        "chip": "5"
     },
     {
         "product_type": "Product",

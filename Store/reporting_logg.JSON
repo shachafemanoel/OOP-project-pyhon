@@ -1,14 +1,12 @@
 {
-    "best_sell": "mycomp",
+    "best_sell": "iphone13",
     "sold_products": {
         "mycomp": 5,
         "LaptopDell": 4,
         "airpodspro": 2,
-        "iphone13": 2
+        "iphone13": 6
     },
-    "message": [
-        " \n * A new Admin has joined your store * \n customer name: shachaf  "
-    ],
-    "new_update": 1,
+    "message": [],
+    "new_update": 0,
     "sales": []
 }

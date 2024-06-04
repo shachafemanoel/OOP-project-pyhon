@@ -73,5 +73,20 @@
         "product_dict": {
             "iphone13": 2
         }
+    },
+    {
+        "order_number": 6,
+        "customer_id": "2020",
+        "total_amount": 10500.0,
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 8
+        },
+        "status": "Processing",
+        "product_dict": {
+            "iphone13": 6
+        }
     }
 ]

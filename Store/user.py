@@ -66,6 +66,12 @@ class User:
 
     def change_user_password(self, new_password):
         self.password = new_password
+        return "Password changed successfully."
+
+    def change_name(self, new_name):
+        self.user_full_name = new_name
+        return "Name changed successfully."
+
 
     def to_dict(self):
         return {

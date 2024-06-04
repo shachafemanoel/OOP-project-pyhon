@@ -25,13 +25,10 @@ class Reporting:
         self.new_update += 1
 
     def best_sell_product(self):
-        if len(self.sold_products)>0:
+        if len(self.sold_products) > 0:
             value = list(self.sold_products.values())
             key = list(self.sold_products.keys())
             self.best_sell = key[value.index(max(value))]
-
-
-
 
 
     def seen(self):
@@ -78,9 +75,6 @@ class Reporting:
 
         return reporting_data
 
-    def remove(self,product_name):
-        self.sold_products.pop(product_name)
-        self.best_sell_product()
 
     def __str__(self):
         if self.new_update > 0:

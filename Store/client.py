@@ -4,7 +4,7 @@ from Store.order import Order
 
 
 class Client(User):
-    def __init__(self, user_id=None, user_full_name=None, password=None, address=None, online=0, payment=None, coupon=None,order_history=None,messege = None,new_messege=None):
+    def __init__(self, user_id=None, user_full_name=None, password=None, address=None, online=0, payment=None, coupon=None,order_history=None, messege = None, new_messege=None):
         super().__init__(user_id, user_full_name, password, online, address, payment)
         if messege is not None:
             self.__messege = messege

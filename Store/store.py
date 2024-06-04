@@ -145,6 +145,21 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         else:
             return False
 
+    def client_list(self):
+        clients_lst = []
+        id_lst = []
+        if len(self.users) > 0:
+            for id, details in self.users.items():
+                if isinstance(details, Client):
+                    client = self.users.get(str(id))
+                    client_details = {"Name": details.user_full_name, "ID": details.user_id, "Coupon": details.coupon, "Orders": len(self.user_order_history(client))}
+                    clients_lst.append(client_details)
+                    id_lst.append(id)
+            print(clients_lst)
+            return id_lst
+        else:
+            return "\n* No clients yet *"
+
 
     def add_user(self, user:dict):  # הוספת משתמש לחנות
         if user.get("user_id") not in self.users:
@@ -161,10 +176,17 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return True
         return False
 
+    def remove_client(self, client_id):
+        if client_id in self.users:
+            del self.users[client_id]
+            return True
+        else:
+            return False
+
     def remove(self, product):
         if product in self.collection.values():
            self.collection.pop(product.get_key_name())
-           self.reporting.remove(product.get_key_name())
+           self.reporting.best_sell_product()
            return True
         else:
             return False

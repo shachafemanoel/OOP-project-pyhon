@@ -131,32 +131,38 @@ class StoreCLI:
 
     def display_manage_user(self):
         print("\n * Wellcome to manage users display *\n")
-        print("1. Add user")
-        print("2. Add admin")
-        print("3. Change password")
-        print("4. Gift Coupon")
-        print("5. Exit")
+        print("1. View all clients")
+        print("2. Add user")
+        print("3. Remove user")
+        print("4. Add admin")
+        print("5. Change password")
+        print("6. Update client's details")
+        print("7. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def user_manager(self):
         while True:
             sub_choice = self.display_manage_user()
-            if sub_choice == '1':
+            if sub_choice == "1":
+                self.store.client_list()
+            elif sub_choice == '2':
                 self.register()
                 break
-            elif sub_choice == '2':
+            elif sub_choice == "3":
+                self.remove_client()
+                break
+            elif sub_choice == '4':
                 self.register_admin()
                 break
-            elif sub_choice == '3':
-                self.change_password()
-            elif sub_choice == '4':
-                self.choose_client()
             elif sub_choice == '5':
+                self.change_password()
+            elif sub_choice == '6':
+                self.update_client_details()
+            elif sub_choice == '7':
                 break
             else:
                 print("\n * Invalid choice. Please try again. *\n")
-                sub_choice = self.display_manage_product()
 
     def display_user(self):
         print("\n Welcome to Electronic Store Management System!\n ")
@@ -220,7 +226,7 @@ class StoreCLI:
         print("\n * Welcome to Electronic Store Management Main menu * \n ")
         if self.user.new_messege > 0:
             print(f"\n * There are {self.user.new_messege} new notifications on orders * \n")
-        print("\n1. Change address")
+        print("\n1. Update details")
         if self.count_item > 0:
             print(f"2. Cart({self.count_item})")
         else:
@@ -233,9 +239,8 @@ class StoreCLI:
             print(f"4. Orders * {self.user.new_messege} notifications * ")
         else:
             print("4. Orders")
-        print("5. Change password")
-        print("6. Logout")
-        print("7. Exit")
+        print("5. Logout")
+        print("6. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -689,23 +694,80 @@ class StoreCLI:
 
             else:
                     print("* Price and Quantity must be a digit *")
-    def choose_client(self):
-        clients_lst = []
-        id_lst = []
-        for id, details in self.store.users.items():
-            if isinstance(details, Client):
-                user = self.store.users.get(str(id))
-                client_details = {"Name":details.user_full_name, "ID":details.user_id, "Copuon": details.coupon, "Orders": len(self.store.user_order_history(user))}
-                clients_lst.append(client_details)
-                id_lst.append(id)
 
-        print(clients_lst)
+    def display_client_details(self):
+        print("\n * Choose which detail you want to change *")
+        print("\n1. Client Name")
+        print("2. Client Password")
+        print("3. Client Address")
+        print("4. Client Coupon")
+        print('5. Exit')
+        choice = input("\nEnter your choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+    def update_client_details(self):
+        client_lst = self.store.client_list()
         choice = input("\nChoose Client ID: ")
-        if str(choice) in id_lst:
-            user = self.store.users.get(str(choice))
-            self.apply_coupon_to_client(user)
+        if str(choice) in client_lst:
+            client = self.store.users.get(choice)
+            while True:
+                sub_choice = self.display_client_details()
+                if sub_choice == "1":
+                    new_name = input("\nEnter Client new full name: ")
+                    if len(new_name) > 3:
+                        client.change_name(new_name)
+                        break
+                    print("Not enough info")
+                elif sub_choice == "2":
+                    new_password = input("\nEnter Client new password: ")
+                    if len(new_password) > 3:
+                        client.change_user_password(new_password)
+                        break
+                    print("Not strong enough")
+                elif sub_choice == '3':
+                    self.set_address()
+                    break
+                elif sub_choice == '4':
+                    self.apply_coupon_to_client(client)
+                elif sub_choice == '5':
+                    break
+                else:
+                    print("\n * Invalid choice. Please try again. *\n")
+
         else:
-            return "Invalid Client ID"
+             print("\n* Invalid ID *")
+
+    def display_update_details(self):
+        print("\n * Choose which detail you want to change *")
+        print("\n1. Name")
+        print("2. Password")
+        print("3. Address")
+        print('4. Exit')
+        choice = input("\nEnter your choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+    def update_details(self):
+        while True:
+            choice = self.display_update_details()
+            if choice == "1":
+                new_name = input("\nEnter new full name: ")
+                if len(new_name) > 3:
+                    self.user.change_name(new_name)
+                    break
+                print("\n * Not enough info *")
+            elif choice == "2":
+                new_password = input("\nEnter Client new password: ")
+                if len(new_password) > 3:
+                    self.user.change_user_password(new_password)
+                    break
+                print("\n * Not enough info *")
+            elif choice == '3':
+                self.set_address()
+                break
+            elif choice == '4':
+                break
+            else:
+                print("\n * Invalid choice. Please try again. *\n")
 
     def apply_coupon_to_client(self, user):
         for i in range(3):
@@ -733,6 +795,16 @@ class StoreCLI:
                     print(f" * You have left {4 - each} tries. *\n")
 
             return choice_coupon
+
+    def remove_client(self):
+        print("\n * Choose which client you want to remove *")
+        client_lst = self.store.client_list()
+        choice = input("\nChoose Client ID: ")
+        if str(choice) in client_lst:
+            self.store.remove_client(choice)
+            print("\n * Client removed successfully *")
+        else:
+            print("\n * Invalid ID *")
 
     def remove_item_order(self):
             new_item = self.pick_item_order()
@@ -912,7 +984,7 @@ class StoreCLI:
     def customer_menu(self):
         sub_choice = self.display_client()
         if sub_choice == '1':
-            self.set_address()
+            self.update_details()
         elif sub_choice == '2':
             self.cart_check_out()
         elif sub_choice == '3':
@@ -920,10 +992,8 @@ class StoreCLI:
         elif sub_choice == '4':
             self.display_order_user()
         elif sub_choice == '5':
-            self.change_password()
-        elif sub_choice == '6':
             self.logout()
-        elif sub_choice == '7':
+        elif sub_choice == '6':
             self.logout()
             self.exit = True
             print("Bye, have a nice day")

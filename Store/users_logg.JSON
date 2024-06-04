@@ -3,7 +3,7 @@
         "user_id": "1111",
         "user_full_name": "Admin",
         "password": "1234",
-        "address": null,
+        "address": "israel,ramat gan,hashomer,12",
         "payment": null,
         "user_type": "Admin"
     },
@@ -18,8 +18,10 @@
             "payment_method": "Credit Card"
         },
         "user_type": "Client",
-        "messege": [],
-        "new_messege": 0,
+        "messege": [
+            "\n * Thank you for your purchase!,  Order number: 6 has been received! *"
+        ],
+        "new_messege": 1,
         "coupon": 0
     },
     {
@@ -47,21 +49,6 @@
     {
         "user_id": "5555",
         "user_full_name": "shahc",
-        "password": "1234",
-        "address": null,
-        "payment": {
-            "owner": null,
-            "info": null,
-            "payment_method": null
-        },
-        "user_type": "Client",
-        "messege": [],
-        "new_messege": 0,
-        "coupon": 5
-    },
-    {
-        "user_id": "0000",
-        "user_full_name": "\u05e9\u05d7\u05e3 \u05e2\u05de\u05e0\u05d5\u05d0\u05dc",
         "password": "1234",
         "address": null,
         "payment": {
