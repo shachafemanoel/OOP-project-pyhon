@@ -4,8 +4,8 @@ from Store.rating import Rating
 
 class TestProduct(unittest.TestCase):
     def setUp(self):
-        self.product = Product("Tablet", "13 MAX", "The new model", 10000, 100, [])
-        self.rating = Rating(4, "Great product")
+        self.product = Product("Tablet", "13 MAX", "The new model", 10000, 100, {4: ["Great product!"]})
+        self.rating = Rating({4: ["Great product!"]})
 
     def test_initialization(self):
         self.assertEqual(self.product.name, "Tablet")
@@ -14,7 +14,7 @@ class TestProduct(unittest.TestCase):
         self.assertEqual(self.product.original_price, 10000)
         self.assertEqual(self.product.price, 10000)
         self.assertEqual(self.product.quantity, 100)
-        self.assertEqual(len(self.product.rate), 0)
+        self.assertEqual(self.product.rate.weighted_average_rating(), 4)
         self.assertEqual(self.product.sale, 0)
 
     def test_buy_product(self):
@@ -47,19 +47,9 @@ class TestProduct(unittest.TestCase):
         self.assertFalse(self.product.available(2000))
 
     def test_add_review(self):
-        self.product.add_review(self.rating)
-        self.assertEqual(len(self.product.rate), 1)
-        self.assertEqual(self.product.rate[0].rate, 4)
-        self.assertEqual(self.product.rate[0].description, "Great product")
-
-    def test_review(self):
-        self.assertEqual(self.product.review(), '=================Rating=====================There are no reviews yet')
-        self.product.add_review(self.rating)
-        expected_review = ('=================Rating=====================\nRating: ⭐⭐⭐⭐ \nReview:Great product\n======================================')
-        self.assertEqual(self.product.review(), expected_review)
-        self.product.add_review(Rating(5, "Excellent!"))
-        self.assertIn("Great product", self.product.review())
-        self.assertIn("Excellent!", self.product.review())
+        self.product.add_review(4, 'Great product!')
+        self.assertEqual(self.product.rate.weighted_average_rating(), 4)
+        self.assertEqual(self.product.rate.ratings[4][0], "Great product!")
 
 
 if __name__ == '__main__':

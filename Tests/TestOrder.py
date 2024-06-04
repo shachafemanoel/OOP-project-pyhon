@@ -2,21 +2,21 @@ import unittest
 from Store.order import Order
 from Store.client import Client
 from Store.product import Product
-
+from Store.payment import Payment
 
 class TestOrder(unittest.TestCase):
     def setUp(self):
         self.client = Client("1234", "Nirel Jano", "1234", "Haifa")
         self.product1 = Product("Macbook16", "Pro", "Powerful laptop", 5000, 10)
         self.product2 = Product("Iphone13", "Pro", "Latest iPhone model", 4000, 5)
-        self.order = Order(self.client, 0, {'Macbook16': 3, 'Iphone13': 2}, None)
-
+        self.payment = Payment("Client Check", "1234567890", "Credit Card", 10)
+        self.order = Order(self.client, 0, {'Macbook16': 3, 'Iphone13': 2}, self.payment)
     def test_initialization(self):
         self.assertEqual(self.order.customer, self.client)
         self.assertEqual(self.order.total_amount, 0)
-        self.assertEqual(self.order.status, "Not Paid ")
+        self.assertEqual(self.order.status, "Not paid")
         self.assertEqual(len(self.order.product_dict), 2)
-        self.assertIsNone(self.order.payment)
+        self.assertIsInstance(self.order.payment, Payment)
 
     def test_change_status(self):
         self.order.change_status(1)
@@ -25,22 +25,16 @@ class TestOrder(unittest.TestCase):
         self.assertEqual(self.order.status, "delivered")
 
     def test_converter(self):
-        self.assertEqual(self.order.converter(), "0₪ILS   or  0.0 US$")
+        self.assertEqual(self.order.converter(), '\nTotal amount: 0.0 US$ \n * 0.0 US$ /mo for 10 month *')
         self.order.total_amount = 4000
-        self.assertEqual(self.order.converter(), "4000₪ILS   or  1063.52 US$")
-
-    def test_payments(self):
-        self.assertEqual(self.order.payments(), "0ILS or 0.0₪ILS 12/mo. for 12 mo.*")
-        self.order.total_amount = 4000
-        self.assertEqual(self.order.payments(), "4000ILS or 333.33₪ILS 12/mo. for 12 mo.*")
-
+        self.assertEqual(self.order.converter(), '\nTotal amount: 1063.52 US$ \n * 106.35 US$ /mo for 10 month *')
     def test_pay_order(self):
         self.order.pay_order("Credit Card")
         self.assertEqual(self.order.payment, "Credit Card")
         self.assertEqual(self.order.status, "Processing")
 
     def test_search(self):
-        self.assertEqual(self.order.search("Iphone 13"), "Iphone13")
+        self.assertEqual(self.order.search("Iphone 13"), ['Iphone13'])
 
     def test_remove(self):
         self.order.remove(self.product1, 3)

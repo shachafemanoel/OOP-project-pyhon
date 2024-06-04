@@ -56,5 +56,7 @@ class Payment:
     def __str__(self):
         if self.__payment_method == "Credit Card":
             return f" Amount of payments: {self.__amount_of_payments}\n ******* {self.__info[:4]} {self.payment_method}"
+        elif self.__payment_method == "PayPal":
+            return f"{self.__info} {self.payment_method}"
         else:
-            return f"  {self.__info} {self.payment_method}"
+            return f"{self.payment_method}"

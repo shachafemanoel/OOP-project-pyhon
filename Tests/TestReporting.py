@@ -33,17 +33,35 @@ class TestReporting(unittest.TestCase):
         self.assertEqual(self.reporting.new_update, 2)
         self.assertIn("Order number: 2", self.reporting.message[1])
 
+    def test_new_sold(self):
+        self.reporting.new_sold("Macbook16", 5)
+        self.assertEqual(self.reporting.sold_products["Macbook16"], 5)
+        self.reporting.new_sold("Macbook16", 3)
+        self.assertEqual(self.reporting.sold_products["Macbook16"], 3)
+        self.reporting.new_sold("Iphone13", 2)
+        self.assertEqual(self.reporting.sold_products["Iphone13"], 2)
+
     def test_best_sell_product(self):
         self.reporting.sold_products = {'Macbook16': 5, 'Iphone13': 3}
-        self.assertEqual(self.reporting.best_sell_product(), "\n * Macbook16 is the best selling product *\n")
+        self.reporting.best_sell_product()
+        self.assertEqual(self.reporting.best_sell, 'Macbook16')
 
-    def test_sold(self):
+    def test_get_sales_report_string(self):
         self.reporting.sold_products = {'Macbook16': 5, 'Iphone13': 3}
-        self.assertEqual(self.reporting.sold(), [('Macbook16', 5), ('Iphone13', 3)])
+        self.reporting.revenue = 4000
+        expected_report = (
+            '------------------------------\n'
+            '     Product sold  table      \n'
+            '------------------------------\n'
+            '| Product       |       Sold |\n'
+            '------------------------------\n'
+            '| Macbook16     |          5 |\n'
+            '| Iphone13      |          3 |\n'
+            '| Store revenue | 4000 ₪ILS  |\n'
+            '------------------------------'
+        )
+        self.assertEqual(self.reporting.get_sales_report_string(), expected_report)
 
-    def test_total_revenue(self):
-        self.reporting.revenue = 22000
-        self.assertEqual(self.reporting.total_revenue(), "Total revenue of our store: 22000 ₪")
 
     def test_seen(self):
         self.reporting.new_update = 2

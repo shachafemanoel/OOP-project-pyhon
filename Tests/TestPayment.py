@@ -28,14 +28,17 @@ class TestPayment(unittest.TestCase):
         self.assertEqual(invalid_payment.amount_of_payments, 1)
 
     def test_str_with_credit_card(self):
-        expected_str = ("Payment method:  7890 Credit Card\n"
-                        "Number of payments:1")
+        expected_str = (" Amount of payments: 1\n ******* 1234 Credit Card")
         self.assertEqual(str(self.payment1), expected_str)
 
-    def test_str_without_credit_card(self):
+    def test_str_with_cash(self):
         self.payment2.payment_method = "Cash"
-        expected_str = ("Payment method: Cash")
+        expected_str = ("Cash")
+        self.assertEqual(str(self.payment2), expected_str)
 
+    def test_str_with_paypal(self):
+        self.payment2.payment_method = "Paypal"
+        expected_str = ("Paypal")
         self.assertEqual(str(self.payment2), expected_str)
 
 if __name__ == '__main__':

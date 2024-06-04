@@ -177,7 +177,6 @@ class StoreCLI:
     def add_review(self, order):
         for key, value in order.product_dict.items():
             print(key)
-            prod = self.store.collection[key]
             print("1. ⭐")
             print("2. ⭐⭐")
             print("3. ⭐⭐⭐")
@@ -716,12 +715,14 @@ class StoreCLI:
                     new_name = input("\nEnter Client new full name: ")
                     if len(new_name) > 3:
                         client.change_name(new_name)
+                        print("Client name updated successfully")
                         break
                     print("Not enough info")
                 elif sub_choice == "2":
                     new_password = input("\nEnter Client new password: ")
                     if len(new_password) > 3:
                         client.change_user_password(new_password)
+                        print("Client password updated successfully")
                         break
                     print("Not strong enough")
                 elif sub_choice == '3':
@@ -753,12 +754,14 @@ class StoreCLI:
                 new_name = input("\nEnter new full name: ")
                 if len(new_name) > 3:
                     self.user.change_name(new_name)
+                    print("\n Name changed successfully")
                     break
                 print("\n * Not enough info *")
             elif choice == "2":
-                new_password = input("\nEnter Client new password: ")
+                new_password = input("\nEnter new password: ")
                 if len(new_password) > 3:
                     self.user.change_user_password(new_password)
+                    print("\n New password changed successfully")
                     break
                 print("\n * Not enough info *")
             elif choice == '3':

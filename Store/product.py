@@ -19,9 +19,10 @@ class Product:
         return self.model.replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
 
     def buy_product(self, many):  # הוצאת כמות מוצרים מהמלאי
+        if many <= self.quantity:
             self.quantity -= many
-
-
+            return True
+        return False
     def update_price(self, discount):
             self.sale = discount
             self.price -= (self.original_price * float(discount / 100))
@@ -47,8 +48,6 @@ class Product:
 
     def add_review(self, stars, review):
          self.rate.add_review(stars, review)
-
-
 
     def product_to_dict(self):
         dict = {}

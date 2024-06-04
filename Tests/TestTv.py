@@ -16,27 +16,15 @@ class TestTv(unittest.TestCase):
         self.assertEqual(self.tv1.price, 7000)
         self.assertEqual(self.tv1.quantity, 20)
         self.assertEqual(self.tv1.size, "55")
-        self.assertEqual(self.tv1.type, "QLED")
+        self.assertEqual(self.tv1.tv_type, "QLED")
 
     def test_str_no_sale(self):
-        expected_str = ('======================================\n'
-                        'Name: Samsung QLED\n'
-                        'Model: Q80T\n'
-                        'display size: 55-Inch\n'
-                        'Description: 4K UHD Smart TV\n'
-                        'Price: 7000₪\n'
-                        '=================Rating=====================There are no reviews yet')
+        expected_str = ('======================================\nName: Samsung QLED\nModel: Q80T\ndisplay size: 55-Inch\nDescription: 4K UHD Smart TV\nPrice: 7000₪\n=================Rating=====================\nThere are no reviews yet')
         self.assertIn(expected_str, str(self.tv1))
 
     def test_str_with_sale(self):
         self.tv2.update_price(10)
-        expected_str = ('======================================\n'
-                        'Name: LG OLED\n'
-                        'Model: CX\n'
-                        'display size: 65-Inch\n'
-                        'Description: 4K OLED Smart TV\n'
-                        'Price:-10% Off 8100.0₪ ILS\n'
-                        '=================Rating=====================There are no reviews yet')
+        expected_str = ('======================================\nName: LG OLED\nModel: CX\ndisplay size: 65-Inch\nDescription: 4K OLED Smart TV\nPrice:-10% Off 8100.0₪ ILS\n=================Rating=====================\nThere are no reviews yet')
         self.assertIn(expected_str, str(self.tv2))
 
 if __name__ == '__main__':

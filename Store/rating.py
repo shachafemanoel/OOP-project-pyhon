@@ -1,15 +1,18 @@
 class Rating:
-    def __init__(self,ratings=None):
+    def __init__(self, ratings=None):
         if ratings is None:
             self.ratings = {1: [], 2: [], 3: [], 4: [], 5: []}
         elif type(ratings) is dict:
             self.ratings = ratings
+
 
     def add_review(self, stars, review=None,):
         if review is None or review.strip() == "":
             review = "No review provided"
         if stars in self.ratings:
             self.ratings[stars].append(review)
+        else:
+            self.ratings[stars] = [review]
         return "Thank you for your opinion"
 
 

@@ -24,7 +24,7 @@
             "payment_method": "Credit Card",
             "amount_of_payments": 1
         },
-        "status": "Processing",
+        "status": "delivered",
         "product_dict": {
             "LaptopDell": 4
         }

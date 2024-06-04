@@ -19,24 +19,13 @@ class TestPhone(unittest.TestCase):
         self.assertEqual(self.phone1.storage, '256')
 
     def test_str_no_sale(self):
-        expected_str = ('======================================\n'
-                        'Name: Iphone 15\n'
-                        ' Model: Pro max Storge: 256 \n'
-                        'display size: 5.9-Inch  \n'
-                        'Description: The new Iphone 15 pro max  \n'
-                        ' Price: 5000₪\n'
-                        '=================Rating=====================There are no reviews yet')
+        expected_str = ('======================================\nName: Iphone 15\n Model: Pro max Storge: 256 \ndisplay size: 5.9-Inch  \nDescription: The new Iphone 15 pro max  \n Price: 5000₪\n=================Rating=====================\nThere are no reviews yet')
         self.assertIn(expected_str, str(self.phone1))
 
     def test_str_with_sale(self):
         self.phone2.update_price(15)
-        expected_str = ('======================================\n'
-                        'Name: Samsung Galaxy S21\n'
-                        'Model: Ultra Storge: 256\n'
-                        'display size: 6.8-Inch\n'
-                        'Description: The latest Galaxy with Snapdragon 888\n'
-                        'Price:-15% Off 3825.0₪ ILS\n'
-                        '=================Rating=====================There are no reviews yet')
+        expected_str = ('======================================\nName: Samsung Galaxy S21\nModel: Ultra Storge: 256\ndisplay size: 6.8-Inch\nDescription: The latest Galaxy with Snapdragon 888\nPrice:-15% Off 3825.0₪ ILS\n=================Rating=====================\nThere are no reviews yet'
+)
         self.assertIn(expected_str, str(self.phone2))
 
 if __name__ == '__main__':

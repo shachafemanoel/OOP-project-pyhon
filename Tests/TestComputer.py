@@ -18,7 +18,7 @@ class TestComputer(unittest.TestCase):
         self.assertEqual(self.computer1.price, 6000)
         self.assertEqual(self.computer1.quantity, 10)
         self.assertEqual(self.computer1.size, "13")
-        self.assertEqual(self.computer1.storge, "256")
+        self.assertEqual(self.computer1.storage, "256")
         self.assertEqual(self.computer1.chip, "M2")
 
     def test_str_no_sale(self):
@@ -33,17 +33,22 @@ class TestComputer(unittest.TestCase):
         )
         self.assertIn(expected_str, str(self.computer1))
 
+
     def test_str_with_sale(self):
         self.computer2.update_price(20)
-        expected_str = ('======================================\n'
-                        ' Name: MacBook Pro 16\n'
-                        ' Model: Pro Storge: 512 \n'
-                        ' Chip: M1 Max\n'
-                        ' display size: 16-Inch \n'
-                        ' Description: Liquid Retina XDR display \n'
-                        ' Price:-20% Off 6400.0₪ ILS\n'
-                        '=================Rating=====================There are no reviews yet')
+        expected_str = (
+            '======================================\n'
+            ' Name: MacBook Pro 16\n'
+            ' Model: Pro Storge: 512 \n'
+            ' Chip: M1 Max\n'
+            ' display size: 16-Inch \n'
+            ' Description: Liquid Retina XDR display \n'
+            ' Price:-20% Off 6400.0₪ ILS\n'
+            '=================Rating=====================\n'
+            'There are no reviews yet'
+        )
         self.assertIn(expected_str, str(self.computer2))
+
 
 
 if __name__ == '__main__':

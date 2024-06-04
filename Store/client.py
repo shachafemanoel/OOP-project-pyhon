@@ -32,9 +32,19 @@ class Client(User):
         else:
             raise ValueError("Coupon value must be between 0 and 99")
 
+    def use_coupon(self):
+        self.__coupon = 0
+
+    def update_coupon(self, amount):
+        self.__coupon = amount
+
     @property
     def messege(self):
         return self.__messege
+
+    @messege.setter
+    def messege(self, value):
+        self.__messege = value
 
     @property
     def order_history(self):
@@ -59,11 +69,6 @@ class Client(User):
         else:
             return f"\n * There are no new notifications *\n "
 
-    def use_coupon(self):
-        self.__coupon = 0
-
-    def update_coupon(self, amount):
-        self.__coupon = amount
 
 
     def new_status(self, order):
@@ -87,15 +92,11 @@ class Client(User):
         for item in lst:
             self.__order_history[item.order_number] = Order(**item)
 
-
-
     def to_dict(self):
         dict = {"messege":self.__messege,"new_messege":self.new_messege,"coupon":self.__coupon}
         dict = {**super().to_dict(),**dict}
         dict["user_type"] = "Client"
         return dict
-
-
 
     def __str__(self):
         return super().__str__() + f"\nCoupon: {self.__coupon}\nOrder History: {len(self.__order_history)} orders"

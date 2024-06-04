@@ -42,8 +42,10 @@
         "address": null,
         "payment": null,
         "user_type": "Client",
-        "messege": [],
-        "new_messege": 0,
+        "messege": [
+            "\n *Order Number:2 has been delivered *"
+        ],
+        "new_messege": 1,
         "coupon": 0
     },
     {

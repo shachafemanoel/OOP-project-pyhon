@@ -1,14 +1,16 @@
 import unittest
 from Store.client import Client
 from Store.order import Order
+from Store.payment import Payment
 
 
 class TestClient(unittest.TestCase):
 
     def setUp(self):
+        self.payment = Payment("Client Check", "1234567890", "Credit Card", 10)
         self.client = Client("2020", "Client Check", '1234', 'Address', 0, "Credit Card", 10)
-        self.order1 = Order(self.client, 100, {"Product1": 1}, "Credit Card")
-        self.order2 = Order(self.client, 200, {"Product2": 2}, "Credit Card")
+        self.order1 = Order(self.client, 100, {"Product1": 1}, self.payment)
+        self.order2 = Order(self.client, 200, {"Product2": 2}, self.payment)
 
     def test_update_client(self):
         self.client.messege = ["Message 1", "Message 2"]
@@ -24,7 +26,7 @@ class TestClient(unittest.TestCase):
 
     def test_use_coupon(self):
         self.client.use_coupon()
-        self.assertIsNone(self.client.coupon)
+        self.assertEqual(self.client.coupon, 0)
 
     def test_new_status(self):
         self.client.new_status(self.order1)

@@ -23,8 +23,10 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
 
     def add_review(self,product, stars, review=None):
-        self.collection[product].add_review(stars,review)
-
+        if product in self.collection:
+            self.collection[product].add_review(stars,review)
+            return True
+        return False
 
     def load_files(self):
         self.users = DataManager.load_users()

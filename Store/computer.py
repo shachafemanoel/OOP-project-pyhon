@@ -17,6 +17,7 @@ class Computer(Product):
 
         dict["product_type"] = "Computer"
         return dict
+
     def __str__(self):
         if self.sale > 0:
             return f"======================================\n Name: {self.name}\n Model: {self.model} Storge: {self.storage} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n Price:-{self.sale}% Off {self.get_price(1)}₪ ILS\n{self.rate}"
