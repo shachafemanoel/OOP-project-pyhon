@@ -188,7 +188,7 @@ class TestStore(unittest.TestCase):
     def test_list_products(self):
         product1 = Tv(name="Samsung TV1", price=500, quantity=10, model="QLED1")
         product2 = Computer(name="Laptop", price=1500, quantity=5, model="L123")
-        self.store.collection[product1.get_key_name()] = product1
+        self.store.collection[שׂproduct1.get_key_name()] = product1
         self.store.collection[product2.get_key_name()] = product2
         result = self.store.list_products()
         self.assertIn(("Samsung TV1", "QLED1", "Price: 500 ₪ ", "Available: 10"), result)
