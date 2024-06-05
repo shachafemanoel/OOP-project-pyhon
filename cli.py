@@ -707,7 +707,7 @@ class StoreCLI:
     def update_client_details(self):
         client_lst = self.store.client_list()
         choice = input("\nChoose Client ID: ")
-        if str(choice) in client_lst:
+        if choice in self.store.users:
             client = self.store.users.get(choice)
             while True:
                 sub_choice = self.display_client_details()

@@ -85,10 +85,10 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             for product in self.collection.values():
                if isinstance(product, Product):
                     product.remove_discount()
-
+                    return True
         elif isinstance(item, Product):
             item.remove_discount()
-
+            return True
         else:
             print("Invalid item.")
 
@@ -165,10 +165,10 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def add_user(self, user:dict):  # הוספת משתמש לחנות
         if user.get("user_id") not in self.users:
-            user_type = user.pop("user_type")
-            if user_type == 'Admin':
+            user_type = user.pop("user_type","Client").upper()
+            if user_type == 'ADMIN':
                 new_user = User(**user)
-            elif user_type == 'Client':
+            elif user_type == 'CLIENT':
                 new_user = Client(**user)
                 new_user.coupon = 5
             new_user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
