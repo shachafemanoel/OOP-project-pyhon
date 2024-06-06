@@ -7,7 +7,7 @@ class User:
         self.__password = password
         self.__online = online
         self.__address = address
-        self.payment = Payment()
+        self.payment = payment
 
 
 
@@ -23,8 +23,8 @@ class User:
         return self.__user_full_name
 
     @user_full_name.setter
-    def user_full_name(self, user_full_name):
-        self.__user_full_name = user_full_name
+    def user_full_name(self, first_name, last_name):
+        self.__user_full_name = f"{first_name} {last_name}"
 
     @property
     def password(self):
@@ -77,7 +77,7 @@ class User:
             'user_full_name': self.user_full_name,
             'password': self.__password,
             'address': self.__address,
-            'payment': self.payment.payment_to_dict_user() if self.payment else None,
+            'payment': self.payment if self.payment else None,
             'user_type':'Admin'
         }
     def __eq__(self, other):
@@ -87,3 +87,7 @@ class User:
 
     def __str__(self):
         return f"User: {self.user_full_name}\nID: {self.user_id}"
+
+
+    def get_save_payment(self):
+        return f"{self.payment.get("info")[:4]} {self.payment.get('payment_method')} "

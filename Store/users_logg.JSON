@@ -15,11 +15,12 @@
         "payment": {
             "owner": "John Doe",
             "info": "1234567812345678",
-            "payment_method": "Credit Card"
+            "payment_method": "Credit Card",
+            "amount_of_payments": 2
         },
         "user_type": "Client",
         "messege": [
-            "\n * Thank you for your purchase!,  Order number: 6 has been received! *"
+            "\n * Thank you for your purchase!,  Order number: 8 has been received! *"
         ],
         "new_messege": 1,
         "coupon": 0

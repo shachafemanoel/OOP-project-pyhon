@@ -90,7 +90,6 @@ class DataManager:
             else:
                 logging.warning(f"Unknown user type: {user_type}")
                 continue
-            user.payment = Payment(**user_data.get('payment')) if user_data.get('payment') else None
             users[user.user_id] = user
         return users
 

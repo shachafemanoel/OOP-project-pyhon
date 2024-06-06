@@ -7,8 +7,8 @@ class Order:
         self.order_number = order_number
         self.customer = customer
         self.total_amount = total_amount if total_amount is not None else 0
-        self.payment = payment if payment is not None else Payment()
-        self.status = status if status is not None else "Not paid"
+        self.payment =Payment(**payment) if payment is not None else Payment()
+        self.status = "Processing" if status is None else status
         self.product_dict = product_dict if product_dict is not None else {}
 
     def change_status(self, choice: int):

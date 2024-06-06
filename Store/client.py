@@ -77,7 +77,6 @@ class Client(User):
         self.new_messege += 1
 
     def new_order(self,order):
-        self.__order_history[order.order_number] = order
         self.__messege.append(f"\n * Thank you for your purchase!,  Order number: {order.order_number} has been received! *")
         self.new_messege += 1
 

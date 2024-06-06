@@ -15,9 +15,13 @@ import logging
 class StoreCLI:
     def __init__(self):
         self.store = Store()
-        self.user = Client()
-        self.count_item = 0
-        self.cart = Order()
+        self.user = Client("0000","0000","0000",online=0)
+        self.cart =  {
+            'total_amount':0,
+            'payment': None,
+            'product_dict': {},
+            "count_item":0
+        }
         self.exit = False
 
     def log_in(self):
@@ -26,8 +30,6 @@ class StoreCLI:
         password = input("Enter Password: ")
         loggg = self.store.log(user_id, password)
         if loggg is not None:
-            self.cart = Order()
-            self.count_item = 0
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
@@ -226,8 +228,8 @@ class StoreCLI:
         if self.user.new_messege > 0:
             print(f"\n * There are {self.user.new_messege} new notifications on orders * \n")
         print("\n1. Update details")
-        if self.count_item > 0:
-            print(f"2. Cart({self.count_item})")
+        if self.cart["count_item"] > 0:
+            print(f"2. Cart({self.cart["count_item"]}")
         else:
             print("2. Cart(0)")
         if len(self.store.sales) > 0:
@@ -269,8 +271,8 @@ class StoreCLI:
     def display_order(self):
         print("\n * Order menu *")
         print("\n1. Catalog ")
-        if self.count_item > 0:
-            print(f"2. Go to Cart({self.count_item})")
+        if self.cart["total_amount"]> 0:
+            print(f"2. Go to Cart({self.cart["count_item"]})")
         print("3. Exit ")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -290,10 +292,11 @@ class StoreCLI:
         card_holder = input("Name on card: ")
         card_number = input("Card number: ")
         how_much = input("how many payments would you like to spread the deal?: ")
-        paymethod = None
-        if card_number.isdigit() and how_much.isdigit():
-            paymethod = Payment(card_holder, card_number, "Credit Card")
-        if paymethod and paymethod.check_card(int(how_much)):
+        how_much = int(how_much) if how_much.isdigit() else 1
+        if len(card_number) > 6  and card_number.isdigit():
+            paymethod["owner"] = card_holder
+            paymethod["info"] = card_number
+            paymethod["amount_of_payments"] = how_much
             print("\nWould you like to save your payment method for future orders?")
             print("\n1. Yes, save it")
             print("\n2. No ")
@@ -305,10 +308,14 @@ class StoreCLI:
             print("\n * The card details are invalid * ")
 
 
-    def new_paypal(self,paymethood):
+    def new_paypal(self,paymethod):
         paypal_id = input("Enter your Paypal id: ")
+        how_much = input("how many payments would you like to spread the deal?: ")
         if len(paypal_id) > 0:
-            paymethod = Payment(self.user.user_full_name,paypal_id, 'PayPal')
+            paymethod["owner"] = self.user.user_full_name
+            paymethod["info"] = paypal_id
+            paymethod["payment_method"] = "Paypal"
+            paymethod["amount_of_payments"] = int(how_much)
             print("\nWould you like to save your payment method for future orders?")
             print("1. Yes,save it")
             print("2 .No ")
@@ -320,7 +327,7 @@ class StoreCLI:
             print("\n * Paypal id in invalid * ")
 
     def new_payment(self):
-        paymethod = Payment()
+        paymethod = {"owner":"","info":"","payment_method":""}
         for i in range(4):
             pay_option = self.display_payment()
             if pay_option == '1':
@@ -339,16 +346,17 @@ class StoreCLI:
                 print("\n * Invalid choice. Please try again.* ")
 
     def pay(self):
-        if self.user.payment.info is not None:
-            self.user.payment.amount_of_payments = 1
+        if self.user.payment is not None:
+            self.user.payment["amount_of_payments"] = 1
             print(f"\n===================\nfor paying with:\n")
-            print(self.user.payment)
+            print(self.user.get_save_payment())
             s = input("Press 1:")
             if s == '1':
                 how_much = input("how many payments would you like to spread the deal?")
                 if how_much.isdigit():
-                    self.user.payment.amount_of_payments = int(how_much)
-                return self.user.payment
+                    payment = self.user.payment
+                    payment["amount_of_payments"] = int(how_much)
+                return payment
 
             else:
                 return  self.new_payment()
@@ -592,7 +600,6 @@ class StoreCLI:
         return new_item
 
     def add_item(self):
-        self.cart.customer = self.user
         new_item = self.search_system()
         if new_item is not None:
             print(f"\nYour choice:\n {new_item}")
@@ -603,13 +610,19 @@ class StoreCLI:
                     if how_much <= 0:
                         print("* No quantity provided *")
                     if not self.store.add_item_order(new_item, how_much):
-                        print(
-                            f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
+                        print( f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
                     else:
-                        self.cart.add_item_to_order(new_item, how_much)
-                        self.count_item += how_much
+                        if new_item.get_key_name() not in self.cart["product_dict"]:
+                            self.cart["product_dict"][new_item.get_key_name()] = how_much
+                            self.cart["total_amount"] += new_item.get_price(how_much)
+                            self.cart["count_item"] +=how_much
+
+                        else:
+                            self.cart["product_dict"][new_item.get_key_name()] += how_much
+                            self.cart["total_amount"] += new_item.get_price(how_much)
+                            self.cart["count_item"] += how_much
                         print(
-                            f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.price * how_much}  ₪ILS  has been successfully add to cart  ! *\n{self.cart.converter()} ")
+                            f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.price * how_much}  ₪ILS  has been successfully add to cart  ! *\n ")
                         break
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
@@ -789,7 +802,7 @@ class StoreCLI:
             for each in range(5):
                 choice_coupon = self.display_coupon()
                 if choice_coupon == '1':
-                    self.cart.total_amount = self.cart.total_amount * (1 - (self.user.coupon / 100))
+                    self.cart["total_amount"] *=  (1 - (self.user.coupon / 100))
                     break
                 elif choice_coupon == '2':
                     break
@@ -847,7 +860,9 @@ class StoreCLI:
 
     def cart_display(self):
         print("\n * Shopping Cart *\n")
-        print(self.cart)
+        print (self.cart["product_dict"])
+        print(self.cart["total_amount"])
+
         print("1. Proceed to checkout ")
         print("2. Change")
         print("3. Empty the cart")
@@ -856,15 +871,20 @@ class StoreCLI:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def cart_check_out(self):
-            while self.count_item > 0:
+            while self.cart["count_item"] > 0:
                 choice = self.cart_display()
                 if choice == '1':
                     self.check_out()
                 elif choice == '2':
                     self.remove_item_order()
                 elif choice == '3':
-                    self.cart = Order(self.user, None, None, None)
-                    self.count_item = 0
+                    self.cart =  {
+                        'total_amount': 0,
+                        'payment': None,
+                        'status': "Not paid",
+                        'product_dict': {},
+                        "count_item": 0
+                    }
                     break
                 elif choice == '4':
                     print("Good bye ")
@@ -877,18 +897,22 @@ class StoreCLI:
         print("\n * Check Out  *\n")
         if self.user.address is None:
             self.set_address()
-        if self.cart.total_amount > 0 or len(self.cart.product_dict) > 0:
+        if self.cart.get("total_amount") > 0 or len(self.cart.get("product_dict")) > 0:
             coupon = self.apply_coupon()
             payment = self.pay()
             if payment:
-                order = self.cart
-                order.pay_order(payment)
-                self.store.place_order(order)
-                self.user.new_order(order)
-                print(f" {order}\n * The order was successfully completed * ")
-                self.cart = Order()
-                self.count_item = 0
-
+                self.cart["payment"] = payment
+                self.cart["customer"] = self.user
+                self.store.place_order(self.cart)
+                print(f" * The order was successfully completed * ")
+                print(self.store.orders[self.store.order_number-1])
+                self.cart = {
+                    'total_amount': 0,
+                    'payment': None,
+                    'status': "Not paid",
+                    'product_dict': {},
+                    "count_item": 0
+                }
                 if coupon == '1':
                     self.store.use_coupon(self.user)
 
@@ -898,7 +922,7 @@ class StoreCLI:
                 if choice == '1':
                     self.add_item()
                 elif choice == '2':
-                    if self.count_item > 0:
+                    if self.cart["count_item"] > 0:
                         self.cart_check_out()
                         break
                 elif choice == '3':

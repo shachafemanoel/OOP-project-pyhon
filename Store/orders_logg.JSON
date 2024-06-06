@@ -88,5 +88,35 @@
         "product_dict": {
             "iphone13": 6
         }
+    },
+    {
+        "order_number": 7,
+        "customer_id": "2020",
+        "total_amount": 100.0,
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 2
+        },
+        "status": "Processing",
+        "product_dict": {
+            "Applecharger": 1
+        }
+    },
+    {
+        "order_number": 8,
+        "customer_id": "2020",
+        "total_amount": 200.0,
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 2
+        },
+        "status": "Processing",
+        "product_dict": {
+            "Applecharger": 2
+        }
     }
 ]

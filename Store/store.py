@@ -200,9 +200,11 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return False
 
     def place_order(self, order):
-        if order.payment is not None:
-            order.order_number = self.order_number
-            self.orders[self.order_number] = order
+        if order.get("payment",None) is not None:
+            order["order_number"] = self.order_number
+            customer = order.get("customer",None)
+            order.pop("count_item",None)
+            order = Order(**order)
             for name, quant in order.product_dict.items():
                if self.collection[name].available(quant):
                     self.collection[name].buy_product(quant)
@@ -210,8 +212,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     if self.collection[name].get_quantity() <4:
                         self.reporting.message.append(f"\n * Warning:Less than {self.collection[name].get_quantity()} left in stock {self.collection[name].name} *\n")
             self.reporting.new_order(order)
+            self.users[customer.user_id].new_order(order)
+            self.orders[self.order_number] = order
             self.order_number += 1
-
 
     def list_products(self):
         if len(self.collection) > 0:
