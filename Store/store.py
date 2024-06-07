@@ -6,9 +6,8 @@ from Store.client import Client
 from Store.tv import Tv
 from Store.phone import Phone
 from Store.computer import Computer
-from Store.rating import Rating
 from Store.json import DataManager
-from Store.rating import Rating
+
 
 class Store:  # מחלקה שמממשת את החנות עצמה
 
@@ -93,9 +92,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             print("Invalid item.")
 
 
-    def lst_search(self,order):
+    def lst_search(self,item_dict):
         temp = []
-        for key in order.product_dict.keys():
+        for key in item_dict.keys():
            temp.append(self.collection[key])
 
         return temp

@@ -1,5 +1,4 @@
-from Store import payment
-from Store.payment import Payment
+
 class User:
     def __init__(self, user_id=None, user_full_name=None, password=None, online=0, address=None, payment=None):
         self.__user_id = user_id
@@ -23,8 +22,8 @@ class User:
         return self.__user_full_name
 
     @user_full_name.setter
-    def user_full_name(self, first_name, last_name):
-        self.__user_full_name = f"{first_name} {last_name}"
+    def user_full_name(self, name):
+        self.__user_full_name = name
 
     @property
     def password(self):
