@@ -126,7 +126,9 @@ class StoreCLI:
     def display_manage_user(self):
         if self.store.reporting.new_update["users"] >0:
             for i in self.store.reporting.message:
-                print(i)
+               print(i)
+        self.store.reporting.new_update["users"]  = 0
+        self.store.reporting.message["users"] = []
         print("\n * Wellcome to manage users display *\n")
         print("1. View all clients")
         print("2. Add user")
@@ -502,6 +504,8 @@ class StoreCLI:
         if self.store.reporting.new_update["products"] > 0:
             for i in self.store.reporting.message["products"]:
                 print(f"{i}")
+        self.store.reporting.new_update["products"] = 0
+        self.store.reporting.message["products"] = []
         print("1. Add Product or Adding a quantity to an existing product ")
         print("2. Remove Product")
         print("3. Add Discount")
@@ -515,6 +519,8 @@ class StoreCLI:
         if self.store.reporting.new_update["orders"] > 0:
             for i in self.store.reporting.message["orders"]:
                 print(f"{i}")
+        self.store.reporting.new_update["orders"] = 0
+        self.store.reporting.message["orders"] = []
         print("1. Update order status")
         print("2. List Orders")
         print("3. Exit")
@@ -535,8 +541,8 @@ class StoreCLI:
 
     def display_menu(self):
         product_manager = "1. Product Manager"
-        order_manager = "2. Order Manager"
-        user_manager = "3. User Manager"
+        order_manager = "3. Order Manager"
+        user_manager = "2. User Manager"
         if self.store.reporting.total_update > 0:
             print(f"\n * There are {self.store.reporting.total_update} new notifications *")
             for key,item in self.store.reporting.new_update.items():
