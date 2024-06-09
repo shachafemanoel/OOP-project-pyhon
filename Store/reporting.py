@@ -5,9 +5,9 @@ class Reporting:
         self.revenue = 0
         self.sold_products = {}
         self.best_sell = None
-        self.message = []
-        self.new_update = 0
-
+        self.message = {"orders":[],"products":[],"users":[]}
+        self.new_update = {"orders":0,"products":0,"users":0}
+        self.total_update = 0
 
 
 
@@ -18,12 +18,15 @@ class Reporting:
             self.sold_products[name] = quant
 
 
-
+    def new_user(self,user_type,user_full_name):
+        self.message["users"].append(f" \n * A new {user_type} has joined your store * \n full name: {user_full_name} ")
+        self.new_update["users"] +=1
+        self.total_update +=1
     def new_order(self,order):
         self.revenue += order.total_amount
-        self.message.append(f" \n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
-        self.new_update += 1
-
+        self.message["orders"].append(f" \n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
+        self.new_update["orders"] += 1
+        self.total_update += 1
     def best_sell_product(self):
         if len(self.sold_products) > 0:
             value = list(self.sold_products.values())
@@ -70,21 +73,18 @@ class Reporting:
             'sold_products': self.sold_products,
             'message': self.message,
             'new_update': self.new_update,
+            "total_update": self.total_update,
             'sales': sales
         }
 
         return reporting_data
 
-
+    def product_warning(self,quantity,name):
+        self.message["products"].append(f"\n * Warning:Less than {quantity} left in stock {name} *\n")
+        self.new_update["products"] += 1
+        self.total_update += 1
     def __str__(self):
-        if self.new_update > 0:
-            new = f"\n * There are {self.new_update} new updates for you *\n"
-            for messe in self.message:
-                new += messe
-        else:
-            new = "\n * There are no new notifications * "
-        if  len(self.sold_products) > 0:
-            return f" \n    **** Reporting summary **** {new}\n* {self.best_sell}is the best selling product *\n{self.get_sales_report_string()}"
-        else:
-            return f"{new}\nNo purchase has been made from the store yet"
+
+         return f" \n    **** Reporting summary **** \n* {self.best_sell}is the best selling product *\n{self.get_sales_report_string()}"
+
 

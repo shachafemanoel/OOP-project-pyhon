@@ -109,6 +109,7 @@ class DataManager:
             reporting.sold_products = reporting_data['sold_products']
             reporting.message = reporting_data['message']
             reporting.new_update = reporting_data['new_update']
+            reporting.total_update = reporting_data['total_update']
         return reporting
 
     @staticmethod

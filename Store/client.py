@@ -87,7 +87,7 @@ class Client(User):
         self.new_message += 1
 
     def list_orders_client(self):
-        if self.order_history is not None and self.order_history:
+        if  self.order_history:
             table = "            Orders History    \n"
             table += "-----------------------------------------\n"
             for key, value in self.order_history.items():

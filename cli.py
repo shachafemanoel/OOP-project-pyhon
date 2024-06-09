@@ -124,6 +124,9 @@ class StoreCLI:
             print("Error,user id not found ")
 
     def display_manage_user(self):
+        if self.store.reporting.new_update["users"] >0:
+            for i in self.store.reporting.message:
+                print(i)
         print("\n * Wellcome to manage users display *\n")
         print("1. View all clients")
         print("2. Add user")
@@ -496,6 +499,9 @@ class StoreCLI:
 
     def display_manage_product(self):
         print("\n * Wellcome to manage product display *\n")
+        if self.store.reporting.new_update["products"] > 0:
+            for i in self.store.reporting.message["products"]:
+                print(f"{i}")
         print("1. Add Product or Adding a quantity to an existing product ")
         print("2. Remove Product")
         print("3. Add Discount")
@@ -506,6 +512,9 @@ class StoreCLI:
 
     def display_manage_order(self):
         print("\n * Wellcome to manage order display *\n")
+        if self.store.reporting.new_update["orders"] > 0:
+            for i in self.store.reporting.message["orders"]:
+                print(f"{i}")
         print("1. Update order status")
         print("2. List Orders")
         print("3. Exit")
@@ -525,17 +534,24 @@ class StoreCLI:
                 print("\n * Invalid choice. Please try again. *\n")
 
     def display_menu(self):
-        if self.store.reporting.new_update > 0:
-            print(f"\n * There are {self.store.reporting.new_update} new notifications Reporting *")
+        product_manager = "1. Product Manager"
+        order_manager = "2. Order Manager"
+        user_manager = "3. User Manager"
+        if self.store.reporting.total_update > 0:
+            print(f"\n * There are {self.store.reporting.total_update} new notifications *")
+            for key,item in self.store.reporting.new_update.items():
+                if key == "products" and item >0:
+                    product_manager += f" ({item}) new notifications"
+                if key == "orders" and item > 0:
+                    order_manager += f" ({item}) new notifications"
+                if key == "users" and item > 0:
+                    user_manager += f" ({item}) new notifications"
         print(" \n *  Electronic store Management Menu * \n")
-        print("1. Product Manager")
-        print("2. User Manager")
-        print("3. Order Manager")
+        print(product_manager)
+        print(user_manager)
+        print(order_manager)
         print("4. List Product")
-        if self.store.reporting.new_update > 0:
-            print(f"5. Reporting * {self.store.reporting.new_update} notifications *")
-        else:
-            print("5. Reporting")
+        print("5. Reporting")
         print("6. Logout")
         print("0. Exit")
         choice = input("\nEnter your choice: ")

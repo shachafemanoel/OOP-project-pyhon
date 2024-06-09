@@ -180,8 +180,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                 new_user.coupon = 5
             new_user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
             self.users[new_user.user_id] = new_user
-            self.reporting.message.append(f" \n * A new {user_type} has joined your store * \n full name: {new_user.user_full_name}  ")
-            self.reporting.new_update += 1
+            self.reporting.new_user(user_type,new_user.user_full_name)
             return True
         return False
 
@@ -218,7 +217,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     order["total_amount"] +=self.collection[name].get_price(quant)
                     self.reporting.new_sold(name,quant)
                     if self.collection[name].get_quantity() <4:
-                        self.reporting.message.append(f"\n * Warning:Less than {self.collection[name].get_quantity()} left in stock {self.collection[name].name} *\n")
+                        self.reporting.product_warning(self.collection[name].get_quantity(),self.collection[name].name)
             order = Order(**order)
             self.reporting.new_order(order)
             self.users[customer.user_id].new_order(order)
@@ -227,14 +226,27 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def list_products(self):
         if len(self.collection) > 0:
-            return [(product.name, product.model, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
+            new = ""
+            if self.reporting.new_update["products"] >0:
+
+                for i in self.reporting.message["products"]:
+                    new +=i
+            new += [(product.name, product.model, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
                     self.collection.items()]
+            return new
         else:
             return " No products in inventory yet!"
 
-    def list_orders(self):
-        return [[order_number, order.customer.user_full_name, order.total_amount, order.status] for order_number, order in
-                self.orders.items()]
+    def list_orders_client(self):
+        if self.orders:
+            table = "            Orders History    \n"
+            table += "-----------------------------------------\n"
+            for key, value in self.orders.items():
+                table += f"Order number:{key:<12}  \n{value.converter():<18} | Status: {value.status}\n"
+                table += "-----------------------------------------\n"
+        else:
+            table = "\n * There are no orders *\n"
+        return table
 
     def log(self, user_id, password):
         login = user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -242,8 +254,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             if type(self.users[login]) == User:
                 return self.users[login]
             else:
-                history = self.user_order_history(self.users[login])
-                self.users[login].order_history = history
                 self.change_currency(self.users[login].currency)
                 return self.users[login]
         else:
