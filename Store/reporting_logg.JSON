@@ -7,10 +7,7 @@
         "iphone13": 6,
         "Applecharger": 2
     },
-    "message": [
-        " \n * A new order has been placed * \n Order number: 7    total amount: 100.0 ",
-        " \n * A new order has been placed * \n Order number: 8    total amount: 200.0 "
-    ],
-    "new_update": 2,
+    "message": [],
+    "new_update": 0,
     "sales": []
 }

@@ -1,4 +1,4 @@
-
+from Store.payment_calculator import CurrencyConverter
 from Store.store import Store
 from Store.product import Product
 from Store.user import User
@@ -25,9 +25,9 @@ class StoreCLI:
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
-            logging.info(f" Welcome  {self.user.user_full_name}. you are now connected\n")
+            logging.warning(f" Welcome  {self.user.user_full_name}. you are now connected\n")
         else:
-            logging.info("Login failed!\n")
+            logging.warning("Login failed!\n")
 
     def register(self):
         print("\nWelcome to the registration systemֿ\n")
@@ -217,8 +217,8 @@ class StoreCLI:
 
     def display_client(self):
         print("\n * Welcome to Electronic Store Management Main menu * \n ")
-        if self.user.new_messege > 0:
-            print(f"\n * There are {self.user.new_messege} new notifications on orders * \n")
+        if self.user.new_message > 0:
+            print(f"\n * There are {self.user.new_message} new notifications on orders * \n")
         print("\n1. Update details")
         if self.cart["count_item"] > 0:
             print(f"2. Cart({self.cart["count_item"]})")
@@ -228,8 +228,8 @@ class StoreCLI:
             print("3.   Collection * new sale *")
         else:
             print("3. Collection")
-        if self.user.new_messege > 0:
-            print(f"4. Orders * {self.user.new_messege} notifications * ")
+        if self.user.new_message > 0:
+            print(f"4. Orders * {self.user.new_message} notifications * ")
         else:
             print("4. Orders")
         print("5. Logout")
@@ -355,6 +355,41 @@ class StoreCLI:
         else:
                 return self.new_payment()
 
+    def choose_currency(self):
+        """
+        פונקציה זו מציגה למשתמש רשימת מטבעות אפשריים ובוחרת את סוג המטבע על פי בחירת המשתמש.
+        :return: קוד המטבע הנבחר
+        """
+        currencies = {
+            '1': 'USD',
+            '2': 'EUR',
+            '3': 'ILS'
+        }
+        print("choice currency")
+        for key, value in currencies.items():
+            print(f"{key}: {value}")
+        choice = input("Enter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        if choice in currencies.keys():
+            self.set_currency(currencies[choice])
+
+        else:
+            count = 0
+            for i in range(4):
+                print(f"Wrong choice. Please try again.You have {4-i} attempts left")
+                choice = input("Enter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+                if choice in currencies:
+                   self.set_currency(currencies[choice])
+
+                elif i == 4:
+                    print("You have passed the number of attempts.\nThe currency is set to be ILS")
+
+        print(f"Your currency is:{currencies[choice]}")
+
+    def set_currency(self,currency):
+        if self.cart["total_amount"] > 0:
+            CurrencyConverter.convert(self.cart["total_amount"], self.store.currency, currency)
+        self.user.currency = currency
+        self.store.change_currency(currency)
 
     def change_status(self):
         print(f"{self.store.list_orders()}")
@@ -572,7 +607,7 @@ class StoreCLI:
             print("   *   New deals   * ")
             for sale in self.store.sales:
                 print(sale)
-        new_item = Product()
+        new_item = None
         type_search = self.product_type()
         if type_search is not None:
             choice = self.pick_item(type_search)
@@ -614,7 +649,7 @@ class StoreCLI:
                             self.cart["total_amount"] += new_item.get_price(how_much)
                             self.cart["count_item"] += how_much
                         print(
-                            f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.price * how_much}  ₪ILS  has been successfully add to cart  ! *\n ")
+                            f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.get_price_in_user_currency(how_much)}  has been successfully add to cart  ! *\n ")
                         break
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
@@ -706,7 +741,7 @@ class StoreCLI:
         print("2. Client Password")
         print("3. Client Address")
         print("4. Client Coupon")
-        print('5. Exit')
+        print("5. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -736,7 +771,8 @@ class StoreCLI:
                     break
                 elif sub_choice == '4':
                     self.apply_coupon_to_client(client)
-                elif sub_choice == '5':
+                elif sub_choice == '6':
+
                     break
                 else:
                     print("\n * Invalid choice. Please try again. *\n")
@@ -749,7 +785,8 @@ class StoreCLI:
         print("\n1. Name")
         print("2. Password")
         print("3. Address")
-        print('4. Exit')
+        print("4. Currency")
+        print('5. Exit')
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -774,6 +811,9 @@ class StoreCLI:
                 self.set_address()
                 break
             elif choice == '4':
+               self.choose_currency()
+            elif choice == '5':
+                print("\n * Exit")
                 break
             else:
                 print("\n * Invalid choice. Please try again. *\n")
@@ -868,9 +908,8 @@ class StoreCLI:
         print("\n * Shopping Cart *\n")
         if self.cart["total_amount"] > 0:
             print (self.cart["product_dict"])
-            print(self.cart["total_amount"])
-
-            print("1. Proceed to checkout ")
+            print(f"{CurrencyConverter.convert(self.cart["total_amount"],"ILS",self.user.currency)} {self.user.currency}")
+            print("\n1. Proceed to checkout ")
             print("2. Change")
             print("3. Empty the cart")
             print("4. Exit")
@@ -887,18 +926,22 @@ class StoreCLI:
                 elif choice == '2':
                     self.remove_item_order()
                 elif choice == '3':
-                    self.cart =  {
-                        'total_amount': 0,
-                        'payment': None,
-                        'product_dict': {},
-                        "count_item": 0
-                    }
+                    self.empty_cart()
+
                     break
                 elif choice == '4':
                     print("Good bye ")
                     break
 
             print("Your Cart is empty.")
+
+    def empty_cart(self):
+         self.cart = {
+                        'total_amount': 0,
+                        'payment': None,
+                        'product_dict': {},
+                        "count_item": 0
+        }
 
 
     def check_out(self):
@@ -914,12 +957,7 @@ class StoreCLI:
                 self.store.place_order(self.cart)
                 print(f" * The order was successfully completed * ")
                 print(self.store.orders[self.store.order_number-1])
-                self.cart = {
-                    'total_amount': 0,
-                    'payment': None,
-                    'product_dict': {},
-                    "count_item": 0
-                }
+                self.empty_cart()
                 if coupon == '1':
                     self.store.use_coupon(self.user)
 

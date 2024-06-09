@@ -19,7 +19,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
         self.sales = []
-
+        self.currency = "ILS"
 
     def add_review(self,product, stars, review=None):
         if product in self.collection:
@@ -51,6 +51,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         DataManager.save_orders(self.orders)
         DataManager.save_products(self.collection)
         DataManager.save_reporting(self.reporting,self.sales)
+
 
 
     def use_coupon(self,user):
@@ -90,6 +91,13 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return True
         else:
             print("Invalid item.")
+
+    def change_currency(self,currency):
+        if currency != self.currency:
+            self.currency = currency
+            for product in self.collection.values():
+                if product.currency != self.currency:
+                    product.currency = self.currency
 
 
     def lst_search(self,item_dict):
@@ -203,13 +211,15 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             order["order_number"] = self.order_number
             customer = order.get("customer",None)
             order.pop("count_item",None)
-            order = Order(**order)
-            for name, quant in order.product_dict.items():
+            order["total_amount"] = 0
+            for name, quant in order["product_dict"].items():
                if self.collection[name].available(quant):
                     self.collection[name].buy_product(quant)
+                    order["total_amount"] +=self.collection[name].get_price(quant)
                     self.reporting.new_sold(name,quant)
                     if self.collection[name].get_quantity() <4:
                         self.reporting.message.append(f"\n * Warning:Less than {self.collection[name].get_quantity()} left in stock {self.collection[name].name} *\n")
+            order = Order(**order)
             self.reporting.new_order(order)
             self.users[customer.user_id].new_order(order)
             self.orders[self.order_number] = order
@@ -234,6 +244,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             else:
                 history = self.user_order_history(self.users[login])
                 self.users[login].order_history = history
+                self.change_currency(self.users[login].currency)
                 return self.users[login]
         else:
             return None

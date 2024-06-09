@@ -1,7 +1,7 @@
 
 from Store.user import User
 from Store.payment import Payment
-
+from Store.payment_calculator import CurrencyConverter
 class Order:
     def __init__(self, customer=None, order_number=None, product_dict=None, payment=None, total_amount=None, status=None):
         self.order_number = order_number
@@ -10,7 +10,7 @@ class Order:
         self.payment =Payment(**payment) if payment is not None else Payment()
         self.status = "Processing" if status is None else status
         self.product_dict = product_dict if product_dict is not None else {}
-
+        self.currency = "ILS"
     def change_status(self, choice: int):
         if choice == 1:
             self.status = 'shipped'
@@ -25,6 +25,7 @@ class Order:
             'payment': self.payment.payment_to_dict_order(),
             'status': self.status,
             'product_dict': self.product_dict
+
         }
         return order_dict
 
@@ -32,15 +33,8 @@ class Order:
         self.status = 'completed'
 
     def converter(self):
-        if self.customer.address and self.payment and self.payment.amount_of_payments != 1:
-            if self.customer.address[:3].casefold() != "isr":
-                return f"\nTotal amount: {round(self.total_amount / 3.7611, 2)} US$ \n * {round((self.total_amount / 3.7611 / self.payment.amount_of_payments), 2)} US$ /mo for {self.payment.amount_of_payments} month *"
-            else:
-                return f"\nTotal amount: {self.total_amount} ₪ILS\n * {round(self.total_amount / self.payment.amount_of_payments, 2)} ₪ILS /mo for {self.payment.amount_of_payments} month *"
-        elif self.customer.address is None or self.customer.address[:3].casefold() != "isr":
-            return f" * {round(self.total_amount / 3.7611, 2)} US$ *\n"
-        else:
-            return f" * {self.total_amount} ₪ILS *\n"
+        return f" Total amount: {CurrencyConverter.convert(self.total_amount, "ILS", self.currency) }{self.currency}"
+
 
     def pay_order(self, payment):
         self.payment = payment
@@ -87,10 +81,4 @@ class Order:
             return result
 
     def __str__(self):
-        if len(self.product_dict) > 0:
-                if self.status == "Processing":
-                    return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n================= \nStatus:{self.status}\n===================\n{self.payment}\n{self.converter()}\n==================="
-                else:
-                    return f"{self.list_products()} \nSubtotal: {self.converter()} \n "
-        else:
-            return "Empty cart"
+        return f"===================\nOrder number: {self.order_number}\nCustomer: {self.customer.user_full_name}\n===================\nShipping address: {self.customer.address}\nItems: {self.product_dict}\n================= \nStatus:{self.status}\n===================\n{self.payment}\n{self.converter()}\n==================="

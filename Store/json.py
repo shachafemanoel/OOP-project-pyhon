@@ -42,7 +42,7 @@ class DataManager:
             logging.error(f"Error saving data to file {filename}: {e}")
 
     @staticmethod
-    def load_orders(users: dict):
+    def load_orders(users):
         orders = {}
         orders_data = DataManager.load_data('Store/orders_logg.JSON')
         for order_data in orders_data:
@@ -50,9 +50,10 @@ class DataManager:
             if customer is not None:
                 order = Order(**order_data)
                 order.customer = customer
+                order.currency = customer.currency
                 order.payment = Payment(**order_data.get('payment')) if order_data.get('payment') else None
                 orders[order.order_number] = order
-
+                customer.order_history[order.order_number] = order
         return orders
 
     @staticmethod

@@ -19,11 +19,9 @@
             "amount_of_payments": 2
         },
         "user_type": "Client",
-        "messege": [
-            "\n * Thank you for your purchase!,  Order number: 8 has been received! *"
-        ],
-        "new_messege": 1,
-        "coupon": 0
+        "message": [],
+        "coupon": 0,
+        "currency": "USD"
     },
     {
         "user_id": "7777",
@@ -32,9 +30,9 @@
         "address": "israel,haifa,shalom ,4",
         "payment": null,
         "user_type": "Client",
-        "messege": [],
-        "new_messege": 0,
-        "coupon": 0
+        "message": [],
+        "coupon": 0,
+        "currency": "ILS"
     },
     {
         "user_id": "9999",
@@ -43,11 +41,11 @@
         "address": null,
         "payment": null,
         "user_type": "Client",
-        "messege": [
+        "message": [
             "\n *Order Number:2 has been delivered *"
         ],
-        "new_messege": 1,
-        "coupon": 0
+        "coupon": 0,
+        "currency": "ILS"
     },
     {
         "user_id": "5555",
@@ -60,9 +58,9 @@
             "payment_method": null
         },
         "user_type": "Client",
-        "messege": [],
-        "new_messege": 0,
-        "coupon": 5
+        "message": [],
+        "coupon": 5,
+        "currency": "ILS"
     },
     {
         "user_id": "1234",

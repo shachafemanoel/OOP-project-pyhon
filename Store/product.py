@@ -1,6 +1,7 @@
 from Store.rating import Rating
+from Store.payment_calculator import CurrencyConverter
 class Product:
-    def __init__(self, name=None, model=None, description=None, price=None, quantity=None, rate=None,sale=0):  #
+    def __init__(self, name, model, description,price,quantity,rate=None,sale=0):  #
         self.name = name  # שם המוצר
         self.model = model # דגם
         self.description = description  # תיאור המוצר
@@ -11,7 +12,7 @@ class Product:
             self.update_price(sale)
         self.quantity = quantity  # הכמות המוצר
         self.rate = Rating(rate)
-
+        self.currency = "ILS"
 
     def get_key_name(self):
         return (self.name).replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
@@ -61,10 +62,11 @@ class Product:
         dict['rate'] =  self.rate.ratings
         return dict
 
-
-    def __str__(self):
+    def get_price_in_user_currency(self,quantity = 1):
+        price = ""
         if self.sale > 0:
-            return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n Price:{self.original_price} -{self.sale}% Off {self.price}₪ ILS\n{self.rate}"
-
-        else:
-            return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n Price: {self.price}₪\n {self.rate}\n"
+            price += f" Original price: {CurrencyConverter.convert(self.original_price,"ILS",self.currency) * quantity}{self.currency} -{self.sale}% Off "
+        price += f"{CurrencyConverter.convert(self.price, "ILS",self.currency)*quantity}{self.currency}"
+        return price
+    def __str__(self):
+        return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}"
