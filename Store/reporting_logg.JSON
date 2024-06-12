@@ -7,8 +7,16 @@
         "iphone13": 6,
         "Applecharger": 2
     },
-    "message": {"orders":[],"products":[],"users":[]},
-    "new_update": {"orders":2,"products":0,"users":0},
-    "total_update":2,
+    "message": {
+        "orders": [],
+        "products": [],
+        "users": []
+    },
+    "new_update": {
+        "orders": 0,
+        "products": 0,
+        "users": 0
+    },
+    "total_update": 0,
     "sales": []
 }

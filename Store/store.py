@@ -237,9 +237,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         else:
             return " No products in inventory yet!"
 
-    def list_orders_client(self):
+    def list_orders(self):
         if self.orders:
-            table = "            Orders History    \n"
+            table = "\n            Orders History    \n"
             table += "-----------------------------------------\n"
             for key, value in self.orders.items():
                 table += f"Order number:{key:<12}  \n{value.converter():<18} | Status: {value.status}\n"

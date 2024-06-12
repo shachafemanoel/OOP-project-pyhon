@@ -25,7 +25,7 @@ class StoreCLI:
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
-            logging.warning(f" Welcome  {self.user.user_full_name}. you are now connected\n")
+            logging.warning(f"\n Welcome  {self.user.user_full_name}. you are now connected\n")
         else:
             logging.warning("Login failed!\n")
 
@@ -126,7 +126,8 @@ class StoreCLI:
     def display_manage_user(self):
         if self.store.reporting.new_update["users"] >0:
             for i in self.store.reporting.message:
-               print(i)
+                print(i)
+        self.store.reporting.total_update -=self.store.reporting.new_update["users"]
         self.store.reporting.new_update["users"]  = 0
         self.store.reporting.message["users"] = []
         print("\n * Wellcome to manage users display *\n")
@@ -504,6 +505,7 @@ class StoreCLI:
         if self.store.reporting.new_update["products"] > 0:
             for i in self.store.reporting.message["products"]:
                 print(f"{i}")
+        self.store.reporting.total_update -= self.store.reporting.new_update["products"]
         self.store.reporting.new_update["products"] = 0
         self.store.reporting.message["products"] = []
         print("1. Add Product or Adding a quantity to an existing product ")
@@ -519,8 +521,10 @@ class StoreCLI:
         if self.store.reporting.new_update["orders"] > 0:
             for i in self.store.reporting.message["orders"]:
                 print(f"{i}")
+        self.store.reporting.total_update -= self.store.reporting.new_update["orders"]
         self.store.reporting.new_update["orders"] = 0
         self.store.reporting.message["orders"] = []
+
         print("1. Update order status")
         print("2. List Orders")
         print("3. Exit")
