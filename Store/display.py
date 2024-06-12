@@ -161,7 +161,8 @@ class Display:
         print("2. Remove Product")
         print("3. Add Discount")
         print("4. Remove Discount")
-        print("5. Exit")
+        print("5.Product list")
+        print("6. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 

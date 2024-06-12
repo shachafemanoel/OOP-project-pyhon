@@ -9,7 +9,6 @@ import logging
 class StoreCLI:
     def __init__(self):
         self.store = Store()
-        self.display = Display()
         self.user = Client("0000" ,"0000" ,"0000" ,online=0)
         self.cart = {
             'total_amount':0,
@@ -121,7 +120,7 @@ class StoreCLI:
 
     def user_manager(self):
         while True:
-            sub_choice = self.display.display_manage_user(self.store)
+            sub_choice = Display.display_manage_user(self.store)
             if sub_choice == "1":
                 self.store.client_list()
             elif sub_choice == '2':
@@ -181,7 +180,7 @@ class StoreCLI:
         print(self.user.update_client())
         if len(self.user.order_history) > 0:
             while True:
-                choice = self.display.orders_history(self.user)
+                choice = Display.orders_history(self.user)
                 if choice == '1':
                   self.choice_order()
                 else:
@@ -244,7 +243,7 @@ class StoreCLI:
     def new_payment(self):
         paymethod = {"owner":"", "info":"", "payment_method":""}
         for i in range(4):
-            pay_option = self.display.display_payment()
+            pay_option = Display.display_payment()
             if pay_option == '1':
                return self.new_card(paymethod)
             elif pay_option == '2':
@@ -336,17 +335,17 @@ class StoreCLI:
 
     def product_type(self, choice=None):
         if choice is None:
-            choice = self.display.display_product_type()
+            choice = Display.display_product_type()
         for i in range(5):
             if choice in '1234':
-                return self.store.search(None, choice, None)
+                return self.store.search(None,choice, None)
             elif choice == "5":
-                return self.list_products()
+                return self.store.list_products()
             elif choice == "0":
                     return None
             else:
                 print("Try Again")
-                choice = self.display.display_product_type()
+                choice =Display.display_product_type()
         return None
 
     def discount(self):
@@ -359,7 +358,7 @@ class StoreCLI:
             return discount
 
     def add_discount(self):
-        choice = self.display.display_product_type()
+        choice = Display.display_product_type()
         category = self.product_type(choice)
         if category is not None :
             if category[0].sale == 0:
@@ -382,9 +381,9 @@ class StoreCLI:
                 print("\nGood bye")
 
     def remove_discount(self):
-        choice = self.display.display_remove_discount()
+        choice = Display.display_remove_discount()
         if choice == "1":
-            category = self.display.display_product_type()
+            category = Display.display_product_type()
             self.store.remove_discount(category)
         elif choice == "2":
             product_name = self.manual_search()
@@ -397,7 +396,7 @@ class StoreCLI:
 
     def order_manager(self):
         while True:
-            choice = self.display.display_manage_order(self.store)
+            choice = Display.display_manage_order(self.store)
             if choice == "1":
                 self.change_status()
             elif choice == "2":
@@ -424,9 +423,8 @@ class StoreCLI:
         print(product_manager)
         print(user_manager)
         print(order_manager)
-        print("4. List Product")
-        print("5. Reporting")
-        print("6. Logout")
+        print("4. Reporting")
+        print("5. Logout")
         print("0. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -470,7 +468,7 @@ class StoreCLI:
 
     def product_manager(self):
         while True:
-            sub_choice = self.display.display_manage_product(self.store)
+            sub_choice = Display.display_manage_product(self.store)
             if sub_choice == '1':
                 self.add_product()
 
@@ -483,6 +481,8 @@ class StoreCLI:
             elif sub_choice == '4':
                 self.remove_discount()
             elif sub_choice == '5':
+                self.store.list_products()
+            elif sub_choice == '6':
                 break
             else:
                 print("\n * Invalid choice. Please try again. *\n")
@@ -554,7 +554,7 @@ class StoreCLI:
             print("* Invalid input or product not found. * \n")
 
     def add_pruduct_categoty(self,dict_new_product):
-        category = self.display.display_product_type()
+        category = Display.display_product_type()
         if category == '1':
             size = input("Enter Screen size: ")
             tv_type = input("Enter TV type: ")
@@ -621,7 +621,7 @@ class StoreCLI:
         if choice in self.store.users:
             client = self.store.users.get(choice)
             while True:
-                sub_choice = self.display.display_client_details()
+                sub_choice = Display.display_client_details()
                 if sub_choice == "1":
                     new_name = input("\nEnter Client new full name: ")
                     if len(new_name) > 3:
@@ -652,7 +652,7 @@ class StoreCLI:
 
     def update_details(self):
         while True:
-            choice = self.display.display_update_details()
+            choice = Display.display_update_details()
             if choice == "1":
                 new_name = input("\nEnter new full name: ")
                 if len(new_name) > 3:
@@ -693,7 +693,7 @@ class StoreCLI:
     def apply_coupon(self):
         if self.user.coupon != 0:
             for each in range(5):
-                choice_coupon = self.display.display_coupon(self.user)
+                choice_coupon = Display.display_coupon(self.user)
                 if choice_coupon == '1':
                     self.cart["total_amount"] *= (1 - (self.user.coupon / 100))
                     break
@@ -765,7 +765,7 @@ class StoreCLI:
 
     def cart_check_out(self):
             while self.cart["count_item"] > 0:
-                choice = self.display.cart_display(self.user, self.cart)
+                choice = Display.cart_display(self.user, self.cart)
                 if choice == '1':
                     self.check_out()
                 elif choice == '2':
@@ -808,7 +808,7 @@ class StoreCLI:
 
     def catalog(self):
             while True:
-                choice = self.display.display_order(self.cart)
+                choice = Display.display_order(self.cart)
                 if choice == '1':
                     self.add_item()
                 elif choice == '2':
@@ -853,7 +853,7 @@ class StoreCLI:
         logging.info("Logged out successfully\n")
 
     def wellcome_page(self):
-            selection = self.display.display_user()
+            selection = Display.display_user()
             if selection == '1':
                 self.log_in()
             elif selection == '2':
@@ -875,10 +875,8 @@ class StoreCLI:
         elif choice == '3':
             self.order_manager()
         elif choice == '4':
-            self.list_products()
-        elif choice == '5':
             self.reporting()
-        elif choice == '6':
+        elif choice == '5':
             self.user.logout()
         elif choice == '0':
             print("Bye, have a nice day")
@@ -889,7 +887,7 @@ class StoreCLI:
 
 
     def customer_menu(self):
-        sub_choice = self.display.display_client(self.user, self.cart, self.store)
+        sub_choice = Display.display_client(self.user, self.cart, self.store)
         if sub_choice == '1':
             self.update_details()
         elif sub_choice == '2':
