@@ -110,7 +110,7 @@ class Display:
         print("\n * Shopping Cart *\n")
         if cart["total_amount"] > 0:
             print(cart["product_dict"])
-            print(f"{CurrencyConverter.convert(cart["total_amount"],"ILS",user.currency)} {user.currency}")
+            print(f"{CurrencyConverter.convert(cart["total_amount"],"₪ILS",user.currency)} {user.currency}")
             print("\n1. Proceed to checkout ")
             print("2. Change")
             print("3. Empty the cart")
@@ -179,5 +179,29 @@ class Display:
         print("1. Update order status")
         print("2. List Orders")
         print("3. Exit")
+        choice = input("\nEnter your choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+    @staticmethod
+    def display_menu(store):
+        product_manager = "1. Product Manager"
+        order_manager = "3. Order Manager"
+        user_manager = "2. User Manager"
+        if store.reporting.total_update > 0:
+            print(f"\n * There are {store.reporting.total_update} new notifications *")
+            for key, item in store.reporting.new_update.items():
+                if key == "products" and item >0:
+                    product_manager += f" ({item}) new notifications"
+                if key == "orders" and item > 0:
+                    order_manager += f" ({item}) new notifications"
+                if key == "users" and item > 0:
+                    user_manager += f" ({item}) new notifications"
+        print(" \n *  Electronic store Management Menu * \n")
+        print(product_manager)
+        print(user_manager)
+        print(order_manager)
+        print("4. Reporting")
+        print("5. Logout")
+        print("0. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))

@@ -1,25 +1,29 @@
 {
-    "best_sell": "iphone13",
+    "best_sell": "mycomp",
     "sold_products": {
         "mycomp": 5,
         "LaptopDell": 4,
         "airpodspro": 2,
-        "iphone13": 6,
+        "iphone13": 4,
         "Applecharger": 2,
-        "LGTV55": 1
+        "LGTV55": 1,
+        "galaxy24": 1,
+        "ipad": 3
     },
     "message": {
         "orders": [
-            " \n * A new order has been placed * \n Order number: 9    total amount: 5500.0 "
+            " \n * A new order has been placed * \n Order number: 9    total amount: 5500.0 ",
+            " \n * A new order has been placed * \n Order number: 10    total amount: 3500.0 ",
+            " \n * A new order has been placed * \n Order number: 11    total amount: 19000.0 "
         ],
         "products": [],
         "users": []
     },
     "new_update": {
-        "orders": 1,
+        "orders": 3,
         "products": 0,
         "users": 0
     },
-    "total_update": 1,
+    "total_update": 3,
     "sales": []
 }

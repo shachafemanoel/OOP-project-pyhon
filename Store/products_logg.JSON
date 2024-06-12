@@ -61,7 +61,7 @@
         "description": "the new ipad pro 256 gb",
         "price": 4000.0,
         "sale": 0,
-        "quantity": 50,
+        "quantity": 47,
         "rate": {
             "1": [],
             "2": [],
@@ -80,12 +80,17 @@
         "description": "hhhhh",
         "price": 3500.0,
         "sale": 0,
-        "quantity": 20,
+        "quantity": 19,
         "rate": {
             "1": [],
-            "2": [],
+            "2": [
+                "No review provided",
+                "No review provided"
+            ],
             "3": [],
-            "4": [],
+            "4": [
+                "No review provided"
+            ],
             "5": []
         },
         "size": "6",
@@ -100,11 +105,17 @@
         "sale": 0,
         "quantity": 43,
         "rate": {
-            "1": [],
+            "1": [
+                "No review provided"
+            ],
             "2": [],
             "3": [],
-            "4": [],
-            "5": []
+            "4": [
+                "No review provided"
+            ],
+            "5": [
+                "No review provided"
+            ]
         }
     },
     {
@@ -114,7 +125,7 @@
         "description": "the best value for money ",
         "price": 1750.0,
         "sale": 0,
-        "quantity": 26,
+        "quantity": 22,
         "rate": {
             "1": [],
             "2": [],

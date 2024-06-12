@@ -133,5 +133,36 @@
         "product_dict": {
             "LGTV55": 1
         }
+    },
+    {
+        "order_number": 10,
+        "customer_id": "5555",
+        "total_amount": 3500.0,
+        "payment": {
+            "owner": "shachaf",
+            "info": "5558881231234523",
+            "payment_method": "",
+            "amount_of_payments": 2
+        },
+        "status": "Processing",
+        "product_dict": {
+            "galaxy24": 1
+        }
+    },
+    {
+        "order_number": 11,
+        "customer_id": "5555",
+        "total_amount": 19000.0,
+        "payment": {
+            "owner": "shachaf",
+            "info": "5558881231234523",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 3
+        },
+        "status": "Processing",
+        "product_dict": {
+            "ipad": 3,
+            "iphone13": 4
+        }
     }
 ]

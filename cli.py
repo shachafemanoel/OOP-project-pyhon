@@ -1,4 +1,5 @@
 from Store.payment_calculator import CurrencyConverter
+from Store.rating import Rating
 from Store.store import Store
 from Store.product import Product
 from Store.user import User
@@ -55,7 +56,6 @@ class StoreCLI:
                 print("\n * Invalid full name. Try again * ")
         else:
             print("\n * User ID must be at least 4 digit.Try again * ")
-
 
     def register_admin(self,):
         print("\nAdding new admin\n")
@@ -329,7 +329,7 @@ class StoreCLI:
                 else:
                     print("\n * Invalid choice.The status has not changed * \n")
             else:
-                print("\n * Order did not exist. Please try again. *")
+                print("\n * Order do not exist. Please try again. *")
         else:
                 print("\n * Invalid order number")
 
@@ -338,14 +338,14 @@ class StoreCLI:
             choice = Display.display_product_type()
         for i in range(5):
             if choice in '1234':
-                return self.store.search(None,choice, None)
+                return self.store.search(None, choice, None)
             elif choice == "5":
                 return self.store.list_products()
             elif choice == "0":
                     return None
             else:
                 print("Try Again")
-                choice =Display.display_product_type()
+                choice = Display.display_product_type()
         return None
 
     def discount(self):
@@ -406,30 +406,6 @@ class StoreCLI:
             else:
                 print("\n * Invalid choice. Please try again. *\n")
 
-    def display_menu(self):
-        product_manager = "1. Product Manager"
-        order_manager = "3. Order Manager"
-        user_manager = "2. User Manager"
-        if self.store.reporting.total_update > 0:
-            print(f"\n * There are {self.store.reporting.total_update} new notifications *")
-            for key,item in self.store.reporting.new_update.items():
-                if key == "products" and item >0:
-                    product_manager += f" ({item}) new notifications"
-                if key == "orders" and item > 0:
-                    order_manager += f" ({item}) new notifications"
-                if key == "users" and item > 0:
-                    user_manager += f" ({item}) new notifications"
-        print(" \n *  Electronic store Management Menu * \n")
-        print(product_manager)
-        print(user_manager)
-        print(order_manager)
-        print("4. Reporting")
-        print("5. Logout")
-        print("0. Exit")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
-
     def pick_item(self, lst):
         if len(lst) == 0:
             return -100
@@ -437,11 +413,11 @@ class StoreCLI:
         for i in range(len(lst)):
             print(f" {lst[i]} \n  \n * for {lst[i].name} Press =>  {i + 1} ", )
             print("======================================")
-        print("Choose one of the options \n For exit, enter a different value from the options ")
+        print("Choose one of the options \n\n For exit, enter a different value from the options ")
         select = input("Enter your choice: ")
         if select.isdigit():
             select = int(select)
-            if select>0:
+            if select > 0:
                 select -= 1
                 if len(lst) > select >= -1:
                     return select
@@ -471,13 +447,10 @@ class StoreCLI:
             sub_choice = Display.display_manage_product(self.store)
             if sub_choice == '1':
                 self.add_product()
-
             elif sub_choice == '2':
                 self.remove_product()
-
             elif sub_choice == '3':
                 self.add_discount()
-
             elif sub_choice == '4':
                 self.remove_discount()
             elif sub_choice == '5':
@@ -502,15 +475,66 @@ class StoreCLI:
             else:
                 new_item = None
         if type_search is None:
-            print("\n1.Manual search")
-            print("2.Exit")
+            print("\n1. Manual search")
+            print("2. Search by price range")
+            print("3. Search by rating range")
+            print("4. Exit")
             select = input("\nEnter your choice: ")
             if select == "1":
                 new_item = self.manual_search()
+            elif select == "2":
+                new_item = self.search_by_price()
+            elif select == "3":
+                new_item = self.search_by_rating()
             else:
                 new_item = None
 
         return new_item
+
+    def search_by_price(self):
+        low = input("Enter low price: ")
+        high = input("Enter high price: ")
+        products = []
+        try:
+            low, high = float(low), float(high)
+            if 0 <= low <= high:
+                for name, product in self.store.collection.items():
+                    if low <= product.price <= high:
+                        products.append(product)
+                if len(products) > 0:
+                    choice = self.pick_item(products)
+                    if choice != -100 and choice is not None:
+                        return products[choice]
+                else:
+                    print("\nNo Products in this price range")
+            else:
+                print("\nHigh price must be higher than low price")
+        except ValueError:
+            print("\nInvalid credentials. low price and high price must be digit.")
+
+    def search_by_rating(self):
+        low = input("Enter low rating: ")
+        high = input("Enter high rating: ")
+        products = []
+        try:
+            low, high = float(low), float(high)
+            if high >= low:
+                if 0 <= low <= 5 and 0 <= high <= 5:
+                    for name, product in self.store.collection.items():
+                        if low <= product.rate.weighted_average_rating() <= high:
+                            products.append(product)
+                    if len(products) > 0:
+                        choice = self.pick_item(products)
+                        if choice != -100 and choice is not None:
+                            return products[choice]
+                    else:
+                        print("\nNo Products in this rating range")
+                else:
+                    print("\nInvalid credentials. High rating and low rating must be from 0 to 5.")
+            else:
+                print("\nInvalid credentials. High rating must be higher than low rating.")
+        except ValueError:
+            print("\nInvalid credentials. low rating and high rating must be digit.")
 
     def add_item(self):
         new_item = self.search_system()
@@ -703,8 +727,6 @@ class StoreCLI:
                     print("\n * Invalid choice. Try again. *")
                     print(f" * You have left {4 - each} tries. *\n")
 
-
-
     def remove_client(self):
         print("\n * Choose which client you want to remove *")
         client_lst = self.store.client_list()
@@ -714,9 +736,6 @@ class StoreCLI:
             print("\n * Client removed successfully *")
         else:
             print("\n * Invalid ID *")
-
-
-
 
     def remove_item_order(self):
             new_item = self.pick_item_order()
@@ -753,8 +772,6 @@ class StoreCLI:
                 else:
                     print(f"\n * Error: Invalid quantity entered.Try Again * ")
 
-
-
     def pick_item_order(self):
         lst = self.store.lst_search(self.cart["product_dict"])
         choice = self.pick_item(lst)
@@ -787,7 +804,6 @@ class StoreCLI:
                         'product_dict': {},
                         "count_item": 0
         }
-
 
     def check_out(self):
         print("\n * Check Out  *\n")
@@ -867,7 +883,7 @@ class StoreCLI:
                 print("\n * Login failed. Please check your credentials and try again. * \n ")
 
     def management_menu(self):
-        choice = self.display_menu()
+        choice = Display.display_menu(self.store)
         if choice == '1':
             self.product_manager()
         elif choice == '2':
@@ -883,8 +899,6 @@ class StoreCLI:
             self.exit = True
         else:
             print("\n* Invalid choice. Please try again.* ")
-
-
 
     def customer_menu(self):
         sub_choice = Display.display_client(self.user, self.cart, self.store)
@@ -905,8 +919,6 @@ class StoreCLI:
         else:
             print("\n * Invalid choice. Please try again. * ")
 
-
-
     def run(self):
         self.store.load_files()
         while not self.exit:
@@ -914,12 +926,10 @@ class StoreCLI:
                 self.wellcome_page()
             elif self.user.online == 1:
                 if type(self.user) == Client:
-
                         self.customer_menu()
                 else:
                     self.management_menu()
         self.store.save_files()
-
 
 if __name__ == "__main__":
     cli = StoreCLI()

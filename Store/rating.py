@@ -5,7 +5,6 @@ class Rating:
         elif type(ratings) is dict:
             self.ratings = ratings
 
-
     def add_review(self, stars, review=None,):
         if review is None or review.strip() == "":
             review = "No review provided"
@@ -15,16 +14,13 @@ class Rating:
             self.ratings[stars] = [review]
         return "Thank you for your opinion"
 
-
     def weighted_average_rating(self):
         total_reviews = sum(len(v) for v in self.ratings.values())
         if total_reviews == 0:
             return 0
         weighted_sum = sum(int(star) * len(reviews) for star, reviews in self.ratings.items())
         average = weighted_sum / total_reviews
-        return round(average * 2 )/2
-
-
+        return round(average * 2) / 2
 
     def __str__(self):
         review_summary = '=================Rating====================='

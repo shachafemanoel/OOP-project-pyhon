@@ -69,4 +69,4 @@ class Product:
         price += f"{CurrencyConverter.convert(self.price, "₪ILS",self.currency)*quantity} {self.currency}"
         return price
     def __str__(self):
-        return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}"
+        return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}\n {self.rate}"

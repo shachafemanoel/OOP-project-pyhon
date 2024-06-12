@@ -21,7 +21,7 @@
         "user_type": "Client",
         "message": [],
         "coupon": 0,
-        "currency": "₪ILS"
+        "currency": "\u20aaILS"
     },
     {
         "user_id": "7777",
@@ -32,7 +32,7 @@
         "user_type": "Client",
         "message": [],
         "coupon": 5,
-        "currency": "₪ILS"
+        "currency": "\u20aaILS"
     },
     {
         "user_id": "9999",
@@ -45,22 +45,25 @@
             "\n *Order Number:2 has been delivered *"
         ],
         "coupon": 0,
-        "currency": "₪ILS"
+        "currency": "\u20aaILS"
     },
     {
         "user_id": "5555",
         "user_full_name": "shahc",
         "password": "1234",
-        "address": null,
+        "address": "England,London,giles,123",
         "payment": {
-            "owner": null,
-            "info": null,
-            "payment_method": null
+            "owner": "shachaf",
+            "info": "5558881231234523",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 3
         },
         "user_type": "Client",
-        "message": [],
+        "message": [
+            "\n * Thank you for your purchase!,  Order number: 11 has been received! *"
+        ],
         "coupon": 10,
-        "currency": "₪ILS"
+        "currency": "\u20aaILS"
     },
     {
         "user_id": "1234",
@@ -83,7 +86,7 @@
         "user_type": "Client",
         "message": [],
         "coupon": 5,
-        "currency": "₪ILS"
+        "currency": "\u20aaILS"
     },
     {
         "user_id": "5678",
@@ -94,6 +97,6 @@
         "user_type": "Client",
         "message": [],
         "coupon": 5,
-        "currency": "₪ILS"
+        "currency": "\u20aaILS"
     }
 ]
