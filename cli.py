@@ -125,7 +125,7 @@ class StoreCLI:
 
     def display_manage_user(self):
         if self.store.reporting.new_update["users"] >0:
-            for i in self.store.reporting.message:
+            for i in self.store.reporting.message["users"]:
                 print(i)
         self.store.reporting.total_update -=self.store.reporting.new_update["users"]
         self.store.reporting.new_update["users"]  = 0
