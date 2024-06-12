@@ -3,12 +3,15 @@ from Store.store import Store
 from Store.product import Product
 from Store.user import User
 from Store.client import Client
+from Store.display import Display
 import logging
+
 class StoreCLI:
     def __init__(self):
         self.store = Store()
+        self.display = Display()
         self.user = Client("0000" ,"0000" ,"0000" ,online=0)
-        self.cart =  {
+        self.cart = {
             'total_amount':0,
             'payment': None,
             'product_dict': {},
@@ -76,17 +79,12 @@ class StoreCLI:
         else:
             print("\n * User ID must be at least 4 digits. Try again * ")
 
-
-
-
-
     def set_password(self,user_id = None,user_full_name = None):
         print("\n * The password must contain at least 4 characters *")
         new_user_password = input("Enter your new password: ")
         if len(new_user_password) > 3:
             if user_id is not None and user_full_name is not None:
-                user = {"user_id": user_id, "user_full_name": user_full_name}
-                user["password"] = new_user_password
+                user = {"user_id": user_id, "user_full_name": user_full_name, "password": new_user_password}
                 print("\n* Password set successfully* ")
                 return user
             else:
@@ -94,6 +92,7 @@ class StoreCLI:
         else:
             print("\n * The password must contain at least 4 characters. Please try again. * ")
             return None
+
     def change_password(self):
         old_password = input("\nFor changing password please enter your old password: ")
         if self.user.password == old_password:
@@ -104,14 +103,11 @@ class StoreCLI:
     def forgot_password(self):
         id_check = input("\nFor password reset, please enter your ID: ")
         name_check = input("Enter your full name: ")
-
-        if id_check  in self.store.users:
+        if id_check in self.store.users:
             user = self.store.users[id_check]
-
             if user is not None and user.user_full_name.casefold() == name_check.casefold() and user.user_id == id_check:
                 print("\n * The password must contain at least 4 characters *")
                 new_user_password = input("Enter your new password: ")
-
                 if len(new_user_password) > 3:
                     user.change_user_password(new_user_password)
                     self.user = user
@@ -123,27 +119,9 @@ class StoreCLI:
         else:
             print("Error,user id not found ")
 
-    def display_manage_user(self):
-        if self.store.reporting.new_update["users"] >0:
-            for i in self.store.reporting.message["users"]:
-                print(i)
-        self.store.reporting.total_update -=self.store.reporting.new_update["users"]
-        self.store.reporting.new_update["users"]  = 0
-        self.store.reporting.message["users"] = []
-        print("\n * Wellcome to manage users display *\n")
-        print("1. View all clients")
-        print("2. Add user")
-        print("3. Remove user")
-        print("4. Add admin")
-        print("5. Change password")
-        print("6. Update client's details")
-        print("7. Exit")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
     def user_manager(self):
         while True:
-            sub_choice = self.display_manage_user()
+            sub_choice = self.display.display_manage_user(self.store)
             if sub_choice == "1":
                 self.store.client_list()
             elif sub_choice == '2':
@@ -163,16 +141,6 @@ class StoreCLI:
                 break
             else:
                 print("\n * Invalid choice. Please try again. *\n")
-
-    def display_user(self):
-        print("\n Welcome to Electronic Store Management System!\n ")
-        print("1. Existing User? Log in")
-        print("2. New User? Sign up now ")
-        print("3. Forgot password? Reset here")
-        print("4. Exit")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
 
     def add_review(self, order):
         for key, value in order.product_dict.items():
@@ -211,44 +179,14 @@ class StoreCLI:
 
     def display_order_user(self):
         print(self.user.update_client())
-        if len(self.user.order_history)>0 :
+        if len(self.user.order_history) > 0:
             while True:
-                choice =self.orders_history()
-                if choice == '1' :
+                choice = self.display.orders_history(self.user)
+                if choice == '1':
                   self.choice_order()
                 else:
                     print("Return to Main menu")
                     break
-
-
-    def display_client(self):
-        print("\n * Welcome to Electronic Store Management Main menu * \n ")
-        if self.user.new_message > 0:
-            print(f"\n * There are {self.user.new_message} new notifications on orders * \n")
-        print("\n1. Update details")
-        if self.cart["count_item"] > 0:
-            print(f"2. Cart({self.cart["count_item"]})")
-        else:
-            print("2. Cart(0)")
-        if len(self.store.sales) > 0:
-            print("3.   Collection * new sale *")
-        else:
-            print("3. Collection")
-        if self.user.new_message > 0:
-            print(f"4. Orders * {self.user.new_message} notifications * ")
-        else:
-            print("4. Orders")
-        print("5. Logout")
-        print("6. Exit")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
-    def display_coupon(self):
-        print(f"\nWould you like to use your {self.user.coupon}% coupon?")
-        print('\n1. Yes')
-        print('\n2. No')
-        choice = input('\nEnter your choice: ')
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def set_address(self):
         print(" Add a new address \n * Please enter the details *\n")
@@ -264,27 +202,6 @@ class StoreCLI:
                 print(f"\n * New Address updated: *\n {new_address}")
         else:
             print("\n * Not enough details were entered for setting address. *")
-
-
-    def display_order(self):
-        print("\n * Order menu *")
-        print("\n1. Catalog ")
-        if self.cart["total_amount"]> 0:
-            print(f"2. Go to Cart({self.cart["count_item"]})")
-        print("3. Exit ")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
-
-    def display_payment(self):
-        print("How would you like to pay?")
-        print("\n1.Credit Card")
-        print("2.Paypal")
-        print("3.Cash")
-        print("4.Exit")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
 
     def new_card(self, paymethod):
         card_holder = input("Name on card: ")
@@ -306,7 +223,7 @@ class StoreCLI:
             print("\n * The card details are invalid * ")
 
 
-    def new_paypal(self,paymethod):
+    def new_paypal(self, paymethod):
         paypal_id = input("Enter your Paypal id: ")
         how_much = input("how many payments would you like to spread the deal?: ")
         if len(paypal_id) > 0:
@@ -325,9 +242,9 @@ class StoreCLI:
             print("\n * Paypal id in invalid * ")
 
     def new_payment(self):
-        paymethod = {"owner":"","info":"","payment_method":""}
+        paymethod = {"owner":"", "info":"", "payment_method":""}
         for i in range(4):
-            pay_option = self.display_payment()
+            pay_option = self.display.display_payment()
             if pay_option == '1':
                return self.new_card(paymethod)
             elif pay_option == '2':
@@ -357,7 +274,7 @@ class StoreCLI:
                     return payment
 
             else:
-                return  self.new_payment()
+                return self.new_payment()
         else:
                 return self.new_payment()
 
@@ -417,21 +334,9 @@ class StoreCLI:
         else:
                 print("\n * Invalid order number")
 
-    def display_product_type(self):
-        print("\n * Select Product type *")
-        print('\n1. TV')
-        print('2. Computer')
-        print('3. Mobile Phone')
-        print('4. Accessories')
-        print('5. All')
-        print("0. Exit Or Manual Search")
-        choice = input("\nEnter Your Choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
     def product_type(self, choice=None):
         if choice is None:
-            choice = self.display_product_type()
-
+            choice = self.display.display_product_type()
         for i in range(5):
             if choice in '1234':
                 return self.store.search(None, choice, None)
@@ -439,10 +344,9 @@ class StoreCLI:
                 return self.list_products()
             elif choice == "0":
                     return None
-
             else:
                 print("Try Again")
-                choice = self.display_product_type()
+                choice = self.display.display_product_type()
         return None
 
     def discount(self):
@@ -455,7 +359,7 @@ class StoreCLI:
             return discount
 
     def add_discount(self):
-        choice = self.display_product_type()
+        choice = self.display.display_product_type()
         category = self.product_type(choice)
         if category is not None :
             if category[0].sale == 0:
@@ -477,18 +381,10 @@ class StoreCLI:
             else:
                 print("\nGood bye")
 
-    def display_remove_discount(self):
-        print("\nChoose an option:")
-        print("\n1. Remove discount from a category")
-        print("2. Remove discount from a specific product")
-        choice = input("\nEnter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-        return choice
-
     def remove_discount(self):
-        choice = self.display_remove_discount()
-
+        choice = self.display.display_remove_discount()
         if choice == "1":
-            category = self.display_product_type()
+            category = self.display.display_product_type()
             self.store.remove_discount(category)
         elif choice == "2":
             product_name = self.manual_search()
@@ -499,41 +395,9 @@ class StoreCLI:
         else:
             print("Invalid choice.")
 
-
-    def display_manage_product(self):
-        print("\n * Wellcome to manage product display *\n")
-        if self.store.reporting.new_update["products"] > 0:
-            for i in self.store.reporting.message["products"]:
-                print(f"{i}")
-        self.store.reporting.total_update -= self.store.reporting.new_update["products"]
-        self.store.reporting.new_update["products"] = 0
-        self.store.reporting.message["products"] = []
-        print("1. Add Product or Adding a quantity to an existing product ")
-        print("2. Remove Product")
-        print("3. Add Discount")
-        print("4. Remove Discount")
-        print("5. Exit")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
-    def display_manage_order(self):
-        print("\n * Wellcome to manage order display *\n")
-        if self.store.reporting.new_update["orders"] > 0:
-            for i in self.store.reporting.message["orders"]:
-                print(f"{i}")
-        self.store.reporting.total_update -= self.store.reporting.new_update["orders"]
-        self.store.reporting.new_update["orders"] = 0
-        self.store.reporting.message["orders"] = []
-
-        print("1. Update order status")
-        print("2. List Orders")
-        print("3. Exit")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
     def order_manager(self):
         while True:
-            choice = self.display_manage_order()
+            choice = self.display.display_manage_order(self.store)
             if choice == "1":
                 self.change_status()
             elif choice == "2":
@@ -590,7 +454,6 @@ class StoreCLI:
 
     def manual_search(self):
             new_name = input("\nEnter Product name: ")
-            item = Product()
             search_name = self.store.search(new_name)
             choice = self.pick_item(search_name)
             if choice == -100 and choice is not None:
@@ -601,16 +464,13 @@ class StoreCLI:
                         item = search_name_model[choice]
                     else:
                         item = None
-
             else:
                 item = search_name[choice]
-
             return item
-
 
     def product_manager(self):
         while True:
-            sub_choice = self.display_manage_product()
+            sub_choice = self.display.display_manage_product(self.store)
             if sub_choice == '1':
                 self.add_product()
 
@@ -682,13 +542,6 @@ class StoreCLI:
                 if i == 4:
                     print("* You have passed the possible amount of attempts *")
 
-    def display_adding_products(self):
-        print("\n1. Add new product")
-        print("2. Add quantity to existing product")
-        print("3. Return to primary display")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
     def add_quantity_to_product(self):
         item = self.search_system()
         amount = input("\nEnter a quantity: ")
@@ -701,7 +554,7 @@ class StoreCLI:
             print("* Invalid input or product not found. * \n")
 
     def add_pruduct_categoty(self,dict_new_product):
-        category = self.display_product_type()
+        category = self.display.display_product_type()
         if category == '1':
             size = input("Enter Screen size: ")
             tv_type = input("Enter TV type: ")
@@ -727,6 +580,7 @@ class StoreCLI:
 
         else:
             print("\n * One of the entered values is Invalid *\n")
+
     def add_product(self):
         name = input("Enter Product Name: ")
         model = input("Enter Product Model: ")
@@ -761,23 +615,13 @@ class StoreCLI:
             else:
                     print("* Price and Quantity must be a digit *")
 
-    def display_client_details(self):
-        print("\n * Choose which detail you want to change *")
-        print("\n1. Client Name")
-        print("2. Client Password")
-        print("3. Client Address")
-        print("4. Client Coupon")
-        print("5. Exit")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
     def update_client_details(self):
         client_lst = self.store.client_list()
         choice = input("\nChoose Client ID: ")
         if choice in self.store.users:
             client = self.store.users.get(choice)
             while True:
-                sub_choice = self.display_client_details()
+                sub_choice = self.display.display_client_details()
                 if sub_choice == "1":
                     new_name = input("\nEnter Client new full name: ")
                     if len(new_name) > 3:
@@ -797,7 +641,7 @@ class StoreCLI:
                     break
                 elif sub_choice == '4':
                     self.apply_coupon_to_client(client)
-                elif sub_choice == '6':
+                elif sub_choice == '5':
 
                     break
                 else:
@@ -806,19 +650,9 @@ class StoreCLI:
         else:
              print("\n* Invalid ID *")
 
-    def display_update_details(self):
-        print("\n * Choose which detail you want to change *")
-        print("\n1. Name")
-        print("2. Password")
-        print("3. Address")
-        print("4. Currency")
-        print('5. Exit')
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
     def update_details(self):
         while True:
-            choice = self.display_update_details()
+            choice = self.display.display_update_details()
             if choice == "1":
                 new_name = input("\nEnter new full name: ")
                 if len(new_name) > 3:
@@ -859,9 +693,9 @@ class StoreCLI:
     def apply_coupon(self):
         if self.user.coupon != 0:
             for each in range(5):
-                choice_coupon = self.display_coupon()
+                choice_coupon = self.display.display_coupon(self.user)
                 if choice_coupon == '1':
-                    self.cart["total_amount"] *=  (1 - (self.user.coupon / 100))
+                    self.cart["total_amount"] *= (1 - (self.user.coupon / 100))
                     break
                 elif choice_coupon == '2':
                     break
@@ -929,24 +763,9 @@ class StoreCLI:
         else:
             return None
 
-
-    def cart_display(self):
-        print("\n * Shopping Cart *\n")
-        if self.cart["total_amount"] > 0:
-            print (self.cart["product_dict"])
-            print(f"{CurrencyConverter.convert(self.cart["total_amount"],"ILS",self.user.currency)} {self.user.currency}")
-            print("\n1. Proceed to checkout ")
-            print("2. Change")
-            print("3. Empty the cart")
-            print("4. Exit")
-            choice = input("\nEnter your choice: ")
-            return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
-        else:
-            return "4"
     def cart_check_out(self):
             while self.cart["count_item"] > 0:
-                choice = self.cart_display()
+                choice = self.display.cart_display(self.user, self.cart)
                 if choice == '1':
                     self.check_out()
                 elif choice == '2':
@@ -989,7 +808,7 @@ class StoreCLI:
 
     def catalog(self):
             while True:
-                choice = self.display_order()
+                choice = self.display.display_order(self.cart)
                 if choice == '1':
                     self.add_item()
                 elif choice == '2':
@@ -1002,7 +821,6 @@ class StoreCLI:
                     print(" * Wrong choice,Try again *")
 
     def remove_product(self):
-        removed_product = Product()
         removed_product = self.search_system()
         if removed_product is not None:
             name = removed_product.name
@@ -1024,14 +842,6 @@ class StoreCLI:
         else:
             print(' No orders placed yet ')
 
-    def orders_history(self):
-        print("\n * Your orders *\n")
-        print(self.user.list_orders_client())
-        print("1.View order details")
-        print("2.Exit")
-        choice = input("Enter your choice: ")
-        return choice
-
     def reporting(self):
         print(self.store.reporting)
         self.store.reporting.seen()
@@ -1043,7 +853,7 @@ class StoreCLI:
         logging.info("Logged out successfully\n")
 
     def wellcome_page(self):
-            selection = self.display_user()
+            selection = self.display.display_user()
             if selection == '1':
                 self.log_in()
             elif selection == '2':
@@ -1058,7 +868,6 @@ class StoreCLI:
 
     def management_menu(self):
         choice = self.display_menu()
-
         if choice == '1':
             self.product_manager()
         elif choice == '2':
@@ -1080,7 +889,7 @@ class StoreCLI:
 
 
     def customer_menu(self):
-        sub_choice = self.display_client()
+        sub_choice = self.display.display_client(self.user, self.cart, self.store)
         if sub_choice == '1':
             self.update_details()
         elif sub_choice == '2':

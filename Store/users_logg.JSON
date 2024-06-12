@@ -16,7 +16,7 @@
             "owner": "John Doe",
             "info": "1234567812345678",
             "payment_method": "Credit Card",
-            "amount_of_payments": 2
+            "amount_of_payments": 1
         },
         "user_type": "Client",
         "message": [],
@@ -31,7 +31,7 @@
         "payment": null,
         "user_type": "Client",
         "message": [],
-        "coupon": 0,
+        "coupon": 5,
         "currency": "ILS"
     },
     {
@@ -59,7 +59,7 @@
         },
         "user_type": "Client",
         "message": [],
-        "coupon": 5,
+        "coupon": 10,
         "currency": "ILS"
     },
     {
@@ -79,6 +79,17 @@
         "user_full_name": "shachaf",
         "password": "1234",
         "address": "israel,haiga,ggg,2",
+        "payment": null,
+        "user_type": "Client",
+        "message": [],
+        "coupon": 5,
+        "currency": "ILS"
+    },
+    {
+        "user_id": "5678",
+        "user_full_name": "Itay",
+        "password": "Mulo",
+        "address": "Uganda,,uganda's,5",
         "payment": null,
         "user_type": "Client",
         "message": [],

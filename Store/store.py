@@ -227,12 +227,11 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def list_products(self):
         if len(self.collection) > 0:
             new = ""
-            if self.reporting.new_update["products"] >0:
-
-                for i in self.reporting.message["products"]:
-                    new +=i
-            new += [(product.name, product.model, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
-                    self.collection.items()]
+            if self.reporting.new_update["products"] > 0:
+                for each in self.reporting.message["products"]:
+                    new += each
+            new += str([(product.name, product.model, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
+                    self.collection.items()])
             return new
         else:
             return " No products in inventory yet!"
