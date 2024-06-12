@@ -25,7 +25,7 @@ class Client(User):
         if currency is not None:
             self.__currency = currency
         else:
-            self.__currency = "ILS"
+            self.__currency = "₪ILS"
     @property
     def coupon(self):
         return self.__coupon

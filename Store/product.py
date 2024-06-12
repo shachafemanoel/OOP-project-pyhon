@@ -12,7 +12,7 @@ class Product:
             self.update_price(sale)
         self.quantity = quantity  # הכמות המוצר
         self.rate = Rating(rate)
-        self.currency = "ILS"
+        self.currency = "₪ILS"
 
     def get_key_name(self):
         return (self.name).replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
@@ -65,8 +65,8 @@ class Product:
     def get_price_in_user_currency(self,quantity = 1):
         price = ""
         if self.sale > 0:
-            price += f" Original price: {CurrencyConverter.convert(self.original_price,"ILS",self.currency) * quantity}{self.currency} -{self.sale}% Off "
-        price += f"{CurrencyConverter.convert(self.price, "ILS",self.currency)*quantity}{self.currency}"
+            price += f" Original price: {CurrencyConverter.convert(self.original_price,"₪ILS",self.currency) * quantity}{self.currency} -{self.sale}% Off "
+        price += f"{CurrencyConverter.convert(self.price, "₪ILS",self.currency)*quantity} {self.currency}"
         return price
     def __str__(self):
         return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}"

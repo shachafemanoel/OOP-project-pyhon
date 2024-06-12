@@ -21,7 +21,7 @@
         "user_type": "Client",
         "message": [],
         "coupon": 0,
-        "currency": "ILS"
+        "currency": "₪ILS"
     },
     {
         "user_id": "7777",
@@ -32,7 +32,7 @@
         "user_type": "Client",
         "message": [],
         "coupon": 5,
-        "currency": "ILS"
+        "currency": "₪ILS"
     },
     {
         "user_id": "9999",
@@ -45,7 +45,7 @@
             "\n *Order Number:2 has been delivered *"
         ],
         "coupon": 0,
-        "currency": "ILS"
+        "currency": "₪ILS"
     },
     {
         "user_id": "5555",
@@ -60,7 +60,7 @@
         "user_type": "Client",
         "message": [],
         "coupon": 10,
-        "currency": "ILS"
+        "currency": "₪ILS"
     },
     {
         "user_id": "1234",
@@ -83,7 +83,7 @@
         "user_type": "Client",
         "message": [],
         "coupon": 5,
-        "currency": "ILS"
+        "currency": "₪ILS"
     },
     {
         "user_id": "5678",
@@ -94,6 +94,6 @@
         "user_type": "Client",
         "message": [],
         "coupon": 5,
-        "currency": "ILS"
+        "currency": "₪ILS"
     }
 ]

@@ -10,7 +10,7 @@ class Order:
         self.payment =Payment(**payment) if payment is not None else Payment()
         self.status = "Processing" if status is None else status
         self.product_dict = product_dict if product_dict is not None else {}
-        self.currency = "ILS"
+        self.currency = "₪ILS"
     def change_status(self, choice: int):
         if choice == 1:
             self.status = 'shipped'
@@ -33,7 +33,7 @@ class Order:
         self.status = 'completed'
 
     def converter(self):
-        return f" Total amount: {CurrencyConverter.convert(self.total_amount, "ILS", self.currency) }{self.currency}"
+        return f" Total amount: {CurrencyConverter.convert(self.total_amount, "₪ILS", self.currency) } {self.currency}"
 
 
     def pay_order(self, payment):

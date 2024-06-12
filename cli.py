@@ -284,9 +284,9 @@ class StoreCLI:
         :return: קוד המטבע הנבחר
         """
         currencies = {
-            '1': 'USD',
-            '2': 'EUR',
-            '3': 'ILS'
+            '1': '$USD',
+            '2': '€EUR',
+            '3': '₪ILS'
         }
         print("choice currency")
         for key, value in currencies.items():

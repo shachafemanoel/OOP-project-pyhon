@@ -19,7 +19,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
         self.sales = []
-        self.currency = "ILS"
+        self.currency = "₪ILS"
 
     def add_review(self,product, stars, review=None):
         if product in self.collection:
@@ -225,16 +225,15 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             self.order_number += 1
 
     def list_products(self):
-        if len(self.collection) > 0:
-            new = ""
-            if self.reporting.new_update["products"] > 0:
-                for each in self.reporting.message["products"]:
-                    new += each
-            new += str([(product.name, product.model, f"Price: {product.price} ₪ ", f"Available: {product.quantity}") for name, product in
-                    self.collection.items()])
-            return new
+        if self.collection:
+            table = "\n            Inventory    \n"
+            table += "-----------------------------------------\n"
+            for key, value in self.collection.items():
+                table += f"Name:{key:<12}  \nPrice:{value.price} ILS           | Quantity: {value.quantity}\n"
+                table += "-----------------------------------------\n"
         else:
-            return " No products in inventory yet!"
+            table = "\n * There are no products *\n"
+        return table
 
     def list_orders(self):
         if self.orders:
