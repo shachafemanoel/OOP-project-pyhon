@@ -65,7 +65,7 @@ class Product:
     def get_price_in_user_currency(self,quantity = 1):
         price = ""
         if self.sale > 0:
-            price += f" Original price: {CurrencyConverter.convert(self.original_price,"₪ILS",self.currency) * quantity}{self.currency} -{self.sale}% Off "
+            price += f" Original price: {CurrencyConverter.convert(self.original_price,"₪ILS",self.currency) * quantity} {self.currency} -{self.sale}% Off "
         price += f"{CurrencyConverter.convert(self.price, "₪ILS",self.currency)*quantity} {self.currency}"
         return price
     def __str__(self):

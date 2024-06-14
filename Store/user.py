@@ -15,8 +15,10 @@ class User:
         return self.__user_id
     @user_id.setter
     def user_id(self, user_id):
-        self.__user_id = user_id
-
+        if user_id.isdigit():
+            self.__user_id = user_id
+        else:
+            raise ValueError('user_id must be an integer')
     @property
     def user_full_name(self):
         return self.__user_full_name

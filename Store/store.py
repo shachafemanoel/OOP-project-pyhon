@@ -7,7 +7,7 @@ from Store.tv import Tv
 from Store.phone import Phone
 from Store.computer import Computer
 from Store.json import DataManager
-
+from Store.storeerror import StoreError
 
 class Store:  # מחלקה שמממשת את החנות עצמה
 
@@ -263,7 +263,22 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         user_id = order.customer.user_id
         self.users[user_id].new_status(order)
 
-
+    def rate_search(self,low,high):
+        products = []
+        try:
+            low, high = float(low), float(high)
+            if high < low:
+                raise StoreError.InvalidInputError("High rating must be higher than low rating.")
+            if not (0 <= low <= 5 and 0 <= high <= 5):
+                raise StoreError.InvalidInputError("Ratings must be between 0 and 5.")
+            for name, product in self.collection.items():
+                if low <= product.rate.weighted_average_rating() <= high:
+                    products.append(product)
+            if not products:
+                raise StoreError.ProductNotFoundError("No products found in this rating range.")
+            return products
+        except ValueError:
+            raise StoreError.InvalidInputError("Low rating and high rating must be numbers.")
     def set_address(self, user_id, address):
         if user_id in self.users:
             self.users[user_id].change_address(address)

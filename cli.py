@@ -1,11 +1,10 @@
 from Store.payment_calculator import CurrencyConverter
-from Store.rating import Rating
 from Store.store import Store
-from Store.product import Product
 from Store.user import User
 from Store.client import Client
 from Store.display import Display
 import logging
+from Store.storeerror import StoreError
 
 class StoreCLI:
     def __init__(self):
@@ -417,7 +416,7 @@ class StoreCLI:
         select = input("Enter your choice: ")
         if select.isdigit():
             select = int(select)
-            if select > 0:
+            if select > 0 and select < len(lst):
                 select -= 1
                 if len(lst) > select >= -1:
                     return select
@@ -513,28 +512,22 @@ class StoreCLI:
             print("\nInvalid credentials. low price and high price must be digit.")
 
     def search_by_rating(self):
-        low = input("Enter low rating: ")
-        high = input("Enter high rating: ")
-        products = []
         try:
-            low, high = float(low), float(high)
-            if high >= low:
-                if 0 <= low <= 5 and 0 <= high <= 5:
-                    for name, product in self.store.collection.items():
-                        if low <= product.rate.weighted_average_rating() <= high:
-                            products.append(product)
-                    if len(products) > 0:
-                        choice = self.pick_item(products)
-                        if choice != -100 and choice is not None:
-                            return products[choice]
-                    else:
-                        print("\nNo Products in this rating range")
-                else:
-                    print("\nInvalid credentials. High rating and low rating must be from 0 to 5.")
+            low = input("\nEnter low rating: ")
+            high = input("\nEnter high rating: ")
+            products = self.store.rate_search(low, high)
+            choice = self.pick_item(products)
+            if choice != -100:
+                print(products[choice])
             else:
-                print("\nInvalid credentials. High rating must be higher than low rating.")
-        except ValueError:
-            print("\nInvalid credentials. low rating and high rating must be digit.")
+                print("\nNo product selected.")
+        except StoreError.InvalidInputError as e:
+            print(e.message)
+        except StoreError.ProductNotFoundError as e:
+            print(e.message)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
 
     def add_item(self):
         new_item = self.search_system()
