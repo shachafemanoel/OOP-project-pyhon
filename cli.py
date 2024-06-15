@@ -467,6 +467,8 @@ class StoreCLI:
                 print(sale)
         new_item = None
         type_search = self.product_type()
+        if type_search == self.store.list_products():
+            return type_search
         if type_search is not None:
             choice = self.pick_item(type_search)
             if choice != -100 and choice is not None:
@@ -538,14 +540,14 @@ class StoreCLI:
                 if how_much.isdigit():
                     how_much = int(how_much)
                     if how_much <= 0:
-                        print("* No quantity provided *")
+                        print("\n * No quantity provided *")
                     if not self.store.add_item_order(new_item, how_much):
-                        print( f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
+                        print(f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
                     else:
                         if new_item.get_key_name() not in self.cart["product_dict"]:
                             self.cart["product_dict"][new_item.get_key_name()] = how_much
                             self.cart["total_amount"] += new_item.get_price(how_much)
-                            self.cart["count_item"] +=how_much
+                            self.cart["count_item"] += how_much
 
                         else:
                             self.cart["product_dict"][new_item.get_key_name()] += how_much
