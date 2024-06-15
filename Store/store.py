@@ -113,10 +113,12 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             cleaned_model = model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         found = []
         for key, value in self.collection.items():
-            if name is not None and value.get_key_name().casefold()[0:len(cleaned_name)] == cleaned_name.casefold():
-                found.append(value)
-            elif model is not None and cleaned_model.casefold() == value.get_model_name()[0:len(cleaned_model)].casefold():
-                found.append(value)
+            if name is not None and value.get_key_name().casefold()[0:len(cleaned_name)] == cleaned_name.casefold():     # חיפוש לפי שם
+                    found.append(value)
+
+            elif model is not None and cleaned_model.casefold() == value.get_model_name()[0:len(cleaned_model)].casefold():# חיפוש לפי שם ומודל
+                    found.append(value)
+
 
             elif product_type is not None and name is None:
                 if product_type == "1":
@@ -153,17 +155,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return False
 
     def client_list(self):
-        clients_lst = []
-        id_lst = []
         if len(self.users) > 0:
+            table = "\n            Users    \n"
+            table += "-----------------------------------------\n"
             for id, details in self.users.items():
                 if isinstance(details, Client):
-                    client = self.users.get(str(id))
-                    client_details = {"Name": details.user_full_name, "ID": details.user_id, "Coupon": details.coupon, "Orders": len(self.user_order_history(client))}
-                    clients_lst.append(client_details)
-                    id_lst.append(id)
-            print(clients_lst)
-            return id_lst
+                    table += f"ID:{id:<12} | Full name:{details.user_full_name} \n Orders Quantity: {len(details.order_history)}\n"
+                    table += "-----------------------------------------\n"
+            return table
         else:
             return "\n* No clients yet *"
 
@@ -189,14 +188,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         else:
             return False
 
-    def remove(self, product):
-        if product in self.collection.values():
-           self.collection.pop(product.get_key_name())
-           self.reporting.best_sell_product()
-           return True
+    def remove(self,product):
+        if not isinstance(product, Product):
+            raise StoreError.InvalidInputError("No product selected")
+        if product.get_key_name() in self.collection:
+            self.collection.pop(product.get_key_name())
+            self.reporting.best_sell_product()
         else:
-            return False
-
+            raise StoreError.ProductNotFoundError(f"Product '{product.name}' not found in the collection.")
     def add_item_order(self, product, how_many):
         return self.collection[product.get_key_name()].available(how_many)
 

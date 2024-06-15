@@ -9,6 +9,8 @@ class Reporting:
         self.new_update = {"orders":0,"products":0,"users":0}
         self.total_update = 0
 
+
+
     def new_sold(self,name,quant):
         if name is self.sold_products:
             self.sold_products[name] += quant
@@ -19,7 +21,7 @@ class Reporting:
         if name in self.sold_products:
             self.sold_products[name] -= amount
 
-    def new_user(self, user_type, user_full_name):
+    def new_user(self,user_type,user_full_name):
         self.message["users"].append(f" \n * A new {user_type} has joined your store * \n full name: {user_full_name} ")
         self.new_update["users"] += 1
         self.total_update += 1
@@ -37,14 +39,21 @@ class Reporting:
         self.total_update += 1
 
     def best_sell_product(self):
-        if len(self.sold_products) > 0:
-            value = list(self.sold_products.values())
-            key = list(self.sold_products.keys())
-            self.best_sell = key[value.index(max(value))]
+        """
+        Return a string with the top 3 best-selling products in descending order.
 
-    def seen(self):
-        self.message = []
-        self.new_update = 0
+        Returns:
+        str: A string with the names of the top 3 best-selling products in descending order.
+        """
+        if len(self.sold_products) > 0:
+            sorted_sold_products = sorted(self.sold_products.items(), key=lambda item: item[1], reverse=True)
+            top_three = sorted_sold_products[:3]
+            top_three_names = [product[0] for product in top_three]
+            return ", ".join(top_three_names)
+        else:
+            return "No products have been sold yet."
+
+
 
     def get_sales_report_string(self):
         # המרת הנתונים לרשימה של tuples
@@ -93,6 +102,6 @@ class Reporting:
         self.total_update += 1
     def __str__(self):
 
-         return f" \n    **** Reporting summary **** \n* {self.best_sell} is the best selling product *\n{self.get_sales_report_string()}"
+         return f" \n    **** Reporting summary **** \n* {self.best_sell_product()}is the best selling product *\n{self.get_sales_report_string()}"
 
 

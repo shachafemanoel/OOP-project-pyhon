@@ -13,21 +13,21 @@ class Display:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod
-    def display_client(user, cart, store):
+    def display_client(new_message, cart,sales):
         print("\n * Welcome to Electronic Store Management Main menu * \n ")
-        if user.new_message > 0:
-            print(f"\n * There are {user.new_message} new notifications on orders * \n")
+        if new_message > 0:
+            print(f"\n * There are {new_message} new notifications on orders * \n")
         print("\n1. Update details")
         if cart["count_item"] > 0:
             print(f'2. Cart({cart["count_item"]})')
         else:
             print("2. Cart(0)")
-        if len(store.sales) > 0:
+        if len(sales) > 0:
             print("3.   Collection * new sale *")
         else:
             print("3. Collection")
-        if user.new_message > 0:
-            print(f"4. Orders * {user.new_message} notifications * ")
+        if new_message > 0:
+            print(f"4. Orders * {new_message} notifications * ")
         else:
             print("4. Orders")
         print("5. Logout")
@@ -36,8 +36,8 @@ class Display:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod
-    def display_coupon(user):
-        print(f"\nWould you like to use your {user.coupon}% coupon?")
+    def display_coupon(coupon):
+        print(f"\nWould you like to use your {coupon}% coupon?")
         print('\n1. Yes')
         print('2. No')
         choice = input('\nEnter your choice: ')
@@ -114,11 +114,11 @@ class Display:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod
-    def cart_display(user, cart):
+    def cart_display(currency, cart):
         print("\n * Shopping Cart *\n")
         if cart["total_amount"] > 0:
             print(cart["product_dict"])
-            print(f"{CurrencyConverter.convert(cart["total_amount"],"₪ILS",user.currency)} {user.currency}")
+            print(f"{CurrencyConverter.convert(cart["total_amount"],"₪ILS",currency)} {currency}")
             print("\n1. Proceed to checkout ")
             print("2. Change")
             print("3. Empty the cart")
@@ -129,22 +129,16 @@ class Display:
             return 4
 
     @staticmethod
-    def orders_history(user):
+    def orders_history(list_orders_client):
         print("\n * Your orders *\n")
-        print(user.list_orders_client())
+        print(list_orders_client)
         print("1.View order details")
         print("2.Exit")
         choice = input("\nEnter your choice: ")
         return choice
 
     @staticmethod
-    def display_manage_user(store):
-        if store.reporting.new_update["users"] > 0:
-            for i in store.reporting.message["users"]:
-                print(i)
-        store.reporting.total_update -= store.reporting.new_update["users"]
-        store.reporting.new_update["users"] = 0
-        store.reporting.message["users"] = []
+    def display_manage_user():
         print("\n * Wellcome to manage users display *\n")
         print("1. View all clients")
         print("2. Add user")
@@ -157,58 +151,26 @@ class Display:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod
-    def display_manage_product(store):
-        print("\n * Wellcome to manage product display *\n")
-        print(store.reporting.new_update["products"])
-        if store.reporting.new_update["products"] > 0:
-            for i in store.reporting.message["products"]:
-                print(f"{i}")
-        store.reporting.total_update -= store.reporting.new_update["products"]
-        store.reporting.new_update["products"] = 0
-        store.reporting.message["products"] = []
+    def display_manage_product():
         print("1. Add Product or Adding a quantity to an existing product ")
         print("2. Remove Product")
         print("3. Add Discount")
         print("4. Remove Discount")
-        print("5. Product list")
+        print("5.Product list")
         print("6. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod
-    def display_manage_order(store):
-        print("\n * Wellcome to manage order display *\n")
-        if store.reporting.new_update["orders"] > 0:
-            for i in store.reporting.message["orders"]:
-                print(f"{i}")
-        store.reporting.total_update -= store.reporting.new_update["orders"]
-        store.reporting.new_update["orders"] = 0
-        store.reporting.message["orders"] = []
-
-        print("\n1. Update order status")
+    def display_manage_order():
+        print("1. Update order status")
         print("2. List Orders")
         print("3. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod
-    def display_menu(store):
-        product_manager = "1. Product Manager"
-        order_manager = "3. Order Manager"
-        user_manager = "2. User Manager"
-        if store.reporting.total_update > 0:
-            print(f"\n * There are {store.reporting.total_update} new notifications *")
-            for key, item in store.reporting.new_update.items():
-                if key == "products" and item >0:
-                    product_manager += f" ({item}) new notifications"
-                if key == "orders" and item > 0:
-                    order_manager += f" ({item}) new notifications"
-                if key == "users" and item > 0:
-                    user_manager += f" ({item}) new notifications"
-        print(" \n *  Electronic store Management Menu * \n")
-        print(product_manager)
-        print(user_manager)
-        print(order_manager)
+    def display_menu():
         print("4. Reporting")
         print("5. Logout")
         print("0. Exit")

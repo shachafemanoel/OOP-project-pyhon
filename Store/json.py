@@ -102,6 +102,12 @@ class DataManager:
         DataManager.save_data(users_data, 'Store/users_logg.JSON')
     @staticmethod
     def load_reporting():
+        """
+        Load reporting data from a JSON file and create a Reporting object.
+
+        Returns:
+        Reporting: An instance of the Reporting class with loaded data.
+        """
         reporting_data = DataManager.load_data('Store/reporting_logg.JSON')
         reporting = Reporting()
         if reporting_data:
@@ -113,8 +119,8 @@ class DataManager:
         return reporting
 
     @staticmethod
-    def save_reporting(reporting, sales):
-        reporting_data = reporting.repoting_do_dict(sales)
+    def save_reporting(reporting,sales):
+        reporting_data =reporting.repoting_do_dict(sales)
         DataManager.save_data(reporting_data, 'Store/reporting_logg.JSON')
 
     @staticmethod

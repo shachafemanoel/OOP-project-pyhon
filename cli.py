@@ -117,11 +117,20 @@ class StoreCLI:
         else:
             print("Error,user id not found ")
 
+
+    def display_manage_user(self):
+        if self.store.reporting.new_update["users"] > 0:
+            for i in self.store.reporting.message["users"]:
+                print(i)
+        self.store.reporting.total_update -= self.store.reporting.new_update["users"]
+        self.store.reporting.new_update["users"] = 0
+        self.store.reporting.message["users"] = []
+        return Display.display_manage_user()
     def user_manager(self):
         while True:
-            sub_choice = Display.display_manage_user(self.store)
+            sub_choice = self.display_manage_user()
             if sub_choice == "1":
-                self.store.client_list()
+                print(self.store.client_list())
             elif sub_choice == '2':
                 self.register()
                 break
@@ -179,7 +188,7 @@ class StoreCLI:
         print(self.user.update_client())
         if len(self.user.order_history) > 0:
             while True:
-                choice = Display.orders_history(self.user)
+                choice = Display.orders_history(self.user.list_orders_client())
                 if choice == '1':
                   self.choice_order()
                 else:
@@ -399,9 +408,19 @@ class StoreCLI:
         else:
             print("Invalid choice.")
 
+    def display_manage_order(self):
+        print("\n * Wellcome to manage order display *\n")
+        if self.store.reporting.new_update["orders"] > 0:
+            for i in self.store.reporting.message["orders"]:
+                print(f"{i}")
+        self.store.reporting.total_update -= self.store.reporting.new_update["orders"]
+        self.store.reporting.new_update["orders"] = 0
+        self.store.reporting.message["orders"] = []
+        return Display.display_manage_order()
+
     def order_manager(self):
         while True:
-            choice = Display.display_manage_order(self.store)
+            choice = self.display_manage_order()
             if choice == "1":
                 self.change_status()
             elif choice == "2":
@@ -442,16 +461,26 @@ class StoreCLI:
 
     def name_search(self):
             new_name = input("\nEnter Product name: ")
-            search_name = self.store.search(new_name, None, None)
+            search_name = self.store.search(new_name)
             choice = self.pick_item(search_name)
             if choice != -100 and choice is not None:
                 return search_name[choice]
             else:
                 return None
 
+
+    def display_manage_product(self):
+        print("\n * Wellcome to manage product display *\n")
+        if self.store.reporting.new_update["products"] > 0:
+            for i in self.store.reporting.message["products"]:
+                print(f"{i}")
+        self.store.reporting.total_update -= self.store.reporting.new_update["products"]
+        self.store.reporting.new_update["products"] = 0
+        self.store.reporting.message["products"] = []
+        return Display.display_manage_product()
     def product_manager(self):
         while True:
-            sub_choice = Display.display_manage_product(self.store)
+            sub_choice = self.display_manage_product()
             if sub_choice == '1':
                 self.add_product()
             elif sub_choice == '2':
@@ -536,36 +565,39 @@ class StoreCLI:
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
-
     def add_item(self):
+        """
+        Add an item to the cart via CLI.
+        """
         new_item = self.search_system()
         if new_item is not None:
             print(f"\nYour choice:\n {new_item}")
             for i in range(5):
                 how_much = input("\nEnter a quantity of the following product: ")
-                if how_much.isdigit():
+                try:
                     how_much = int(how_much)
-                    if how_much <= 0:
-                        print("\n * No quantity provided *")
-                    if not self.store.add_item_order(new_item, how_much):
-                        print(f" * Sorry there is only {self.store.collection[new_item.get_key_name()].quantity} of {new_item.name} in  the inventory *")
-                    else:
+                    if new_item.available(how_much):
                         if new_item.get_key_name() not in self.cart["product_dict"]:
                             self.cart["product_dict"][new_item.get_key_name()] = how_much
                             self.cart["total_amount"] += new_item.get_price(how_much)
                             self.cart["count_item"] += how_much
-
                         else:
                             self.cart["product_dict"][new_item.get_key_name()] += how_much
                             self.cart["total_amount"] += new_item.get_price(how_much)
                             self.cart["count_item"] += how_much
                         print(
-                            f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.get_price_in_user_currency(how_much)}  has been successfully add to cart  ! *\n ")
+                            f"\n * {new_item.name} ----- quantity {how_much} total:{new_item.get_price_in_user_currency(how_much)} has been successfully added to cart! *\n")
                         break
-                else:
-                    print(f"\n * Error: Invalid quantity entered.Try Again * ")
+                except StoreError.InvalidInputError as e:
+                    print(f"\n * Error: {e}. Try Again * ")
+                except StoreError.NotInStockError as e:
+                    print(e)
+
+                except ValueError as e:
+                    print(e)
+
                 if i == 4:
-                    print("* You have passed the possible amount of attempts *")
+                    print("* You have exceeded the maximum number of attempts *")
 
     def add_quantity_to_product(self):
         item = self.search_system()
@@ -718,7 +750,7 @@ class StoreCLI:
     def apply_coupon(self):
         if self.user.coupon != 0:
             for each in range(5):
-                choice_coupon = Display.display_coupon(self.user)
+                choice_coupon = Display.display_coupon(self.user.coupon)
                 if choice_coupon == '1':
                     self.cart["total_amount"] *= (1 - (self.user.coupon / 100))
                     break
@@ -783,7 +815,7 @@ class StoreCLI:
 
     def cart_check_out(self):
             while self.cart["count_item"] > 0:
-                choice = Display.cart_display(self.user, self.cart)
+                choice = Display.cart_display(self.user.currency, self.cart)
                 if choice == '1':
                     self.check_out()
                 elif choice == '2':
@@ -839,13 +871,12 @@ class StoreCLI:
 
     def remove_product(self):
         removed_product = self.search_system()
-        if removed_product is not None:
-            name = removed_product.name
-            removed_product = self.store.remove(removed_product)
-            if removed_product:
-                print(f"\n {name} has been removed ")
-        else:
-            print(f"Good bye")
+        try:
+            self.store.remove(removed_product)
+            print(f"\n {removed_product}\n has been removed ")
+
+        except Exception as e:
+            print(f"\n {e}")
 
     def list_products(self):
         if len(self.store.collection) > 0:
@@ -861,7 +892,6 @@ class StoreCLI:
 
     def reporting(self):
         print(self.store.reporting)
-        self.store.reporting.seen()
 
     def logout(self):
         #פונקציית התנתקות תבצע התנתקות למשתמש עצמו דרך הפונקציה במחלקה שלו ולאחר מכן תשמור בחנות את המשתמש החדש כדי לשמור את הנתונים החדשים שלו
@@ -883,8 +913,32 @@ class StoreCLI:
             else:
                 print("\n * Login failed. Please check your credentials and try again. * \n ")
 
+    def display_menu(self):
+        product_manager = "1. Product Manager"
+        order_manager = "3. Order Manager"
+        user_manager = "2. User Manager"
+        if self.store.reporting.total_update > 0:
+            print(f"\n * There are {self.store.reporting.total_update} new notifications *")
+            for key, item in self.store.reporting.new_update.items():
+                if key == "products" and item > 0:
+                    product_manager += f" ({item}) new notifications"
+                if key == "orders" and item > 0:
+                    order_manager += f" ({item}) new notifications"
+                if key == "users" and item > 0:
+                    user_manager += f" ({item}) new notifications"
+        print(" \n *  Electronic store Management Menu * \n")
+        print(product_manager)
+        print(user_manager)
+        print(order_manager)
+        print("4. Reporting")
+        print("5. Logout")
+        print("0. Exit")
+        choice = input("\nEnter your choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+
     def management_menu(self):
-        choice = Display.display_menu(self.store)
+        choice = self.display_menu()
         if choice == '1':
             self.product_manager()
         elif choice == '2':
@@ -902,7 +956,7 @@ class StoreCLI:
             print("\n* Invalid choice. Please try again.* ")
 
     def customer_menu(self):
-        sub_choice = Display.display_client(self.user, self.cart, self.store)
+        sub_choice = Display.display_client(self.user.new_message, self.cart, self.store.sales)
         if sub_choice == '1':
             self.update_details()
         elif sub_choice == '2':

@@ -46,11 +46,18 @@ class Product:
     def add_quantity(self, quantity):
         self.quantity += quantity
 
-    def available(self, how_many):  # בדיקת זמינות של מוצר מסוים
-        if self.quantity >= how_many:
-            return True
-        else:
-            raise StoreError.NotInStockError
+    def available(self, how_many): # בדיקת זמינות של מוצר מסוים
+        try:
+            how_many = int(how_many)
+            if self.quantity >= how_many:
+                if  how_many > 0:
+                    return True
+                else:
+                    raise StoreError.InvalidInputError
+            else:
+                raise StoreError.NotInStockError(f"Quantity available in stock for the product {self.quantity} ")
+        except ValueError:
+            raise StoreError.InvalidInputError("Product quantity must be an integer")
 
     def add_review(self, stars, review):
          self.rate.add_review(stars, review)
