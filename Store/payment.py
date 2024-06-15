@@ -55,7 +55,7 @@ class Payment:
     @staticmethod
     def check_card(card_nubmer, how_much):
             if len(card_nubmer) >= 8:
-                if how_much >0 :
+                if how_much > 0:
                     return True
                 else:
                     raise StoreError.InvalidInputError

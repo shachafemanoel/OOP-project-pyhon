@@ -4,14 +4,22 @@
         "mycomp": 5,
         "LaptopDell": 4,
         "airpodspro": 2,
-        "iphone13": 4,
-        "Applecharger": 2,
+        "iphone13": 0,
+        "Applecharger": 0,
         "LGTV55": 1,
         "galaxy24": 1,
-        "ipad": 3
+        "ipad": 0
     },
-    "message": [],
-    "new_update": 0,
+    "message": {
+        "orders": [],
+        "products": [],
+        "users": []
+    },
+    "new_update": {
+        "orders": 0,
+        "products": 0,
+        "users": 0
+    },
     "total_update": 0,
     "sales": []
 }

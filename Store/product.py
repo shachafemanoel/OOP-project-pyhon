@@ -24,8 +24,6 @@ class Product:
     def buy_product(self, many):  #הוצאת כמות מוצרים מהמלאי
         self.quantity -= many
 
-
-
     def update_price(self, discount):
             self.sale = discount
             self.price -= (self.original_price * float(discount / 100))

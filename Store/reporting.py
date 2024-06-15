@@ -5,11 +5,31 @@ class Reporting:
         self.revenue = 0
         self.sold_products = {}
         self.best_sell = None
-        self.message = {"orders":[],"products":[],"users":[]}
-        self.new_update = {"orders":0,"products":0,"users":0}
+        self.__message = {"orders":[],"products":[],"users":[]}
+        self.__new_update = {"orders":0,"products":0,"users":0}
         self.total_update = 0
 
+    @property
+    def new_update(self):
+        return self.__new_update
 
+    @new_update.setter
+    def new_update(self, new_update):
+        if isinstance(new_update, dict):
+            self.__new_update = new_update
+        else:
+            raise ValueError("new_update must be of type dict")
+
+    @property
+    def message(self):
+        return self.__message
+
+    @message.setter
+    def message(self, message):
+        if isinstance(message, dict):
+            self.__message = message
+        else:
+            raise ValueError("message must be of type dict")
 
     def new_sold(self,name,quant):
         if name is self.sold_products:

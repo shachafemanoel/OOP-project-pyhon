@@ -126,6 +126,7 @@ class StoreCLI:
         self.store.reporting.new_update["users"] = 0
         self.store.reporting.message["users"] = []
         return Display.display_manage_user()
+
     def user_manager(self):
         while True:
             sub_choice = self.display_manage_user()
@@ -333,7 +334,7 @@ class StoreCLI:
             number = int(number)
             if number in self.store.orders:
                 print(f"{self.store.orders[number]}")
-                print("1. New status - Shipped")
+                print("\n1. New status - Shipped")
                 print("2. New status - Delivered")
                 print("3. New status - Canceled")
                 choice = input("Enter your choice: ")
@@ -478,6 +479,7 @@ class StoreCLI:
         self.store.reporting.new_update["products"] = 0
         self.store.reporting.message["products"] = []
         return Display.display_manage_product()
+
     def product_manager(self):
         while True:
             sub_choice = self.display_manage_product()

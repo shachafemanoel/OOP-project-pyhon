@@ -113,8 +113,8 @@ class DataManager:
         if reporting_data:
             reporting.best_sell = reporting_data['best_sell']
             reporting.sold_products = reporting_data['sold_products']
-            reporting.message = reporting_data['message']
-            reporting.new_update = reporting_data['new_update']
+            reporting.__message = reporting_data['message']
+            reporting.__new_update = reporting_data['new_update']
             reporting.total_update = reporting_data['total_update']
         return reporting
 

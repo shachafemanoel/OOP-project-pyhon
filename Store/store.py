@@ -37,7 +37,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.sales = DataManager.load_sales()
         self.order_number = len(self.orders) + 1
         for order in self.orders.values():
-            self.reporting.revenue += order.total_amount
+            if order.status != "Canceled":
+                self.reporting.revenue += order.total_amount
 
     def user_order_history(self, user):
         user_orders_dict = {}
@@ -51,7 +52,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         DataManager.save_orders(self.orders)
         DataManager.save_products(self.collection)
         DataManager.save_reporting(self.reporting,self.sales)
-
 
 
     def use_coupon(self,user):

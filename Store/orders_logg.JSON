@@ -99,7 +99,7 @@
             "payment_method": "Credit Card",
             "amount_of_payments": 2
         },
-        "status": "Processing",
+        "status": "Canceled",
         "product_dict": {
             "Applecharger": 1
         }
@@ -144,7 +144,7 @@
             "payment_method": "",
             "amount_of_payments": 2
         },
-        "status": "Cancelled",
+        "status": "Canceled",
         "product_dict": {
             "galaxy24": 1
         }
@@ -159,7 +159,7 @@
             "payment_method": "Credit Card",
             "amount_of_payments": 3
         },
-        "status": "Processing",
+        "status": "Canceled",
         "product_dict": {
             "ipad": 3,
             "iphone13": 4

@@ -18,7 +18,7 @@ class Order:
         elif choice == 2:
             self.status = 'Delivered'
         elif choice == 3:
-            self.status = 'Cancelled'
+            self.status = 'Canceled'
 
     def order_to_dict(self):
         order_dict = {

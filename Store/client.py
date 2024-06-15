@@ -74,17 +74,12 @@ class Client(User):
         else:
             raise ValueError("Currency not supported")
 
-
     def new_status(self, order):
         self.order_history[order.order_number] = order
         self.__message.append(f"\n * Order Number:{order.order_number} has been {order.status} *")
         self.new_message += 1
 
-    def cancel(self, order):
-        self.__message.append(f"\n * Order Number:{order} has been cancelled *\n * Refund has been done *")
-        self.new_message += 1
-
-    def new_order(self,order):
+    def new_order(self, order):
         self.__message.append(f"\n * Thank you for your purchase!,  Order number: {order.order_number} has been received! *")
         self.new_message += 1
 
