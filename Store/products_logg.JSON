@@ -164,7 +164,7 @@
         "description": "tv",
         "price": 2000.0,
         "sale": 0,
-        "quantity": 48,
+        "quantity": 47,
         "rate": {
             "1": [],
             "2": [],
@@ -200,7 +200,7 @@
         "description": "",
         "price": 100.0,
         "sale": 0,
-        "quantity": 49,
+        "quantity": 47,
         "rate": {
             "1": [],
             "2": [],

@@ -164,5 +164,35 @@
             "ipad": 3,
             "iphone13": 4
         }
+    },
+    {
+        "order_number": 12,
+        "customer_id": "9999",
+        "total_amount": 2000.0,
+        "payment": {
+            "owner": "Yossi Cohen",
+            "info": "",
+            "payment_method": "Cash",
+            "amount_of_payments": 1
+        },
+        "status": "Processing",
+        "product_dict": {
+            "samsung": 1
+        }
+    },
+    {
+        "order_number": 13,
+        "customer_id": "9999",
+        "total_amount": 200.0,
+        "payment": {
+            "owner": "Yossi Cohen",
+            "info": "",
+            "payment_method": "Cash",
+            "amount_of_payments": 1
+        },
+        "status": "Processing",
+        "product_dict": {
+            "Applecharger": 2
+        }
     }
 ]

@@ -37,11 +37,11 @@ class Client(User):
         else:
             raise ValueError("Coupon value must be between 0 and 99")
 
-    def use_coupon(self):
-        self.__coupon = 0
+#    def use_coupon(self):
+ #       self.__coupon = 0
 
-    def update_coupon(self, amount):
-        self.__coupon = amount
+  #  def update_coupon(self, amount):
+   #     self.__coupon = amount
 
     @property
     def message(self):

@@ -158,9 +158,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         if len(self.users) > 0:
             table = "\n            Users    \n"
             table += "-----------------------------------------\n"
-            for id, details in self.users.items():
+            for user_id, details in self.users.items():
                 if isinstance(details, Client):
-                    table += f"ID:{id:<12} | Full name:{details.user_full_name} \n Orders Quantity: {len(details.order_history)}\n"
+                    table += f"ID:{user_id:<12} | Full name:{details.user_full_name} \n Orders Quantity: {len(details.order_history)}\n"
                     table += "-----------------------------------------\n"
             return table
         else:

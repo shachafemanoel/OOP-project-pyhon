@@ -44,13 +44,15 @@
         "user_id": "9999",
         "user_full_name": "Yossi Cohen",
         "password": "1234",
-        "address": null,
+        "address": "israel,haifa,hashalom,2",
         "payment": null,
         "user_type": "Client",
         "message": [
-            "\n *Order Number:2 has been delivered *"
+            "\n *Order Number:2 has been delivered *",
+            "\n * Thank you for your purchase!,  Order number: 12 has been received! *",
+            "\n * Thank you for your purchase!,  Order number: 13 has been received! *"
         ],
-        "coupon": 0,
+        "coupon": 5,
         "currency": "\u20aaILS"
     },
     {

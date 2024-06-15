@@ -6,6 +6,7 @@ from Store.display import Display
 import logging
 from Store.storeerror import StoreError
 from Store.payment import Payment
+from Store.sales import Sales
 class StoreCLI:
     def __init__(self):
         self.store = Store()
@@ -16,6 +17,7 @@ class StoreCLI:
             'product_dict': {},
             "count_item":0
         }
+        self.sales = Sales()
         self.exit = False
 
     def log_in(self):
@@ -131,7 +133,8 @@ class StoreCLI:
         while True:
             sub_choice = self.display_manage_user()
             if sub_choice == "1":
-                print(self.store.client_list())
+                client_list = self.store.client_list()
+                print(client_list)
             elif sub_choice == '2':
                 self.register()
                 break
@@ -442,7 +445,7 @@ class StoreCLI:
         select = input("Enter your choice: ")
         if select.isdigit():
             select = int(select)
-            if select > 0 and select < len(lst):
+            if select > 0 and select <= len(lst):
                 select -= 1
                 if len(lst) > select >= -1:
                     return select
@@ -492,7 +495,8 @@ class StoreCLI:
             elif sub_choice == '4':
                 self.remove_discount()
             elif sub_choice == '5':
-                self.store.list_products()
+                product_list = self.store.list_products()
+                print(product_list)
             elif sub_choice == '6':
                 break
             else:
@@ -514,8 +518,6 @@ class StoreCLI:
         else:
             item =  self.manual_search()
             return item
-
-
 
 
     def manual_search(self):
@@ -676,6 +678,7 @@ class StoreCLI:
 
     def update_client_details(self):
         client_lst = self.store.client_list()
+        print(client_lst)
         choice = input("\nChoose Client ID: ")
         if choice in self.store.users:
             client = self.store.users.get(choice)
@@ -855,7 +858,7 @@ class StoreCLI:
                 print(self.store.orders[self.store.order_number-1])
                 self.empty_cart()
                 if coupon == '1':
-                    self.store.use_coupon(self.user)
+                    self.sales.use_coupon()
 
     def catalog(self):
             while True:
@@ -882,7 +885,7 @@ class StoreCLI:
 
     def list_products(self):
         if len(self.store.collection) > 0:
-            print(self.store.list_products())
+            print(f"{self.store.list_products()}")
         else:
             print(" No products in inventory yet!")
 
