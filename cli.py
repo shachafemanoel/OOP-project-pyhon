@@ -5,7 +5,7 @@ from Store.client import Client
 from Store.display import Display
 import logging
 from Store.storeerror import StoreError
-
+from Store.payment import Payment
 class StoreCLI:
     def __init__(self):
         self.store = Store()
@@ -205,20 +205,26 @@ class StoreCLI:
         card_holder = input("Name on card: ")
         card_number = input("Card number: ")
         how_much = input("how many payments would you like to spread the deal?: ")
-        how_much = int(how_much) if how_much.isdigit() else 1
-        if len(card_number) > 6 and card_number.isdigit():
-            paymethod["owner"] = card_holder
-            paymethod["info"] = card_number
-            paymethod["amount_of_payments"] = how_much
-            print("\nWould you like to save your payment method for future orders?")
-            print("\n1. Yes, save it")
-            print("2. No ")
-            save = input("Enter your choice: ")
-            if save == '1':
-                self.user.payment = paymethod
-            return paymethod
-        else:
-            print("\n * The card details are invalid * ")
+        try:
+            how_much = int(how_much)
+            if Payment.check_card(card_number,how_much):
+                paymethod["owner"] = card_holder
+                paymethod["info"] = card_number
+                paymethod["amount_of_payments"] = how_much
+                print("Credit card verified")
+                print("\nWould you like to save your payment method for future orders?")
+                print("\n1. Yes, save it")
+                print("\n2. No ")
+                save = input("Enter your choice: ")
+                if save == '1':
+                    self.user.payment = paymethod
+                return paymethod
+        except StoreError.InvalidCardNumberError as e:
+            print(e)
+        except StoreError.InvalidPaymentsNumberError as e:
+            print(e)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
 
     def new_paypal(self, paymethod):
@@ -422,21 +428,22 @@ class StoreCLI:
         else:
             return -100
 
-    def manual_search(self):
+    def model_search(self):
+           model = input("Enter model: ")
+           search_name_model = self.store.search(None, model)
+           choice = self.pick_item(search_name_model)
+           if choice != -100 and choice is not None:
+            return search_name_model[choice]
+           else:
+            return None
+    def name_search(self):
             new_name = input("\nEnter Product name: ")
             search_name = self.store.search(new_name)
             choice = self.pick_item(search_name)
-            if choice == -100 and choice is not None:
-                    model = input("Enter model: ")
-                    search_name_model = self.store.search(new_name, None,model)
-                    choice = self.pick_item(search_name_model)
-                    if choice != -100 and choice is not None:
-                        item = search_name_model[choice]
-                    else:
-                        item = None
+            if choice != -100 and choice is not None:
+                return search_name[choice]
             else:
-                item = search_name[choice]
-            return item
+                return None
 
     def product_manager(self):
         while True:
@@ -462,24 +469,32 @@ class StoreCLI:
             print("   *   New deals   * ")
             for sale in self.store.sales:
                 print(sale)
-        new_item = None
         type_search = self.product_type()
         if type_search is not None:
             choice = self.pick_item(type_search)
             if choice != -100 and choice is not None:
-                new_item = type_search[choice]
+                return type_search[choice]
             else:
-                new_item = None
-        if type_search is None:
-            select = Display.display_advanced_search()
-            if select == "1":
-                new_item = self.manual_search()
-            elif select == "2":
-                new_item = self.search_by_price()
-            elif select == "3":
-                new_item = self.search_by_rating()
-            else:
-                new_item = None
+                item = None
+        else:
+            item =  self.advenced_search()
+            return item
+
+
+
+
+    def advenced_search(self):
+        select = Display.advanced_search()
+        if select == "1":
+            new_item = self.name_search()
+        elif select == "2":
+            new_item = self.model_search()
+        elif select == "3":
+            new_item = self.search_by_price()
+        elif select == "4":
+            new_item = self.search_by_rating()
+        else:
+            new_item = None
 
         return new_item
 
@@ -499,7 +514,6 @@ class StoreCLI:
             print(e.message)
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
 
     def search_by_rating(self):
         try:

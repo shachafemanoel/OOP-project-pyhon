@@ -200,12 +200,10 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return False
 
     def add_item_order(self, product, how_many):
-        if self.collection[product.get_key_name()].available(how_many):
-            return True
-        else:
-            return False
+        return self.collection[product.get_key_name()].available(how_many)
 
-    def place_order(self, order):
+
+    def place_order(self, order:dict):
         if order.get("payment", None) is not None:
             order["order_number"] = self.order_number
             customer = order.get("customer",None)
@@ -223,6 +221,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             self.users[customer.user_id].new_order(order)
             self.orders[self.order_number] = order
             self.order_number += 1
+
+
 
     def list_products(self):
         if self.collection:

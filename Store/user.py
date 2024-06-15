@@ -20,7 +20,7 @@ class User:
     @property
     def user_full_name(self):
         return self.__user_full_name
-
+        
     @user_full_name.setter
     def user_full_name(self, name):
         self.__user_full_name = name

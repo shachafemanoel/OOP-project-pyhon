@@ -31,6 +31,11 @@ class StoreError(Exception):
             self.message = message
             super().__init__(self.message)
 
+
+    class NotInStockError(Exception):
+        def __init__(self,message="Not enough in stock"):
+            self.message = message
+            super().__init__(self.message)
     class ProductNotFoundError(Exception):
         """
         Exception raised when a product is not found.
@@ -50,6 +55,29 @@ class StoreError(Exception):
             """
             Initialize the error with an optional message.
             """
+            self.message = message
+            super().__init__(self.message)
+
+    class TooManyTriesError(Exception):
+        '''
+        Exceptions raised when too many tries were attempted.
+        '''
+
+        def __init__(self, message="Too many tries were attempted."):
+            '''
+            Initialize the error with an optional message.
+            '''
+            self.message = message
+            super().__init__(self.message)
+    class InvalidCardNumberError(Exception):
+
+        def __init__(self, message="**Invalid card number provided**"):
+            self.message = message
+            super().__init__(self.message)
+
+    class InvalidPaymentsNumberError(Exception):
+
+        def __init__(self, message=f"**Invalid payment number provided**"):
             self.message = message
             super().__init__(self.message)
 

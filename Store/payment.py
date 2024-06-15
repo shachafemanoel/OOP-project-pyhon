@@ -1,5 +1,4 @@
 from Store.storeerror import StoreError
-
 class Payment:
     def __init__(self, owner=None, info=None, payment_method=None, amount_of_payments=None):
         self.__owner = owner
@@ -53,14 +52,15 @@ class Payment:
             'info': self.info,
             'payment_method': self.payment_method
         }
-
-    def check_card(self, card_number, how_much=1):
-        if len(card_number) >= 8 and len(how_much) >= 1:
-            self.__payment_method = "Credit Card"
-            self.__amount_of_payments = how_much
-            return True
-        else:
-            raise StoreError.InvalidInputError("")
+    @staticmethod
+    def check_card(self,card_nubmer, how_much):
+            if len(card_nubmer) >= 8:
+                if how_much >0 :
+                    return True
+                else:
+                    raise StoreError.InvalidInputError
+            else:
+                raise StoreError.InvalidCardNumberError
 
     def __str__(self):
         if self.__payment_method == "Credit Card":

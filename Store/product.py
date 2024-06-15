@@ -1,5 +1,6 @@
 from Store.rating import Rating
 from Store.payment_calculator import CurrencyConverter
+from Store.storeerror import StoreError
 class Product:
     def __init__(self, name, model, description,price,quantity,rate=None,sale=0):  #
         self.name = name  # שם המוצר
@@ -21,10 +22,9 @@ class Product:
         return self.model.replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
 
     def buy_product(self, many):  #הוצאת כמות מוצרים מהמלאי
-        if many <= self.quantity:
-            self.quantity -= many
-            return True
-        return False
+        self.quantity -= many
+
+
 
     def update_price(self, discount):
             self.sale = discount
@@ -47,7 +47,10 @@ class Product:
         self.quantity += quantity
 
     def available(self, how_many):  # בדיקת זמינות של מוצר מסוים
-        return self.quantity >= how_many
+        if self.quantity >= how_many:
+            return True
+        else:
+            raise StoreError.NotInStockError
 
     def add_review(self, stars, review):
          self.rate.add_review(stars, review)
