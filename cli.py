@@ -338,8 +338,6 @@ class StoreCLI:
         for i in range(5):
             if choice in '1234':
                 return self.store.search(None, choice, None)
-            elif choice == "5":
-                return self.store.list_products()
             elif choice == "0":
                     return None
             else:
@@ -467,8 +465,6 @@ class StoreCLI:
                 print(sale)
         new_item = None
         type_search = self.product_type()
-        if type_search == self.store.list_products():
-            return type_search
         if type_search is not None:
             choice = self.pick_item(type_search)
             if choice != -100 and choice is not None:
@@ -476,11 +472,7 @@ class StoreCLI:
             else:
                 new_item = None
         if type_search is None:
-            print("\n1. Manual search")
-            print("2. Search by price range")
-            print("3. Search by rating range")
-            print("4. Exit")
-            select = input("\nEnter your choice: ")
+            select = Display.display_advanced_search()
             if select == "1":
                 new_item = self.manual_search()
             elif select == "2":
@@ -493,25 +485,22 @@ class StoreCLI:
         return new_item
 
     def search_by_price(self):
-        low = input("Enter low price: ")
-        high = input("Enter high price: ")
-        products = []
         try:
-            low, high = float(low), float(high)
-            if 0 <= low <= high:
-                for name, product in self.store.collection.items():
-                    if low <= product.price <= high:
-                        products.append(product)
-                if len(products) > 0:
-                    choice = self.pick_item(products)
-                    if choice != -100 and choice is not None:
-                        return products[choice]
-                else:
-                    print("\nNo Products in this price range")
+            low = input("Enter low price: ")
+            high = input("Enter high price: ")
+            products = self.store.price_search(low, high)
+            choice = self.pick_item(products)
+            if choice != -100:
+                print(products[choice])
             else:
-                print("\nHigh price must be higher than low price")
-        except ValueError:
-            print("\nInvalid credentials. low price and high price must be digit.")
+                print("\nNo product selected.")
+        except StoreError.InvalidInputError as e:
+            print(e.message)
+        except StoreError.ProductNotFoundError as e:
+            print(e.message)
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
 
     def search_by_rating(self):
         try:

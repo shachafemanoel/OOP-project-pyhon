@@ -52,3 +52,14 @@ class StoreError(Exception):
             """
             self.message = message
             super().__init__(self.message)
+
+    class TooManyTriesError(Exception):
+        '''
+        Exceptions raised when too many tries were attempted.
+        '''
+        def __init__(self, message="Too many tries were attempted."):
+            '''
+            Initialize the error with an optional message.
+            '''
+            self.message = message
+            super().__init__(self.message)

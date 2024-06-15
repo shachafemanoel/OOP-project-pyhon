@@ -70,9 +70,16 @@ class Display:
         print('2. Computer')
         print('3. Mobile Phone')
         print('4. Accessories')
-        print('5. All')
         print("0. Exit Or Manual Search")
         choice = input("\nEnter Your Choice: ")
+        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+    def display_advanced_search():
+        print("\n1. Search by name")
+        print("2. Search by price range")
+        print("3. Search by rating range")
+        print("4. Exit")
+        choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod

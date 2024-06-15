@@ -214,8 +214,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             for name, quant in order["product_dict"].items():
                if self.collection[name].available(quant):
                     self.collection[name].buy_product(quant)
-                    order["total_amount"] +=self.collection[name].get_price(quant)
-                    self.reporting.new_sold(name,quant)
+                    order["total_amount"] += self.collection[name].get_price(quant)
+                    self.reporting.new_sold(name, quant)
                     if self.collection[name].get_quantity() <4:
                         self.reporting.product_warning(self.collection[name].get_quantity(),self.collection[name].name)
             order = Order(**order)
@@ -278,7 +278,25 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                 raise StoreError.ProductNotFoundError("No products found in this rating range.")
             return products
         except ValueError:
-            raise StoreError.InvalidInputError("Low rating and high rating must be numbers.")
+            raise StoreError.InvalidInputError("\nLow rating and high rating must be numbers.")
+
+    def price_search(self,low,high):
+        products = []
+        try:
+            low, high = float(low), float(high)
+            if high < low:
+                raise StoreError.InvalidInputError("\nHigh price must be higher than low price.")
+            if not (0 <= low and 0 <= high):
+                raise StoreError.InvalidInputError("\nprices must be higher than 0.")
+            for name, product in self.collection.items():
+                if low <= product.price <= high:
+                    products.append(product)
+            if not products:
+                raise StoreError.ProductNotFoundError("\nNo products found in this price range.")
+            return products
+        except ValueError:
+            raise StoreError.InvalidInputError("\nInvalid credentials. low price and high price must be digit.")
+
     def set_address(self, user_id, address):
         if user_id in self.users:
             self.users[user_id].change_address(address)
