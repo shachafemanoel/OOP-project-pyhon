@@ -10,20 +10,8 @@
         "galaxy24": 1,
         "ipad": 3
     },
-    "message": {
-        "orders": [
-            " \n * A new order has been placed * \n Order number: 9    total amount: 5500.0 ",
-            " \n * A new order has been placed * \n Order number: 10    total amount: 3500.0 ",
-            " \n * A new order has been placed * \n Order number: 11    total amount: 19000.0 "
-        ],
-        "products": [],
-        "users": []
-    },
-    "new_update": {
-        "orders": 3,
-        "products": 0,
-        "users": 0
-    },
-    "total_update": 3,
+    "message": [],
+    "new_update": 0,
+    "total_update": 0,
     "sales": []
 }

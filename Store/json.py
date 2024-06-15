@@ -113,8 +113,8 @@ class DataManager:
         return reporting
 
     @staticmethod
-    def save_reporting(reporting,sales):
-        reporting_data =reporting.repoting_do_dict(sales)
+    def save_reporting(reporting, sales):
+        reporting_data = reporting.repoting_do_dict(sales)
         DataManager.save_data(reporting_data, 'Store/reporting_logg.JSON')
 
     @staticmethod

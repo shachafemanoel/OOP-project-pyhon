@@ -53,7 +53,7 @@ class Payment:
             'payment_method': self.payment_method
         }
     @staticmethod
-    def check_card(self,card_nubmer, how_much):
+    def check_card(card_nubmer, how_much):
             if len(card_nubmer) >= 8:
                 if how_much >0 :
                     return True

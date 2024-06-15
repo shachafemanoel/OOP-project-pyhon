@@ -14,9 +14,11 @@ class Order:
 
     def change_status(self, choice: int):
         if choice == 1:
-            self.status = 'shipped'
+            self.status = 'Shipped'
         elif choice == 2:
-            self.status = 'delivered'
+            self.status = 'Delivered'
+        elif choice == 3:
+            self.status = 'Cancelled'
 
     def order_to_dict(self):
         order_dict = {

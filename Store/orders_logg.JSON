@@ -144,7 +144,7 @@
             "payment_method": "",
             "amount_of_payments": 2
         },
-        "status": "Processing",
+        "status": "Cancelled",
         "product_dict": {
             "galaxy24": 1
         }

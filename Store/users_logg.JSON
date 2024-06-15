@@ -59,9 +59,7 @@
             "amount_of_payments": 3
         },
         "user_type": "Client",
-        "message": [
-            "\n * Thank you for your purchase!,  Order number: 11 has been received! *"
-        ],
+        "message": [],
         "coupon": 10,
         "currency": "\u20aaILS"
     },

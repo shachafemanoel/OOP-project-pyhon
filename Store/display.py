@@ -159,6 +159,7 @@ class Display:
     @staticmethod
     def display_manage_product(store):
         print("\n * Wellcome to manage product display *\n")
+        print(store.reporting.new_update["products"])
         if store.reporting.new_update["products"] > 0:
             for i in store.reporting.message["products"]:
                 print(f"{i}")
@@ -169,7 +170,7 @@ class Display:
         print("2. Remove Product")
         print("3. Add Discount")
         print("4. Remove Discount")
-        print("5.Product list")
+        print("5. Product list")
         print("6. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -184,7 +185,7 @@ class Display:
         store.reporting.new_update["orders"] = 0
         store.reporting.message["orders"] = []
 
-        print("1. Update order status")
+        print("\n1. Update order status")
         print("2. List Orders")
         print("3. Exit")
         choice = input("\nEnter your choice: ")

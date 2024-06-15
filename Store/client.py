@@ -77,7 +77,11 @@ class Client(User):
 
     def new_status(self, order):
         self.order_history[order.order_number] = order
-        self.__message.append(f"\n *Order Number:{order.order_number} has been {order.status} *")
+        self.__message.append(f"\n * Order Number:{order.order_number} has been {order.status} *")
+        self.new_message += 1
+
+    def cancel(self, order):
+        self.__message.append(f"\n * Order Number:{order} has been cancelled *\n * Refund has been done *")
         self.new_message += 1
 
     def new_order(self,order):

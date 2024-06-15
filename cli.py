@@ -311,7 +311,7 @@ class StoreCLI:
 
         print(f"Your currency is:{currencies[choice]}")
 
-    def set_currency(self,currency):
+    def set_currency(self, currency):
         if self.cart["total_amount"] > 0:
             CurrencyConverter.convert(self.cart["total_amount"], self.store.currency, currency)
         self.user.currency = currency
@@ -324,12 +324,15 @@ class StoreCLI:
             number = int(number)
             if number in self.store.orders:
                 print(f"{self.store.orders[number]}")
-                print("1, new status - Shipped")
-                print("2, new status - Delivered")
+                print("1. New status - Shipped")
+                print("2. New status - Delivered")
+                print("3. New status - Canceled")
                 choice = input("Enter your choice: ")
-                if choice == '1' or choice == '2':
+                if choice == '1' or choice == '2' or choice == '3':
                     self.store.change_order(number, int(choice))
-                    print(f"\n* Order number:{self.store.orders[number].order_number} New status:{self.store.orders[number].status} *\n")
+                    print(f"\n* Order number:{self.store.orders[number].order_number} New status: {self.store.orders[number].status} *\n")
+                    if choice == '3':
+                        self.store.cancel_order(number)
                 else:
                     print("\n * Invalid choice.The status has not changed * \n")
             else:
@@ -429,16 +432,17 @@ class StoreCLI:
             return -100
 
     def model_search(self):
-           model = input("Enter model: ")
-           search_name_model = self.store.search(None, model)
-           choice = self.pick_item(search_name_model)
-           if choice != -100 and choice is not None:
+        model = input("Enter model: ")
+        search_name_model = self.store.search(None, None, model)
+        choice = self.pick_item(search_name_model)
+        if choice != -100 and choice is not None:
             return search_name_model[choice]
-           else:
+        else:
             return None
+
     def name_search(self):
             new_name = input("\nEnter Product name: ")
-            search_name = self.store.search(new_name)
+            search_name = self.store.search(new_name, None, None)
             choice = self.pick_item(search_name)
             if choice != -100 and choice is not None:
                 return search_name[choice]
@@ -477,13 +481,13 @@ class StoreCLI:
             else:
                 item = None
         else:
-            item =  self.advenced_search()
+            item =  self.manual_search()
             return item
 
 
 
 
-    def advenced_search(self):
+    def manual_search(self):
         select = Display.advanced_search()
         if select == "1":
             new_item = self.name_search()
