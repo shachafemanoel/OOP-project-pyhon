@@ -8,8 +8,6 @@ class User:
         self.__address = address
         self.payment = payment
 
-
-
     @property
     def user_id(self):
         return self.__user_id

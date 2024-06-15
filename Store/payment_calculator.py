@@ -2,7 +2,7 @@ class CurrencyConverter:
     exchange_rates = {
         '$USD': 3.71,
         '€EUR': 4.07,
-        "₪ILS":1.00,
+        "₪ILS": 1.00,
     }
 
     @staticmethod

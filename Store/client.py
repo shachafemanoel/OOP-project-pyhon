@@ -51,8 +51,6 @@ class Client(User):
     def message(self, value):
         self.__messege = value
 
-
-
     def update_client(self):
         if self.new_message > 0:
             new = f"\n * There are {self.new_message} new notifications for you *\n"
@@ -70,7 +68,7 @@ class Client(User):
     def currency(self):
         return self.__currency
     @currency.setter
-    def currency(self,currency):
+    def currency(self, currency):
         if currency.upper() in CurrencyConverter.exchange_rates:
             self.__currency = currency
         else:
@@ -87,7 +85,7 @@ class Client(User):
         self.new_message += 1
 
     def list_orders_client(self):
-        if  self.order_history:
+        if self.order_history:
             table = "            Orders History    \n"
             table += "-----------------------------------------\n"
             for key, value in self.order_history.items():
@@ -104,4 +102,4 @@ class Client(User):
         return dict
 
     def __str__(self):
-        return super().__str__() + f"\nCoupon: {self.__coupon}\nOrder quantity: {len(self.__order_history)} orders"
+        return super().__str__() + f"\nCoupon: {self.__coupon}\nOrder quantity: {len(self.order_history)} orders"

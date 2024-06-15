@@ -7,10 +7,11 @@ class Order:
         self.order_number = order_number
         self.customer = customer
         self.total_amount = total_amount if total_amount is not None else 0
-        self.payment =Payment(**payment) if payment is not None else Payment()
+        self.payment = Payment(**payment) if payment is not None else Payment()
         self.status = "Processing" if status is None else status
         self.product_dict = product_dict if product_dict is not None else {}
         self.currency = "₪ILS"
+
     def change_status(self, choice: int):
         if choice == 1:
             self.status = 'shipped'
@@ -25,7 +26,6 @@ class Order:
             'payment': self.payment.payment_to_dict_order(),
             'status': self.status,
             'product_dict': self.product_dict
-
         }
         return order_dict
 
@@ -34,7 +34,6 @@ class Order:
 
     def converter(self):
         return f" Total amount: {CurrencyConverter.convert(self.total_amount, "₪ILS", self.currency) } {self.currency}"
-
 
     def pay_order(self, payment):
         self.payment = payment
@@ -48,23 +47,6 @@ class Order:
                 found.append(key)
         return found
 
-    def remove(self, product, how_many):
-        product_key = product.get_key_name()
-        if product_key in self.product_dict:
-            if how_many > 0:
-                if self.product_dict[product_key] >= how_many:
-                    self.product_dict[product_key] -= how_many
-                    self.total_amount += product.price * how_many
-                    product.quantity -= how_many
-                    if self.product_dict[product_key] == 0:
-                        del self.product_dict[product_key]
-                    return True
-                return False
-            elif how_many == 0:
-                self.total_amount -= product.price * self.product_dict[product_key]
-                self.product_dict.pop(product.get_key_name())
-                return True
-        return False
 
     def add_item_to_order(self, product, how_many):
         if product.get_key_name() not in self.product_dict:

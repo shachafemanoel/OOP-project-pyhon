@@ -1,3 +1,5 @@
+from Store.storeerror import StoreError
+
 class Payment:
     def __init__(self, owner=None, info=None, payment_method=None, amount_of_payments=None):
         self.__owner = owner
@@ -5,32 +7,38 @@ class Payment:
         self.__payment_method = payment_method
         self.__amount_of_payments = int(amount_of_payments) if amount_of_payments  else 1
 
-
-
     @property
     def owner(self):
         return self.__owner
+
     @owner.setter
     def owner(self, owner):
         self.__owner = owner
+
     @property
     def info(self):
        return self.__info
+
     @info.setter
     def info(self, info):
         self.__info = info
+
     @property
     def payment_method(self):
         return self.__payment_method
+
     @payment_method.setter
     def payment_method(self, payment_method):
         self.__payment_method = payment_method
+
     @property
     def amount_of_payments(self):
         return self.__amount_of_payments
+
     @amount_of_payments.setter
     def amount_of_payments(self, amount_of_payments):
         self.__amount_of_payments = amount_of_payments
+
     def payment_to_dict_order(self):
         return {
             'owner': self.owner,
@@ -45,13 +53,14 @@ class Payment:
             'info': self.info,
             'payment_method': self.payment_method
         }
-    def check_card(self, how_much):
-        if len(self.__owner) > 0 and len(self.__info) >= 8:
+
+    def check_card(self, card_number, how_much=1):
+        if len(card_number) >= 8 and len(how_much) >= 1:
             self.__payment_method = "Credit Card"
             self.__amount_of_payments = how_much
             return True
         else:
-            return False
+            raise StoreError.InvalidInputError("")
 
     def __str__(self):
         if self.__payment_method == "Credit Card":

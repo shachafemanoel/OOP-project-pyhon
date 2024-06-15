@@ -53,6 +53,11 @@ class StoreError(Exception):
             self.message = message
             super().__init__(self.message)
 
+    class OrderNotFoundError(Exception):
+        def __init__(self, message="Order not found"):
+            self.message = message
+            super().__init__(self.message)
+
     class TooManyTriesError(Exception):
         '''
         Exceptions raised when too many tries were attempted.

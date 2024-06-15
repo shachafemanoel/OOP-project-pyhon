@@ -8,7 +8,7 @@ class Product:
         self.original_price = price
         self.price = price  # מחיר המוצר
         self.sale = sale
-        if self.sale >0:
+        if self.sale > 0:
             self.update_price(sale)
         self.quantity = quantity  # הכמות המוצר
         self.rate = Rating(rate)
@@ -16,14 +16,16 @@ class Product:
 
     def get_key_name(self):
         return (self.name).replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
+
     def get_model_name(self):
         return self.model.replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
 
-    def buy_product(self, many):  # הוצאת כמות מוצרים מהמלאי
+    def buy_product(self, many):  #הוצאת כמות מוצרים מהמלאי
         if many <= self.quantity:
             self.quantity -= many
             return True
         return False
+
     def update_price(self, discount):
             self.sale = discount
             self.price -= (self.original_price * float(discount / 100))
@@ -59,7 +61,7 @@ class Product:
         dict['price'] = self.original_price
         dict['sale'] = self.sale
         dict['quantity'] = self.quantity
-        dict['rate'] =  self.rate.ratings
+        dict['rate'] = self.rate.ratings
         return dict
 
     def get_price_in_user_currency(self,quantity = 1):

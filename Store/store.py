@@ -35,9 +35,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.orders = DataManager.load_orders(self.users)
         self.reporting = DataManager.load_reporting()
         self.sales = DataManager.load_sales()
-        self.order_number = len(self.orders) +1
+        self.order_number = len(self.orders) + 1
         for order in self.orders.values():
-            self.reporting.revenue+=order.total_amount
+            self.reporting.revenue += order.total_amount
 
     def user_order_history(self, user):
         user_orders_dict = {}
@@ -206,17 +206,17 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return False
 
     def place_order(self, order):
-        if order.get("payment",None) is not None:
+        if order.get("payment", None) is not None:
             order["order_number"] = self.order_number
             customer = order.get("customer",None)
-            order.pop("count_item",None)
+            order.pop("count_item", None)
             order["total_amount"] = 0
             for name, quant in order["product_dict"].items():
                if self.collection[name].available(quant):
                     self.collection[name].buy_product(quant)
                     order["total_amount"] += self.collection[name].get_price(quant)
                     self.reporting.new_sold(name, quant)
-                    if self.collection[name].get_quantity() <4:
+                    if self.collection[name].get_quantity() < 4:
                         self.reporting.product_warning(self.collection[name].get_quantity(),self.collection[name].name)
             order = Order(**order)
             self.reporting.new_order(order)
@@ -263,7 +263,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         user_id = order.customer.user_id
         self.users[user_id].new_status(order)
 
-    def rate_search(self,low,high):
+    def rate_search(self, low, high):
         products = []
         try:
             low, high = float(low), float(high)
@@ -280,7 +280,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         except ValueError:
             raise StoreError.InvalidInputError("\nLow rating and high rating must be numbers.")
 
-    def price_search(self,low,high):
+    def price_search(self, low, high):
         products = []
         try:
             low, high = float(low), float(high)

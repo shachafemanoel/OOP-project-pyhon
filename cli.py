@@ -206,13 +206,13 @@ class StoreCLI:
         card_number = input("Card number: ")
         how_much = input("how many payments would you like to spread the deal?: ")
         how_much = int(how_much) if how_much.isdigit() else 1
-        if len(card_number) > 6  and card_number.isdigit():
+        if len(card_number) > 6 and card_number.isdigit():
             paymethod["owner"] = card_holder
             paymethod["info"] = card_number
             paymethod["amount_of_payments"] = how_much
             print("\nWould you like to save your payment method for future orders?")
             print("\n1. Yes, save it")
-            print("\n2. No ")
+            print("2. No ")
             save = input("Enter your choice: ")
             if save == '1':
                 self.user.payment = paymethod
@@ -223,14 +223,13 @@ class StoreCLI:
 
     def new_paypal(self, paymethod):
         paypal_id = input("Enter your Paypal id: ")
-        how_much = input("how many payments would you like to spread the deal?: ")
-        if len(paypal_id) > 0:
+        if len(paypal_id) > 8:
             paymethod["owner"] = self.user.user_full_name
             paymethod["info"] = paypal_id
             paymethod["payment_method"] = "Paypal"
-            paymethod["amount_of_payments"] = int(how_much)
+            paymethod["amount_of_payments"] = 1
             print("\nWould you like to save your payment method for future orders?")
-            print("1. Yes,save it")
+            print("\n1. Yes,save it")
             print("2 .No ")
             save = input("Enter your choice: ")
             if save == '1':

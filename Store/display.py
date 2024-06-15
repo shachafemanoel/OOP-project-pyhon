@@ -39,7 +39,7 @@ class Display:
     def display_coupon(user):
         print(f"\nWould you like to use your {user.coupon}% coupon?")
         print('\n1. Yes')
-        print('\n2. No')
+        print('2. No')
         choice = input('\nEnter your choice: ')
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
