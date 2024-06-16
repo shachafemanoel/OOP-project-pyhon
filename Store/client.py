@@ -132,10 +132,18 @@ class Client(User):
         self.new_message += 1
 
     def new_order(self, order):
+        '''
+        Adding message that order has been made
+        :param order:
+        :return:
+        '''
         self.__message.append(f"\n * Thank you for your purchase!,  Order number: {order.order_number} has been received! *")
         self.new_message += 1
 
     def list_orders_client(self):
+        '''
+        :return: string that represents orders list for client
+        '''
         if self.order_history:
             table = "            Orders History    \n"
             table += "-----------------------------------------\n"
@@ -147,10 +155,16 @@ class Client(User):
         return table
 
     def to_dict(self):
+        '''
+        :return: dictionary to JSON data
+        '''
         dict = {"message":self.__message,"coupon":self.__coupon,"currency":self.__currency}
         dict = {**super().to_dict(),**dict}
         dict["user_type"] = "Client"
         return dict
 
     def __str__(self):
+        '''
+        :return: string representation of client
+        '''
         return super().__str__() + f"\nCoupon: {self.__coupon}\nOrder quantity: {len(self.order_history)} orders"
