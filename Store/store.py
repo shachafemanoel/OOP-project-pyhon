@@ -78,6 +78,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             category = "Phone"
         elif choice == "4":
             category = "Product"
+        else:
+            raise StoreError("Invalid Choice")
         try:
             self.sales.remove_category_discount(category.upper())
             return category
@@ -94,6 +96,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             category = "Phone"
         elif choice == "4":
             category = "Product"
+        else:
+            raise StoreError.InvalidInputError()
         try:
             self.sales.add_category_discount(category.upper(), discount)
             return category

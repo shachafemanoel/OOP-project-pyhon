@@ -30,6 +30,7 @@
         "promotions": {
             "ipad": 40
         },
-        "category_discounts": {}
+        "category_discounts": {
+        }
     }
 }

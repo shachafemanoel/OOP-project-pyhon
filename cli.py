@@ -406,9 +406,14 @@ class StoreCLI:
         choice = Display.display_discount()
         if choice == "1":
             select = Display.display_product_type()
-            category = self.store.remove_product_sale(select)
-            self.store.remove_discount_to_category(category)
-            print("\n* Discount has been successfully removed *")
+            try:
+                category = self.store.remove_product_sale(select)
+                self.store.remove_discount_to_category(category)
+                print("\n* Discount has been successfully removed *")
+            except StoreError.InvalidInputError as e:
+                print(f"An error occurred: {e}")
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
         elif choice == "2":
             product_name = self.manual_search()
             if product_name is not None and product_name != -100:
@@ -417,6 +422,8 @@ class StoreCLI:
                     print("\n* Discount successfully removed *")
                 except Exception as e:
                     print(f"An error occurred while removing discount: {e}")
+        else:
+            print("Invalid choice. Please select a valid option.")
 
     def display_manage_order(self):
         print("\n * Wellcome to manage order display *\n")
