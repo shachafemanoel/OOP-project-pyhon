@@ -357,13 +357,13 @@ class StoreCLI:
     def product_type(self, choice=None):
         if choice is None:
             choice = Display.display_product_type()
-        for i in range(5):
-            choice = Display.display_product_type()
+        for each in range(5):
             if choice in '1234':
                 return self.store.search(None, choice, None)
             elif choice == "0":
                     return None
             else:
+                choice = Display.display_product_type()
                 print("Try Again")
         return None
 
@@ -619,9 +619,8 @@ class StoreCLI:
             dict_new_product["size"] = size
             dict_new_product["storage"] = storage
             dict_new_product["product_type"] = 'Phone'
-        if  self.store.add_product(dict_new_product):
+        if self.store.add_product(dict_new_product):
             print("Product added successfully")
-
         else:
             print("\n * One of the entered values is Invalid *\n")
 

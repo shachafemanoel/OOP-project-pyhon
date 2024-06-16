@@ -14,23 +14,24 @@
     "message": {
         "orders": [],
         "products": [],
-        "users": []
+        "users": [
+            " \n * A new CLIENT has joined your store * \n full name: Nirel "
+        ]
     },
     "new_update": {
         "orders": 0,
         "products": 0,
-        "users": 0
+        "users": 1
     },
-    "total_update": 2,
+    "total_update": 3,
     "sales": {
         "coupons": {
-            "2020": 20
+            "2020": 20,
+            "123456": 5
         },
         "promotions": {
             "ipad": 40
         },
-        "category_discounts": {
-            "COMPUTER": 20
-        }
+        "category_discounts": {}
     }
 }

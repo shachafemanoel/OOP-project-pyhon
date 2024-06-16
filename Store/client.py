@@ -1,3 +1,4 @@
+from Store.payment_calculator import CurrencyConverter
 from Store.user import User
 from Store.user import User
 

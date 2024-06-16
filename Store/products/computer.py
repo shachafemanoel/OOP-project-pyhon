@@ -15,12 +15,12 @@ class Computer(Product):
             "storage": self.storage,
             "chip": self.chip,
         }
-
         dict = {**super().product_to_dict(), **dict}
-
-        dict["product_type"] = "COMPUTER"
+        dict["product_type"] = "Computer"
         return dict
+
     def product_type(self):
-        return "Computer"
+        return "COMPUTER"
+
     def __str__(self):
         return f"======================================\n Name: {self.name}\n Model:{self.model}   |  Storge: {self.storage} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n {self.get_price_in_user_currency()}\n {self.rate}"

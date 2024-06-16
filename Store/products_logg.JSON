@@ -186,7 +186,7 @@
     {
         "product_type": "Product",
         "name": "Apple charger",
-        "model": "new appale usb - c charger with a fast charging ",
+        "model": "new apple usb - c charger with a fast charging ",
         "description": "",
         "price": 100.0,
         "quantity": 47,
@@ -197,5 +197,41 @@
             "4": [],
             "5": []
         }
+    },
+    {
+        "product_type": "Computer",
+        "name": "Macbook pro 16",
+        "model": "16 pro",
+        "description": "2024 Series",
+        "price": 10000.0,
+        "quantity": 50,
+        "rate": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        },
+        "size": "16",
+        "storage": "1TB",
+        "chip": "M3 Max"
+    },
+    {
+        "product_type": "Computer",
+        "name": "Macbook 14 ",
+        "model": "14 ",
+        "description": "2022 Series",
+        "price": 4000.0,
+        "quantity": 10,
+        "rate": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        },
+        "size": "14",
+        "storage": "512GB",
+        "chip": "m1"
     }
 ]

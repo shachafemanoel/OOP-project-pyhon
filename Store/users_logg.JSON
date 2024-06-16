@@ -98,5 +98,15 @@
         "user_type": "Client",
         "message": [],
         "currency": "\u20aaILS"
+    },
+    {
+        "user_id": "123456",
+        "user_full_name": "Nirel",
+        "password": "1234",
+        "address": "USA,Los Angeles,,1",
+        "payment": null,
+        "user_type": "Client",
+        "message": [],
+        "currency": "\u20aaILS"
     }
 ]

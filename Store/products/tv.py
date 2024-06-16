@@ -17,7 +17,9 @@ class Tv(Product):
 
         dict["product_type"] = "Tv"
         return dict
+
     def product_type(self):
         return "TV"
+
     def __str__(self):
         return f"======================================\nName: {self.name}\nModel: {self.model}\ndisplay size: {self.size}-Inch\nDescription: {self.description}\n {self.get_price_in_user_currency()}\n{self.rate}"

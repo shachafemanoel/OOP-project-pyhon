@@ -59,6 +59,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.users[user.user_id].use_coupon()
 
 
+
     def remove_product_sale(self,choice):
         category = ""
         if choice == "1":
@@ -73,20 +74,22 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             self.sales.remove_category_discount(category.upper())
         except ValueError:
             raise StoreError.InvalidInputError
+
     def sale_prodduct_type(self, choice, discount):
         category = ""
-        if choice =="1":
+        if choice == "1":
             category = "Tv"
-        elif choice =="2":
+        elif choice == "2":
             category = "Computer"
-        elif choice =="3":
+        elif choice == "3":
             category = "Phone"
-        elif choice =="4":
+        elif choice == "4":
             category = "Product"
         try:
             self.sales.add_category_discount(category.upper(), discount)
-        except ValueError :
+        except ValueError:
             raise StoreError.InvalidInputError
+
     def new_promotion(self, product,discount):
         try:
             self.collection[product.get_key_name()].update_price(discount)
