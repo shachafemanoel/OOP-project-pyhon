@@ -19,14 +19,7 @@
             "amount_of_payments": 1
         },
         "user_type": "Client",
-        "message": [
-            "\n * Order Number:7 has been Canceled *",
-            "\n * Order Number:7 has been cancelled *\n * Refund has been done *",
-            "\n * Order Number:7 has been Shipped *",
-            "\n * Order Number:7 has been Canceled *",
-            "\n * Order Number:7 has been cancelled *\n * Refund has been done *"
-        ],
-        "coupon": 0,
+        "message": [],
         "currency": "\u20aaILS"
     },
     {
@@ -37,7 +30,6 @@
         "payment": null,
         "user_type": "Client",
         "message": [],
-        "coupon": 5,
         "currency": "\u20aaILS"
     },
     {
@@ -52,7 +44,6 @@
             "\n * Thank you for your purchase!,  Order number: 12 has been received! *",
             "\n * Thank you for your purchase!,  Order number: 13 has been received! *"
         ],
-        "coupon": 5,
         "currency": "\u20aaILS"
     },
     {
@@ -68,7 +59,6 @@
         },
         "user_type": "Client",
         "message": [],
-        "coupon": 10,
         "currency": "\u20aaILS"
     },
     {
@@ -91,7 +81,6 @@
         "payment": null,
         "user_type": "Client",
         "message": [],
-        "coupon": 5,
         "currency": "\u20aaILS"
     },
     {
@@ -102,7 +91,6 @@
         "payment": null,
         "user_type": "Client",
         "message": [],
-        "coupon": 5,
         "currency": "\u20aaILS"
     }
 ]

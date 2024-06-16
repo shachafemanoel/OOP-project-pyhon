@@ -228,15 +228,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         for name, amount in self.orders[order_number].product_dict.items():
             if int(self.collection[name].quantity) >= 0:
                 self.collection[name].add_quantity(int(amount))
-
             self.reporting.return_products(name, amount)
-
             price = self.collection[name].get_price(amount)
             self.reporting.order_canceled(order_number, price)
-
-            client_id = self.orders[order_number].customer.user_id
-            self.users[client_id].cancel(order_number)
-
             self.reporting.best_sell_product()
 
 

@@ -114,7 +114,7 @@
             "payment_method": "Credit Card",
             "amount_of_payments": 2
         },
-        "status": "Processing",
+        "status": "Canceled",
         "product_dict": {
             "Applecharger": 2
         }

@@ -5,7 +5,7 @@
         "LaptopDell": 4,
         "airpodspro": 2,
         "iphone13": 0,
-        "Applecharger": 2,
+        "Applecharger": 0,
         "LGTV55": 1,
         "galaxy24": 1,
         "ipad": 0,
@@ -23,7 +23,9 @@
     },
     "total_update": 2,
     "sales": {
-        "coupons": {},
+        "coupons": {
+            "2020": 20
+        },
         "promotions": {},
         "category_discounts": {}
     }

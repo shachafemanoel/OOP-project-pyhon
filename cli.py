@@ -402,7 +402,7 @@ class StoreCLI:
         choice = Display.display_remove_discount()
         if choice == "1":
             category = Display.display_product_type()
-            self.store.remove_discount(category)
+            self.store.sales.remove_discount(category)
         elif choice == "2":
             product_name = self.manual_search()
             if product_name is not None and product_name != -100:
@@ -682,7 +682,7 @@ class StoreCLI:
                     self.set_address()
                     break
                 elif sub_choice == '4':
-                    self.apply_coupon_to_client(client)
+                    self.apply_coupon_to_client(client.user_id)
                 elif sub_choice == '5':
 
                     break
@@ -720,16 +720,16 @@ class StoreCLI:
             else:
                 print("\n * Invalid choice. Please try again. *\n")
 
-    def apply_coupon_to_client(self, user):
+    def apply_coupon_to_client(self, user_id):
         for i in range(3):
             amount = input("Enter coupon value: ")
             try:
                 if amount.isdigit():
-                    user.coupon = int(amount)  # Using the setter function to set the coupon value
+                    self.store.sales.add_coupon(user_id, int(amount))
                     print("\n * Coupon has been successfully updated! *")
                     break
                 else:
-                    raise ValueError("Coupon value must be a number")
+                    raise ValueError("Coupon value must be a number between 0 and 99")
             except ValueError as e:
                 print(f"\n * {e}.\nPlease enter a valid number between 0 and 99. *")
             except StoreError.InvalidInputError as e:
@@ -752,10 +752,11 @@ class StoreCLI:
                     print(f" * You have left {4 - each} tries. *\n")
         return False
     def remove_client(self):
-        print("\n * Choose which client you want to remove *")
         client_lst = self.store.client_list()
+        print(client_lst)
+        print("\n * Choose which client you want to remove *")
         choice = input("\nChoose Client ID: ")
-        if str(choice) in client_lst:
+        if choice in self.store.users.keys():
             self.store.remove_client(choice)
             print("\n * Client removed successfully *")
         else:

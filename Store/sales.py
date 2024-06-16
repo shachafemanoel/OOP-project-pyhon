@@ -1,6 +1,5 @@
 from Store.products.product import Product
-
-
+from Store.storeerror import StoreError
 class Sales:
     def __init__(self):
         """
@@ -11,9 +10,15 @@ class Sales:
         self.category_discounts = {}
 
     def add_coupon(self, customer_id, discount):
-        if customer_id in self.coupons:
-            raise ValueError("Coupon already exists for this customer.")
-        self.coupons[customer_id] = discount
+        try:
+            if 0 <= discount < 100:
+                self.coupons[customer_id] = discount
+            else:
+                raise ValueError("Invalid discount value")
+        except ValueError:
+            raise StoreError.InvalidInputError("Coupon must be a digit between 0 and 99")
+        except KeyError:
+            raise StoreError.AuthenticationError("Client not found")
 
     def get_coupon_discount(self, customer_id):
         return self.coupons.get(customer_id, 0)

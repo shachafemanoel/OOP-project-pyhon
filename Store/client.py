@@ -16,7 +16,6 @@ class Client(User):
         :param address: str, optional
         :param online: int
         :param payment: Payment object, optional
-        :param coupon: int, optional
         :param message: list, optional
         :param currency: str, optional
         :param order_history: dict, optional
@@ -129,7 +128,7 @@ class Client(User):
         '''
         :return: dictionary to JSON data
         '''
-        dict = {"message":self.__message,"coupon":self.__coupon,"currency":self.__currency}
+        dict = {"message":self.__message,"currency":self.__currency}
         dict = {**super().to_dict(),**dict}
         dict["user_type"] = "Client"
         return dict
@@ -138,4 +137,4 @@ class Client(User):
         '''
         :return: string representation of client
         '''
-        return super().__str__() + f"\nCoupon: {self.__coupon}\nOrder quantity: {len(self.order_history)} orders"
+        return super().__str__() + f"\nOrder quantity: {len(self.order_history)} orders"
