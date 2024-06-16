@@ -2,9 +2,26 @@ from Store.payment import Payment
 from Store.user import User
 from Store.order import Order
 from Store.payment_calculator import CurrencyConverter
+from Store.storeerror import StoreError
 
 class Client(User):
+    '''
+    Client class represent client in our store and attributes for Client object
+    '''
     def __init__(self, user_id, user_full_name, password, address=None, online=0, payment=None, coupon=None, message = None,currency =None,order_history=None):
+        '''
+        Client constructor
+        :param user_id: str
+        :param user_full_name: str
+        :param password: str
+        :param address: str, optional
+        :param online: int
+        :param payment: Payment object, optional
+        :param coupon: int, optional
+        :param message: list, optional
+        :param currency: str, optional
+        :param order_history: dict, optional
+        '''
         super().__init__(user_id, user_full_name, password, online, address, payment)
         if order_history is None:
             self.order_history = {}
@@ -28,53 +45,88 @@ class Client(User):
             self.__currency = "₪ILS"
     @property
     def coupon(self):
+        '''
+        :return: coupon value
+        '''
         return self.__coupon
 
     @coupon.setter
     def coupon(self, value):
-        if 0 < value < 100:
-            self.__coupon = value
-        else:
-            raise ValueError("Coupon value must be between 0 and 99")
+        """
+        Sets new coupon value
+        :param value: int
+        """
+        try:
+            if 0 <= value < 100:
+                self.__coupon = value
+            else:
+                raise ValueError("Coupon value must be between 0 and 99")
+        except ValueError as e:
+            raise StoreError.InvalidInputError(str(e))
 
-#    def use_coupon(self):
- #       self.__coupon = 0
-
-  #  def update_coupon(self, amount):
-   #     self.__coupon = amount
+    def use_coupon(self):
+        '''
+        reset coupon value to 0 after using in order
+        '''
+        self.__coupon = 0
 
     @property
     def message(self):
+        '''
+        :return: message
+        '''
         return self.__messege
 
     @message.setter
     def message(self, value):
+        '''
+        Sets new message
+        '''
         self.__messege = value
 
     def update_client(self):
-        if self.new_message > 0:
-            new = f"\n * There are {self.new_message} new notifications for you *\n"
-            for message in self.__message:
-                new += message
+        '''
+        Update client object with new message
+        :return: all messages or that there are no notifications
+        '''
+        try:
+            if self.new_message > 0:
+                new = f"\n * There are {self.new_message} new notifications for you *\n"
+                for message in self.__message:
+                    new += message
                 self.new_message = 0
                 self.__message = []
-            return f"{new}\n"
-
-        else:
-            return f"\n * There are no new notifications *\n "
-
+                return f"{new}\n"
+            else:
+                return f"\n * There are no new notifications *\n "
+        except Exception as e:
+            return f"\n * An error occurred while checking notifications: {e} *\n"
 
     @property
     def currency(self):
+        '''
+        :return: currency
+        '''
         return self.__currency
+
     @currency.setter
     def currency(self, currency):
-        if currency.upper() in CurrencyConverter.exchange_rates:
-            self.__currency = currency
-        else:
+        '''
+        Sets new currency
+        :param currency:
+        :return:
+        '''
+        try:
+            if currency.upper() in CurrencyConverter.exchange_rates:
+                self.__currency = currency
+        except:
             raise ValueError("Currency not supported")
 
     def new_status(self, order):
+        '''
+        Adding message that order status has been changed
+        :param order:
+        '''
         self.order_history[order.order_number] = order
         self.__message.append(f"\n * Order Number:{order.order_number} has been {order.status} *")
         self.new_message += 1

@@ -12,14 +12,12 @@
         "samsung": 1
     },
     "message": {
-        "orders": [
-            " \n * A new order has been placed * \n Order number: 13    total amount: 200.0 "
-        ],
+        "orders": [],
         "products": [],
         "users": []
     },
     "new_update": {
-        "orders": 1,
+        "orders": 0,
         "products": 0,
         "users": 0
     },

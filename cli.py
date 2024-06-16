@@ -189,15 +189,18 @@ class StoreCLI:
                 print("\n *Order number is not valid")
 
     def display_order_user(self):
-        print(self.user.update_client())
-        if len(self.user.order_history) > 0:
-            while True:
-                choice = Display.orders_history(self.user.list_orders_client())
-                if choice == '1':
-                  self.choice_order()
-                else:
-                    print("Return to Main menu")
-                    break
+        try:
+            print(self.user.update_client())
+            if len(self.user.order_history) > 0:
+                while True:
+                    choice = Display.orders_history(self.user.list_orders_client())
+                    if choice == '1':
+                        self.choice_order()
+                    else:
+                        print("\nReturning to Main menu")
+                        break
+        except Exception as e:
+            print(f"\n * An error occurred while displaying your orders: {e} * \n")
 
     def set_address(self):
         print(" Add a new address \n * Please enter the details *\n")
@@ -325,10 +328,13 @@ class StoreCLI:
         print(f"Your currency is:{currencies[choice]}")
 
     def set_currency(self, currency):
-        if self.cart["total_amount"] > 0:
-            CurrencyConverter.convert(self.cart["total_amount"], self.store.currency, currency)
-        self.user.currency = currency
-        self.store.change_currency(currency)
+        try:
+            if self.cart["total_amount"] > 0:
+                CurrencyConverter.convert(self.cart["total_amount"], self.store.currency, currency)
+            self.user.currency = currency
+            self.store.change_currency(currency)
+        except Exception as e:
+            print(f"An error occurred while setting currency: {e}")
 
     def change_status(self):
         print(f"{self.store.list_orders()}")
@@ -472,7 +478,6 @@ class StoreCLI:
             else:
                 return None
 
-
     def display_manage_product(self):
         print("\n * Wellcome to manage product display *\n")
         if self.store.reporting.new_update["products"] > 0:
@@ -541,7 +546,7 @@ class StoreCLI:
             high = input("Enter high price: ")
             products = self.store.price_search(low, high)
             choice = self.pick_item(products)
-            if choice != -100:
+            if choice != -100 and choice is not None:
                 print(products[choice])
             else:
                 print("\nNo product selected.")
@@ -743,12 +748,18 @@ class StoreCLI:
     def apply_coupon_to_client(self, user):
         for i in range(3):
             amount = input("Enter coupon value: ")
-            if amount.isdigit() and 0 < int(amount) < 100:
-                user.update_coupon(int(amount))
-                print("\n * Coupon has been successfully updated! *")
-                break
-            else:
-                print("\n * Invalid coupon value. Please enter a number between 1 and 99 *")
+            try:
+                if amount.isdigit():
+                    user.coupon = int(amount)  # Using the setter function to set the coupon value
+                    print("\n * Coupon has been successfully updated! *")
+                    break
+                else:
+                    raise ValueError("Coupon value must be a number")
+            except ValueError as e:
+                print(f"\n * {e}.\nPlease enter a valid number between 0 and 99. *")
+            except StoreError.InvalidInputError as e:
+                print(f"\n * {e}.\nPlease enter a valid number between 0 and 99. *")
+
             if i == 2:
                 print("* You have exceeded the maximum number of attempts *")
 

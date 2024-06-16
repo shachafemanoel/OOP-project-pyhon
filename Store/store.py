@@ -196,6 +196,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             self.reporting.best_sell_product()
         else:
             raise StoreError.ProductNotFoundError(f"Product '{product.name}' not found in the collection.")
+
     def add_item_order(self, product, how_many):
         return self.collection[product.get_key_name()].available(how_many)
 
