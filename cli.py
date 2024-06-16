@@ -387,8 +387,9 @@ class StoreCLI:
         choice = Display.display_product_type()
         discount = self.discount()
         try:
-            self.store.sale_prodduct_type(choice,discount)
+            category = self.store.sale_prodduct_type(choice,discount)
             print(f"\n* Discount has been successfully updated")
+            self.store.apply_discount_to_category(category, discount)
         except Exception as e:
             print(f"An error occurred while adding discount: {e}")
 
@@ -404,14 +405,16 @@ class StoreCLI:
     def remove_discount(self):
         choice = Display.display_discount()
         if choice == "1":
-            category = Display.display_product_type()
-            self.store.remove_product_sale(category)
+            select = Display.display_product_type()
+            category = self.store.remove_product_sale(select)
+            self.store.remove_discount_to_category(category)
+            print("\n* Discount has been successfully removed *")
         elif choice == "2":
             product_name = self.manual_search()
             if product_name is not None and product_name != -100:
                 try:
                     self.store.remove_promotion(product_name)
-                    print("Discount successfully removed")
+                    print("\n* Discount successfully removed *")
                 except Exception as e:
                     print(f"An error occurred while removing discount: {e}")
 

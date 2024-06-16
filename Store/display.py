@@ -87,8 +87,8 @@ class Display:
     @staticmethod
     def display_discount():
         print("\nChoose an option:")
-        print("\n1.  Discount from a category")
-        print("2.  Discount from a specific product")
+        print("\n1. Discount from a category")
+        print("2. Discount from a specific product")
         choice = input("\nEnter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         return choice
 

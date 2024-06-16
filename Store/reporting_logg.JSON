@@ -14,14 +14,12 @@
     "message": {
         "orders": [],
         "products": [],
-        "users": [
-            " \n * A new CLIENT has joined your store * \n full name: Nirel "
-        ]
+        "users": []
     },
     "new_update": {
         "orders": 0,
         "products": 0,
-        "users": 1
+        "users": 0
     },
     "total_update": 3,
     "sales": {
