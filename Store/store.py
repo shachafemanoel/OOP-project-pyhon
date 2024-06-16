@@ -30,11 +30,12 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def load_files(self):
         self.users = DataManager.load_users()
         collection = DataManager.load_products()
+        self.sales = DataManager.load_sales()
         for product in collection:
             self.add_product(product)
         self.orders = DataManager.load_orders(self.users)
         self.reporting = DataManager.load_reporting()
-        self.sales = DataManager.load_sales()
+
         self.order_number = len(self.orders) + 1
         for order in self.orders.values():
             if order.status != "Canceled":
@@ -58,41 +59,43 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.users[user.user_id].use_coupon()
 
 
-    def remove_product_sale(self,choice,discount):
+    def remove_product_sale(self,choice):
         category = ""
         if choice == "1":
-            category = type(Tv).__name__
+            category = "Tv"
         elif choice == "2":
-            category = type(Computer).__name__
+            category = "Computer"
         elif choice == "3":
-            category = type(Phone).__name__
+            category = "Phone"
         elif choice == "4":
-            category = type(Product).__name__
+            category = "Product"
         try:
-            self.sales.remove_category_discount(category, discount)
+            self.sales.remove_category_discount(category.upper())
         except ValueError:
             raise StoreError.InvalidInputError
     def sale_prodduct_type(self, choice, discount):
         category = ""
         if choice =="1":
-            category = type(Tv).__name__
+            category = "Tv"
         elif choice =="2":
-            category = type(Computer).__name__
+            category = "Computer"
         elif choice =="3":
-            category = type(Phone).__name__
+            category = "Phone"
         elif choice =="4":
-            category = type(Product).__name__
+            category = "Product"
         try:
-            self.sales.add_category_discount(category, discount)
+            self.sales.add_category_discount(category.upper(), discount)
         except ValueError :
             raise StoreError.InvalidInputError
-    def new_promotion(self, product):
+    def new_promotion(self, product,discount):
         try:
-            self.sales.add_promotion(product.get_key_name())
+            self.collection[product.get_key_name()].update_price(discount)
+            self.sales.add_promotion(product.get_key_name(),discount)
         except ValueError :
             raise ValueError
     def remove_promotion(self,item):
         try:
+            self.collection[item.get_key_name()].remove_discount()
             self.sales.remove_promotion(item.get_key_name())
         except ValueError:
             raise StoreError.InvalidInputError
@@ -178,7 +181,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                 new_user = User(**user)
             elif user_type == 'CLIENT':
                 new_user = Client(**user)
-                new_user.coupon = 5
+                self.sales.add_coupon(new_user.user_id,5)
             new_user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
             self.users[new_user.user_id] = new_user
             self.reporting.new_user(user_type,new_user.user_full_name)

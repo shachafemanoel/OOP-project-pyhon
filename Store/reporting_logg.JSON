@@ -26,7 +26,11 @@
         "coupons": {
             "2020": 20
         },
-        "promotions": {},
-        "category_discounts": {}
+        "promotions": {
+            "ipad": 40
+        },
+        "category_discounts": {
+            "COMPUTER": 20
+        }
     }
 }

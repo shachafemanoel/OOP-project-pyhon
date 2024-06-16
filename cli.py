@@ -1,4 +1,5 @@
 from Store.payment_calculator import CurrencyConverter
+from Store.payment_calculator import InstallmentPayment
 from Store.store import Store
 from Store.user import User
 from Store.client import Client
@@ -357,13 +358,13 @@ class StoreCLI:
         if choice is None:
             choice = Display.display_product_type()
         for i in range(5):
+            choice = Display.display_product_type()
             if choice in '1234':
                 return self.store.search(None, choice, None)
             elif choice == "0":
                     return None
             else:
                 print("Try Again")
-                choice = Display.display_product_type()
         return None
 
     def discount(self):
@@ -375,42 +376,44 @@ class StoreCLI:
             discount = 0
             return discount
 
+    def choice_discount(self):
+        choice = Display.display_discount()
+        if choice == '1':
+            self.add_discount()
+        if choice == '2':
+            self.add_promotion()
+
     def add_discount(self):
         choice = Display.display_product_type()
-        category = self.product_type(choice)
-        if category is not None :
-            if category[0].sale == 0:
-                discount = self.discount()
-                self.store.sale_prodduct_type(choice,discount)
-                self.store.sale_prodduct_type(category, discount)
-            else:
-                category = None
-                print("There is a sale for this department")
-        if category is None :
-            print("\n1. Yes")
-            print("For exit, enter a different value from the options ")
-            choice = input("\nEnter your choice: ")
-            if choice == '1':
-                product = self.manual_search()
-                if product is not None and product != -100:
-                    discount = self.discount()
-                    self.store.new_discount(product, discount)
-            else:
-                print("\nGood bye")
+        discount = self.discount()
+        try:
+            self.store.sale_prodduct_type(choice,discount)
+            print(f"\n* Discount has been successfully updated")
+        except Exception as e:
+            print(f"An error occurred while adding discount: {e}")
+
+    def add_promotion(self):
+        product = self.manual_search()
+        if product is not None and product != -100:
+            discount = self.discount()
+            try:
+                self.store.new_promotion(product, discount)
+            except Exception as e:
+                print(f"An error occurred while adding promotion: {e}")
 
     def remove_discount(self):
-        choice = Display.display_remove_discount()
+        choice = Display.display_discount()
         if choice == "1":
             category = Display.display_product_type()
-            self.store.sales.remove_discount(category)
+            self.store.remove_product_sale(category)
         elif choice == "2":
             product_name = self.manual_search()
             if product_name is not None and product_name != -100:
-                self.store.remove_discount(product_name)
-            else:
-                print("\nProduct not found.")
-        else:
-            print("Invalid choice.")
+                try:
+                    self.store.remove_promotion(product_name)
+                    print("Discount successfully removed")
+                except Exception as e:
+                    print(f"An error occurred while removing discount: {e}")
 
     def display_manage_order(self):
         print("\n * Wellcome to manage order display *\n")
@@ -490,7 +493,7 @@ class StoreCLI:
             elif sub_choice == '2':
                 self.remove_product()
             elif sub_choice == '3':
-                self.add_discount()
+                self.choice_discount()
             elif sub_choice == '4':
                 self.remove_discount()
             elif sub_choice == '5':
@@ -820,6 +823,7 @@ class StoreCLI:
                 self.store.place_order(new_order)
                 print(f" * The order was successfully completed * ")
                 print(self.store.orders[self.store.order_number-1])
+
                 self.empty_cart()
                 if coupon is True:
                     self.store.sales.use_coupon_discount(self.user.user_id)

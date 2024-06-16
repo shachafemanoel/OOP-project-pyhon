@@ -1,5 +1,6 @@
 from Store.payment import Payment
 from Store.payment_calculator import CurrencyConverter
+from Store.payment_calculator import InstallmentPayment
 class Order:
     def __init__(self, order_number, product_dict, payment, total_amount,address = None ,status=None,customer=None):
         self.order_number = order_number
@@ -33,8 +34,13 @@ class Order:
         self.status = 'completed'
 
     def converter(self):
-        return f" Total amount: {CurrencyConverter.convert(self.total_amount, "₪ILS", self.currency) } {self.currency}"
-
+        pay =  f" Total amount: {CurrencyConverter.convert(self.total_amount, "₪ILS", self.currency) } {self.currency}"
+        if self.payment.amount_of_payments > 1:
+            pay +=self.payments()
+        return pay
+    def payments(self):
+        pay = CurrencyConverter.convert(self.total_amount, "₪ILS", self.currency)
+        return f"\nEstimated payment each month:{InstallmentPayment.calculate_installment_amount(pay,self.payment.amount_of_payments)} {self.currency}"
     def pay_order(self, payment):
         self.payment = payment
         self.status = "Processing"

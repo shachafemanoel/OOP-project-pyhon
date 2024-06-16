@@ -4,13 +4,13 @@ from Store.storeerror import StoreError
 
 
 class Product:
-    def __init__(self, name, model, description, price, quantity,sale =None ,rate=None):  #
+    def __init__(self, name, model, description, price, quantity,rate=None):  #
         self.name = name  # שם המוצר
         self.model = model  # דגם
         self.description = description  # תיאור המוצר
         self.original_price = price
         self.price = price  # מחיר המוצר
-        self.sale = 0 if sale is None else sale
+        self.sale = 0
         self.quantity = quantity  # הכמות המוצר
         self.rate = Rating(rate) if rate is not None else Rating()
         self.currency = "₪ILS"
@@ -60,7 +60,6 @@ class Product:
         dict["model"] = self.model
         dict['description'] = self.description
         dict['price'] = self.original_price
-        dict['sale'] = self.sale
         dict['quantity'] = self.quantity
         dict['rate'] = self.rate.ratings
         return dict
@@ -68,9 +67,11 @@ class Product:
     def get_price_in_user_currency(self, quantity=1):
         price = ""
         if self.sale > 0:
-            price += f" Original price: {CurrencyConverter.convert(self.original_price, "₪ILS", self.currency) * quantity} {self.currency} -{self.sale}% Off "
-        price += f"{CurrencyConverter.convert(self.price, "₪ILS", self.currency) * quantity} {self.currency}"
+            price += f" Original price:{CurrencyConverter.convert(self.original_price, "₪ILS", self.currency) * quantity} {self.currency} \n-{self.sale}% Off "
+        price += f"Price: {CurrencyConverter.convert(self.price, "₪ILS", self.currency) * quantity} {self.currency}"
         return price
 
+    def product_type(self):
+        return "PRODUCT"
     def __str__(self):
         return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}\n {self.rate}"

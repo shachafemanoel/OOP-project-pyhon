@@ -184,9 +184,12 @@ class Sales:
         Returns:
         float: The highest discount percentage available for the product.
         """
-        category_discount = self.get_category_discount(type(product).__name__)
-        promotion_discount = self.get_promotion_discount(product.name)
-        return max(category_discount, promotion_discount)
+        category_discount = self.get_category_discount(product.product_type().upper())
+        promotion_discount = self.get_promotion_discount(product.get_key_name())
+        if category_discount > promotion_discount:
+            return category_discount
+        else:
+            return promotion_discount
 
     def sales_to_dict(self):
         return {

@@ -2,9 +2,9 @@ from Store.products.product import Product
 
 
 class Tv(Product):
-    def __init__(self, name=None, model=None, description=None, price=None, quantity=None, size=None, tv_type=None,
-                 rate=None, sale=0):
-        super().__init__(name, model, description, price, quantity, rate, sale)
+    def __init__(self, name, model, description, price, quantity, size=None, tv_type=None,
+                 rate=None):
+        super().__init__(name, model, description, price, quantity, rate)
         self.size = size
         self.tv_type = tv_type
 
@@ -17,6 +17,7 @@ class Tv(Product):
 
         dict["product_type"] = "Tv"
         return dict
-
+    def product_type(self):
+        return "TV"
     def __str__(self):
-        return f"======================================\nName: {self.name}\nModel: {self.model}\ndisplay size: {self.size}-Inch\nDescription: {self.description}\nPrice: {self.get_price_in_user_currency()}\n{self.rate}"
+        return f"======================================\nName: {self.name}\nModel: {self.model}\ndisplay size: {self.size}-Inch\nDescription: {self.description}\n {self.get_price_in_user_currency()}\n{self.rate}"

@@ -85,10 +85,10 @@ class Display:
         select = input("\nEnter your choice: ")
         return select
     @staticmethod
-    def display_remove_discount():
+    def display_discount():
         print("\nChoose an option:")
-        print("\n1. Remove discount from a category")
-        print("2. Remove discount from a specific product")
+        print("\n1.  Discount from a category")
+        print("2.  Discount from a specific product")
         choice = input("\nEnter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         return choice
 
