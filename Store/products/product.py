@@ -131,8 +131,8 @@ class Product:
         '''
         price = ""
         if self.sale > 0:
-            price += f" Original price: {CurrencyConverter.convert(self.original_price,"₪ILS",self.currency) * quantity} {self.currency} -{self.sale}% Off "
-        price += f"{CurrencyConverter.convert(self.price, "₪ILS",self.currency)*quantity} {self.currency}"
+            price += f" Original price:{CurrencyConverter.convert(self.original_price, "₪ILS", self.currency) * quantity} {self.currency} \n-{self.sale}% Off "
+        price += f"Price: {CurrencyConverter.convert(self.price, "₪ILS", self.currency) * quantity} {self.currency}"
         return price
 
     def product_type(self):
