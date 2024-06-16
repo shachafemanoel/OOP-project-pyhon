@@ -2,7 +2,7 @@ import unittest
 from Store.reporting import Reporting
 from Store.order import Order
 from Store.client import Client
-from Store.product import Product
+from Store.products.product import Product
 
 
 class TestReporting(unittest.TestCase):

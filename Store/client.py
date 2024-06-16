@@ -1,14 +1,13 @@
-from Store.payment import Payment
 from Store.user import User
-from Store.order import Order
-from Store.payment_calculator import CurrencyConverter
+from Store.user import User
+
 from Store.storeerror import StoreError
 
 class Client(User):
     '''
     Client class represent client in our store and attributes for Client object
     '''
-    def __init__(self, user_id, user_full_name, password, address=None, online=0, payment=None, coupon=None, message = None,currency =None,order_history=None):
+    def __init__(self, user_id, user_full_name, password, address=None, online=0, payment=None,message = None,currency =None,order_history=None):
         '''
         Client constructor
         :param user_id: str
@@ -34,41 +33,13 @@ class Client(User):
             self.__message = []
             self.new_message = 0
 
-        if coupon is not None:
-            self.__coupon = coupon
-        else:
-            self.__coupon = 0
+
 
         if currency is not None:
             self.__currency = currency
         else:
             self.__currency = "₪ILS"
-    @property
-    def coupon(self):
-        '''
-        :return: coupon value
-        '''
-        return self.__coupon
 
-    @coupon.setter
-    def coupon(self, value):
-        """
-        Sets new coupon value
-        :param value: int
-        """
-        try:
-            if 0 <= value < 100:
-                self.__coupon = value
-            else:
-                raise ValueError("Coupon value must be between 0 and 99")
-        except ValueError as e:
-            raise StoreError.InvalidInputError(str(e))
-
-    def use_coupon(self):
-        '''
-        reset coupon value to 0 after using in order
-        '''
-        self.__coupon = 0
 
     @property
     def message(self):

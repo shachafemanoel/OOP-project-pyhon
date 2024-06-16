@@ -1,32 +1,32 @@
-from Store.rating import Rating
 from Store.payment_calculator import CurrencyConverter
+from Store.rating import Rating
 from Store.storeerror import StoreError
+
+
 class Product:
-    def __init__(self, name, model, description,price,quantity,rate=None,sale=0):  #
+    def __init__(self, name, model, description, price, quantity,sale =None ,rate=None):  #
         self.name = name  # שם המוצר
-        self.model = model # דגם
+        self.model = model  # דגם
         self.description = description  # תיאור המוצר
         self.original_price = price
         self.price = price  # מחיר המוצר
-        self.sale = sale
-        if self.sale > 0:
-            self.update_price(sale)
+        self.sale = 0 if sale is None else sale
         self.quantity = quantity  # הכמות המוצר
-        self.rate = Rating(rate)
+        self.rate = Rating(rate) if rate is not None else Rating()
         self.currency = "₪ILS"
 
     def get_key_name(self):
         return self.name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     def get_model_name(self):
-        return self.model.replace(" ", "").translate(str.maketrans("","", ".,!?;:"))
+        return self.model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    def buy_product(self, many):  #הוצאת כמות מוצרים מהמלאי
+    def buy_product(self, many):  # הוצאת כמות מוצרים מהמלאי
         self.quantity -= many
 
     def update_price(self, discount):
-            self.sale = discount
-            self.price -= (self.original_price * float(discount / 100))
+        self.sale = discount
+        self.price -= (self.original_price * float(discount / 100))
 
     def remove_discount(self):
         self.price = self.original_price
@@ -44,21 +44,14 @@ class Product:
     def add_quantity(self, quantity):
         self.quantity += quantity
 
-    def available(self, how_many): # בדיקת זמינות של מוצר מסוים
-        try:
-            how_many = int(how_many)
-            if self.quantity >= how_many:
-                if  how_many > 0:
-                    return True
-                else:
-                    raise StoreError.InvalidInputError
-            else:
-                raise StoreError.NotInStockError(f"Quantity available in stock for the product {self.quantity} ")
-        except ValueError:
-            raise StoreError.InvalidInputError("Product quantity must be an integer")
+    def available(self, how_many):  # בדיקת זמינות של מוצר מסוים
+           if how_many >self.quantity:
+              return False
+           else:
+               return True
 
     def add_review(self, stars, review):
-         self.rate.add_review(stars, review)
+        self.rate.add_review(stars, review)
 
     def product_to_dict(self):
         dict = {}
@@ -72,11 +65,12 @@ class Product:
         dict['rate'] = self.rate.ratings
         return dict
 
-    def get_price_in_user_currency(self,quantity = 1):
+    def get_price_in_user_currency(self, quantity=1):
         price = ""
         if self.sale > 0:
-            price += f" Original price: {CurrencyConverter.convert(self.original_price,"₪ILS",self.currency) * quantity} {self.currency} -{self.sale}% Off "
-        price += f"{CurrencyConverter.convert(self.price, "₪ILS",self.currency)*quantity} {self.currency}"
+            price += f" Original price: {CurrencyConverter.convert(self.original_price, "₪ILS", self.currency) * quantity} {self.currency} -{self.sale}% Off "
+        price += f"{CurrencyConverter.convert(self.price, "₪ILS", self.currency) * quantity} {self.currency}"
         return price
+
     def __str__(self):
         return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}\n {self.rate}"

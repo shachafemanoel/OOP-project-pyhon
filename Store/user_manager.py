@@ -1,6 +1,7 @@
-from Store.user import User
 from Store.client import Client
 from Store.json import DataManager
+from Store.user import User
+
 
 class UserManager:
     def __init__(self):

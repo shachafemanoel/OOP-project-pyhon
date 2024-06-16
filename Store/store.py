@@ -1,13 +1,14 @@
-from Store.order import Order
-from Store.product import Product
-from Store.user import User
-from Store.reporting import Reporting
 from Store.client import Client
-from Store.tv import Tv
-from Store.phone import Phone
-from Store.computer import Computer
 from Store.json import DataManager
+from Store.order import Order
+from Store.products.computer import Computer
+from Store.products.phone import Phone
+from Store.products.product import Product
+from Store.products.tv import Tv
+from Store.reporting import Reporting
 from Store.storeerror import StoreError
+from Store.user import User
+from Store.sales import Sales
 
 class Store:  # מחלקה שמממשת את החנות עצמה
 
@@ -18,9 +19,8 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.orders = {}  # הזמנות החנות
         self.order_number = 1  # מספר הזמנה
         self.reporting = Reporting()
-        self.sales = []
+        self.sales = Sales()
         self.currency = "₪ILS"
-
     def add_review(self,product, stars, review=None):
         if product in self.collection:
             self.collection[product].add_review(stars,review)
@@ -57,41 +57,45 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def use_coupon(self,user):
         self.users[user.user_id].use_coupon()
 
-    def sale_prodduct_type(self, product_type, discount):
-        if product_type == "1":
-               self.sales.append(f" * -{discount}% discount on all TVs * ")
-        elif product_type == "2":
-            self.sales.append(f" * -{discount}% discount on all Computers * ")
-        elif product_type == "3":
-            self.sales.append(f" * -{discount}% discount on all Phones * ")
-        elif product_type == "4":
-            self.sales.append(f" * -{discount}% discount on all Accessories * ")
 
-    def new_discount(self, lst, discount):
-        if 0 < discount < 100:
-            if isinstance(lst, list):   # הנחה על מחלקה שלמה
-                for product in self.collection.values():
-                    if product in lst:
-                        product.update_price(discount)
-
-            if isinstance(lst, Product) or isinstance(lst, Tv) or isinstance(lst, Computer) or isinstance(lst, Phone) :#הנחה על מוצר ספציפי
-                    product = lst
-                    product.update_price(discount)
-                    self.collection[product.get_key_name()] = product
-
-    def remove_discount(self, item=None):
-        if item:
-            self.sales = []
-            for product in self.collection.values():
-               if isinstance(product, Product):
-                    product.remove_discount()
-                    return True
-        elif isinstance(item, Product):
-            item.remove_discount()
-            return True
-        else:
-            print("Invalid item.")
-
+    def remove_product_sale(self,choice,discount):
+        category = ""
+        if choice == "1":
+            category = type(Tv).__name__
+        elif choice == "2":
+            category = type(Computer).__name__
+        elif choice == "3":
+            category = type(Phone).__name__
+        elif choice == "4":
+            category = type(Product).__name__
+        try:
+            self.sales.remove_category_discount(category, discount)
+        except ValueError:
+            raise StoreError.InvalidInputError
+    def sale_prodduct_type(self, choice, discount):
+        category = ""
+        if choice =="1":
+            category = type(Tv).__name__
+        elif choice =="2":
+            category = type(Computer).__name__
+        elif choice =="3":
+            category = type(Phone).__name__
+        elif choice =="4":
+            category = type(Product).__name__
+        try:
+            self.sales.add_category_discount(category, discount)
+        except ValueError :
+            raise StoreError.InvalidInputError
+    def new_promotion(self, product):
+        try:
+            self.sales.add_promotion(product.get_key_name())
+        except ValueError :
+            raise ValueError
+    def remove_promotion(self,item):
+        try:
+            self.sales.remove_promotion(item.get_key_name())
+        except ValueError:
+            raise StoreError.InvalidInputError
     def change_currency(self,currency):
         if currency != self.currency:
             self.currency = currency
@@ -148,11 +152,11 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                 new_product = Phone(**product_dict)
             else:
                 new_product = Product(**product_dict)
-
+            discount = self.sales.get_product_discount(new_product)
+            if discount > 0:
+                new_product.update_price(discount)
             self.collection[new_product.get_key_name()] = new_product
-            return True
-        else:
-            return False
+
 
     def client_list(self):
         if len(self.users) > 0:

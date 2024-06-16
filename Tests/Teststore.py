@@ -3,10 +3,8 @@ from Store.store import Store
 from Store.user import User
 from Store.client import Client
 from Store.reporting import Reporting
-from Store.product import Product
-from Store.tv import Tv
-from Store.computer import Computer
-from Store.phone import Phone
+from Store.products.tv import Tv
+from Store.products.computer import Computer
 from Store.order import Order
 
 class TestStore(unittest.TestCase):

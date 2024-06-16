@@ -1,17 +1,15 @@
-
-from Store.user import User
 from Store.payment import Payment
 from Store.payment_calculator import CurrencyConverter
 class Order:
-    def __init__(self, customer=None, order_number=None, product_dict=None, payment=None, total_amount=None, status=None):
+    def __init__(self, order_number, product_dict, payment, total_amount,address = None ,status=None,customer=None):
         self.order_number = order_number
         self.customer = customer
-        self.total_amount = total_amount if total_amount is not None else 0
-        self.payment = Payment(**payment) if payment is not None else Payment()
+        self.total_amount = total_amount
+        self.payment = Payment(**payment)
         self.status = "Processing" if status is None else status
-        self.product_dict = product_dict if product_dict is not None else {}
+        self.product_dict = product_dict
         self.currency = "₪ILS"
-
+        self.address = address
     def change_status(self, choice: int):
         if choice == 1:
             self.status = 'Shipped'

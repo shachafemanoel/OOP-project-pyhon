@@ -22,5 +22,9 @@
         "users": 0
     },
     "total_update": 2,
-    "sales": []
+    "sales": {
+        "coupons": {},
+        "promotions": {},
+        "category_discounts": {}
+    }
 }

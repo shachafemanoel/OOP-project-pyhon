@@ -1,16 +1,12 @@
 import json
 import logging
-from Store.order import Order
-from Store.product import Product
-from Store.user import User
+
 from Store.client import Client
+from Store.order import Order
 from Store.payment import Payment
 from Store.reporting import Reporting
-from Store.tv import Tv
-from Store.phone import Phone
-from Store.computer import Computer
-from Store.rating import Rating
-
+from Store.user import User
+from Store.sales import Sales
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - LEVEL - %(message)s')
 
@@ -126,7 +122,9 @@ class DataManager:
     @staticmethod
     def load_sales():
         sales_data = DataManager.load_data('Store/reporting_logg.JSON')
-        sales = []
-        if sales_data:
-            sales = sales_data['sales']
+        sales = Sales()
+        if sales_data.get("sales"):
+            sales.coupons = sales_data["sales"]["coupons"]
+            sales.promotions = sales_data["sales"]["promotions"]
+            sales.category_discounts = sales_data["sales"]["category_discounts"]
         return sales

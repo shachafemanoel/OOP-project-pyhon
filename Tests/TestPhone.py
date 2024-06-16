@@ -1,6 +1,5 @@
 import unittest
-from Store.product import Product
-from Store.phone import Phone
+from Store.products.phone import Phone
 
 class TestPhone(unittest.TestCase):
 

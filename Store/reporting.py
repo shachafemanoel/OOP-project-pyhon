@@ -1,5 +1,5 @@
 
-
+from Store.sales import Sales
 class Reporting:
     def __init__(self):
         self.revenue = 0
@@ -111,7 +111,7 @@ class Reporting:
             'message': self.message,
             'new_update': self.new_update,
             "total_update": self.total_update,
-            'sales': sales
+            'sales': sales.sales_to_dict()
         }
 
         return reporting_data

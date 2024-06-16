@@ -1,5 +1,5 @@
 import unittest
-from Store.product import Product
+from Store.products.product import Product
 from Store.rating import Rating
 
 class TestProduct(unittest.TestCase):

@@ -1,5 +1,5 @@
 from Store.payment_calculator import CurrencyConverter
-
+from Store.cart import Cart
 
 class Display:
     @staticmethod
@@ -18,8 +18,8 @@ class Display:
         if new_message > 0:
             print(f"\n * There are {new_message} new notifications on orders * \n")
         print("\n1. Update details")
-        if cart["count_item"] > 0:
-            print(f'2. Cart({cart["count_item"]})')
+        if cart.count_item > 0:
+            print(f'2. Cart({cart.count_item}')
         else:
             print("2. Cart(0)")
         if len(sales) > 0:
@@ -47,8 +47,8 @@ class Display:
     def display_order(cart):
         print("\n * Order menu *")
         print("\n1. Catalog ")
-        if cart["total_amount"] > 0:
-            print(f"2. Go to Cart({cart["count_item"]})")
+        if cart.total_amount > 0:
+            print(f"2. Go to Cart({cart.count_item})")
         print("3. Exit ")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -74,6 +74,7 @@ class Display:
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
+    @staticmethod
     def advanced_search():
         print("ֿ\n*****Advanced search system****\n")
         print("1. Search by Name")
@@ -114,19 +115,16 @@ class Display:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod
-    def cart_display(currency, cart):
-        print("\n * Shopping Cart *\n")
-        if cart["total_amount"] > 0:
-            print(cart["product_dict"])
-            print(f"{CurrencyConverter.convert(cart["total_amount"],"₪ILS",currency)} {currency}")
+    def cart_display(cart):
+            print("\n * Shopping Cart *\n")
+            print(cart)
             print("\n1. Proceed to checkout ")
             print("2. Change")
             print("3. Empty the cart")
             print("4. Exit")
             choice = input("\nEnter your choice: ")
             return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-        else:
-            return 4
+
 
     @staticmethod
     def orders_history(list_orders_client):

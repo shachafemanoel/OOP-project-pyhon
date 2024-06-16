@@ -1,7 +1,10 @@
-from Store.product import Product
+from Store.products.product import Product
+
+
 class Computer(Product):
-    def __init__(self, name =None, model=None, description=None, price=None, quantity=None, size=None, storage=None, chip=None,rate = None,sale=0):
-        super().__init__(name, model, description, price, quantity,rate,sale)
+    def __init__(self, name=None, model=None, description=None, price=None, quantity=None, size=None, storage=None,
+                 chip=None, rate=None, sale=0):
+        super().__init__(name, model, description, price, quantity, rate, sale)
         self.size = size
         self.storage = storage
         self.chip = chip
@@ -13,7 +16,7 @@ class Computer(Product):
             "chip": self.chip,
         }
 
-        dict={**super().product_to_dict(),**dict}
+        dict = {**super().product_to_dict(), **dict}
 
         dict["product_type"] = "Computer"
         return dict

@@ -1,8 +1,9 @@
-from Store.product import Product
-from Store.tv import Tv
-from Store.phone import Phone
-from Store.computer import Computer
 from Store.json import DataManager
+from Store.products.computer import Computer
+from Store.products.phone import Phone
+from Store.products.product import Product
+from Store.products.tv import Tv
+
 
 class ProductManager:
     def __init__(self):

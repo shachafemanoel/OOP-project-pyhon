@@ -1,7 +1,7 @@
 import unittest
 from Store.order import Order
 from Store.client import Client
-from Store.product import Product
+from Store.products.product import Product
 from Store.payment import Payment
 
 class TestOrder(unittest.TestCase):

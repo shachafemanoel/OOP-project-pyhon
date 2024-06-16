@@ -2,9 +2,17 @@ class Rating:
     def __init__(self, ratings=None):
         if ratings is None:
             self.ratings = {1: [], 2: [], 3: [], 4: [], 5: []}
-        elif type(ratings) is dict:
+        else:
             self.ratings = ratings
 
+
+    @property
+    def rating(self):
+        return self.ratings
+    @rating.setter
+    def rating(self, ratings):
+        if isinstance(ratings, dict):
+            self.ratings = ratings
     def add_review(self, stars, review=None,):
         if review is None or review.strip() == "":
             review = "No review provided"

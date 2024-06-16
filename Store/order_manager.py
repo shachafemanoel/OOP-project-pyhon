@@ -1,4 +1,3 @@
-from Store.order import Order
 from Store.json import DataManager
 
 class OrderManager:

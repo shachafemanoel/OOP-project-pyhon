@@ -1,6 +1,5 @@
 import unittest
-from Store.product import Product
-from Store.tv import Tv
+from Store.products.tv import Tv
 
 class TestTv(unittest.TestCase):
 
