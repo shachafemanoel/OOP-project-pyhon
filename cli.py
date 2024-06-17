@@ -349,13 +349,13 @@ class StoreCLI:
         return None
 
     def discount(self):
-        discount = input("Enter amount of % for discount: ")
-        if discount.isdigit():
+        try:
+            discount = input("Enter amount of % for discount: ")
             discount = int(discount)
             return discount
-        else:
-            discount = 0
-            return discount
+        except ValueError:
+            raise StoreError.InvalidInputError("Discount amount must be an integer")
+
 
     def choice_discount(self):
         choice = Display.display_discount()
@@ -366,12 +366,12 @@ class StoreCLI:
 
     def add_discount(self):
         choice = Display.display_product_type()
-        discount = self.discount()
         try:
+            discount = self.discount()
             category = self.store.sale_prodduct_type(choice,discount)
             print(f"\n* Discount has been successfully updated")
             self.store.apply_discount_to_category(category, discount)
-        except Exception as e:
+        except StoreError.InvalidInputError as e:
             print(f"An error occurred while adding discount: {e}")
 
     def add_promotion(self):

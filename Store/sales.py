@@ -69,10 +69,10 @@ class Sales:
         category_name (str): The name of the category.
         discount (float): The discount percentage (e.g., 0.10 for 10% off).
         """
-        if category_name in self.category_discounts:
-            raise ValueError("Discount for this category already exists.")
-        self.category_discounts[category_name] = discount
-
+        if 0<discount<100:
+            self.category_discounts[category_name] = discount
+        else:
+            raise StoreError.InvalidInputError("Invalid discount value")
     def remove_category_discount(self, category_name):
         """
         Remove a discount for a category.

@@ -58,6 +58,7 @@ class Product:
         :return: updated price relating to coupon or discount
         '''
         self.sale = discount
+        self.price = self.original_price
         self.price -= (self.original_price * float(discount / 100))
 
     def remove_discount(self):

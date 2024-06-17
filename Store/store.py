@@ -83,7 +83,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         try:
             self.sales.remove_category_discount(category.upper())
             return category
-        except ValueError:
+        except StoreError:
             raise StoreError.InvalidInputError()
 
     def sale_prodduct_type(self, choice, discount):
@@ -101,13 +101,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         try:
             self.sales.add_category_discount(category.upper(), discount)
             return category
-        except ValueError:
-            raise StoreError.InvalidInputError
+        except ValueError as e:
+            raise e
 
     def new_promotion(self, product,discount):
         try:
-            self.collection[product.get_key_name()].update_price(discount)
+
             self.sales.add_promotion(product.get_key_name(),discount)
+            self.collection[product.get_key_name()].update_price(self.sales.get_product_discount(self.collection[product.get_key_name()]))
         except ValueError :
             raise ValueError
     def remove_promotion(self,item):

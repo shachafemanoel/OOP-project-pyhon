@@ -68,12 +68,10 @@ class Reporting:
         if len(self.sold_products) > 0:
             sorted_sold_products = sorted(self.sold_products.items(), key=lambda item: item[1], reverse=True)
             top_three = sorted_sold_products[:3]
-            top_three_names = [product[0] for product in top_three]
-            return ", ".join(top_three_names)
+            top_three_names = [f"{index + 1}. {product[0]}" for index, product in enumerate(top_three)]
+            return " \n ".join(top_three_names)
         else:
             return "No products have been sold yet."
-
-
 
     def get_sales_report_string(self):
         # המרת הנתונים לרשימה של tuples
@@ -122,6 +120,6 @@ class Reporting:
         self.total_update += 1
     def __str__(self):
 
-         return f" \n    **** Reporting summary **** \n* {self.best_sell_product()}is the best selling product *\n{self.get_sales_report_string()}"
+         return f" \n    **** Reporting summary **** \n* Top selling products * \n{self.best_sell_product()} \n{self.get_sales_report_string()}"
 
 
