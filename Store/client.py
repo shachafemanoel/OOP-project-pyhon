@@ -1,14 +1,14 @@
 from Store.payment_calculator import CurrencyConverter
 from Store.user import User
-from Store.user import User
 
-from Store.storeerror import StoreError
 
 class Client(User):
     '''
     Client class represent client in our store and attributes for Client object
     '''
-    def __init__(self, user_id, user_full_name, password, address=None, online=0, payment=None,message = None,currency =None,order_history=None):
+
+    def __init__(self, user_id, user_full_name, password, address=None, online=0, payment=None, message=None,
+                 currency=None, order_history=None):
         '''
         Client constructor
         :param user_id: str
@@ -33,13 +33,10 @@ class Client(User):
             self.__message = []
             self.new_message = 0
 
-
-
         if currency is not None:
             self.__currency = currency
         else:
             self.__currency = "₪ILS"
-
 
     @property
     def message(self):
@@ -108,7 +105,8 @@ class Client(User):
         :param order:
         :return:
         '''
-        self.__message.append(f"\n * Thank you for your purchase!,  Order number: {order.order_number} has been received! *")
+        self.__message.append(
+            f"\n * Thank you for your purchase!,  Order number: {order.order_number} has been received! *")
         self.new_message += 1
 
     def list_orders_client(self):
@@ -129,8 +127,8 @@ class Client(User):
         '''
         :return: dictionary to JSON data
         '''
-        dict = {"message":self.__message,"currency":self.__currency}
-        dict = {**super().to_dict(),**dict}
+        dict = {"message": self.__message, "currency": self.__currency}
+        dict = {**super().to_dict(), **dict}
         dict["user_type"] = "Client"
         return dict
 

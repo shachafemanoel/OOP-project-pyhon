@@ -1,4 +1,5 @@
 import unittest
+
 from Store.client import Client
 from Store.order import Order
 from Store.payment import Payment
@@ -31,13 +32,16 @@ class TestClient(unittest.TestCase):
     def test_new_status(self):
         self.client.new_status(self.order1)
         self.assertIn(self.order1.order_number, self.client.order_history)
-        self.assertIn(f"\n *Order Number:{self.order1.order_number} has been {self.order1.status} *", self.client.messege)
+        self.assertIn(f"\n *Order Number:{self.order1.order_number} has been {self.order1.status} *",
+                      self.client.messege)
         self.assertEqual(self.client.new_messege, 1)
 
     def test_new_order(self):
         self.client.new_order(self.order2)
         self.assertIn(self.order2.order_number, self.client.order_history)
-        self.assertIn(f"\n * Thank you for your purchase!,  Order number: {self.order2.order_number} has been received! *", self.client.messege)
+        self.assertIn(
+            f"\n * Thank you for your purchase!,  Order number: {self.order2.order_number} has been received! *",
+            self.client.messege)
         self.assertEqual(self.client.new_messege, 1)
 
     def test_list_orders_client(self):

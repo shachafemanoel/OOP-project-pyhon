@@ -1,11 +1,13 @@
 import unittest
+
+from Store.client import Client
+from Store.order import Order
+from Store.products.computer import Computer
+from Store.products.tv import Tv
+from Store.reporting import Reporting
 from Store.store import Store
 from Store.user import User
-from Store.client import Client
-from Store.reporting import Reporting
-from Store.products.tv import Tv
-from Store.products.computer import Computer
-from Store.order import Order
+
 
 class TestStore(unittest.TestCase):
 
@@ -126,7 +128,8 @@ class TestStore(unittest.TestCase):
         product = Tv(name="Samsung TV", price=500, quantity=10, model="QLED")
         self.store.collection[product.get_key_name()] = product
         self.store.new_discount(product, 10)
-        self.assertEqual(self.store.collection[product.get_key_name()].price, 450)  # assuming initial price was 500 and discount is 10%
+        self.assertEqual(self.store.collection[product.get_key_name()].price,
+                         450)  # assuming initial price was 500 and discount is 10%
 
     def test_new_discount_on_product_list(self):
         product1 = Tv(name="Samsung TV1", price=500, quantity=10, model="QLED1")
@@ -134,8 +137,10 @@ class TestStore(unittest.TestCase):
         self.store.collection[product1.get_key_name()] = product1
         self.store.collection[product2.get_key_name()] = product2
         self.store.new_discount([product1, product2], 20)
-        self.assertEqual(self.store.collection[product1.get_key_name()].price, 400)  # assuming initial price was 500 and discount is 20%
-        self.assertEqual(self.store.collection[product2.get_key_name()].price, 800)  # assuming initial price was 1000 and discount is 20%
+        self.assertEqual(self.store.collection[product1.get_key_name()].price,
+                         400)  # assuming initial price was 500 and discount is 20%
+        self.assertEqual(self.store.collection[product2.get_key_name()].price,
+                         800)  # assuming initial price was 1000 and discount is 20%
 
     def test_use_coupon(self):
         client = Client(user_id="client1", user_full_name="Client User", coupon=5)
@@ -199,6 +204,7 @@ class TestStore(unittest.TestCase):
         self.store.orders[1] = order
         result = self.store.list_orders()
         self.assertIn([1, "John Doe", 500, "Pending"], result)
+
 
 if __name__ == '__main__':
     unittest.main()

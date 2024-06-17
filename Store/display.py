@@ -1,12 +1,10 @@
-from Store.payment_calculator import CurrencyConverter
-from Store.cart import Cart
-
 class Display:
     '''
     The Display class contains static methods for displaying various menus
     and options in the Electronic Store Management System.
     all functions returns choice
     '''
+
     @staticmethod
     def display_user():
         '''
@@ -22,7 +20,7 @@ class Display:
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod
-    def display_client(new_message, cart,sales):
+    def display_client(new_message, cart, sales):
         '''
         Displays the client menu with options to update details
         , view cart, view collections, check orders, logout, or exit.

@@ -1,8 +1,9 @@
 import unittest
-from Store.reporting import Reporting
-from Store.order import Order
+
 from Store.client import Client
+from Store.order import Order
 from Store.products.product import Product
+from Store.reporting import Reporting
 
 
 class TestReporting(unittest.TestCase):
@@ -61,7 +62,6 @@ class TestReporting(unittest.TestCase):
             '------------------------------'
         )
         self.assertEqual(self.reporting.get_sales_report_string(), expected_report)
-
 
     def test_seen(self):
         self.reporting.new_update = 2

@@ -47,5 +47,6 @@ class InstallmentPayment:
             return total_amount / number_of_installments
 
         rate_per_installment = interest_rate / 100
-        installment_amount = (total_amount * rate_per_installment) / (1 - (1 + rate_per_installment) ** -number_of_installments)
+        installment_amount = (total_amount * rate_per_installment) / (
+                    1 - (1 + rate_per_installment) ** -number_of_installments)
         return installment_amount

@@ -1,5 +1,7 @@
 from Store.products.product import Product
 from Store.storeerror import StoreError
+
+
 class Sales:
     def __init__(self):
         """
@@ -69,10 +71,11 @@ class Sales:
         category_name (str): The name of the category.
         discount (float): The discount percentage (e.g., 0.10 for 10% off).
         """
-        if 0<discount<100:
+        if 0 < discount < 100:
             self.category_discounts[category_name] = discount
         else:
             raise StoreError.InvalidInputError("Invalid discount value")
+
     def remove_category_discount(self, category_name):
         """
         Remove a discount for a category.

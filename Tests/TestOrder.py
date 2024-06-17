@@ -1,8 +1,10 @@
 import unittest
-from Store.order import Order
+
 from Store.client import Client
-from Store.products.product import Product
+from Store.order import Order
 from Store.payment import Payment
+from Store.products.product import Product
+
 
 class TestOrder(unittest.TestCase):
     def setUp(self):
@@ -11,6 +13,7 @@ class TestOrder(unittest.TestCase):
         self.product2 = Product("Iphone13", "Pro", "Latest iPhone model", 4000, 5)
         self.payment = Payment("Client Check", "1234567890", "Credit Card", 10)
         self.order = Order(self.client, 0, {'Macbook16': 3, 'Iphone13': 2}, self.payment)
+
     def test_initialization(self):
         self.assertEqual(self.order.customer, self.client)
         self.assertEqual(self.order.total_amount, 0)
@@ -28,6 +31,7 @@ class TestOrder(unittest.TestCase):
         self.assertEqual(self.order.converter(), '\nTotal amount: 0.0 US$ \n * 0.0 US$ /mo for 10 month *')
         self.order.total_amount = 4000
         self.assertEqual(self.order.converter(), '\nTotal amount: 1063.52 US$ \n * 106.35 US$ /mo for 10 month *')
+
     def test_pay_order(self):
         self.order.pay_order("Credit Card")
         self.assertEqual(self.order.payment, "Credit Card")
@@ -44,7 +48,7 @@ class TestOrder(unittest.TestCase):
         self.assertFalse(self.order.remove(self.product1, 40))
         self.assertTrue(self.order.remove(self.product2, 0))
         self.assertEqual(len(self.order.product_dict), 0)
-        self.assertEqual(self.order.total_amount, 7000) #Total amount was 15000 and now - 2 * 4000 = 7000
+        self.assertEqual(self.order.total_amount, 7000)  # Total amount was 15000 and now - 2 * 4000 = 7000
 
     def test_add_item_to_order(self):
         self.order.add_item_to_order(self.product1, 3)

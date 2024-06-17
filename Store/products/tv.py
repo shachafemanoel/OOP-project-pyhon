@@ -6,6 +6,7 @@ class Tv(Product):
     The Tv class represents a Tv product in the store. It inherits from the Product class
     and includes additional attributes specific to Tvs, such as size, Tv type.
     '''
+
     def __init__(self, name, model, description, price, quantity, size=None, tv_type=None,
                  rate=None):
         '''

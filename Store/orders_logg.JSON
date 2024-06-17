@@ -1,211 +1,211 @@
 [
-    {
-        "order_number": 1,
-        "customer_id": "2020",
-        "total_amount": 16000.0,
-        "payment": {
-            "owner": "John Doe",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 1
-        },
-        "status": "shipped",
-        "product_dict": {
-            "mycomp": 5
-        }
+  {
+    "order_number": 1,
+    "customer_id": "2020",
+    "total_amount": 16000.0,
+    "payment": {
+      "owner": "John Doe",
+      "info": "1234567812345678",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 1
     },
-    {
-        "order_number": 2,
-        "customer_id": "9999",
-        "total_amount": 9120.0,
-        "payment": {
-            "owner": "John Doe",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 1
-        },
-        "status": "delivered",
-        "product_dict": {
-            "LaptopDell": 4
-        }
-    },
-    {
-        "order_number": 3,
-        "customer_id": "2020",
-        "total_amount": 2400.0,
-        "payment": {
-            "owner": "John Doe",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 1
-        },
-        "status": "Processing",
-        "product_dict": {
-            "airpodspro": 3
-        }
-    },
-    {
-        "order_number": 4,
-        "customer_id": "2020",
-        "total_amount": 1600.0,
-        "payment": {
-            "owner": "John Doe",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 1
-        },
-        "status": "Processing",
-        "product_dict": {
-            "airpodspro": 2
-        }
-    },
-    {
-        "order_number": 5,
-        "customer_id": "2020",
-        "total_amount": 3500.0,
-        "payment": {
-            "owner": "John Doe",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 2
-        },
-        "status": "completed",
-        "product_dict": {
-            "iphone13": 2
-        }
-    },
-    {
-        "order_number": 6,
-        "customer_id": "2020",
-        "total_amount": 10500.0,
-        "payment": {
-            "owner": "John Doe",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 8
-        },
-        "status": "Processing",
-        "product_dict": {
-            "iphone13": 6
-        }
-    },
-    {
-        "order_number": 7,
-        "customer_id": "2020",
-        "total_amount": 100.0,
-        "payment": {
-            "owner": "John Doe",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 2
-        },
-        "status": "Canceled",
-        "product_dict": {
-            "Applecharger": 1
-        }
-    },
-    {
-        "order_number": 8,
-        "customer_id": "2020",
-        "total_amount": 200.0,
-        "payment": {
-            "owner": "John Doe",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 2
-        },
-        "status": "Canceled",
-        "product_dict": {
-            "Applecharger": 2
-        }
-    },
-    {
-        "order_number": 9,
-        "customer_id": "2020",
-        "total_amount": 5500.0,
-        "payment": {
-            "owner": "shachaf emanoel",
-            "info": "",
-            "payment_method": "Cash",
-            "amount_of_payments": 1
-        },
-        "status": "Processing",
-        "product_dict": {
-            "LGTV55": 1
-        }
-    },
-    {
-        "order_number": 10,
-        "customer_id": "5555",
-        "total_amount": 3500.0,
-        "payment": {
-            "owner": "shachaf",
-            "info": "5558881231234523",
-            "payment_method": "",
-            "amount_of_payments": 2
-        },
-        "status": "Canceled",
-        "product_dict": {
-            "galaxy24": 1
-        }
-    },
-    {
-        "order_number": 11,
-        "customer_id": "5555",
-        "total_amount": 19000.0,
-        "payment": {
-            "owner": "shachaf",
-            "info": "5558881231234523",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 3
-        },
-        "status": "Canceled",
-        "product_dict": {
-            "ipad": 3,
-            "iphone13": 4
-        }
-    },
-    {
-        "order_number": 12,
-        "customer_id": "9999",
-        "total_amount": 2000.0,
-        "payment": {
-            "owner": "Yossi Cohen",
-            "info": "",
-            "payment_method": "Cash",
-            "amount_of_payments": 1
-        },
-        "status": "Processing",
-        "product_dict": {
-            "samsung": 1
-        }
-    },
-    {
-        "order_number": 13,
-        "customer_id": "9999",
-        "total_amount": 200.0,
-        "payment": {
-            "owner": "Yossi Cohen",
-            "info": "",
-            "payment_method": "Cash",
-            "amount_of_payments": 1
-        },
-        "status": "Processing",
-        "product_dict": {
-            "Applecharger": 2
-        }
-    },
-    {
-        "order_number": 15,
-        "customer_id": "2020",
-        "total_amount": 5250.0,
-        "payment": {
-            "owner": "John Doe",
-            "info": "1234567812345678",
-            "payment_method": "Credit Card",
-            "amount_of_payments": 5
-        },
-        "status": "Processing",
-        "product_dict": {}
+    "status": "shipped",
+    "product_dict": {
+      "mycomp": 5
     }
+  },
+  {
+    "order_number": 2,
+    "customer_id": "9999",
+    "total_amount": 9120.0,
+    "payment": {
+      "owner": "John Doe",
+      "info": "1234567812345678",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 1
+    },
+    "status": "delivered",
+    "product_dict": {
+      "LaptopDell": 4
+    }
+  },
+  {
+    "order_number": 3,
+    "customer_id": "2020",
+    "total_amount": 2400.0,
+    "payment": {
+      "owner": "John Doe",
+      "info": "1234567812345678",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 1
+    },
+    "status": "Processing",
+    "product_dict": {
+      "airpodspro": 3
+    }
+  },
+  {
+    "order_number": 4,
+    "customer_id": "2020",
+    "total_amount": 1600.0,
+    "payment": {
+      "owner": "John Doe",
+      "info": "1234567812345678",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 1
+    },
+    "status": "Processing",
+    "product_dict": {
+      "airpodspro": 2
+    }
+  },
+  {
+    "order_number": 5,
+    "customer_id": "2020",
+    "total_amount": 3500.0,
+    "payment": {
+      "owner": "John Doe",
+      "info": "1234567812345678",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 2
+    },
+    "status": "completed",
+    "product_dict": {
+      "iphone13": 2
+    }
+  },
+  {
+    "order_number": 6,
+    "customer_id": "2020",
+    "total_amount": 10500.0,
+    "payment": {
+      "owner": "John Doe",
+      "info": "1234567812345678",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 8
+    },
+    "status": "Processing",
+    "product_dict": {
+      "iphone13": 6
+    }
+  },
+  {
+    "order_number": 7,
+    "customer_id": "2020",
+    "total_amount": 100.0,
+    "payment": {
+      "owner": "John Doe",
+      "info": "1234567812345678",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 2
+    },
+    "status": "Canceled",
+    "product_dict": {
+      "Applecharger": 1
+    }
+  },
+  {
+    "order_number": 8,
+    "customer_id": "2020",
+    "total_amount": 200.0,
+    "payment": {
+      "owner": "John Doe",
+      "info": "1234567812345678",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 2
+    },
+    "status": "Canceled",
+    "product_dict": {
+      "Applecharger": 2
+    }
+  },
+  {
+    "order_number": 9,
+    "customer_id": "2020",
+    "total_amount": 5500.0,
+    "payment": {
+      "owner": "shachaf emanoel",
+      "info": "",
+      "payment_method": "Cash",
+      "amount_of_payments": 1
+    },
+    "status": "Processing",
+    "product_dict": {
+      "LGTV55": 1
+    }
+  },
+  {
+    "order_number": 10,
+    "customer_id": "5555",
+    "total_amount": 3500.0,
+    "payment": {
+      "owner": "shachaf",
+      "info": "5558881231234523",
+      "payment_method": "",
+      "amount_of_payments": 2
+    },
+    "status": "Canceled",
+    "product_dict": {
+      "galaxy24": 1
+    }
+  },
+  {
+    "order_number": 11,
+    "customer_id": "5555",
+    "total_amount": 19000.0,
+    "payment": {
+      "owner": "shachaf",
+      "info": "5558881231234523",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 3
+    },
+    "status": "Canceled",
+    "product_dict": {
+      "ipad": 3,
+      "iphone13": 4
+    }
+  },
+  {
+    "order_number": 12,
+    "customer_id": "9999",
+    "total_amount": 2000.0,
+    "payment": {
+      "owner": "Yossi Cohen",
+      "info": "",
+      "payment_method": "Cash",
+      "amount_of_payments": 1
+    },
+    "status": "Processing",
+    "product_dict": {
+      "samsung": 1
+    }
+  },
+  {
+    "order_number": 13,
+    "customer_id": "9999",
+    "total_amount": 200.0,
+    "payment": {
+      "owner": "Yossi Cohen",
+      "info": "",
+      "payment_method": "Cash",
+      "amount_of_payments": 1
+    },
+    "status": "Processing",
+    "product_dict": {
+      "Applecharger": 2
+    }
+  },
+  {
+    "order_number": 15,
+    "customer_id": "2020",
+    "total_amount": 2560.0,
+    "payment": {
+      "owner": "John Doe",
+      "info": "1234567812345678",
+      "payment_method": "Credit Card",
+      "amount_of_payments": 5
+    },
+    "status": "Processing",
+    "product_dict": {}
+  }
 ]

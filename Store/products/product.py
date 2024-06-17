@@ -1,15 +1,38 @@
+from abc import ABC
+
 from Store.payment_calculator import CurrencyConverter
 from Store.rating import Rating
-from Store.storeerror import StoreError
 
 
-class Product:
+def discount_decorator(discount):
+    """
+    Decorator to apply a discount to the price of a product.
+
+    Args:
+        discount (float): The discount percentage to be applied.
+
+    Returns:
+        function: The decorated function with the discount applied.
+    """
+
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            original_price = func(*args, **kwargs)
+            discounted_price = original_price - (original_price * (discount / 100))
+            return discounted_price
+
+        return wrapper
+
+    return decorator
+
+
+class Product(ABC):
     '''
         The Product class represents a general product in the store.
         Additionally, it provides methods to manage product details, pricing, and inventory.
     '''
 
-    def __init__(self, name, model, description, price, quantity,rate=None):
+    def __init__(self, name, model, description, price, quantity, rate=None):
         '''
         Attributes:
         -----------
@@ -75,6 +98,7 @@ class Product:
         '''
         self.quantity = new_quantity
 
+    @discount_decorator(20)
     def get_price(self, much):
         '''
         :param much: int
@@ -125,7 +149,7 @@ class Product:
         dict['rate'] = self.rate.ratings
         return dict
 
-    def get_price_in_user_currency(self,quantity = 1):
+    def get_price_in_user_currency(self, quantity=1):
         '''
         :param quantity: int
         :return the price of the product in the user's preferred currency.
@@ -141,6 +165,7 @@ class Product:
         :return: A string representation of product type
         '''
         return "PRODUCT"
+
     def __str__(self):
         '''
         :return: string representation of product

@@ -1,10 +1,12 @@
 from Store.storeerror import StoreError
+
+
 class Payment:
     def __init__(self, owner=None, info=None, payment_method=None, amount_of_payments=None):
         self.__owner = owner
         self.__info = info
         self.__payment_method = payment_method
-        self.__amount_of_payments = int(amount_of_payments) if amount_of_payments  else 1
+        self.__amount_of_payments = int(amount_of_payments) if amount_of_payments else 1
 
     @property
     def owner(self):
@@ -16,7 +18,7 @@ class Payment:
 
     @property
     def info(self):
-       return self.__info
+        return self.__info
 
     @info.setter
     def info(self, info):
@@ -52,15 +54,16 @@ class Payment:
             'info': self.info,
             'payment_method': self.payment_method
         }
+
     @staticmethod
     def check_card(card_nubmer, how_much):
-            if len(card_nubmer) >= 8:
-                if how_much > 0:
-                    return True
-                else:
-                    raise StoreError.InvalidInputError
+        if len(card_nubmer) >= 8:
+            if how_much > 0:
+                return True
             else:
-                raise StoreError.InvalidCardNumberError
+                raise StoreError.InvalidInputError
+        else:
+            raise StoreError.InvalidCardNumberError
 
     def __str__(self):
         if self.__payment_method == "Credit Card":

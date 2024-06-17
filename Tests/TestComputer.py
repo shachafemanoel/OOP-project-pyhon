@@ -1,5 +1,7 @@
 import unittest
+
 from Store.products.computer import Computer
+
 
 class TestComputer(unittest.TestCase):
 
@@ -32,7 +34,6 @@ class TestComputer(unittest.TestCase):
         )
         self.assertIn(expected_str, str(self.computer1))
 
-
     def test_str_with_sale(self):
         self.computer2.update_price(20)
         expected_str = (
@@ -47,7 +48,6 @@ class TestComputer(unittest.TestCase):
             'There are no reviews yet'
         )
         self.assertIn(expected_str, str(self.computer2))
-
 
 
 if __name__ == '__main__':

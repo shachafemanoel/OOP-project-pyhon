@@ -1,10 +1,6 @@
-from Store.products.product import Product
-from Store.products.computer import Computer
-from Store.products.tv import Tv
-from Store.products.phone import Phone
 from Store.payment_calculator import CurrencyConverter
+from Store.products.product import Product
 from Store.store import StoreError
-
 
 
 class Cart:
@@ -16,6 +12,7 @@ class Cart:
         self.total_amount = 0
         self.count_item = 0
         self.currency = "₪ILS"
+
     def add_item(self, product: Product, quantity: int):
         """
         Add an item to the cart.
@@ -28,14 +25,15 @@ class Cart:
             raise ValueError("Quantity must be greater than 0.")
         if product.available(quantity):
             if product.get_key_name() in self.product_dict:
-                raise StoreError(f"\n ** {product.name} is already in your cart, to update the quantity go to the cart **\n")
+                raise StoreError(
+                    f"\n ** {product.name} is already in your cart, to update the quantity go to the cart **\n")
             else:
                 self.product_dict[product.get_key_name()] = quantity
                 self.total_amount += product.get_price(quantity)
                 self.count_item += quantity
         else:
-            raise StoreError.NotInStockError(f"\n ** We apologize, but the quantity you requested exceeds the available stock ** .\nCurrently, we have only {product.quantity} units available. ")
-
+            raise StoreError.NotInStockError(
+                f"\n ** We apologize, but the quantity you requested exceeds the available stock ** .\nCurrently, we have only {product.quantity} units available. ")
 
     def remove_item(self, product: Product, quantity: int):
         """
@@ -83,10 +81,6 @@ class Cart:
         self.total_amount = 0
         self.count_item = 0
 
-
-
-
-
     def get_product_quantatiy(self, key):
         """
         Retrieve a product by its key name.
@@ -110,12 +104,14 @@ class Cart:
         dict: A dictionary containing the cart summary.
         """
         return {
-            "currency":self.currency,
+            "currency": self.currency,
             "total_amount": self.total_amount,
             "product_dict": self.product_dict
         }
-    def use_coupon(self,coupon):
+
+    def use_coupon(self, coupon):
         self.total_amount *= (1 - (coupon / 100))
+
     def change_item_quantity(self, product: Product, quantity: int):
         """
         Update the quantity of a specific item in the cart.
@@ -133,10 +129,8 @@ class Cart:
         else:
             raise StoreError.NotInStockError
 
-
-    def change_currency(self,currency):
+    def change_currency(self, currency):
         self.currency = currency
-
 
     def __str__(self):
         """
@@ -148,4 +142,4 @@ class Cart:
             f"================\n"
             f"{self.product_dict}\n"
             f"================\n"
-            f"Total amount: {CurrencyConverter.convert(self.total_amount,"₪ILS",self.currency)} {self.currency}\n")
+            f"Total amount: {CurrencyConverter.convert(self.total_amount, "₪ILS", self.currency)} {self.currency}\n")

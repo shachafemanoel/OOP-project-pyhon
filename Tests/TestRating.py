@@ -1,5 +1,7 @@
 import unittest
+
 from Store.rating import Rating
+
 
 class TestRating(unittest.TestCase):
 
@@ -26,6 +28,7 @@ class TestRating(unittest.TestCase):
                         '⭐ review:  Not satisfied.\n'
                         ' Average Rating: 3.0 ⭐')
         self.assertEqual(str(self.rating), expected_str)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,10 +1,14 @@
 import unittest
-from Store.user import User
+
 from Store.payment import Payment
+from Store.user import User
+
+
 class TestUser(unittest.TestCase):
     def setUp(self):
         self.payment = Payment("Client Check", "1234567890", "Credit Card", 10)
         self.user = User("1234", "Nirel Jano", '1234', 0, 'Haifa', self.payment)
+
     def test_initialization(self):
         self.assertEqual(self.user.user_id, "1234")
         self.assertEqual(self.user.user_full_name, "Nirel Jano")
@@ -31,12 +35,14 @@ class TestUser(unittest.TestCase):
     def test_change_name(self):
         self.user.change_name("new_name")
         self.assertEqual(self.user.user_full_name, "new_name")
+
     def test_change_user_password(self):
         self.user.change_user_password("1234567")
         self.assertEqual(self.user.password, "1234567")
 
     def test_str(self):
         self.assertEqual(str(self.user), "User: Nirel Jano\nID: 1234")
+
 
 if __name__ == '__main__':
     unittest.main()

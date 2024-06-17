@@ -1,5 +1,7 @@
 import unittest
+
 from Store.payment import Payment
+
 
 class TestPayment(unittest.TestCase):
 
@@ -40,6 +42,7 @@ class TestPayment(unittest.TestCase):
         self.payment2.payment_method = "Paypal"
         expected_str = ("Paypal")
         self.assertEqual(str(self.payment2), expected_str)
+
 
 if __name__ == '__main__':
     unittest.main()

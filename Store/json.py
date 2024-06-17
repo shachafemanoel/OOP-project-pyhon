@@ -5,10 +5,12 @@ from Store.client import Client
 from Store.order import Order
 from Store.payment import Payment
 from Store.reporting import Reporting
-from Store.user import User
 from Store.sales import Sales
+from Store.user import User
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - LEVEL - %(message)s')
+
 
 class DataManager:
     @staticmethod
@@ -42,7 +44,7 @@ class DataManager:
         orders = {}
         orders_data = DataManager.load_data('Store/orders_logg.JSON')
         for order_data in orders_data:
-            customer = users.get(order_data.pop('customer_id',None))
+            customer = users.get(order_data.pop('customer_id', None))
             if customer is not None:
                 order = Order(**order_data)
                 order.customer = customer
@@ -62,10 +64,7 @@ class DataManager:
 
     @staticmethod
     def load_products():
-        return  DataManager.load_data('Store/products_logg.JSON')
-
-
-
+        return DataManager.load_data('Store/products_logg.JSON')
 
     @staticmethod
     def save_products(products):
@@ -96,6 +95,7 @@ class DataManager:
         for user in users.values():
             users_data.append(user.to_dict())
         DataManager.save_data(users_data, 'Store/users_logg.JSON')
+
     @staticmethod
     def load_reporting():
         """
@@ -115,8 +115,8 @@ class DataManager:
         return reporting
 
     @staticmethod
-    def save_reporting(reporting,sales):
-        reporting_data =reporting.repoting_do_dict(sales)
+    def save_reporting(reporting, sales):
+        reporting_data = reporting.repoting_do_dict(sales)
         DataManager.save_data(reporting_data, 'Store/reporting_logg.JSON')
 
     @staticmethod

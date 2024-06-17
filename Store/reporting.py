@@ -1,12 +1,10 @@
-
-from Store.sales import Sales
 class Reporting:
     def __init__(self):
         self.revenue = 0
         self.sold_products = {}
         self.best_sell = None
-        self.__message = {"orders":[],"products":[],"users":[]}
-        self.__new_update = {"orders":0,"products":0,"users":0}
+        self.__message = {"orders": [], "products": [], "users": []}
+        self.__new_update = {"orders": 0, "products": 0, "users": 0}
         self.total_update = 0
 
     @property
@@ -31,7 +29,7 @@ class Reporting:
         else:
             raise ValueError("message must be of type dict")
 
-    def new_sold(self,name,quant):
+    def new_sold(self, name, quant):
         if name is self.sold_products:
             self.sold_products[name] += quant
         else:
@@ -41,20 +39,22 @@ class Reporting:
         if name in self.sold_products:
             self.sold_products[name] -= amount
 
-    def new_user(self,user_type,user_full_name):
+    def new_user(self, user_type, user_full_name):
         self.message["users"].append(f" \n * A new {user_type} has joined your store * \n full name: {user_full_name} ")
         self.new_update["users"] += 1
         self.total_update += 1
 
     def new_order(self, order):
         self.revenue += order.total_amount
-        self.message["orders"].append(f" \n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
+        self.message["orders"].append(
+            f" \n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
         self.new_update["orders"] += 1
         self.total_update += 1
 
     def order_canceled(self, order, amount):
         self.revenue -= amount
-        self.message["orders"].append(f" \n * order has been canceled * \n Order number: {order}    total amount: {amount} ")
+        self.message["orders"].append(
+            f" \n * order has been canceled * \n Order number: {order}    total amount: {amount} ")
         self.new_update["orders"] += 1
         self.total_update += 1
 
@@ -100,8 +100,7 @@ class Reporting:
 
         return '\n'.join(result)
 
-
-    def repoting_do_dict(self,sales):
+    def repoting_do_dict(self, sales):
         self.best_sell_product()
         reporting_data = {
             'best_sell': self.best_sell,
@@ -114,12 +113,11 @@ class Reporting:
 
         return reporting_data
 
-    def product_warning(self,quantity,name):
+    def product_warning(self, quantity, name):
         self.message["products"].append(f"\n * Warning:Less than {quantity} left in stock {name} *\n")
         self.new_update["products"] += 1
         self.total_update += 1
+
     def __str__(self):
 
-         return f" \n    **** Reporting summary **** \n* Top selling products * \n{self.best_sell_product()} \n{self.get_sales_report_string()}"
-
-
+        return f" \n    **** Reporting summary **** \n* Top selling products * \n{self.best_sell_product()} \n{self.get_sales_report_string()}"

@@ -1,7 +1,8 @@
-from Store.products.product import Product
-from Store.products.tv import Tv
 from Store.products.computer import Computer
 from Store.products.phone import Phone
+from Store.products.product import Product
+from Store.products.tv import Tv
+
 
 class ProductFactory:
     @staticmethod

@@ -1,16 +1,18 @@
 from Store.client import Client
 from Store.json import DataManager
 from Store.order import Order
+from Store.payment_calculator import CurrencyConverter
 from Store.products.computer import Computer
 from Store.products.phone import Phone
 from Store.products.product import Product
 from Store.products.product_factory import ProductFactory
 from Store.products.tv import Tv
 from Store.reporting import Reporting
+from Store.sales import Sales
 from Store.storeerror import StoreError
 from Store.user import User
-from Store.sales import Sales
-from Store.payment_calculator import CurrencyConverter
+
+
 class Store:  # מחלקה שמממשת את החנות עצמה
 
     def __init__(self):
@@ -22,9 +24,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.sales = Sales()
         self.currency = "₪ILS"
 
-    def add_review(self,product, stars, review=None):
+    def add_review(self, product, stars, review=None):
         if product in self.collection:
-            self.collection[product].add_review(stars,review)
+            self.collection[product].add_review(stars, review)
             return True
         return False
 
@@ -53,10 +55,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         DataManager.save_users(self.users)
         DataManager.save_orders(self.orders)
         DataManager.save_products(self.collection)
-        DataManager.save_reporting(self.reporting,self.sales)
+        DataManager.save_reporting(self.reporting, self.sales)
 
-
-    def use_coupon(self,user):
+    def use_coupon(self, user):
         self.users[user.user_id].use_coupon()
 
     def apply_discount_to_category(self, category, discount_percent):
@@ -69,7 +70,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             if product.product_type().casefold() == category.casefold():
                 product.remove_discount()
 
-    def remove_product_sale(self,choice):
+    def remove_product_sale(self, choice):
         category = ""
         if choice == "1":
             category = "Tv"
@@ -105,33 +106,36 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         except ValueError as e:
             raise e
 
-    def new_promotion(self, product,discount):
+    def new_promotion(self, product, discount):
         try:
 
-            self.sales.add_promotion(product.get_key_name(),discount)
-            self.collection[product.get_key_name()].update_price(self.sales.get_product_discount(self.collection[product.get_key_name()]))
-        except ValueError :
+            self.sales.add_promotion(product.get_key_name(), discount)
+            self.collection[product.get_key_name()].update_price(
+                self.sales.get_product_discount(self.collection[product.get_key_name()]))
+        except ValueError:
             raise ValueError
-    def remove_promotion(self,item):
+
+    def remove_promotion(self, item):
         try:
             self.collection[item.get_key_name()].remove_discount()
             self.sales.remove_promotion(item.get_key_name())
         except ValueError:
             raise StoreError.InvalidInputError
-    def change_currency(self,currency):
+
+    def change_currency(self, currency):
         if currency != self.currency:
             self.currency = currency
             for product in self.collection.values():
                 if product.currency != self.currency:
                     product.currency = self.currency
 
-
-    def lst_search(self,item_dict):
+    def lst_search(self, item_dict):
         temp = []
         for key in item_dict.keys():
-           temp.append(self.collection[key])
+            temp.append(self.collection[key])
 
         return temp
+
     def search(self, name=None, product_type=None, model=None):
         if name is not None:
             cleaned_name = name.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -139,11 +143,13 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             cleaned_model = model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         found = []
         for key, value in self.collection.items():
-            if name is not None and value.get_key_name().casefold()[0:len(cleaned_name)] == cleaned_name.casefold():     # חיפוש לפי שם
-                    found.append(value)
+            if name is not None and value.get_key_name().casefold()[
+                                    0:len(cleaned_name)] == cleaned_name.casefold():  # חיפוש לפי שם
+                found.append(value)
 
-            elif model is not None and cleaned_model.casefold() == value.get_model_name()[0:len(cleaned_model)].casefold():# חיפוש לפי שם ומודל
-                    found.append(value)
+            elif model is not None and cleaned_model.casefold() == value.get_model_name()[
+                                                                   0:len(cleaned_model)].casefold():  # חיפוש לפי שם ומודל
+                found.append(value)
 
 
             elif product_type is not None and name is None:
@@ -190,25 +196,24 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         else:
             return "\n* No clients yet *"
 
-
-    def add_user(self, user:dict):  # הוספת משתמש לחנות
-            if user.get("user_id") not in self.users:
-                try:
-                    User.valid_user(user)
-                    user_type = user.pop("user_type", "Client").upper()
-                    if user_type == 'ADMIN':
-                        new_user = User(**user)
-                    elif user_type == 'CLIENT':
-                        new_user = Client(**user)
-                    self.sales.add_coupon(new_user.user_id,5)
-                    new_user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-                    self.users[new_user.user_id] = new_user
-                    self.reporting.new_user(user_type,new_user.user_full_name)
-                    return new_user.login(new_user.password)
-                except StoreError as e:
-                    raise e
-            else:
-                raise StoreError(" * user already exists * ")
+    def add_user(self, user: dict):  # הוספת משתמש לחנות
+        if user.get("user_id") not in self.users:
+            try:
+                User.valid_user(user)
+                user_type = user.pop("user_type", "Client").upper()
+                if user_type == 'ADMIN':
+                    new_user = User(**user)
+                elif user_type == 'CLIENT':
+                    new_user = Client(**user)
+                self.sales.add_coupon(new_user.user_id, 5)
+                new_user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+                self.users[new_user.user_id] = new_user
+                self.reporting.new_user(user_type, new_user.user_full_name)
+                return new_user.login(new_user.password)
+            except StoreError as e:
+                raise e
+        else:
+            raise StoreError(" * user already exists * ")
 
     def remove_client(self, client_id):
         if client_id in self.users:
@@ -217,7 +222,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         else:
             return False
 
-    def remove(self,product):
+    def remove(self, product):
         if not isinstance(product, Product):
             raise StoreError.InvalidInputError("No product selected")
         if product.get_key_name() in self.collection:
@@ -229,20 +234,19 @@ class Store:  # מחלקה שמממשת את החנות עצמה
     def add_item_order(self, product, how_many):
         return self.collection[product.get_key_name()].available(how_many)
 
-
-    def place_order(self, order:dict):
+    def place_order(self, order: dict):
         if order.get("payment", None) is not None:
             order["order_number"] = self.order_number
-            customer = order.get("customer",None)
+            customer = order.get("customer", None)
             order.pop("count_item", None)
             order["total_amount"] = 0
             for name, quant in order["product_dict"].items():
-               if self.collection[name].available(quant):
+                if self.collection[name].available(quant):
                     self.collection[name].buy_product(quant)
                     order["total_amount"] += self.collection[name].get_price(quant)
                     self.reporting.new_sold(name, quant)
                     if self.collection[name].get_quantity() < 4:
-                        self.reporting.product_warning(self.collection[name].get_quantity(),self.collection[name].name)
+                        self.reporting.product_warning(self.collection[name].get_quantity(), self.collection[name].name)
             try:
                 order = Order(**order)
                 self.reporting.new_order(order)
@@ -260,7 +264,6 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             price = self.collection[name].get_price(amount)
             self.reporting.order_canceled(order_number, price)
             self.reporting.best_sell_product()
-
 
     def list_products(self):
         if self.collection:
@@ -322,13 +325,13 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         except ValueError:
             raise StoreError.InvalidInputError("\nLow rating and high rating must be numbers.")
 
-    def price_search(self, low, high,currency):
+    def price_search(self, low, high, currency):
         products = []
         try:
             low, high = float(low), float(high)
             if currency != "₪ILS":
-                low = CurrencyConverter.convert(low,currency,"₪ILS")
-                high = CurrencyConverter.convert(high,currency,"₪ILS")
+                low = CurrencyConverter.convert(low, currency, "₪ILS")
+                high = CurrencyConverter.convert(high, currency, "₪ILS")
             if high < low:
                 raise StoreError.InvalidInputError("\nHigh price must be higher than low price.")
             if not (0 <= low and 0 <= high):
@@ -348,6 +351,3 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return True
         else:
             return False
-
-
-

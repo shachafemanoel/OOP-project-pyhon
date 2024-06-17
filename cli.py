@@ -1,17 +1,21 @@
+import logging
 
-from Store.store import Store
-from Store.user import User
+from Store.cart import Cart
+from Store.cart_command import CartInvoker, ChangeCurrencyCommand, UseCouponCommand
 from Store.client import Client
 from Store.display import Display
-import logging
-from Store.storeerror import StoreError
 from Store.payment import Payment
-from Store.cart import Cart
+from Store.store import Store
+from Store.storeerror import StoreError
+from Store.user import User
+
+
 class StoreCLI:
     def __init__(self):
         self.store = Store()
-        self.user = Client("0000" ,"0000" ,"0000" ,online=0)
+        self.user = Client("0000", "0000", "0000", online=0)
         self.cart = Cart()
+        self.cart_invoker = CartInvoker()
         self.exit = False
 
     def log_in(self):
@@ -28,7 +32,6 @@ class StoreCLI:
             print(e)
             logging.warning(f"Login failed!\n")
 
-
     def register(self):
         print("\nWelcome to the registration systemֿ\n")
         print(" User id must be a at least 4 digit ")
@@ -37,7 +40,7 @@ class StoreCLI:
         print(" Password must be a at least 4 digit ")
         password = input("Enter password: ")
         user_type = "CLIENT"
-        if self.user.online == 1 and not isinstance(self.user,Client):
+        if self.user.online == 1 and not isinstance(self.user, Client):
             print("\n1.Client")
             print("2.Admin")
             choice = input("Enter your choice: ")
@@ -57,10 +60,9 @@ class StoreCLI:
                 self.store.add_user(user)
             print("User registered successfully!")
         except StoreError as error:
-           print(error)
+            print(error)
 
-
-    def set_password(self,user_id = None,user_full_name = None):
+    def set_password(self, user_id=None, user_full_name=None):
         print("\n * The password must contain at least 4 characters *")
         new_user_password = input("Enter your new password: ")
         if len(new_user_password) > 3:
@@ -99,7 +101,6 @@ class StoreCLI:
                 print("\n * Full name or ID is incorrect. Please try again. *")
         else:
             print("Error,user id not found ")
-
 
     def display_manage_user(self):
         if self.store.reporting.new_update["users"] > 0:
@@ -144,7 +145,7 @@ class StoreCLI:
             if star.isdigit():
                 star = int(star)
                 if 0 < star < 6:
-                    self.store.add_review(key,str(star),review)
+                    self.store.add_review(key, str(star), review)
                 else:
                     print("Wrong choice")
             else:
@@ -189,7 +190,7 @@ class StoreCLI:
         new_address += f",{city},{street},{apt}"
         new_address.replace(" ", "").translate(str.maketrans("", "", ".!?;:"))
         if len(new_address) > 3:
-            if self.store.set_address(self.user.user_id,new_address):
+            if self.store.set_address(self.user.user_id, new_address):
                 print("\n * Address has been set successfully *")
                 print(f"\n * New Address updated: *\n {new_address}")
         else:
@@ -201,7 +202,7 @@ class StoreCLI:
         how_much = input("how many payments would you like to spread the deal?: ")
         try:
             how_much = int(how_much)
-            if Payment.check_card(card_number,how_much):
+            if Payment.check_card(card_number, how_much):
                 paymethod["owner"] = card_holder
                 paymethod["info"] = card_number
                 paymethod["amount_of_payments"] = how_much
@@ -219,7 +220,6 @@ class StoreCLI:
             print(e)
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
 
     def new_paypal(self, paymethod):
         paypal_id = input("Enter your Paypal id: ")
@@ -239,15 +239,15 @@ class StoreCLI:
             print("\n * Paypal id in invalid * ")
 
     def new_payment(self):
-        paymethod = {"owner":"", "info":"", "payment_method":""}
+        paymethod = {"owner": "", "info": "", "payment_method": ""}
         for i in range(4):
             pay_option = Display.display_payment()
             if pay_option == '1':
-               return self.new_card(paymethod)
+                return self.new_card(paymethod)
             elif pay_option == '2':
-               return self.new_paypal(paymethod)
+                return self.new_paypal(paymethod)
             elif pay_option == '3':
-                paymethod ={"owner":self.user.user_full_name,"info":"", "payment_method":'Cash'}
+                paymethod = {"owner": self.user.user_full_name, "info": "", "payment_method": 'Cash'}
                 return paymethod
 
             elif pay_option == '4':
@@ -273,7 +273,7 @@ class StoreCLI:
             else:
                 return self.new_payment()
         else:
-                return self.new_payment()
+            return self.new_payment()
 
     def choose_currency(self):
         """
@@ -294,10 +294,10 @@ class StoreCLI:
 
         else:
             for i in range(4):
-                print(f"Wrong choice. Please try again.You have {4-i} attempts left")
+                print(f"Wrong choice. Please try again.You have {4 - i} attempts left")
                 choice = input("Enter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
                 if choice in currencies:
-                   self.set_currency(currencies[choice])
+                    self.set_currency(currencies[choice])
 
                 elif i == 4:
                     print("You have passed the number of attempts.\nThe currency is set to be ILS")
@@ -306,8 +306,10 @@ class StoreCLI:
 
     def set_currency(self, currency):
         try:
-            self.cart.change_currency(currency)
             self.user.currency = currency
+            command = ChangeCurrencyCommand(self.cart, currency)
+            self.cart_invoker.add_command(command)
+            self.cart_invoker.execute_commands()
             self.store.change_currency(currency)
         except Exception as e:
             print(f"An error occurred while setting currency: {e}")
@@ -325,7 +327,8 @@ class StoreCLI:
                 choice = input("Enter your choice: ")
                 if choice == '1' or choice == '2' or choice == '3':
                     self.store.change_order(number, int(choice))
-                    print(f"\n* Order number:{self.store.orders[number].order_number} New status: {self.store.orders[number].status} *\n")
+                    print(
+                        f"\n* Order number:{self.store.orders[number].order_number} New status: {self.store.orders[number].status} *\n")
                     if choice == '3':
                         self.store.cancel_order(number)
                 else:
@@ -333,7 +336,7 @@ class StoreCLI:
             else:
                 print("\n * Order do not exist. Please try again. *")
         else:
-                print("\n * Invalid order number")
+            print("\n * Invalid order number")
 
     def product_type(self, choice=None):
         if choice is None:
@@ -342,7 +345,7 @@ class StoreCLI:
             if choice in '1234':
                 return self.store.search(None, choice, None)
             elif choice == "0":
-                    return None
+                return None
             else:
                 choice = Display.display_product_type()
                 print("Try Again")
@@ -356,7 +359,6 @@ class StoreCLI:
         except ValueError:
             raise StoreError.InvalidInputError("Discount amount must be an integer")
 
-
     def choice_discount(self):
         choice = Display.display_discount()
         if choice == '1':
@@ -368,7 +370,7 @@ class StoreCLI:
         choice = Display.display_product_type()
         try:
             discount = self.discount()
-            category = self.store.sale_prodduct_type(choice,discount)
+            category = self.store.sale_prodduct_type(choice, discount)
             print(f"\n* Discount has been successfully updated")
             self.store.apply_discount_to_category(category, discount)
         except StoreError.InvalidInputError as e:
@@ -463,13 +465,13 @@ class StoreCLI:
             return None
 
     def name_search(self):
-            new_name = input("\nEnter Product name: ")
-            search_name = self.store.search(new_name)
-            choice = self.pick_item(search_name)
-            if choice != -100 and choice is not None:
-                return search_name[choice]
-            else:
-                return None
+        new_name = input("\nEnter Product name: ")
+        search_name = self.store.search(new_name)
+        choice = self.pick_item(search_name)
+        if choice != -100 and choice is not None:
+            return search_name[choice]
+        else:
+            return None
 
     def display_manage_product(self):
         print("\n * Wellcome to manage product display *\n")
@@ -514,9 +516,8 @@ class StoreCLI:
             else:
                 item = None
         else:
-            item =  self.manual_search()
+            item = self.manual_search()
             return item
-
 
     def manual_search(self):
         select = Display.advanced_search()
@@ -539,7 +540,7 @@ class StoreCLI:
             print(f"Your currency :{self.user.currency} ")
             low = input("Enter low price: ")
             high = input("Enter high price: ")
-            products = self.store.price_search(low, high,self.user.currency)
+            products = self.store.price_search(low, high, self.user.currency)
             choice = self.pick_item(products)
             if choice != -100 and choice is not None:
                 return products[choice]
@@ -574,15 +575,17 @@ class StoreCLI:
         """
         Add an item to the cart via CLI.
         """
+
         new_item = self.search_system()
         if new_item is not None:
             quantity = input("\nEnter a quantity of the product: ")
             try:
                 quantity = int(quantity)
                 self.cart.add_item(new_item, quantity)
-                print(f"\n * {new_item.name} =========== > quantity {quantity} has been successfully added to cart! *\n")
+                print(
+                    f"\n * {new_item.name} =========== > quantity {quantity} has been successfully added to cart! *\n")
             except ValueError as e:
-                 print(e)
+                print(e)
             except StoreError.NotInStockError as e:
                 print(e)
 
@@ -614,10 +617,10 @@ class StoreCLI:
                 kwargs["size"] = input("Enter Screen size: ")
                 kwargs["storage"] = input("Enter storage: ")
                 kwargs["chip"] = input("Enter Chip: ")
-            elif product_type == "1": # Tv
+            elif product_type == "1":  # Tv
                 kwargs["size"] = input("Enter Screen size: ")
                 kwargs["tv_type"] = input("Enter Resolution: ")
-            elif product_type == "3": # Phone
+            elif product_type == "3":  # Phone
                 kwargs["size"] = input("Enter Screen size: ")
                 kwargs["storage"] = input("Enter Storage: ")
 
@@ -698,7 +701,7 @@ class StoreCLI:
                     print("\n * Invalid choice. Please try again. *\n")
 
         else:
-             print("\n* Invalid ID *")
+            print("\n* Invalid ID *")
 
     def update_details(self):
         while True:
@@ -721,7 +724,7 @@ class StoreCLI:
                 self.set_address()
                 break
             elif choice == '4':
-               self.choose_currency()
+                self.choose_currency()
             elif choice == '5':
                 print("\n * Exit")
                 break
@@ -751,7 +754,9 @@ class StoreCLI:
             for each in range(5):
                 choice_coupon = Display.display_coupon(self.store.sales.get_coupon_discount(self.user.user_id))
                 if choice_coupon == '1':
-                    self.cart.use_coupon(self.store.sales.get_coupon_discount(self.user.user_id))
+                    coupon_value = self.store.sales.get_coupon_discount(self.user.user_id)
+                    command = UseCouponCommand(self.cart, coupon_value)
+                    self.cart_invoker.add_command(command)
                     return True
                 elif choice_coupon == '2':
                     return False
@@ -759,6 +764,7 @@ class StoreCLI:
                     print("\n * Invalid choice. Try again. *")
                     print(f" * You have left {4 - each} tries. *\n")
         return False
+
     def remove_client(self):
         client_lst = self.store.client_list()
         print(client_lst)
@@ -772,11 +778,12 @@ class StoreCLI:
 
     def update_cart(self):
         """
-        Remove an item from the cart via CLI.
+        Update the quantity of an item in the cart via CLI.
         """
         new_item = self.pick_item_order()
         if new_item is not None:
-            print(f"\n * {new_item.name} =============== quantity {self.cart.get_product_quantatiy(new_item.get_key_name())}  *\n")
+            print(
+                f"\n * {new_item.name} =============== quantity {self.cart.get_product_quantatiy(new_item.get_key_name())}  *\n")
             print("\nPlease enter the desired quantity of the product. To remove it from the cart, enter 0.")
             quantity = input("\nEnter a quantity: ")
             try:
@@ -791,6 +798,7 @@ class StoreCLI:
                 print(f"\n * {e}.\n")
             except StoreError as e:
                 print(e)
+
     def pick_item_order(self):
         lst = self.store.lst_search(self.cart.product_dict)
         choice = self.pick_item(lst)
@@ -800,7 +808,7 @@ class StoreCLI:
             return None
 
     def cart_check_out(self):
-        if self.cart.count_item >0:
+        if self.cart.count_item > 0:
             while self.cart.count_item > 0:
                 choice = Display.cart_display(self.cart)
                 if choice == '1':
@@ -819,6 +827,7 @@ class StoreCLI:
 
     def empty_cart(self):
         self.cart.clear_cart()
+        self.cart_invoker.reset_commands()
         print("\n * Cart has been cleared! *\n")
 
     def check_out(self):
@@ -829,31 +838,31 @@ class StoreCLI:
             coupon = self.apply_coupon()
             payment = self.pay()
             if payment is not None:
+                self.cart_invoker.execute_commands()
                 new_order = self.cart.get_cart_dict()
                 new_order["payment"] = payment
                 new_order["customer"] = self.user
                 new_order["address"] = self.user.address
                 self.store.place_order(new_order)
                 print(f" * The order was successfully completed * ")
-                print(self.store.orders[self.store.order_number-1])
-
+                print(self.store.orders[self.store.order_number - 1])
                 self.empty_cart()
                 if coupon is True:
                     self.store.sales.use_coupon_discount(self.user.user_id)
 
     def catalog(self):
-            while True:
-                choice = Display.display_order(self.cart)
-                if choice == '1':
-                    self.add_item_to_cart()
-                elif choice == '2':
-                    if self.cart.count_item > 0:
-                        self.cart_check_out()
-                        break
-                elif choice == '3':
+        while True:
+            choice = Display.display_order(self.cart)
+            if choice == '1':
+                self.add_item_to_cart()
+            elif choice == '2':
+                if self.cart.count_item > 0:
+                    self.cart_check_out()
                     break
-                else:
-                    print(" * Wrong choice,Try again *")
+            elif choice == '3':
+                break
+            else:
+                print(" * Wrong choice,Try again *")
 
     def remove_product(self):
         removed_product = self.search_system()
@@ -880,24 +889,24 @@ class StoreCLI:
         print(self.store.reporting)
 
     def logout(self):
-        #פונקציית התנתקות תבצע התנתקות למשתמש עצמו דרך הפונקציה במחלקה שלו ולאחר מכן תשמור בחנות את המשתמש החדש כדי לשמור את הנתונים החדשים שלו
+        # פונקציית התנתקות תבצע התנתקות למשתמש עצמו דרך הפונקציה במחלקה שלו ולאחר מכן תשמור בחנות את המשתמש החדש כדי לשמור את הנתונים החדשים שלו
         self.user.logout()
         self.store.users[self.user.user_id] = self.user
         logging.info("Logged out successfully\n")
 
     def wellcome_page(self):
-            selection = Display.display_user()
-            if selection == '1':
-                self.log_in()
-            elif selection == '2':
-                self.register()
-            elif selection == '3':
-                self.forgot_password()
-            elif selection == '4':
-                self.exit = True
-                print('Bye, Thank you')
-            else:
-                print("\n * Invalid choice,Try again * \n ")
+        selection = Display.display_user()
+        if selection == '1':
+            self.log_in()
+        elif selection == '2':
+            self.register()
+        elif selection == '3':
+            self.forgot_password()
+        elif selection == '4':
+            self.exit = True
+            print('Bye, Thank you')
+        else:
+            print("\n * Invalid choice,Try again * \n ")
 
     def display_menu(self):
         product_manager = "1. Product Manager"
@@ -921,7 +930,6 @@ class StoreCLI:
         print("0. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-
 
     def management_menu(self):
         choice = self.display_menu()
@@ -968,10 +976,11 @@ class StoreCLI:
             elif self.user.online == 1:
                 print(f"\n * Active user: {self.user.user_full_name} ")
                 if type(self.user) == Client:
-                        self.customer_menu()
+                    self.customer_menu()
                 else:
                     self.management_menu()
         self.store.save_files()
+
 
 if __name__ == "__main__":
     cli = StoreCLI()

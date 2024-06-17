@@ -6,8 +6,9 @@ class Phone(Product):
         The Phone class represents a Phone product in the store. It inherits from the Product class
         and includes additional attributes specific to Phones, such as size, storage.
     '''
+
     def __init__(self, name, model, description, price, quantity, size=None, storage=None,
-                 rate=None,):
+                 rate=None, ):
         '''
         Attributes:
         -----------
@@ -43,6 +44,7 @@ class Phone(Product):
         Returns the type of product as a string.
         '''
         return "PHONE"
+
     def __str__(self):
         '''
         :return: A string representation of the object.

@@ -2,6 +2,7 @@ class StoreError(Exception):
     """
     Base class for exceptions in the store module.
     """
+
     def __init__(self, message="An error occurred in the store module"):
         """
         Initialize the error with an optional message.
@@ -13,6 +14,7 @@ class StoreError(Exception):
         """
         Exception raised for invalid input.
         """
+
         def __init__(self, message="Invalid input provided"):
             """
             Initialize the error with an optional message.
@@ -24,6 +26,7 @@ class StoreError(Exception):
         """
         Exception raised when a file is not found.
         """
+
         def __init__(self, message="File not found"):
             """
             Initialize the error with an optional message.
@@ -31,15 +34,16 @@ class StoreError(Exception):
             self.message = message
             super().__init__(self.message)
 
-
     class NotInStockError(Exception):
-        def __init__(self,message="Not enough in stock"):
+        def __init__(self, message="Not enough in stock"):
             self.message = message
             super().__init__(self.message)
+
     class ProductNotFoundError(Exception):
         """
         Exception raised when a product is not found.
         """
+
         def __init__(self, message="Product not found"):
             """
             Initialize the error with an optional message.
@@ -51,6 +55,7 @@ class StoreError(Exception):
         """
         Exception raised for authentication errors.
         """
+
         def __init__(self, message="Authentication failed"):
             """
             Initialize the error with an optional message.
@@ -69,6 +74,7 @@ class StoreError(Exception):
             '''
             self.message = message
             super().__init__(self.message)
+
     class InvalidCardNumberError(Exception):
 
         def __init__(self, message="**Invalid card number provided**"):
@@ -90,6 +96,7 @@ class StoreError(Exception):
         '''
         Exceptions raised when too many tries were attempted.
         '''
+
         def __init__(self, message="Too many tries were attempted."):
             '''
             Initialize the error with an optional message.

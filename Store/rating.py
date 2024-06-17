@@ -5,15 +5,16 @@ class Rating:
         else:
             self.ratings = ratings
 
-
     @property
     def rating(self):
         return self.ratings
+
     @rating.setter
     def rating(self, ratings):
         if isinstance(ratings, dict):
             self.ratings = ratings
-    def add_review(self, stars, review=None,):
+
+    def add_review(self, stars, review=None, ):
         if review is None or review.strip() == "":
             review = "No description provided"
         if stars in self.ratings:
@@ -22,10 +23,12 @@ class Rating:
             self.ratings[stars] = [review]
         return "Thank you for your opinion"
 
-    def precent_rating(self,rating):
-        return (len(rating)/self.total_reviews()) * 100
+    def precent_rating(self, rating):
+        return (len(rating) / self.total_reviews()) * 100
+
     def total_reviews(self):
         return sum(len(v) for v in self.ratings.values())
+
     def weighted_average_rating(self):
         total_reviews = self.total_reviews()
         if total_reviews == 0:
@@ -36,7 +39,7 @@ class Rating:
 
     def __str__(self):
         review_summary = '===============Customer reviews==============='
-        if self.total_reviews() >0:
+        if self.total_reviews() > 0:
             review_summary += f"\n *     Average Rating: {self.weighted_average_rating()} ⭐ out of 5 * "
             review_summary += f"\n *     {self.total_reviews()} global ratings * \n"
             if self.ratings and sum(len(v) for v in self.ratings.values()) > 0:
@@ -45,7 +48,7 @@ class Rating:
                         review_summary += f"\n==== Rating: {int(star) * "⭐"} ֿ{int(self.precent_rating(reviews))} % of the ratings ===="
                     number = 0
                     for review in reviews:
-                        number+=1
+                        number += 1
                         if review != "No description provided":
                             review_summary += f"\n{number}. {review}"
 
