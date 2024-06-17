@@ -192,18 +192,23 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
 
     def add_user(self, user:dict):  # הוספת משתמש לחנות
-        if user.get("user_id") not in self.users:
-            user_type = user.pop("user_type","Client").upper()
-            if user_type == 'ADMIN':
-                new_user = User(**user)
-            elif user_type == 'CLIENT':
-                new_user = Client(**user)
-                self.sales.add_coupon(new_user.user_id,5)
-            new_user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-            self.users[new_user.user_id] = new_user
-            self.reporting.new_user(user_type,new_user.user_full_name)
-            return True
-        return False
+            if user.get("user_id") not in self.users:
+                try:
+                    User.valid_user(user)
+                    user_type = user.pop("user_type", "Client").upper()
+                    if user_type == 'ADMIN':
+                        new_user = User(**user)
+                    elif user_type == 'CLIENT':
+                        new_user = Client(**user)
+                    self.sales.add_coupon(new_user.user_id,5)
+                    new_user.user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+                    self.users[new_user.user_id] = new_user
+                    self.reporting.new_user(user_type,new_user.user_full_name)
+                    return new_user.login(new_user.password)
+                except StoreError as e:
+                    raise e
+            else:
+                raise StoreError(" * user already exists * ")
 
     def remove_client(self, client_id):
         if client_id in self.users:

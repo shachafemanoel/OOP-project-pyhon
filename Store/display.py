@@ -189,10 +189,9 @@ class Display:
         print("1. View all clients")
         print("2. Add user")
         print("3. Remove user")
-        print("4. Add admin")
-        print("5. Change password")
-        print("6. Update client's details")
-        print("7. Exit")
+        print("4. Change password")
+        print("5. Update client's details")
+        print("6. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 

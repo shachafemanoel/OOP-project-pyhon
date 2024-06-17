@@ -1,5 +1,4 @@
-from Store.payment_calculator import CurrencyConverter
-from Store.payment_calculator import InstallmentPayment
+
 from Store.store import Store
 from Store.user import User
 from Store.client import Client
@@ -24,7 +23,6 @@ class StoreCLI:
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
-            logging.warning(f"\n Welcome  {self.user.user_full_name}. you are now connected\n")
             self.cart.currency = self.user.currency
         except StoreError.AuthenticationError as e:
             print(e)
@@ -34,48 +32,33 @@ class StoreCLI:
     def register(self):
         print("\nWelcome to the registration systemֿ\n")
         print(" User id must be a at least 4 digit ")
-        user_id = (input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:")))
-        if user_id.isdigit() and len(user_id) > 3:
-            print("\n Full name must be at least 4 characters ")
-            user_full_name = input("Enter your Full name: ")
-            if len(user_full_name) > 3:
-                new_user = self.set_password(user_id, user_full_name)
-                if new_user:
-                    new_user["user_type"] = "Client"
-                    if self.store.add_user(new_user):
-                        self.user = self.store.log(new_user["user_id"], new_user["password"])
-                        self.set_address()
-                        print("\n * User registered successfully. * ")
-                        print("Thank you for register. Enjoy a 5% coupon !")
-                        logging.info(f"\n{self.user.user_full_name} are now connected\n")
-                    else:
-                        print("\n * User already exists please try to log in *")
+        user_id = input("Enter user ID: ")
+        user_full_name = input("Enter full name: ")
+        print(" Password must be a at least 4 digit ")
+        password = input("Enter password: ")
+        user_type = "CLIENT"
+        if self.user.online == 1 and not isinstance(self.user,Client):
+            print("\n1.Client")
+            print("2.Admin")
+            choice = input("Enter your choice: ")
+            if choice == "2":
+                user_type = "ADMIN"
+        user = {
+            "user_id": user_id,
+            "user_full_name": user_full_name,
+            "password": password,
+            "user_type": user_type
+        }
 
+        try:
+            if self.user.online == 0:
+                self.user = self.store.add_user(user)
             else:
-                print("\n * Invalid full name. Try again * ")
-        else:
-            print("\n * User ID must be at least 4 digit.Try again * ")
+                self.store.add_user(user)
+            print("User registered successfully!")
+        except StoreError as error:
+           print(error)
 
-    def register_admin(self,):
-        print("\nAdding new admin\n")
-        print(" User ID must be at least 4 digits ")
-        user_id = input("Enter User ID: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-        if user_id.isdigit() and len(user_id) > 3:
-            print("\n Full name must be at least 4 characters ")
-            user_full_name = input("Enter the admin's full name: ")
-            if len(user_full_name) > 3:
-                print("\n The password must contain at least 4 characters ")
-                new_user = self.set_password(user_id, user_full_name)
-                if new_user:
-                    new_user["user_type"] = "Admin"
-                    if self.store.add_user(new_user):
-                        print("\n * Admin registered successfully. * ")
-                else:
-                    print("\n * User already exists please try to log in *")
-            else:
-                print("\n * Invalid full name. Try again * ")
-        else:
-            print("\n * User ID must be at least 4 digits. Try again * ")
 
     def set_password(self,user_id = None,user_full_name = None):
         print("\n * The password must contain at least 4 characters *")
@@ -140,13 +123,10 @@ class StoreCLI:
                 self.remove_client()
                 break
             elif sub_choice == '4':
-                self.register_admin()
-                break
-            elif sub_choice == '5':
                 self.change_password()
-            elif sub_choice == '6':
+            elif sub_choice == '5':
                 self.update_client_details()
-            elif sub_choice == '7':
+            elif sub_choice == '6':
                 break
             else:
                 print("\n * Invalid choice. Please try again. *\n")
@@ -911,7 +891,7 @@ class StoreCLI:
                 self.exit = True
                 print('Bye, Thank you')
             else:
-                print("\n * Login failed. Please check your credentials and try again. * \n ")
+                print("\n * Invalid choice,Try again * \n ")
 
     def display_menu(self):
         product_manager = "1. Product Manager"
@@ -980,6 +960,7 @@ class StoreCLI:
             if self.user.online == 0:
                 self.wellcome_page()
             elif self.user.online == 1:
+                print(f"\n * Active user: {self.user.user_full_name} ")
                 if type(self.user) == Client:
                         self.customer_menu()
                 else:

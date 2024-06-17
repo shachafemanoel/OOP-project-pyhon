@@ -102,5 +102,13 @@
         "user_type": "Client",
         "message": [],
         "currency": "\u20aaILS"
+    },
+    {
+        "user_id": "5581",
+        "user_full_name": "shchaf",
+        "password": "1234",
+        "address": null,
+        "payment": null,
+        "user_type": "Admin"
     }
 ]

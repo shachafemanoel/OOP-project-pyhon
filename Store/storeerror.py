@@ -96,3 +96,21 @@ class StoreError(Exception):
             '''
             self.message = message
             super().__init__(self.message)
+
+    class InvalidPasswordError(Exception):
+        """
+        Exception raised for invalid password.
+        """
+
+        def __init__(self, message="\n * Password must be at least 4 characters * \n"):
+            self.message = message
+            super().__init__(self.message)
+
+    class InvalidFullNameError(Exception):
+        """
+        Exception raised for invalid full name.
+        """
+
+        def __init__(self, message="\n * Full name must be at least 3 characters *\n"):
+            self.message = message
+            super().__init__(self.message)

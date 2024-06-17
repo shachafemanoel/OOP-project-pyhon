@@ -12,21 +12,20 @@
         "samsung": 1
     },
     "message": {
-        "orders": [
-            " \n * A new order has been placed * \n Order number: 15    total amount: 5250.0 "
-        ],
+        "orders": [],
         "products": [],
         "users": []
     },
     "new_update": {
-        "orders": 1,
+        "orders": 0,
         "products": 0,
         "users": 0
     },
-    "total_update": 5,
+    "total_update": 0,
     "sales": {
         "coupons": {
-            "123456": 5
+            "123456": 5,
+            "5581": 5
         },
         "promotions": {
             "ipad": 40
