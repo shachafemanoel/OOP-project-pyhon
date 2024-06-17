@@ -105,7 +105,7 @@ class Display:
         '''
         Displays the advanced search options.
         '''
-        print("ֿ\n*****Advanced search system****\n")
+        print("ֿ\n***** Advanced search system ****\n")
         print("1. Search by Name")
         print("2. Search by Model")
         print("3. Search by Price range")

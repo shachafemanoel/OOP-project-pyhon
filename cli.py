@@ -25,6 +25,7 @@ class StoreCLI:
             if type(self.user) == User:
                 self.user.__class__ = User
             logging.warning(f"\n Welcome  {self.user.user_full_name}. you are now connected\n")
+            self.cart.currency = self.user.currency
         else:
             logging.warning("Login failed!\n")
 
@@ -310,7 +311,6 @@ class StoreCLI:
             self.set_currency(currencies[choice])
 
         else:
-            count = 0
             for i in range(4):
                 print(f"Wrong choice. Please try again.You have {4-i} attempts left")
                 choice = input("Enter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
@@ -324,8 +324,7 @@ class StoreCLI:
 
     def set_currency(self, currency):
         try:
-            if self.cart["total_amount"] > 0:
-                CurrencyConverter.convert(self.cart["total_amount"], self.store.currency, currency)
+            self.cart.change_currency(currency)
             self.user.currency = currency
             self.store.change_currency(currency)
         except Exception as e:
@@ -448,6 +447,11 @@ class StoreCLI:
                 print("\n * Invalid choice. Please try again. *\n")
 
     def pick_item(self, lst):
+        """
+        The function receives a list of products from the search in the system and displays the results to the customer to allow him to choose a product
+        and returns the position of the product in the list
+        if no product is selected or there are no results the function returns -100
+            """
         if len(lst) == 0:
             return -100
         print("\nPlease select one of the options")
@@ -549,12 +553,14 @@ class StoreCLI:
 
     def search_by_price(self):
         try:
+            print("\n * Welcome to search by price *\n")
+            print(f"Your currency :{self.user.currency} ")
             low = input("Enter low price: ")
             high = input("Enter high price: ")
-            products = self.store.price_search(low, high)
+            products = self.store.price_search(low, high,self.user.currency)
             choice = self.pick_item(products)
             if choice != -100 and choice is not None:
-                print(products[choice])
+                return products[choice]
             else:
                 print("\nNo product selected.")
         except StoreError.InvalidInputError as e:
@@ -571,7 +577,8 @@ class StoreCLI:
             products = self.store.rate_search(low, high)
             choice = self.pick_item(products)
             if choice != -100:
-                print(products[choice])
+                return products[choice]
+
             else:
                 print("\nNo product selected.")
         except StoreError.InvalidInputError as e:
@@ -591,10 +598,11 @@ class StoreCLI:
             try:
                 quantity = int(quantity)
                 self.cart.add_item(new_item, quantity)
-                print(f"\n * {new_item.name} ----- quantity {quantity} total:{new_item.get_price_in_user_currency(quantity)} has been successfully added to cart! *\n")
-            except Exception as e:
+                print(f"\n * {new_item.name} =========== > quantity {quantity} has been successfully added to cart! *\n")
+            except ValueError as e:
                  print(e)
-
+            except StoreError.NotInStockError as e:
+                print(e)
 
     def add_quantity_to_product(self):
         item = self.search_system()
@@ -780,13 +788,21 @@ class StoreCLI:
         """
         new_item = self.pick_item_order()
         if new_item is not None:
-            quantity = input("\nEnter a quantity of the product to remove: ")
+            print(f"\n * {new_item.name} =============== quantity {self.cart.get_product_quantatiy(new_item.get_key_name())}  *\n")
+            print("\nPlease enter the desired quantity of the product. To remove it from the cart, enter 0.")
+            quantity = input("\nEnter a quantity: ")
             try:
                 quantity = int(quantity)
-                self.cart.update_item_quantity(new_item, quantity)
-                print(f"\n * {new_item.name} ----- quantity {quantity} has been removed from the cart! *\n")
-            except ValueError:
-                print("Invalid quantity entered. Try again.")
+                self.cart.change_item_quantity(new_item, quantity)
+                print(f"\n * {new_item.name} ===============> new quantity {quantity}  *\n")
+                if quantity == 0:
+                    print(f"{new_item.name} has been removed successfully")
+            except ValueError as e:
+                print(f"\n * {e}.\n")
+            except StoreError.NotInStockError as e:
+                print(f"\n * {e}.\n")
+            except StoreError as e:
+                print(e)
     def pick_item_order(self):
         lst = self.store.lst_search(self.cart.product_dict)
         choice = self.pick_item(lst)

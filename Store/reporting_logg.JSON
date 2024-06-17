@@ -21,16 +21,14 @@
         "products": 0,
         "users": 0
     },
-    "total_update": 3,
+    "total_update": 4,
     "sales": {
         "coupons": {
-            "2020": 20,
             "123456": 5
         },
         "promotions": {
             "ipad": 40
         },
-        "category_discounts": {
-        }
+        "category_discounts": {}
     }
 }

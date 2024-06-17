@@ -6,7 +6,7 @@ class Order:
         self.order_number = order_number
         self.customer = customer
         self.total_amount = total_amount
-        self.payment = Payment(**payment)
+        self.__payment = Payment(**payment)
         self.status = "Processing" if status is None else status
         self.product_dict = product_dict
         self.currency = "₪ILS"
@@ -18,7 +18,16 @@ class Order:
             self.status = 'Delivered'
         elif choice == 3:
             self.status = 'Canceled'
+    @property
+    def payment(self):
+        return self.__payment
 
+    @payment.setter
+    def payment(self, payment):
+        if  isinstance (payment,Payment):
+            self.__payment = payment
+        if isinstance(payment,dict):
+            self.__payment = Payment(**payment)
     def order_to_dict(self):
         order_dict = {
             'order_number': self.order_number,

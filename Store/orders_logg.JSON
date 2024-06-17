@@ -194,5 +194,18 @@
         "product_dict": {
             "Applecharger": 2
         }
+    },
+    {
+        "order_number": 14,
+        "customer_id": "2020",
+        "total_amount": 0,
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 5
+        },
+        "status": "Processing",
+        "product_dict": {}
     }
 ]

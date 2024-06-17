@@ -7,7 +7,7 @@ class User:
         self.__online = online
         self.__address = address
         self.payment = payment
-
+        self.currency = "₪ILS"
     @property
     def user_id(self):
         return self.__user_id

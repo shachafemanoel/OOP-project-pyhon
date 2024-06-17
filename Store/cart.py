@@ -2,6 +2,7 @@ from Store.products.product import Product
 from Store.products.computer import Computer
 from Store.products.tv import Tv
 from Store.products.phone import Phone
+from Store.payment_calculator import CurrencyConverter
 from Store.store import StoreError
 
 
@@ -14,7 +15,7 @@ class Cart:
         self.product_dict = {}
         self.total_amount = 0
         self.count_item = 0
-
+        self.currency = "₪ILS"
     def add_item(self, product: Product, quantity: int):
         """
         Add an item to the cart.
@@ -25,15 +26,16 @@ class Cart:
         """
         if quantity <= 0:
             raise ValueError("Quantity must be greater than 0.")
-        if product.get_key_name() in self.product_dict:
-            self.product_dict[product.get_key_name()] += quantity
+        if product.available(quantity):
+            if product.get_key_name() in self.product_dict:
+                raise StoreError(f"\n ** {product.name} is already in your cart, to update the quantity go to the cart **\n")
+            else:
+                self.product_dict[product.get_key_name()] = quantity
+                self.total_amount += product.get_price(quantity)
+                self.count_item += quantity
         else:
-            self.product_dict[product.get_key_name()] = quantity
-        if product.available(self.product_dict[product.get_key_name()]):
-            self.total_amount += product.get_price(quantity)
-            self.count_item += quantity
-        else:
-            raise StoreError.NotInStockError("Item not available.")
+            raise StoreError.NotInStockError(f"\n ** We apologize, but the quantity you requested exceeds the available stock ** .\nCurrently, we have only {product.quantity} units available. ")
+
 
     def remove_item(self, product: Product, quantity: int):
         """
@@ -59,7 +61,19 @@ class Cart:
         if self.product_dict[product.get_key_name()] == 0:
             del self.product_dict[product.get_key_name()]
 
+    def add_quantity_to_item(self, product: Product, quantity: int):
+        if product.get_key_name() not in self.product_dict:
+            raise ValueError("Product not in cart.")
 
+        if quantity <= 0:
+            raise ValueError("Quantity must be greater than 0.")
+
+        if product in self.product_dict:
+            self.product_dict[product] += quantity
+            self.total_amount += product.get_price(quantity)
+            self.count_item += quantity
+        else:
+            raise StoreError.ProductNotFoundError
 
     def clear_cart(self):
         """
@@ -73,7 +87,7 @@ class Cart:
 
 
 
-    def get_product_by_key(self, key):
+    def get_product_quantatiy(self, key):
         """
         Retrieve a product by its key name.
 
@@ -83,10 +97,10 @@ class Cart:
         Returns:
         Product: The product associated with the key name.
         """
-        for product in self.product_dict:  # Assuming self.products is a list of all available products
-            if product.get_key_name() == key:
-                return product
-        raise ValueError("Product not found.")
+        if key in self.product_dict:
+            return self.product_dict[key]
+        else:
+            raise ValueError("Product not found.")
 
     def get_cart_dict(self):
         """
@@ -96,12 +110,13 @@ class Cart:
         dict: A dictionary containing the cart summary.
         """
         return {
+            "currency":self.currency,
             "total_amount": self.total_amount,
             "product_dict": self.product_dict
         }
     def use_coupon(self,coupon):
         self.total_amount *= (1 - (coupon / 100))
-    def update_item_quantity(self, product: Product, quantity: int):
+    def change_item_quantity(self, product: Product, quantity: int):
         """
         Update the quantity of a specific item in the cart.
 
@@ -109,11 +124,20 @@ class Cart:
         product (Product): The product to update.
         quantity (int): The new quantity.
         """
-        current_quantity = self.product_dict.get(product.get_key_name(), 0)
-        if quantity > current_quantity:
-            self.add_item(product, quantity - current_quantity)
-        elif quantity < current_quantity:
-            self.remove_item(product, current_quantity - quantity)
+        if product.available(quantity):
+            current_quantity = self.product_dict.get(product.get_key_name(), 0)
+            if quantity > current_quantity:
+                self.add_quantity_to_item(product, quantity - current_quantity)
+            elif quantity < current_quantity:
+                self.remove_item(product, current_quantity - quantity)
+        else:
+            raise StoreError.NotInStockError
+
+
+    def change_currency(self,currency):
+        self.currency = currency
+
+
     def __str__(self):
         """
         String representation of the cart.
@@ -124,4 +148,4 @@ class Cart:
             f"================\n"
             f"{self.product_dict}\n"
             f"================\n"
-            f"Total amount: {self.total_amount}\n")
+            f"Total amount: {CurrencyConverter.convert(self.total_amount,"₪ILS",self.currency)} {self.currency}\n")

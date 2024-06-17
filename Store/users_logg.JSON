@@ -16,7 +16,7 @@
             "owner": "John Doe",
             "info": "1234567812345678",
             "payment_method": "Credit Card",
-            "amount_of_payments": 1
+            "amount_of_payments": 5
         },
         "user_type": "Client",
         "message": [
@@ -24,9 +24,10 @@
             "\n * Order Number:7 has been cancelled *\n * Refund has been done *",
             "\n * Order Number:7 has been Shipped *",
             "\n * Order Number:7 has been Canceled *",
-            "\n * Order Number:7 has been cancelled *\n * Refund has been done *"
+            "\n * Order Number:7 has been cancelled *\n * Refund has been done *",
+            "\n * Thank you for your purchase!,  Order number: 14 has been received! *"
         ],
-        "currency": "\u20aaILS"
+        "currency": "$USD"
     },
     {
         "user_id": "7777",

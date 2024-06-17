@@ -9,7 +9,7 @@ from Store.reporting import Reporting
 from Store.storeerror import StoreError
 from Store.user import User
 from Store.sales import Sales
-
+from Store.payment_calculator import CurrencyConverter
 class Store:  # מחלקה שמממשת את החנות עצמה
 
     def __init__(self):
@@ -310,10 +310,12 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         except ValueError:
             raise StoreError.InvalidInputError("\nLow rating and high rating must be numbers.")
 
-    def price_search(self, low, high):
+    def price_search(self, low, high,currency):
         products = []
         try:
             low, high = float(low), float(high)
+            low = CurrencyConverter.convert(low,currency,"₪ILS")
+            high = CurrencyConverter.convert(low,currency,"₪ILS")
             if high < low:
                 raise StoreError.InvalidInputError("\nHigh price must be higher than low price.")
             if not (0 <= low and 0 <= high):
