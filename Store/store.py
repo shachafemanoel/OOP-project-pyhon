@@ -238,11 +238,14 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                     self.reporting.new_sold(name, quant)
                     if self.collection[name].get_quantity() < 4:
                         self.reporting.product_warning(self.collection[name].get_quantity(),self.collection[name].name)
-            order = Order(**order)
-            self.reporting.new_order(order)
-            self.users[customer.user_id].new_order(order)
-            self.orders[self.order_number] = order
-            self.order_number += 1
+            try:
+                order = Order(**order)
+                self.reporting.new_order(order)
+                self.users[customer.user_id].new_order(order)
+                self.orders[self.order_number] = order
+                self.order_number += 1
+            except ValueError as e:
+                raise StoreError.InvalidInputError(f"Invalid order: {e}")
 
     def cancel_order(self, order_number):
         for name, amount in self.orders[order_number].product_dict.items():
@@ -278,14 +281,18 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
     def log(self, user_id, password):
         login = user_id.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
-        if login in self.users and self.users[login].login(password):
+        if login in self.users:
+            try:
+                self.users[login].login(password)
+            except StoreError.AuthenticationError as e:
+                raise e
             if type(self.users[login]) == User:
                 return self.users[login]
             else:
                 self.change_currency(self.users[login].currency)
                 return self.users[login]
         else:
-            return None
+            raise StoreError.AuthenticationError("\n* User ID does not exist * ")
 
     def change_order(self, order_number, choice):
         self.orders[order_number].change_status(choice)
@@ -314,8 +321,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         products = []
         try:
             low, high = float(low), float(high)
-            low = CurrencyConverter.convert(low,currency,"₪ILS")
-            high = CurrencyConverter.convert(low,currency,"₪ILS")
+            if currency != "₪ILS":
+                low = CurrencyConverter.convert(low,currency,"₪ILS")
+                high = CurrencyConverter.convert(high,currency,"₪ILS")
             if high < low:
                 raise StoreError.InvalidInputError("\nHigh price must be higher than low price.")
             if not (0 <= low and 0 <= high):

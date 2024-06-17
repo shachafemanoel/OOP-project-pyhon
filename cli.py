@@ -19,15 +19,17 @@ class StoreCLI:
         # פונקציית התחברות למערכת הפונקציה מקבלת שם משתמש וסיסמא קוראת לפונקציה בחנות במידה והערכים תקינים יחזור משתמש אם המשתמש מנהל הפונקציה תחבר אותו בתור מנהל
         user_id = input("Enter User ID: ")
         password = input("Enter Password: ")
-        loggg = self.store.log(user_id, password)
-        if loggg is not None:
+        try:
+            loggg = self.store.log(user_id, password)
             self.user = loggg
             if type(self.user) == User:
                 self.user.__class__ = User
             logging.warning(f"\n Welcome  {self.user.user_full_name}. you are now connected\n")
             self.cart.currency = self.user.currency
-        else:
-            logging.warning("Login failed!\n")
+        except StoreError.AuthenticationError as e:
+            print(e)
+            logging.warning(f"Login failed!\n")
+
 
     def register(self):
         print("\nWelcome to the registration systemֿ\n")

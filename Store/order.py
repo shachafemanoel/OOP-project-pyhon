@@ -2,14 +2,14 @@ from Store.payment import Payment
 from Store.payment_calculator import CurrencyConverter
 from Store.payment_calculator import InstallmentPayment
 class Order:
-    def __init__(self, order_number, product_dict, payment, total_amount,address = None ,status=None,customer=None):
+    def __init__(self, order_number, product_dict, payment, total_amount,currency = None,address = None ,status=None,customer=None):
         self.order_number = order_number
         self.customer = customer
-        self.total_amount = total_amount
+        self.__total_amount = total_amount
         self.__payment = Payment(**payment)
         self.status = "Processing" if status is None else status
         self.product_dict = product_dict
-        self.currency = "₪ILS"
+        self.currency = "₪ILS" if currency is None else currency
         self.address = address
     def change_status(self, choice: int):
         if choice == 1:
@@ -18,6 +18,17 @@ class Order:
             self.status = 'Delivered'
         elif choice == 3:
             self.status = 'Canceled'
+
+
+    @property
+    def total_amount(self):
+        return self.__total_amount
+    @total_amount.setter
+    def total_amount(self, amount):
+        if amount <= 0:
+            raise ValueError("Amount must be greater than zero")
+        else:
+            self.__total_amount = amount
     @property
     def payment(self):
         return self.__payment
@@ -44,8 +55,11 @@ class Order:
 
     def converter(self):
         pay =  f" Total amount: {CurrencyConverter.convert(self.total_amount, "₪ILS", self.currency) } {self.currency}"
-        if self.payment.amount_of_payments > 1:
-            pay +=self.payments()
+        if self.status == 'Canceled':
+            pay += "\n ** Order canceled payment method not charged ** "
+        else:
+            if self.payment.amount_of_payments > 1:
+                pay +=self.payments()
         return pay
     def payments(self):
         pay = CurrencyConverter.convert(self.total_amount, "₪ILS", self.currency)

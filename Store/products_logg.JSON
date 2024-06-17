@@ -66,7 +66,7 @@
             "5": []
         },
         "size": "10.9",
-        "storage":"256GB",
+        "storage": "256GB",
         "chip": "M2"
     },
     {
@@ -118,7 +118,7 @@
         "model": "pro",
         "description": "the best value for money ",
         "price": 1750.0,
-        "quantity": 26,
+        "quantity": 23,
         "rate": {
             "1": [],
             "2": [],

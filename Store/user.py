@@ -1,4 +1,4 @@
-
+from Store.storeerror import StoreError
 class User:
     def __init__(self, user_id, user_full_name, password, online=0, address=None, payment=None):
         self.__user_id = user_id
@@ -55,9 +55,9 @@ class User:
     def login(self, entered_password):
         if self.password == entered_password:
             self.online = 1
-            return True
+
         else:
-            return False
+            raise StoreError.AuthenticationError("\n * Wrong password * ")
 
     def logout(self):
         self.online = 0

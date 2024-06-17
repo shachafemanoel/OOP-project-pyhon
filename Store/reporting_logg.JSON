@@ -4,7 +4,7 @@
         "mycomp": 5,
         "LaptopDell": 4,
         "airpodspro": 2,
-        "iphone13": 0,
+        "iphone13": 3,
         "Applecharger": 0,
         "LGTV55": 1,
         "galaxy24": 1,
@@ -12,16 +12,18 @@
         "samsung": 1
     },
     "message": {
-        "orders": [],
+        "orders": [
+            " \n * A new order has been placed * \n Order number: 15    total amount: 5250.0 "
+        ],
         "products": [],
         "users": []
     },
     "new_update": {
-        "orders": 0,
+        "orders": 1,
         "products": 0,
         "users": 0
     },
-    "total_update": 4,
+    "total_update": 5,
     "sales": {
         "coupons": {
             "123456": 5

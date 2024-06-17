@@ -19,14 +19,7 @@
             "amount_of_payments": 5
         },
         "user_type": "Client",
-        "message": [
-            "\n * Order Number:7 has been Canceled *",
-            "\n * Order Number:7 has been cancelled *\n * Refund has been done *",
-            "\n * Order Number:7 has been Shipped *",
-            "\n * Order Number:7 has been Canceled *",
-            "\n * Order Number:7 has been cancelled *\n * Refund has been done *",
-            "\n * Thank you for your purchase!,  Order number: 14 has been received! *"
-        ],
+        "message": [],
         "currency": "$USD"
     },
     {
