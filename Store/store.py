@@ -4,6 +4,7 @@ from Store.order import Order
 from Store.products.computer import Computer
 from Store.products.phone import Phone
 from Store.products.product import Product
+from Store.products.product_factory import ProductFactory
 from Store.products.tv import Tv
 from Store.reporting import Reporting
 from Store.storeerror import StoreError
@@ -13,7 +14,6 @@ from Store.payment_calculator import CurrencyConverter
 class Store:  # מחלקה שמממשת את החנות עצמה
 
     def __init__(self):
-
         self.collection = {}
         self.users = {}  # משתמשי החנות
         self.orders = {}  # הזמנות החנות
@@ -21,6 +21,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
         self.reporting = Reporting()
         self.sales = Sales()
         self.currency = "₪ILS"
+
     def add_review(self,product, stars, review=None):
         if product in self.collection:
             self.collection[product].add_review(stars,review)
@@ -161,23 +162,21 @@ class Store:  # מחלקה שמממשת את החנות עצמה
 
         return found
 
-
     def add_product(self, product_dict):
-        if product_dict.get("name",None) is not None and product_dict.get("price",None) is not None and product_dict.get("quantity",None) is not None:
-            product_type = product_dict.pop("product_type",None)
-            if product_type == "Tv":
-                new_product = Tv(**product_dict)
-            elif product_type == "Computer":
-                new_product = Computer(**product_dict)
-            elif product_type == "Phone":
-                new_product = Phone(**product_dict)
-            else:
-                new_product = Product(**product_dict)
+        if product_dict.get("name") is not None and product_dict.get("price") is not None and product_dict.get(
+                "quantity") is not None:
+            product_type = product_dict.pop("product_type", None)
+            try:
+                new_product = ProductFactory.create_product(product_type, **product_dict)
+            except ValueError as e:
+                print(f"An error occurred while creating the product: {e}")
+                return
+
             discount = self.sales.get_product_discount(new_product)
             if discount > 0:
                 new_product.update_price(discount)
-            self.collection[new_product.get_key_name()] = new_product
 
+            self.collection[new_product.get_key_name()] = new_product
 
     def client_list(self):
         if len(self.users) > 0:

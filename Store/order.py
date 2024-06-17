@@ -11,6 +11,7 @@ class Order:
         self.product_dict = product_dict
         self.currency = "₪ILS" if currency is None else currency
         self.address = address
+
     def change_status(self, choice: int):
         if choice == 1:
             self.status = 'Shipped'

@@ -586,77 +586,83 @@ class StoreCLI:
             except StoreError.NotInStockError as e:
                 print(e)
 
-    def add_quantity_to_product(self):
-        item = self.search_system()
-        amount = input("\nEnter a quantity: ")
-        if amount.isdigit():
-            amount = int(amount)
-            if item is not None and amount > 0:
-                item.add_quantity(amount)
-                print(" * Quantity added successfully * \n")
-        else:
-            print("* Invalid input or product not found. * \n")
-
-    def add_pruduct_categoty(self,dict_new_product):
-        category = Display.display_product_type()
-        if category == '1':
-            size = input("Enter Screen size: ")
-            tv_type = input("Enter TV type: ")
-            dict_new_product["size"] = size
-            dict_new_product["tv_type"] = tv_type
-            dict_new_product["product_type"] = "Tv"
-        elif category == '2':
-            chip = input("Enter Chip: ")
-            size = input("Enter Screen size: ")
-            storage = input("Enter storage: ")
-            dict_new_product["size"] = size
-            dict_new_product["chip"] = chip
-            dict_new_product["storage"] = storage
-            dict_new_product["product_type"] = 'Computer'
-        elif category == '3':
-            size = input("Enter Screen size: ")
-            storage = input("Enter storage: ")
-            dict_new_product["size"] = size
-            dict_new_product["storage"] = storage
-            dict_new_product["product_type"] = 'Phone'
-        if self.store.add_product(dict_new_product):
-            print("Product added successfully")
-        else:
-            print("\n * One of the entered values is Invalid *\n")
-
     def add_product(self):
-        name = input("Enter Product Name: ")
-        model = input("Enter Product Model: ")
-        search = self.store.search(name, model)
-        if len(search) > 0:
-            print(f" \n * This products exists in the system please choose product for adding amount. * ")
-            s = self.pick_item(search)
-            if s != -100:
-                pro = search[s]
-                print(f"\n{pro}")
-                print("How much would you like to add to the inventory?")
-                quantity = input("Add quantity: ")
-                if quantity.isdigit():
-                    self.store.collection[pro.get_key_name()].add_quantity(int(quantity))
-                    print("\n * Quantity added successfully *")
-                else:
-                    print("Quantity must be a digit!")
-
-        else:
-
-            description = input("Enter description: ")
-            price = input("Enter Price: ")
-            quantity = input("Enter Quantity: ")
-            if price.isdigit() and int(price) > 0 and quantity.isdigit():
-                    price = float(price)
-                    quantity = int(quantity)
-                    dict_new_product = {"name": name, "model": model, "description": description, "price": price,
-                                        "quantity": quantity}
-                    self.add_pruduct_categoty(dict_new_product)
-
-
+        product_type = Display.display_product_type()
+        if product_type in '1234':
+            name = input("Enter Product Name: ")
+            model = input("Enter Product Model: ")
+            search = self.store.search(name, model)
+            if len(search) > 0:
+                print(" \n * This products exists in the system please choose product for adding amount. * ")
+                self.check_if_exist(search)
+                return
             else:
-                    print("* Price and Quantity must be a digit *")
+                description = input("Enter description: ")
+                try:
+                    price = float(input("Enter Price: ").strip())
+                except ValueError:
+                    print("\nInvalid input for price. Please enter a valid number.")
+                    return
+                try:
+                    quantity = int(input("Enter Quantity: ").strip())
+                except ValueError:
+                    print("\nInvalid input for quantity. Please enter a valid number.")
+                    return
+
+            kwargs = {}
+            if product_type == "2":  # Computer
+                kwargs["size"] = input("Enter Screen size: ")
+                kwargs["storage"] = input("Enter storage: ")
+                kwargs["chip"] = input("Enter Chip: ")
+            elif product_type == "1": # Tv
+                kwargs["size"] = input("Enter Screen size: ")
+                kwargs["tv_type"] = input("Enter Resolution: ")
+            elif product_type == "3": # Phone
+                kwargs["size"] = input("Enter Screen size: ")
+                kwargs["storage"] = input("Enter Storage: ")
+
+            product_dict = {
+                "product_type": self.map_product_type(product_type),
+                "name": name,
+                "model": model,
+                "description": description,
+                "price": price,
+                "quantity": quantity,
+                **kwargs
+            }
+            try:
+                self.store.add_product(product_dict)
+                print("\n* Product has been successfully added *")
+            except ValueError as e:
+                print(f"An error occurred: {e}")
+        else:
+            return
+
+    def map_product_type(self, choice):
+        try:
+            if choice == "1":
+                return "Tv"
+            elif choice == "2":
+                return "Computer"
+            elif choice == "3":
+                return "Phone"
+            elif choice == "4":
+                return "Product"
+        except:
+            raise ValueError("Invalid product type selected")
+
+    def check_if_exist(self, search):
+        s = self.pick_item(search)
+        if s != -100:
+            pro = search[s]
+            print(f"\n{pro}")
+            print("\nHow much would you like to add to the inventory?")
+            quantity = input("\nAdd quantity: ")
+            if quantity.isdigit():
+                self.store.collection[pro.get_key_name()].add_quantity(int(quantity))
+                print("\n * Quantity added successfully *")
+            else:
+                print("\nQuantity must be a digit!")
 
     def update_client_details(self):
         client_lst = self.store.client_list()

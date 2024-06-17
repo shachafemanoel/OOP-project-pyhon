@@ -222,7 +222,7 @@
         "model": "14 ",
         "description": "2022 Series",
         "price": 4000.0,
-        "quantity": 10,
+        "quantity": 11,
         "rate": {
             "1": [],
             "2": [],
@@ -233,5 +233,20 @@
         "size": "14",
         "storage": "512GB",
         "chip": "m1"
+    },
+    {
+        "product_type": "Product",
+        "name": "accesory",
+        "model": "high",
+        "description": "good",
+        "price": 1000.0,
+        "quantity": 12,
+        "rate": {
+            "5": [],
+            "4": [],
+            "3": [],
+            "2": [],
+            "1": []
+        }
     }
 ]
