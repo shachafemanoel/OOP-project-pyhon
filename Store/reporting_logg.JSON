@@ -1,36 +1,36 @@
 {
-  "best_sell": "mycomp",
-  "sold_products": {
-    "mycomp": 5,
-    "LaptopDell": 4,
-    "airpodspro": 2,
-    "iphone13": 3,
-    "Applecharger": 0,
-    "LGTV55": 1,
-    "galaxy24": 1,
-    "ipad": 0,
-    "samsung": 1,
-    "dell": 2
-  },
-  "message": {
-    "orders": [],
-    "products": [],
-    "users": []
-  },
-  "new_update": {
-    "orders": 0,
-    "products": 0,
-    "users": 0
-  },
-  "total_update": 1,
-  "sales": {
-    "coupons": {
-      "123456": 5,
-      "5581": 5
+    "best_sell": "mycomp",
+    "sold_products": {
+        "mycomp": 5,
+        "LaptopDell": 4,
+        "airpodspro": 2,
+        "iphone13": 3,
+        "Applecharger": 0,
+        "LGTV55": 1,
+        "galaxy24": 1,
+        "ipad": 0,
+        "samsung": 1,
+        "dell": 2
     },
-    "promotions": {
-      "ipad": 40
+    "message": {
+        "orders": [],
+        "products": [],
+        "users": []
     },
-    "category_discounts": {}
-  }
+    "new_update": {
+        "orders": 0,
+        "products": 0,
+        "users": 0
+    },
+    "total_update": 1,
+    "sales": {
+        "coupons": {
+            "123456": 5,
+            "5581": 5
+        },
+        "promotions": {
+            "ipad": 40
+        },
+        "category_discounts": {}
+    }
 }

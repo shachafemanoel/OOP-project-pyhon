@@ -255,3 +255,13 @@ class Display:
         print("0. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
+
+    @staticmethod
+    def save_changes_menu():
+        print("\nWould you like to:")
+        print("1. Continue making changes")
+        print("2. Save changes and exit")
+        print("3. Discard changes and exit")
+        choice = input("Enter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+        return choice.replace(" ", "")

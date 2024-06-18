@@ -1,116 +1,116 @@
 [
-  {
-    "user_id": "1111",
-    "user_full_name": "Admin",
-    "password": "1234",
-    "address": "israel,ramat gan,hashomer,12",
-    "payment": null,
-    "user_type": "Admin"
-  },
-  {
-    "user_id": "2020",
-    "user_full_name": "shachaf emanoel",
-    "password": "1234",
-    "address": "usa,new yorl,men,4",
-    "payment": {
-      "owner": "John Doe",
-      "info": "1234567812345678",
-      "payment_method": "Credit Card",
-      "amount_of_payments": 5
+    {
+        "user_id": "1111",
+        "user_full_name": "Admin",
+        "password": "1234",
+        "address": "israel,ramat gan,hashomer,12",
+        "payment": null,
+        "user_type": "Admin"
     },
-    "user_type": "Client",
-    "message": [
-      "\n * Thank you for your purchase!,  Order number: 15 has been received! *"
-    ],
-    "currency": "$USD"
-  },
-  {
-    "user_id": "7777",
-    "user_full_name": "Nirel jano",
-    "password": "1234",
-    "address": "israel,haifa,shalom ,4",
-    "payment": null,
-    "user_type": "Client",
-    "message": [],
-    "currency": "\u20aaILS"
-  },
-  {
-    "user_id": "9999",
-    "user_full_name": "Yossi Cohen",
-    "password": "1234",
-    "address": "israel,haifa,hashalom,2",
-    "payment": null,
-    "user_type": "Client",
-    "message": [
-      "\n *Order Number:2 has been delivered *",
-      "\n * Thank you for your purchase!,  Order number: 12 has been received! *",
-      "\n * Thank you for your purchase!,  Order number: 13 has been received! *"
-    ],
-    "currency": "\u20aaILS"
-  },
-  {
-    "user_id": "5555",
-    "user_full_name": "shahc",
-    "password": "1234",
-    "address": "England,London,giles,123",
-    "payment": {
-      "owner": "shachaf",
-      "info": "5558881231234523",
-      "payment_method": "Credit Card",
-      "amount_of_payments": 3
+    {
+        "user_id": "2020",
+        "user_full_name": "shachaf emanoel",
+        "password": "1234",
+        "address": "usa,new yorl,men,4",
+        "payment": {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 5
+        },
+        "user_type": "Client",
+        "message": [
+            "\n * Thank you for your purchase!,  Order number: 15 has been received! *"
+        ],
+        "currency": "$USD"
     },
-    "user_type": "Client",
-    "message": [],
-    "currency": "\u20aaILS"
-  },
-  {
-    "user_id": "1234",
-    "user_full_name": "shachaf",
-    "password": "1234",
-    "address": null,
-    "payment": {
-      "owner": null,
-      "info": null,
-      "payment_method": null
+    {
+        "user_id": "7777",
+        "user_full_name": "Nirel jano",
+        "password": "1234",
+        "address": "israel,haifa,shalom ,4",
+        "payment": null,
+        "user_type": "Client",
+        "message": [],
+        "currency": "\u20aaILS"
     },
-    "user_type": "Admin"
-  },
-  {
-    "user_id": "4444",
-    "user_full_name": "shachaf",
-    "password": "1234",
-    "address": "israel,haiga,ggg,2",
-    "payment": null,
-    "user_type": "Client",
-    "message": [],
-    "currency": "\u20aaILS"
-  },
-  {
-    "user_id": "5678",
-    "user_full_name": "Itay",
-    "password": "Mulo",
-    "address": "Uganda,,uganda's,5",
-    "payment": null,
-    "user_type": "Client",
-    "message": [],
-    "currency": "\u20aaILS"
-  },
-  {
-    "user_id": "123456",
-    "user_full_name": "Nirel",
-    "password": "1234",
-    "address": "USA,Los Angeles,,1",
-    "payment": null,
-    "user_type": "Client",
-    "message": [],
-    "currency": "\u20aaILS"
-  },
-  {
-    "user_id": "5581",
-    "user_full_name": "shchaf",
-    "password": "1234",
-    "address": null,
-    "payment": null,
-    "user_type": "Admin"
-  }
+    {
+        "user_id": "9999",
+        "user_full_name": "Yossi Cohen",
+        "password": "1234",
+        "address": "israel,haifa,hashalom,2",
+        "payment": null,
+        "user_type": "Client",
+        "message": [
+            "\n *Order Number:2 has been delivered *",
+            "\n * Thank you for your purchase!,  Order number: 12 has been received! *",
+            "\n * Thank you for your purchase!,  Order number: 13 has been received! *"
+        ],
+        "currency": "\u20aaILS"
+    },
+    {
+        "user_id": "5555",
+        "user_full_name": "shahc",
+        "password": "1234",
+        "address": "England,London,giles,123",
+        "payment": {
+            "owner": "shachaf",
+            "info": "5558881231234523",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 3
+        },
+        "user_type": "Client",
+        "message": [],
+        "currency": "\u20aaILS"
+    },
+    {
+        "user_id": "1234",
+        "user_full_name": "shachaf",
+        "password": "1234",
+        "address": null,
+        "payment": {
+            "owner": null,
+            "info": null,
+            "payment_method": null
+        },
+        "user_type": "Admin"
+    },
+    {
+        "user_id": "4444",
+        "user_full_name": "shachaf",
+        "password": "1234",
+        "address": "israel,haiga,ggg,2",
+        "payment": null,
+        "user_type": "Client",
+        "message": [],
+        "currency": "\u20aaILS"
+    },
+    {
+        "user_id": "5678",
+        "user_full_name": "Itay",
+        "password": "Mulo",
+        "address": "Uganda,,uganda's,5",
+        "payment": null,
+        "user_type": "Client",
+        "message": [],
+        "currency": "\u20aaILS"
+    },
+    {
+        "user_id": "123456",
+        "user_full_name": "Nirel",
+        "password": "1234",
+        "address": "USA,Los Angeles,,1",
+        "payment": null,
+        "user_type": "Client",
+        "message": [],
+        "currency": "\u20aaILS"
+    },
+    {
+        "user_id": "5581",
+        "user_full_name": "shchaf",
+        "password": "1234",
+        "address": null,
+        "payment": null,
+        "user_type": "Admin"
+    }
 ]

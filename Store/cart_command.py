@@ -68,6 +68,5 @@ class CartInvoker:
     def execute_commands(self):
         for command in self._commands:
             command.execute()
-        self._commands.clear()
     def reset_commands(self):
         self._commands.clear()

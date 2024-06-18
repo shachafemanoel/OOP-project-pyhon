@@ -815,26 +815,48 @@ class StoreCLI:
         """
         Update the quantity of an item in the cart via CLI.
         """
-        new_item = self.pick_item_order()
-        if new_item is not None:
-            print(
-                f"\n * {new_item.name} =============== quantity {self.cart.get_product_quantatiy(new_item.get_key_name())}  *\n")
-            print("\nPlease enter the desired quantity of the product. To remove it from the cart, enter 0.")
-            quantity = input("\nEnter a quantity: ")
-            try:
-                quantity = int(quantity)
-                command = ChangeItemQuantityCommand(self.cart, new_item, quantity)
-                self.cart_invoker.add_command(command)
-                self.cart_invoker.execute_commands()
-                print(f"\n * {new_item.name} ===============> new quantity {quantity}  *\n")
-                if quantity == 0:
-                    print(f"{new_item.name} has been removed successfully")
-            except ValueError as e:
-                print(f"\n * {e}.\n")
-            except StoreError.NotInStockError as e:
-                print(f"\n * {e}.\n")
-            except StoreError as e:
-                print(e)
+        while True:
+            new_item = self.pick_item_order()
+            if new_item is not None:
+                print(
+                    f"\n * {new_item.name} =============== quantity {self.cart.get_product_quantatiy(new_item.get_key_name())}  *\n")
+                print("\nPlease enter the desired quantity of the product. To remove it from the cart, enter 0.")
+                quantity = input("\nEnter a quantity: ")
+                try:
+                    quantity = int(quantity)
+                    command = ChangeItemQuantityCommand(self.cart, new_item, quantity)
+                    self.cart_invoker.add_command(command)
+                    print(f"\n * {new_item.name} ===============> new quantity {quantity}  *\n")
+                    if quantity == 0:
+                        print(f"{new_item.name} has been removed successfully")
+
+                except ValueError as e:
+                    print(f"\n * {e}.\n")
+                except StoreError.NotInStockError as e:
+                    print(f"\n * {e}.\n")
+                except StoreError as e:
+                    print(e)
+            else:
+                print("\n * No item selected. *")
+
+            while True:
+                choice = Display.save_changes_menu()
+                if choice == "1":
+                    break
+                elif choice == "2":
+                    self.cart_invoker.execute_commands()
+                    print("Changes saved.")
+                    self.cart_invoker.reset_commands()
+                    return
+                elif choice == '3':
+                    self.cart_invoker.reset_commands()
+                    print("Changes not saved.")
+                    return
+                else:
+                    print("\n * Invalid choice. Please try again. *")
+
+
+
 
     def pick_item_order(self):
         lst = self.store.lst_search(self.cart.product_dict)
@@ -887,19 +909,6 @@ class StoreCLI:
                 if coupon is True:
                     self.store.sales.use_coupon_discount(self.user.user_id)
 
-    def catalog(self):
-        while True:
-            choice = Display.display_order(self.cart)
-            if choice == '1':
-                self.add_item_to_cart()
-            elif choice == '2':
-                if self.cart.count_item > 0:
-                    self.cart_check_out()
-                    break
-            elif choice == '3':
-                break
-            else:
-                print(" * Wrong choice,Try again *")
 
     def remove_product(self):
         removed_product = self.search_system()
@@ -988,6 +997,7 @@ class StoreCLI:
 
     def customer_menu(self):
         self.cart_invoker.execute_commands()
+        self.cart_invoker.reset_commands()
         sub_choice = Display.display_client(self.user.new_message, self.cart, self.store.sales.category_discounts)
         if sub_choice == '1':
             self.update_details()

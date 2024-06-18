@@ -50,4 +50,4 @@ class Computer(Product):
         '''
         :return: A string representation of the computer's details.
         '''
-        return f"======================================\n Name: {self.name}\n Model:{self.model}   |  Storge: {self.storage} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n {self.get_price_in_user_currency()}\n {self.rate}"
+        return f"======================================\n Name: {self.name}\n Model:{self.model}   |  Storge: {self.storage} \n Chip: {self.chip}\n display size: {self.size}-Inch \n Description: {self.description} \n {self.get_price_in_user_currency()}\n {self.rate.preview_rating()}"

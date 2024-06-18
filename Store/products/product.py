@@ -145,4 +145,4 @@ class Product():
         '''
         :return: string representation of product
         '''
-        return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}\n {self.rate.weighted_average_rating()} ⭐ of 5 stars"
+        return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}\n {self.rate.preview_rating()}"

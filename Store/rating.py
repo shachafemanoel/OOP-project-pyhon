@@ -37,6 +37,12 @@ class Rating:
         average = weighted_sum / total_reviews
         return round(average * 2) / 2
 
+
+    def preview_rating(self):
+        if self.total_reviews() == 0:
+            return "No ratings provided"
+        else:
+            return f"{self.weighted_average_rating()} ⭐ of 5 stars \n * {self.total_reviews()} global ratings * \n"
     def __str__(self):
         review_summary = '===============Customer reviews==============='
         if self.total_reviews() > 0:

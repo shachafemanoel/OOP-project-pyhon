@@ -48,4 +48,4 @@ class Tv(Product):
         '''
         :return: A string representation of the object.
         '''
-        return f"======================================\nName: {self.name}\nModel: {self.model}\ndisplay size: {self.size}-Inch\nDescription: {self.description}\n {self.get_price_in_user_currency()}\n{self.rate}"
+        return f"======================================\nName: {self.name}\nModel: {self.model}\ndisplay size: {self.size}-Inch\nDescription: {self.description}\n {self.get_price_in_user_currency()}\n{self.rate.preview_rating()}"
