@@ -40,7 +40,7 @@ class Rating:
 
     def preview_rating(self):
         if self.total_reviews() == 0:
-            return "No ratings provided"
+            return "No ratings provided yet"
         else:
             return f"{self.weighted_average_rating()} ⭐ of 5 stars \n * {self.total_reviews()} global ratings * \n"
     def __str__(self):

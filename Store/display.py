@@ -262,6 +262,7 @@ class Display:
         print("\nWould you like to:")
         print("1. Continue making changes")
         print("2. Save changes and exit")
-        print("3. Discard changes and exit")
+        print("3. Undo")
+        print("4. Discard changes and exit")
         choice = input("Enter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         return choice.replace(" ", "")

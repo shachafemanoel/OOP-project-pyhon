@@ -616,9 +616,13 @@ class StoreCLI:
             try:
                     quantity = input("\nEnter a quantity of the product: ")
                     quantity = int(quantity)
-                    command = AddItemCommand(self.cart, new_item, quantity)
-                    self.cart_invoker.add_command(command)
-                    print(f"\n * {new_item.name} =========== > quantity {quantity} has been successfully added to cart! *\n")
+                    if new_item.available(quantity):
+                        command = AddItemCommand(self.cart, new_item, quantity)
+                        self.cart_invoker.add_command(command)
+                        print(f"\n * {new_item.name} =========== > quantity {quantity} has been successfully added to cart! *\n")
+                    else:
+                        print(f"\n ** We apologize, but the quantity you requested exceeds the available stock ** .\nCurrently, we have only {new_item.quantity} units available. ")
+
             except ValueError as e:
                     print(e)
             except StoreError.NotInStockError as e:
@@ -824,12 +828,15 @@ class StoreCLI:
                 quantity = input("\nEnter a quantity: ")
                 try:
                     quantity = int(quantity)
-                    command = ChangeItemQuantityCommand(self.cart, new_item, quantity)
-                    self.cart_invoker.add_command(command)
-                    print(f"\n * {new_item.name} ===============> new quantity {quantity}  *\n")
-                    if quantity == 0:
-                        print(f"{new_item.name} has been removed successfully")
-
+                    if new_item.available(quantity):
+                        command = ChangeItemQuantityCommand(self.cart, new_item, quantity)
+                        self.cart_invoker.add_command(command)
+                        print(f"\n * {new_item.name} ===============> new quantity {quantity}  *\n")
+                        if quantity == 0:
+                            print(f"{new_item.name} will be removed from the cart when you save the changes)
+                    else:
+                        print("\n *** Error:The quantity was not changed in the cart")
+                        print(f"\n ** We apologize, but the quantity you requested exceeds the available stock ** .\nCurrently, we have only {new_item.quantity} units available. ")
                 except ValueError as e:
                     print(f"\n * {e}.\n")
                 except StoreError.NotInStockError as e:
@@ -838,6 +845,7 @@ class StoreCLI:
                     print(e)
             else:
                 print("\n * No item selected. *")
+
 
             while True:
                 choice = Display.save_changes_menu()
@@ -848,7 +856,10 @@ class StoreCLI:
                     print("Changes saved.")
                     self.cart_invoker.reset_commands()
                     return
-                elif choice == '3':
+                elif choice == "3":
+                    self.cart_invoker.undo_commands()
+                    break
+                elif choice == '4':
                     self.cart_invoker.reset_commands()
                     print("Changes not saved.")
                     return

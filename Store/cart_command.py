@@ -70,3 +70,6 @@ class CartInvoker:
             command.execute()
     def reset_commands(self):
         self._commands.clear()
+    def undo_commands(self):
+        if self._commands:
+            self._commands.pop()
