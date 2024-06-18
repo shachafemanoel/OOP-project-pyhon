@@ -25,8 +25,9 @@ class Cart:
             raise ValueError("Quantity must be greater than 0.")
         if product.available(quantity):
             if product.get_key_name() in self.product_dict:
-                raise StoreError(
-                    f"\n ** {product.name} is already in your cart, to update the quantity go to the cart **\n")
+                self.product_dict[product.get_key_name()] += quantity
+                self.total_amount += product.get_price(quantity)
+                self.count_item += quantity
             else:
                 self.product_dict[product.get_key_name()] = quantity
                 self.total_amount += product.get_price(quantity)
@@ -63,15 +64,13 @@ class Cart:
         if product.get_key_name() not in self.product_dict:
             raise ValueError("Product not in cart.")
 
-        if quantity <= 0:
+        elif quantity <= 0:
             raise ValueError("Quantity must be greater than 0.")
-
-        if product in self.product_dict:
-            self.product_dict[product] += quantity
+        else:
+            self.product_dict[product.get_key_name()] += quantity
             self.total_amount += product.get_price(quantity)
             self.count_item += quantity
-        else:
-            raise StoreError.ProductNotFoundError
+
 
     def clear_cart(self):
         """

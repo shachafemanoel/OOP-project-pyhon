@@ -15,3 +15,18 @@ class ProductFactory:
             return Phone(name, model, description, price, quantity, **kwargs)
         else:
             return Product(name, model, description, price, quantity, **kwargs)
+
+    @staticmethod
+    def get_product_type_by_choice(choice):
+        category = ""
+        if choice == "1":
+            category = "Tv"
+        elif choice == "2":
+            category = "Computer"
+        elif choice == "3":
+            category = "Phone"
+        elif choice == "4":
+            category = "Product"
+        else:
+            category = None
+        return category.upper()

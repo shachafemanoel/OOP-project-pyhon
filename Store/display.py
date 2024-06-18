@@ -1,3 +1,8 @@
+from Store.products.product import Product
+from Store.products.tv import Tv
+from Store.products.phone import Phone
+from Store.products.computer import Computer
+
 class Display:
     '''
     The Display class contains static methods for displaying various menus
@@ -30,7 +35,7 @@ class Display:
             print(f"\n * There are {new_message} new notifications on orders * \n")
         print("\n1. Update details")
         if cart.count_item > 0:
-            print(f'2. Cart({cart.count_item}')
+            print(f'2. Cart({cart.count_item})')
         else:
             print("2. Cart(0)")
         if len(sales) > 0:
@@ -84,8 +89,30 @@ class Display:
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
+
+
+    @staticmethod
+    def catalog_main_menu():
+        print("1. View Categories")
+        print("2. Search Product by Name")
+        print("3. Search Product by Model")
+        print("4. Search Product by Price Range")
+        print("5. Search Product by Rating")
+        print("0. Exit to Main Menu")
+        choice = input("Enter your choice: ")
+        return choice.replace(" ", "")
+
+    @staticmethod
+    def pick_item_menu(item:Product):
+        print(item)
+        print("\n1. Add to Cart")
+        print("2.View reviews")
+        print("0. Back to Catalog Menu")
+        choice = input("Enter your choice: ")
+        return choice.replace(" ", "")
     @staticmethod
     def display_product_type():
+
         '''
         Displays the product type selection menu.
         '''
@@ -94,7 +121,7 @@ class Display:
         print('2. Computer')
         print('3. Mobile Phone')
         print('4. Accessories')
-        print("0. Exit Or Advanced Search")
+        print("0. Return to Catalog Menu")
         choice = input("\nEnter Your Choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 

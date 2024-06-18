@@ -71,37 +71,21 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                 product.remove_discount()
 
     def remove_product_sale(self, choice):
-        category = ""
-        if choice == "1":
-            category = "Tv"
-        elif choice == "2":
-            category = "Computer"
-        elif choice == "3":
-            category = "Phone"
-        elif choice == "4":
-            category = "Product"
-        else:
+        category = ProductFactory.get_product_type_by_choice(choice)
+        if category is None:
             raise StoreError("Invalid Choice")
         try:
-            self.sales.remove_category_discount(category.upper())
+            self.sales.remove_category_discount(category)
             return category
         except StoreError:
             raise StoreError.InvalidInputError()
 
     def sale_prodduct_type(self, choice, discount):
-        category = ""
-        if choice == "1":
-            category = "Tv"
-        elif choice == "2":
-            category = "Computer"
-        elif choice == "3":
-            category = "Phone"
-        elif choice == "4":
-            category = "Product"
-        else:
-            raise StoreError.InvalidInputError()
+        category = ProductFactory.get_product_type_by_choice(choice)
+        if category is None:
+            raise StoreError("Invalid Choice")
         try:
-            self.sales.add_category_discount(category.upper(), discount)
+            self.sales.add_category_discount(category,discount)
             return category
         except ValueError as e:
             raise e
@@ -143,8 +127,7 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             cleaned_model = model.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         found = []
         for key, value in self.collection.items():
-            if name is not None and value.get_key_name().casefold()[
-                                    0:len(cleaned_name)] == cleaned_name.casefold():  # חיפוש לפי שם
+            if name is not None and value.get_key_name().casefold()[ 0:len(cleaned_name)] == cleaned_name.casefold():  # חיפוש לפי שם
                 found.append(value)
 
             elif model is not None and cleaned_model.casefold() == value.get_model_name()[
@@ -165,9 +148,10 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                 elif product_type == "4":
                     if type(value) != Tv and type(value) != Phone and type(value) != Computer:
                         found.append(value)
-
-        return found
-
+        if found:
+            return found
+        else:
+            raise StoreError.ProductNotFoundError
     def add_product(self, product_dict):
         if product_dict.get("name") is not None and product_dict.get("price") is not None and product_dict.get(
                 "quantity") is not None:

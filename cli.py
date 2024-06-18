@@ -1,7 +1,7 @@
 import logging
 
 from Store.cart import Cart
-from Store.cart_command import CartInvoker, ChangeCurrencyCommand, UseCouponCommand
+from Store.cart_command import CartInvoker,Command, ChangeCurrencyCommand, UseCouponCommand,AddItemCommand,ChangeItemQuantityCommand
 from Store.client import Client
 from Store.display import Display
 from Store.payment import Payment
@@ -309,7 +309,6 @@ class StoreCLI:
             self.user.currency = currency
             command = ChangeCurrencyCommand(self.cart, currency)
             self.cart_invoker.add_command(command)
-            self.cart_invoker.execute_commands()
             self.store.change_currency(currency)
         except Exception as e:
             print(f"An error occurred while setting currency: {e}")
@@ -456,23 +455,27 @@ class StoreCLI:
             return -100
 
     def model_search(self):
-        model = input("Enter model: ")
-        search_name_model = self.store.search(None, None, model)
-        choice = self.pick_item(search_name_model)
-        if choice != -100 and choice is not None:
-            return search_name_model[choice]
-        else:
-            return None
-
+        try:
+            model = input("Enter model: ")
+            search_name_model = self.store.search(None, None, model)
+            choice = self.pick_item(search_name_model)
+            if choice != -100 and choice is not None:
+                return search_name_model[choice]
+            else:
+                return None
+        except StoreError.ProductNotFoundError as e:
+            print(e)
     def name_search(self):
-        new_name = input("\nEnter Product name: ")
-        search_name = self.store.search(new_name)
-        choice = self.pick_item(search_name)
-        if choice != -100 and choice is not None:
-            return search_name[choice]
-        else:
-            return None
-
+        try:
+            new_name = input("\nEnter Product name: ")
+            search_name = self.store.search(new_name)
+            choice = self.pick_item(search_name)
+            if choice != -100 and choice is not None:
+                return search_name[choice]
+            else:
+                    return None
+        except StoreError.ProductNotFoundError as e:
+            print(e)
     def display_manage_product(self):
         print("\n * Wellcome to manage product display *\n")
         if self.store.reporting.new_update["products"] > 0:
@@ -503,36 +506,70 @@ class StoreCLI:
                 print("\n * Invalid choice. Please try again. *\n")
 
     def search_system(self):
-        print("\n * Welcome to the catalog * \n ")
-        if len(self.store.sales.category_discounts) > 0:
-            print("   *   New deals   * ")
-            for key, value in self.store.sales.category_discounts.items():
-                print(f" {key}:- {value}% off")
+        while True:
+            print("\n * Welcome to the catalog Menu * \n ")
+            if len(self.store.sales.category_discounts) > 0:
+                print("   *   New deals   * ")
+                for key, value in self.store.sales.category_discounts.items():
+                    print(f" {key}:- {value}% off")
+            new_item = self.catalog_menu()
+            if new_item == False:
+                break
+            elif new_item  is not None:
+                while True:
+                    choice = Display.pick_item_menu(new_item)
+                    if choice == "1":
+                        self.add_item_to_cart(new_item)
+                        break
+                    elif choice == "2":
+                        print(new_item.rate)
+                    elif choice == "0":
+                        break
+                    else:
+                        print("\n * Invalid choice. Please try again. *\n")
+
+
+
+
+    def view_categories(self):
         type_search = self.product_type()
         if type_search is not None:
             choice = self.pick_item(type_search)
             if choice != -100 and choice is not None:
                 return type_search[choice]
             else:
-                item = None
-        else:
-            item = self.manual_search()
-            return item
+                print("\n * No Product selected * \n")
+                return None
 
-    def manual_search(self):
-        select = Display.advanced_search()
-        if select == "1":
-            new_item = self.name_search()
-        elif select == "2":
-            new_item = self.model_search()
-        elif select == "3":
-            new_item = self.search_by_price()
-        elif select == "4":
-            new_item = self.search_by_rating()
-        else:
-            new_item = None
 
-        return new_item
+    def catalog_menu(self):
+            select = Display.catalog_main_menu()
+            if select == "1":
+                new_item =self.view_categories()
+                if new_item is not None:
+                    return new_item
+            if select == "2":
+                new_item = self.name_search()
+                if new_item is not None:
+                    return new_item
+            elif select == "3":
+                new_item = self.model_search()
+                if new_item is not None:
+                    return new_item
+            elif select == "4":
+                new_item = self.search_by_price()
+                if new_item is not None:
+                    return new_item
+            elif select == "5":
+                new_item = self.search_by_rating()
+                if new_item is not None:
+                    return new_item
+            elif select == "0":
+                return False
+            else:
+                print("\n * Invalid choice. Please try again. *\n")
+
+
 
     def search_by_price(self):
         try:
@@ -571,23 +608,21 @@ class StoreCLI:
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
-    def add_item_to_cart(self):
+    def add_item_to_cart(self,new_item):
         """
         Add an item to the cart via CLI.
         """
-
-        new_item = self.search_system()
         if new_item is not None:
-            quantity = input("\nEnter a quantity of the product: ")
             try:
-                quantity = int(quantity)
-                self.cart.add_item(new_item, quantity)
-                print(
-                    f"\n * {new_item.name} =========== > quantity {quantity} has been successfully added to cart! *\n")
+                    quantity = input("\nEnter a quantity of the product: ")
+                    quantity = int(quantity)
+                    command = AddItemCommand(self.cart, new_item, quantity)
+                    self.cart_invoker.add_command(command)
+                    print(f"\n * {new_item.name} =========== > quantity {quantity} has been successfully added to cart! *\n")
             except ValueError as e:
-                print(e)
+                    print(e)
             except StoreError.NotInStockError as e:
-                print(e)
+                    print(e)
 
     def add_product(self):
         product_type = Display.display_product_type()
@@ -788,7 +823,9 @@ class StoreCLI:
             quantity = input("\nEnter a quantity: ")
             try:
                 quantity = int(quantity)
-                self.cart.change_item_quantity(new_item, quantity)
+                command = ChangeItemQuantityCommand(self.cart, new_item, quantity)
+                self.cart_invoker.add_command(command)
+                self.cart_invoker.execute_commands()
                 print(f"\n * {new_item.name} ===============> new quantity {quantity}  *\n")
                 if quantity == 0:
                     print(f"{new_item.name} has been removed successfully")
@@ -832,13 +869,13 @@ class StoreCLI:
 
     def check_out(self):
         print("\n * Check Out  *\n")
+        self.cart_invoker.execute_commands()
         if self.user.address is None:
             self.set_address()
         if self.cart.total_amount > 0 or len(self.cart.product_dict) > 0:
             coupon = self.apply_coupon()
             payment = self.pay()
             if payment is not None:
-                self.cart_invoker.execute_commands()
                 new_order = self.cart.get_cart_dict()
                 new_order["payment"] = payment
                 new_order["customer"] = self.user
@@ -950,13 +987,14 @@ class StoreCLI:
             print("\n* Invalid choice. Please try again.* ")
 
     def customer_menu(self):
+        self.cart_invoker.execute_commands()
         sub_choice = Display.display_client(self.user.new_message, self.cart, self.store.sales.category_discounts)
         if sub_choice == '1':
             self.update_details()
         elif sub_choice == '2':
             self.cart_check_out()
         elif sub_choice == '3':
-            self.catalog()
+            self.search_system()
         elif sub_choice == '4':
             self.display_order_user()
         elif sub_choice == '5':

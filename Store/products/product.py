@@ -1,32 +1,7 @@
-from abc import ABC
-
 from Store.payment_calculator import CurrencyConverter
 from Store.rating import Rating
-
-
-def discount_decorator(discount):
-    """
-    Decorator to apply a discount to the price of a product.
-
-    Args:
-        discount (float): The discount percentage to be applied.
-
-    Returns:
-        function: The decorated function with the discount applied.
-    """
-
-    def decorator(func):
-        def wrapper(*args, **kwargs):
-            original_price = func(*args, **kwargs)
-            discounted_price = original_price - (original_price * (discount / 100))
-            return discounted_price
-
-        return wrapper
-
-    return decorator
-
-
-class Product(ABC):
+from Store.storeerror import StoreError
+class Product():
     '''
         The Product class represents a general product in the store.
         Additionally, it provides methods to manage product details, pricing, and inventory.
@@ -98,7 +73,7 @@ class Product(ABC):
         '''
         self.quantity = new_quantity
 
-    @discount_decorator(20)
+
     def get_price(self, much):
         '''
         :param much: int
@@ -170,4 +145,4 @@ class Product(ABC):
         '''
         :return: string representation of product
         '''
-        return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}\n {self.rate}"
+        return f"======================================\n Name: {self.name}\n Model: {self.model}\n Description: {self.description}\n\n {self.get_price_in_user_currency()}\n {self.rate.weighted_average_rating()} ⭐ of 5 stars"
