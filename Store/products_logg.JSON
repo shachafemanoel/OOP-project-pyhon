@@ -57,7 +57,7 @@
         "model": "pro ",
         "description": "the new ipad pro 256 gb",
         "price": 4000.0,
-        "quantity": 50,
+        "quantity": 47,
         "rate": {
             "1": [],
             "2": [],
@@ -224,11 +224,24 @@
         "price": 4000.0,
         "quantity": 11,
         "rate": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": []
+            "1": [
+                "I found the keyboard uncomfortable for long typing sessions. The keys are too shallow for my liking."
+            ],
+            "2": [
+                "MacOS can be restrictive if you're used to Windows. There's a steep learning curve."
+            ],
+            "3": [
+                "The price is steep for what you get. There are more affordable alternatives with similar specs.",
+                "The limited number of ports is a real downside. I miss having more connectivity options."
+            ],
+            "4": [
+                "Build quality is superb. The MacBook 14 feels sturdy and premium in every aspect."
+            ],
+            "5": [
+                "The MacBook 14's retina display is simply stunning. Colors are vibrant and details are crystal clear.",
+                "Battery life is exceptional, lasting me a full day of heavy use without needing a recharge.",
+                "Performance is top-notch thanks to the M1 chip. Everything runs smoothly and quickly."
+            ]
         },
         "size": "14",
         "storage": "512GB",

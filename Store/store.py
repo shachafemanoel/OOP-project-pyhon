@@ -233,9 +233,9 @@ class Store:  # מחלקה שמממשת את החנות עצמה
                         self.reporting.product_warning(self.collection[name].get_quantity(), self.collection[name].name)
             try:
                 order = Order(**order)
-                self.reporting.new_order(order)
                 self.users[customer.user_id].new_order(order)
                 self.orders[self.order_number] = order
+                self.reporting.new_order(order)
                 self.order_number += 1
             except ValueError as e:
                 raise StoreError.InvalidInputError(f"Invalid order: {e}")

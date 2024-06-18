@@ -8,7 +8,7 @@
         "Applecharger": 0,
         "LGTV55": 1,
         "galaxy24": 1,
-        "ipad": 0,
+        "ipad": 3,
         "samsung": 1,
         "dell": 2
     },
@@ -18,7 +18,7 @@
         "users": []
     },
     "new_update": {
-        "orders": 0,
+        "orders": 1,
         "products": 0,
         "users": 0
     },
@@ -31,6 +31,8 @@
         "promotions": {
             "ipad": 40
         },
-        "category_discounts": {}
+        "category_discounts": {
+            "PRODUCT": 50
+        }
     }
 }

@@ -1,33 +1,16 @@
+from Store.order import Order
 class Reporting:
     def __init__(self):
         self.revenue = 0
         self.sold_products = {}
         self.best_sell = None
-        self.__message = {"orders": [], "products": [], "users": []}
-        self.__new_update = {"orders": 0, "products": 0, "users": 0}
+        self.message = {"orders": [], "products": [], "users": []}
+        self.new_update = {"orders": 0, "products": 0, "users": 0}
         self.total_update = 0
 
-    @property
-    def new_update(self):
-        return self.__new_update
 
-    @new_update.setter
-    def new_update(self, new_update):
-        if isinstance(new_update, dict):
-            self.__new_update = new_update
-        else:
-            raise ValueError("new_update must be of type dict")
 
-    @property
-    def message(self):
-        return self.__message
 
-    @message.setter
-    def message(self, message):
-        if isinstance(message, dict):
-            self.__message = message
-        else:
-            raise ValueError("message must be of type dict")
 
     def new_sold(self, name, quant):
         if name is self.sold_products:
@@ -44,7 +27,7 @@ class Reporting:
         self.new_update["users"] += 1
         self.total_update += 1
 
-    def new_order(self, order):
+    def new_order(self, order:Order):
         self.revenue += order.total_amount
         self.message["orders"].append(
             f" \n * A new order has been placed * \n Order number: {order.order_number}    total amount: {order.total_amount} ")
@@ -118,6 +101,18 @@ class Reporting:
         self.new_update["products"] += 1
         self.total_update += 1
 
+
+    def nofiction(self):
+        nofictions = ""
+        if self.total_update > 0:
+            print(f"\n * There are {self.total_update} new notifications *")
+            for key, item in self.new_update.items():
+                if item >0:
+                    nofictions += f"{key} Maneger * {item} new notification *\n"
+        else:
+            nofictions = "There are no new notifications"
+
+        return nofictions
     def __str__(self):
 
         return f" \n    **** Reporting summary **** \n* Top selling products * \n{self.best_sell_product()} \n{self.get_sales_report_string()}"

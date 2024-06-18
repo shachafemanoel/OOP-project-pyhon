@@ -198,12 +198,12 @@
     {
         "order_number": 15,
         "customer_id": "2020",
-        "total_amount": 2560.0,
+        "total_amount": 7200.0,
         "payment": {
             "owner": "John Doe",
             "info": "1234567812345678",
             "payment_method": "Credit Card",
-            "amount_of_payments": 5
+            "amount_of_payments": 2
         },
         "status": "Processing",
         "product_dict": {}

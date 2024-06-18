@@ -108,7 +108,7 @@ class StoreCLI:
                 print(i)
         self.store.reporting.total_update -= self.store.reporting.new_update["users"]
         self.store.reporting.new_update["users"] = 0
-        self.store.reporting.message["users"] = []
+        self.store.reporting.message["users"].clear()
         return Display.display_manage_user()
 
     def user_manager(self):
@@ -376,7 +376,7 @@ class StoreCLI:
             print(f"An error occurred while adding discount: {e}")
 
     def add_promotion(self):
-        product = self.manual_search()
+        product = self.search_system()
         if product is not None and product != -100:
             discount = self.discount()
             try:
@@ -397,7 +397,7 @@ class StoreCLI:
             except Exception as e:
                 print(f"An unexpected error occurred: {e}")
         elif choice == "2":
-            product_name = self.manual_search()
+            product_name = self.search_system()
             if product_name is not None and product_name != -100:
                 try:
                     self.store.remove_promotion(product_name)
@@ -414,7 +414,7 @@ class StoreCLI:
                 print(f"{i}")
         self.store.reporting.total_update -= self.store.reporting.new_update["orders"]
         self.store.reporting.new_update["orders"] = 0
-        self.store.reporting.message["orders"] = []
+        self.store.reporting.message["orders"].clear()
         return Display.display_manage_order()
 
     def order_manager(self):
@@ -483,7 +483,7 @@ class StoreCLI:
                 print(f"{i}")
         self.store.reporting.total_update -= self.store.reporting.new_update["products"]
         self.store.reporting.new_update["products"] = 0
-        self.store.reporting.message["products"] = []
+        self.store.reporting.message["products"].clear()
         return Display.display_manage_product()
 
     def product_manager(self):
@@ -511,7 +511,9 @@ class StoreCLI:
             if len(self.store.sales.category_discounts) > 0:
                 print("   *   New deals   * ")
                 for key, value in self.store.sales.category_discounts.items():
-                    print(f" {key}:- {value}% off")
+                    if key == "PRODUCT" :
+                        key = "Accessories"
+                    print(f" {key}:- {value}% off\n")
             new_item = self.catalog_menu()
             if new_item == False:
                 break
@@ -833,7 +835,7 @@ class StoreCLI:
                         self.cart_invoker.add_command(command)
                         print(f"\n * {new_item.name} ===============> new quantity {quantity}  *\n")
                         if quantity == 0:
-                            print(f"{new_item.name} will be removed from the cart when you save the changes)
+                            print(f"{new_item.name} will be removed from the cart when you save the changes")
                     else:
                         print("\n *** Error:The quantity was not changed in the cart")
                         print(f"\n ** We apologize, but the quantity you requested exceeds the available stock ** .\nCurrently, we have only {new_item.quantity} units available. ")
@@ -966,22 +968,11 @@ class StoreCLI:
             print("\n * Invalid choice,Try again * \n ")
 
     def display_menu(self):
-        product_manager = "1. Product Manager"
-        order_manager = "3. Order Manager"
-        user_manager = "2. User Manager"
-        if self.store.reporting.total_update > 0:
-            print(f"\n * There are {self.store.reporting.total_update} new notifications *")
-            for key, item in self.store.reporting.new_update.items():
-                if key == "products" and item > 0:
-                    product_manager += f" ({item}) new notifications"
-                if key == "orders" and item > 0:
-                    order_manager += f" ({item}) new notifications"
-                if key == "users" and item > 0:
-                    user_manager += f" ({item}) new notifications"
+        print(self.store.reporting.nofiction())
         print(" \n *  Electronic store Management Menu * \n")
-        print(product_manager)
-        print(user_manager)
-        print(order_manager)
+        print("1. Product Manager")
+        print("2. User Manager")
+        print("3. Order Manager")
         print("4. Reporting")
         print("5. Logout")
         print("0. Exit")

@@ -51,12 +51,12 @@ class Rating:
             if self.ratings and sum(len(v) for v in self.ratings.values()) > 0:
                 for star, reviews in self.ratings.items():
                     if len(reviews) > 0:
-                        review_summary += f"\n==== Rating: {int(star) * "⭐"} ֿ{int(self.precent_rating(reviews))} % of the ratings ===="
+                        review_summary += f"\n==== Rating: {int(star) * "⭐"} ֿ{int(self.precent_rating(reviews))} % of the ratings ====\n"
                     number = 0
                     for review in reviews:
                         number += 1
                         if review != "No description provided":
-                            review_summary += f"\n{number}. {review}"
+                            review_summary += f"\n{number}. {review}\n"
 
         else:
             review_summary += '\nThere are no reviews yet'

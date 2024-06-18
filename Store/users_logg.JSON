@@ -16,10 +16,11 @@
             "owner": "John Doe",
             "info": "1234567812345678",
             "payment_method": "Credit Card",
-            "amount_of_payments": 5
+            "amount_of_payments": 2
         },
         "user_type": "Client",
         "message": [
+            "\n * Thank you for your purchase!,  Order number: 15 has been received! *",
             "\n * Thank you for your purchase!,  Order number: 15 has been received! *"
         ],
         "currency": "$USD"
