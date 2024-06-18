@@ -631,15 +631,17 @@ class StoreCLI:
                     print(e)
 
     def add_product(self):
+
         product_type = Display.display_product_type()
         if product_type in '1234':
             name = input("Enter Product Name: ")
             model = input("Enter Product Model: ")
-            search = self.store.search(name, model)
-            if len(search) > 0:
-                print(" \n * This products exists in the system please choose product for adding amount. * ")
-                self.check_if_exist(search)
-                return
+            try:
+                search = self.store.search(name, model)
+            except StoreError.ProductNotFoundError as e:
+                    print(" \n * This products exists in the system please choose product for adding amount. * ")
+                    self.check_if_exist(search)
+                    return
             else:
                 description = input("Enter description: ")
                 try:

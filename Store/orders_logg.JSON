@@ -198,7 +198,7 @@
     {
         "order_number": 15,
         "customer_id": "2020",
-        "total_amount": 7200.0,
+        "total_amount": 1000.0,
         "payment": {
             "owner": "John Doe",
             "info": "1234567812345678",

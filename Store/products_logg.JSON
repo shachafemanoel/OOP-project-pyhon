@@ -222,7 +222,7 @@
         "model": "14 ",
         "description": "2022 Series",
         "price": 4000.0,
-        "quantity": 11,
+        "quantity": 8,
         "rate": {
             "1": [
                 "I found the keyboard uncomfortable for long typing sessions. The keys are too shallow for my liking."
@@ -253,7 +253,7 @@
         "model": "high",
         "description": "good",
         "price": 1000.0,
-        "quantity": 12,
+        "quantity": 10,
         "rate": {
             "5": [],
             "4": [],

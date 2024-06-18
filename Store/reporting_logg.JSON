@@ -10,10 +10,14 @@
         "galaxy24": 1,
         "ipad": 3,
         "samsung": 1,
-        "dell": 2
+        "dell": 2,
+        "Macbook14": 3,
+        "accesory": 2
     },
     "message": {
-        "orders": [],
+        "orders": [
+            " \n * A new order has been placed * \n Order number: 15    total amount: 1000.0 "
+        ],
         "products": [],
         "users": []
     },
