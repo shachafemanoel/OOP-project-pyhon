@@ -76,19 +76,35 @@ class StoreError(Exception):
             super().__init__(self.message)
 
     class InvalidCardNumberError(Exception):
-
+        '''
+        Exception raised for invalid card numbers.
+        '''
         def __init__(self, message="**Invalid card number provided**"):
+            '''
+            Initialize the error with an optional message.
+            '''
             self.message = message
             super().__init__(self.message)
 
     class InvalidPaymentsNumberError(Exception):
-
+        """
+            Exception raised for invalid number of payments.
+        """
         def __init__(self, message=f"**Invalid payment number provided**"):
+            '''
+            Initialize the error with an optional message.
+            '''
             self.message = message
             super().__init__(self.message)
 
     class OrderNotFoundError(Exception):
+        '''
+        Exception raised when an order is not found.
+        '''
         def __init__(self, message="Order not found"):
+            '''
+            Initialize the error with an optional message.
+            '''
             self.message = message
             super().__init__(self.message)
 

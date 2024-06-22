@@ -1,4 +1,7 @@
 class CurrencyConverter:
+    '''
+    A class to handle currency conversions using exchange rates.
+    '''
     exchange_rates = {
         '$USD': 3.71,
         '€EUR': 4.07,
@@ -9,15 +12,14 @@ class CurrencyConverter:
     def set_exchange_rates(rates):
         """
         Set the exchange rates for the currency converter.
-        נותן למשתמש אופציה לעדכן את שער המטבעות
         """
         CurrencyConverter.exchange_rates = rates
 
     @staticmethod
     def convert(amount, from_currency, to_currency):
         """
-         הפונקיה לוקחת את הסכום במטבע שרוצים להמיר ממנו מחלקת בשער המטבע הזה
-         השימוש באופציה זו היא על מנת לאפשר המרה גם מדולר לשקל ולא רק משקל למטבע אחר
+        The function takes the amount in the currency you want to convert from, divides it by the exchange rate of that currency.
+        This option is used to allow conversion from dollar to shekel and not just from shekel to another currency.
         """
         if from_currency not in CurrencyConverter.exchange_rates or to_currency not in CurrencyConverter.exchange_rates:
             raise ValueError("Currency not supported")
@@ -31,6 +33,9 @@ class CurrencyConverter:
 
 
 class InstallmentPayment:
+    '''
+    A class to handle installment payment calculations.
+    '''
     @staticmethod
     def calculate_installment_amount(total_amount, number_of_installments, interest_rate=0.0):
         """

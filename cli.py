@@ -30,7 +30,7 @@ class StoreCLI:
             self.cart.currency = self.user.currency
         except StoreError.AuthenticationError as e:
             print(e)
-            logging.warning(f"Login failed!\n")
+            logging.warning(f"Login Failed\n")
 
     def register(self):
         print("\nWelcome to the registration systemֿ\n")
@@ -508,6 +508,12 @@ class StoreCLI:
     def search_system(self):
         while True:
             print("\n * Welcome to the catalog Menu * \n ")
+            if len(self.store.sales.category_discounts) > 0:
+                print("   *   New deals   * ")
+                for key, value in self.store.sales.category_discounts.items():
+                    if key == "PRODUCT" :
+                        key = "Accessories"
+                    print(f" {key}:- {value}% off\n")
             new_item = self.catalog_menu()
             if new_item == False:
                 break
@@ -539,7 +545,7 @@ class StoreCLI:
 
 
     def catalog_menu(self):
-            select = Display.catalog_main_menu(self.store.sales)
+            select = Display.catalog_main_menu()
             if select == "1":
                 new_item =self.view_categories()
                 if new_item is not None:
@@ -632,48 +638,51 @@ class StoreCLI:
             model = input("Enter Product Model: ")
             try:
                 search = self.store.search(name, model)
-                self.check_if_exist(search)
-                print(" \n * This products exists in the system please choose product for adding amount. * ")
             except StoreError.ProductNotFoundError as e:
-                    description = input("Enter description: ")
-                    try:
-                        price = float(input("Enter Price: ").strip())
-                    except ValueError:
-                        print("\nInvalid input for price. Please enter a valid number.")
-                        return
-                    try:
-                        quantity = int(input("Enter Quantity: ").strip())
-                    except ValueError:
-                        print("\nInvalid input for quantity. Please enter a valid number.")
-                        return
+                    print(" \n * This products exists in the system please choose product for adding amount. * ")
+                    self.check_if_exist(search)
+                    return
+            else:
+                description = input("Enter description: ")
+                try:
+                    price = float(input("Enter Price: ").strip())
+                except ValueError:
+                    print("\nInvalid input for price. Please enter a valid number.")
+                    return
+                try:
+                    quantity = int(input("Enter Quantity: ").strip())
+                except ValueError:
+                    print("\nInvalid input for quantity. Please enter a valid number.")
+                    return
 
-                    kwargs = {}
-                    if product_type == "2":  # Computer
-                        kwargs["size"] = input("Enter Screen size: ")
-                        kwargs["storage"] = input("Enter storage: ")
-                        kwargs["chip"] = input("Enter Chip: ")
-                    elif product_type == "1":  # Tv
-                        kwargs["size"] = input("Enter Screen size: ")
-                        kwargs["tv_type"] = input("Enter Resolution: ")
-                    elif product_type == "3":  # Phone
-                        kwargs["size"] = input("Enter Screen size: ")
-                        kwargs["storage"] = input("Enter Storage: ")
+            kwargs = {}
+            if product_type == "2":  # Computer
+                kwargs["size"] = input("Enter Screen size: ")
+                kwargs["storage"] = input("Enter storage: ")
+                kwargs["chip"] = input("Enter Chip: ")
+            elif product_type == "1":  # Tv
+                kwargs["size"] = input("Enter Screen size: ")
+                kwargs["tv_type"] = input("Enter Resolution: ")
+            elif product_type == "3":  # Phone
+                kwargs["size"] = input("Enter Screen size: ")
+                kwargs["storage"] = input("Enter Storage: ")
 
-                    product_dict = {
-                        "product_type": self.map_product_type(product_type),
-                        "name": name,
-                        "model": model,
-                        "description": description,
-                        "price": price,
-                        "quantity": quantity,
-                        **kwargs
-                    }
-                    try:
-                        self.store.add_product(product_dict)
-                        print("\n* Product has been successfully added *")
-                    except ValueError as e:
-                        print(f"An error occurred: {e}")
-
+            product_dict = {
+                "product_type": self.map_product_type(product_type),
+                "name": name,
+                "model": model,
+                "description": description,
+                "price": price,
+                "quantity": quantity,
+                **kwargs
+            }
+            try:
+                self.store.add_product(product_dict)
+                print("\n* Product has been successfully added *")
+            except ValueError as e:
+                print(f"An error occurred: {e}")
+        else:
+            return
 
     def map_product_type(self, choice):
         try:
@@ -947,7 +956,7 @@ class StoreCLI:
         logging.info("Logged out successfully\n")
 
     def wellcome_page(self):
-        selection = Display.display_user(self.store.sales)
+        selection = Display.display_user()
         if selection == '1':
             self.log_in()
         elif selection == '2':
@@ -962,8 +971,7 @@ class StoreCLI:
 
     def display_menu(self):
         print(self.store.reporting.nofiction())
-        print(" \n=== Control System ==")
-        print("=====================")
+        print(" \n *  Electronic store Management Menu * \n")
         print("1. Product Manager")
         print("2. User Manager")
         print("3. Order Manager")
@@ -994,7 +1002,7 @@ class StoreCLI:
     def customer_menu(self):
         self.cart_invoker.execute_commands()
         self.cart_invoker.reset_commands()
-        sub_choice = Display.display_client(self.user.new_message, self.cart, self.store.sales)
+        sub_choice = Display.display_client(self.user.new_message, self.cart, self.store.sales.category_discounts)
         if sub_choice == '1':
             self.update_details()
         elif sub_choice == '2':
@@ -1014,13 +1022,11 @@ class StoreCLI:
 
     def run(self):
         self.store.load_files()
-        print(" \n * Welcome to Electronic Store  *  ")
         while not self.exit:
-            print(self.store.sales)
             if self.user.online == 0:
                 self.wellcome_page()
             elif self.user.online == 1:
-                print(f"\n Welcome Back ,{self.user.user_full_name.title()} ",end="  ")
+                print(f"\n * Active user: {self.user.user_full_name} ")
                 if type(self.user) == Client:
                     self.customer_menu()
                 else:

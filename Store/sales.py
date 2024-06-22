@@ -3,6 +3,16 @@ from Store.storeerror import StoreError
 
 
 class Sales:
+    """
+    A class to manage sales-related activities such as coupons, promotions, and category discounts.
+
+    Attributes
+    ----------
+    coupons : dict
+    promotions : dict
+    category_discounts : dict
+    """
+
     def __init__(self):
         """
         Initialize the Sales class with empty dictionaries for coupons, promotions, and category discounts.
@@ -12,6 +22,12 @@ class Sales:
         self.category_discounts = {}
 
     def add_coupon(self, customer_id, discount):
+        '''
+        Adds a new coupon for a customer with a specified discount.
+
+        :param customer_id: int
+        :param discount: int or float
+        '''
         try:
             if 0 <= discount < 100:
                 self.coupons[customer_id] = discount
@@ -23,9 +39,21 @@ class Sales:
             raise StoreError.AuthenticationError("Client not found")
 
     def get_coupon_discount(self, customer_id):
+        """
+        Return discount value of a coupon for a customer.
+
+        :param customer_id : str
+        """
         return self.coupons.get(customer_id, 0)
 
     def use_coupon_discount(self, customer_id):
+        """
+        Initialize a coupon for a customer after use.
+
+        Parameters
+        ----------
+        customer_id : str
+        """
         self.coupons.pop(customer_id, 0)
 
     def add_promotion(self, product_name, discount):
@@ -195,18 +223,13 @@ class Sales:
             return promotion_discount
 
     def sales_to_dict(self):
+        '''
+        creating dict with all the arguments of sales that will be saved to reporting's JSON file
+        :return: dict
+        '''
         return {
             "coupons": self.coupons,
             "promotions": self.promotions,
             "category_discounts": self.category_discounts,
 
         }
-
-    def __str__(self):
-        sales = "\n"
-        if self.category_discounts:
-            for key, value in self.category_discounts.items():
-                key = "Accessories" if  key.upper() == "product".upper() else key
-                sales += f"  * Sale -{value}% 🏷️  Off  {key.title()} Department!   * \n"
-
-        return sales

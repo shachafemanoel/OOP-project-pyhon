@@ -13,8 +13,15 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - LEVEL - %(message)
 
 
 class DataManager:
+    '''
+    An object that manage all the data of the project
+    '''
     @staticmethod
     def load_data(filename):
+        '''
+        General function that reading all the data of files
+        :param filename:
+        '''
         try:
             with open(filename, 'r') as file:
                 data = json.load(file)
@@ -32,6 +39,11 @@ class DataManager:
 
     @staticmethod
     def save_data(data, filename):
+        '''
+        General function that saves all data to the files
+        :param data:
+        :param filename:
+        '''
         try:
             with open(filename, 'w') as file:
                 json.dump(data, file, indent=4)
@@ -41,6 +53,11 @@ class DataManager:
 
     @staticmethod
     def load_orders(users):
+        '''
+        Function for loading orders data
+        :param users:
+        :return:
+        '''
         orders = {}
         orders_data = DataManager.load_data('Store/orders_logg.JSON')
         for order_data in orders_data:
@@ -56,6 +73,10 @@ class DataManager:
 
     @staticmethod
     def save_orders(orders):
+        '''
+        Fucntion for saving orders data
+        :param orders:
+        '''
         orders_data = [
             order.order_to_dict()
             for order in orders.values()
@@ -64,12 +85,17 @@ class DataManager:
 
     @staticmethod
     def load_products():
+        '''
+        Function for loading products data
+        '''
         return DataManager.load_data('Store/products_logg.JSON')
-
-
 
     @staticmethod
     def save_products(products):
+        '''
+        Function for saving products data
+        :param products:
+        '''
         products_data = []
         for product in products.values():
             products_data.append(product.product_to_dict())
@@ -77,6 +103,9 @@ class DataManager:
 
     @staticmethod
     def load_users():
+        '''
+        Function for loading users data
+        '''
         users = {}
         users_data = DataManager.load_data('Store/users_logg.JSON')
         for user_data in users_data:
@@ -93,6 +122,10 @@ class DataManager:
 
     @staticmethod
     def save_users(users: dict):
+        '''
+        Function for saving users data
+        :param users:
+        '''
         users_data = []
         for user in users.values():
             users_data.append(user.to_dict())
@@ -102,9 +135,6 @@ class DataManager:
     def load_reporting():
         """
         Load reporting data from a JSON file and create a Reporting object.
-
-        Returns:
-        Reporting: An instance of the Reporting class with loaded data.
         """
         reporting_data = DataManager.load_data('Store/reporting_logg.JSON')
         reporting = Reporting()
@@ -122,11 +152,21 @@ class DataManager:
 
     @staticmethod
     def save_reporting(reporting, sales):
+        '''
+        Function for saving reporting data
+        :param reporting:
+        :param sales:
+        '''
         reporting_data = reporting.repoting_do_dict(sales)
         DataManager.save_data(reporting_data, 'Store/reporting_logg.JSON')
 
     @staticmethod
     def load_sales():
+        '''
+        Function that loading the sales data
+        The data of sales are in reporting
+        :return:
+        '''
         sales_data = DataManager.load_data('Store/reporting_logg.JSON')
         sales = Sales()
         if sales_data.get("sales"):

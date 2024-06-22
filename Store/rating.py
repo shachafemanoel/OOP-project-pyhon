@@ -1,5 +1,12 @@
 class Rating:
+    '''
+    A class that represent and manage customer ratings and reviews.
+    '''
     def __init__(self, ratings=None):
+        '''
+        Constructs rating's dict for the Rating object.
+        :param ratings: dict
+        '''
         if ratings is None:
             self.ratings = {5: [], 4: [], 3: [], 2: [], 1: []}
         else:
@@ -7,14 +14,30 @@ class Rating:
 
     @property
     def rating(self):
+        '''
+        :return: current rating's dict.
+        '''
         return self.ratings
 
     @rating.setter
     def rating(self, ratings):
+        """
+        Sets the current ratings if provided as a dictionary.
+        ratings : dict
+        """
         if isinstance(ratings, dict):
             self.ratings = ratings
 
     def add_review(self, stars, review=None, ):
+        """
+        Adds a review to the specified star rating. If no review is provided, defaults to "No description provided".
+
+        Parameters
+        ----------
+        stars : int
+            The star rating for the review (1 to 5)
+        review : str, optional
+        """
         if review is None or review.strip() == "":
             review = "No description provided"
         if stars in self.ratings:
@@ -24,12 +47,29 @@ class Rating:
         return "Thank you for your opinion"
 
     def precent_rating(self, rating):
+        """
+        Calculates the percentage of total reviews that a given star rating represents.
+
+        Parameters
+        ----------
+        rating : list
+            The list of reviews for a specific star rating
+
+        :Returns: The percentage of total reviews that the given star rating represents
+        -------
+        """
         return (len(rating) / self.total_reviews()) * 100
 
     def total_reviews(self):
+        """
+        Returns the total number of reviews.
+        """
         return sum(len(v) for v in self.ratings.values())
 
     def weighted_average_rating(self):
+        """
+        Calculates and returns the weighted average rating, rounded to the nearest half star.
+        """
         total_reviews = self.total_reviews()
         if total_reviews == 0:
             return 0
@@ -39,10 +79,14 @@ class Rating:
 
 
     def preview_rating(self):
+        """
+        :return: a preview string of the average rating and total number of ratings.
+        """
         if self.total_reviews() == 0:
             return "No ratings provided yet"
         else:
             return f"{self.weighted_average_rating()} ⭐ of 5 stars \n * {self.total_reviews()} global ratings * \n"
+
     def __str__(self):
         review_summary = '===============Customer reviews==============='
         if self.total_reviews() > 0:

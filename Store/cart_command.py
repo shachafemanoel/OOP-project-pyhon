@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-
 from Store.cart import Cart
 from Store.products.product import Product
 
@@ -68,8 +67,10 @@ class CartInvoker:
     def execute_commands(self):
         for command in self._commands:
             command.execute()
+
     def reset_commands(self):
         self._commands.clear()
+
     def undo_commands(self):
         if self._commands:
             self._commands.pop()
