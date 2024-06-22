@@ -1,7 +1,8 @@
 from Store.payment_calculator import CurrencyConverter
 from Store.rating import Rating
 from Store.storeerror import StoreError
-class Product():
+from abc import ABC, abstractmethod
+class Product(ABC):
     '''
         The Product class represents a general product in the store.
         Additionally, it provides methods to manage product details, pricing, and inventory.
@@ -139,7 +140,7 @@ class Product():
         '''
         :return: A string representation of product type
         '''
-        return "PRODUCT"
+        return "Accessories"
 
     def __str__(self):
         '''

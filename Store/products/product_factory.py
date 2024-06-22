@@ -2,19 +2,20 @@ from Store.products.computer import Computer
 from Store.products.phone import Phone
 from Store.products.product import Product
 from Store.products.tv import Tv
-
+import logging
 
 class ProductFactory:
-    @staticmethod
-    def create_product(product_type, name, model, description, price, quantity, **kwargs):
-        if product_type.lower() == "tv":
-            return Tv(name, model, description, price, quantity, **kwargs)
-        elif product_type.lower() == "computer":
-            return Computer(name, model, description, price, quantity, **kwargs)
-        elif product_type.lower() == "phone":
-            return Phone(name, model, description, price, quantity, **kwargs)
-        else:
-            return Product(name, model, description, price, quantity, **kwargs)
+    def __init__(self):
+        self.product_classes = {
+            "Computer": Computer,
+            "Phone": Phone,
+            "Tv": Tv,
+            "Product" : Product
+        }
+
+
+
+
 
     @staticmethod
     def get_product_type_by_choice(choice):
@@ -30,3 +31,15 @@ class ProductFactory:
         else:
             category = None
         return category.upper()
+
+    """
+    if admin want to create a new product type
+    """
+
+
+    def create_product(self, product_type, **kwargs):
+        creator = self.product_classes.get(product_type)
+        if not creator:
+            raise ValueError(f"Unknown product type: {product_type}")
+        return creator(**kwargs)
+

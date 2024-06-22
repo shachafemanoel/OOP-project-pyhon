@@ -66,6 +66,8 @@ class DataManager:
     def load_products():
         return DataManager.load_data('Store/products_logg.JSON')
 
+
+
     @staticmethod
     def save_products(products):
         products_data = []

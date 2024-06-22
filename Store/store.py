@@ -12,10 +12,10 @@ from Store.sales import Sales
 from Store.storeerror import StoreError
 from Store.user import User
 
-
 class Store:  # מחלקה שמממשת את החנות עצמה
 
     def __init__(self):
+        self.factory = ProductFactory()
         self.collection = {}
         self.users = {}  # משתמשי החנות
         self.orders = {}  # הזמנות החנות
@@ -152,12 +152,15 @@ class Store:  # מחלקה שמממשת את החנות עצמה
             return found
         else:
             raise StoreError.ProductNotFoundError
+
+
+
     def add_product(self, product_dict):
         if product_dict.get("name") is not None and product_dict.get("price") is not None and product_dict.get(
                 "quantity") is not None:
             product_type = product_dict.pop("product_type", None)
             try:
-                new_product = ProductFactory.create_product(product_type, **product_dict)
+                new_product = self.factory.create_product(product_type, **product_dict)
             except ValueError as e:
                 print(f"An error occurred while creating the product: {e}")
                 return

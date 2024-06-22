@@ -201,3 +201,12 @@ class Sales:
             "category_discounts": self.category_discounts,
 
         }
+
+    def __str__(self):
+        sales = "\n"
+        if self.category_discounts:
+            for key, value in self.category_discounts.items():
+                key = "Accessories" if  key.upper() == "product".upper() else key
+                sales += f"  * Sale -{value}% 🏷️  Off  {key.title()} Department!   * \n"
+
+        return sales

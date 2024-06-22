@@ -261,5 +261,23 @@
             "2": [],
             "1": []
         }
+    },
+    {
+        "product_type": "Computer",
+        "name": "asus",
+        "model": "vivo ",
+        "description": "shshshshhsh",
+        "price": 2000.0,
+        "quantity": 20,
+        "rate": {
+            "5": [],
+            "4": [],
+            "3": [],
+            "2": [],
+            "1": []
+        },
+        "size": "16",
+        "storage": "216",
+        "chip": "i5"
     }
 ]

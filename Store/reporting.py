@@ -105,12 +105,10 @@ class Reporting:
     def nofiction(self):
         nofictions = ""
         if self.total_update > 0:
-            print(f"\n * There are {self.total_update} new notifications *")
+            nofictions += f"\n    ({self.total_update}) New Notifications! 🔔 "
             for key, item in self.new_update.items():
                 if item >0:
-                    nofictions += f"{key} Maneger * {item} new notification *\n"
-        else:
-            nofictions = "There are no new notifications"
+                    nofictions += f"{key.title()} Manager * {item} new notification *\n"
 
         return nofictions
     def __str__(self):
