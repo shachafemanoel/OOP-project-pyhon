@@ -1,7 +1,5 @@
 from Store.products.product import Product
-from Store.products.tv import Tv
-from Store.products.phone import Phone
-from Store.products.computer import Computer
+from Store.sales import Sales
 
 class Display:
     '''
@@ -16,7 +14,8 @@ class Display:
            Displays the main menu for user interaction including options to log in,
            sign up, reset password, or exit.
         '''
-        print("\n Welcome to Electronic Store Management System!\n ")
+        print("\n🔐 Login Page")
+        print("=====================")
         print("1. Existing User? Log in")
         print("2. New User? Sign up now ")
         print("3. Forgot password? Reset here")
@@ -30,10 +29,11 @@ class Display:
         Displays the client menu with options to update details
         , view cart, view collections, check orders, logout, or exit.
         '''
-        print("\n * Welcome to Electronic Store Management Main menu * \n ")
         if new_message > 0:
-            print(f"\n * There are {new_message} new notifications on orders * \n")
-        print("\n1. Update details")
+            print(f"  ({new_message}) New Notifications! 🔔\n")
+        print("\n == Customer Menu == ")
+        print("=====================")
+        print("1. Update details")
         if cart.count_item > 0:
             print(f'2. Cart({cart.count_item})')
         else:
@@ -57,42 +57,36 @@ class Display:
         Displays the coupon menu for user interaction if using the coupon or not
         :param coupon:
         '''
-        print(f"\nWould you like to use your {coupon}% coupon?")
-        print('\n1. Yes')
+        print("\n== Coupon Menu ==")
+        print("=================")
+        print(f"Would you like to use your {coupon}% coupon?")
+        print('1. Yes')
         print('2. No')
         choice = input('\nEnter your choice: ')
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    @staticmethod
-    def display_order(cart):
-        '''
-        Displays the order menu with options to view catalog, go to cart, or exit.
-        '''
-        print("\n * Order menu *")
-        print("\n1. Catalog ")
-        if cart.total_amount > 0:
-            print(f"2. Go to Cart({cart.count_item})")
-        print("3. Exit ")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
+
 
     @staticmethod
     def display_payment():
         '''
         Displays the payment menu with options to pay with Credit-Card, PayPal or cash.
         '''
+        print("\n== Payment Menu ==")
+        print("===================")
         print("How would you like to pay?")
-        print("\n1.Credit Card")
-        print("2.Paypal")
-        print("3.Cash")
-        print("4.Exit")
+        print("1. Credit Card")
+        print("2. Paypal")
+        print("3. Cash")
+        print("4. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-
-
     @staticmethod
-    def catalog_main_menu():
+    def catalog_main_menu(sales: Sales):
+        print("\n== Catalog Main Menu ==")
+        print("========================")
+        print(sales)
         print("1. View Categories")
         print("2. Search Product by Name")
         print("3. Search Product by Model")
@@ -103,26 +97,29 @@ class Display:
         return choice.replace(" ", "")
 
     @staticmethod
-    def pick_item_menu(item:Product):
+    def pick_item_menu(item: Product):
+        print("\n== Item Menu ==")
+        print("================")
         print(item)
-        print("\n1. Add to Cart")
-        print("2.View reviews")
+        print("1. Add to Cart")
+        print("2. View reviews")
         print("0. Back to Catalog Menu")
         choice = input("Enter your choice: ")
         return choice.replace(" ", "")
+
     @staticmethod
     def display_product_type():
-
         '''
         Displays the product type selection menu.
         '''
-        print("\n * Select Product type *")
-        print('\n1. TV')
-        print('2. Computer')
-        print('3. Mobile Phone')
-        print('4. Accessories')
+        print("\n== Store Departments ==")
+        print("========================")
+        print("1. TV")
+        print("2. Computer")
+        print("3. Mobile Phone")
+        print("4. Accessories")
         print("0. Return to Catalog Menu")
-        choice = input("\nEnter Your Choice: ")
+        choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
     @staticmethod
@@ -130,7 +127,8 @@ class Display:
         '''
         Displays the advanced search options.
         '''
-        print("ֿ\n***** Advanced search system ****\n")
+        print("\n== Advanced Search System ==")
+        print("=============================")
         print("1. Search by Name")
         print("2. Search by Model")
         print("3. Search by Price range")
@@ -144,8 +142,10 @@ class Display:
         '''
         Displays the discount options for category or specific product.
         '''
-        print("\nChoose an option:")
-        print("\n1. Discount from a category")
+        print("\n== Discount Menu ==")
+        print("====================")
+        print("Choose an option:")
+        print("1. Discount from a category")
         print("2. Discount from a specific product")
         choice = input("\nEnter your choice: ").replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
         return choice
@@ -155,8 +155,9 @@ class Display:
         '''
         Displays the options for updating client details.
         '''
-        print("\n * Choose which detail you want to change *")
-        print("\n1. Client Name")
+        print("\n== Update Client Details ==")
+        print("============================")
+        print("1. Client Name")
         print("2. Client Password")
         print("3. Client Address")
         print("4. Client Coupon")
@@ -169,12 +170,13 @@ class Display:
         '''
         Displays the options for updating user details.
         '''
-        print("\n * Choose which detail you want to change *")
-        print("\n1. Name")
+        print("\n== Update User Details ==")
+        print("==========================")
+        print("1. Name")
         print("2. Password")
         print("3. Address")
         print("4. Currency")
-        print('5. Exit')
+        print("5. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
@@ -184,9 +186,10 @@ class Display:
         Displays the shopping cart menu with options to proceed to checkout
         , change items, empty the cart, or exit.
         '''
-        print("\n * Shopping Cart *\n")
+        print("\n== Shopping Cart ==")
+        print("====================")
         print(cart)
-        print("\n1. Proceed to checkout ")
+        print("1. Proceed to checkout")
         print("2. Change")
         print("3. Empty the cart")
         print("4. Exit")
@@ -198,19 +201,21 @@ class Display:
         '''
         Displays the user's order history.
         '''
-        print("\n * Your orders *\n")
+        print("\n== Your Orders ==")
+        print("==================")
         print(list_orders_client)
-        print("1.View order details")
-        print("2.Exit")
+        print("1. View order details")
+        print("2. Exit")
         choice = input("\nEnter your choice: ")
         return choice
 
     @staticmethod
     def display_manage_user():
         '''
-        Displays the manage user account,
+        Displays the manage user account menu.
         '''
-        print("\n * Wellcome to manage users display *\n")
+        print("\n== Manage Users ==")
+        print("===================")
         print("1. View all clients")
         print("2. Add user")
         print("3. Remove user")
@@ -223,9 +228,11 @@ class Display:
     @staticmethod
     def display_manage_product():
         '''
-        Displays the manage product menu,
+        Displays the manage product menu.
         '''
-        print("1. Add Product or Adding a quantity to an existing product ")
+        print("\n== Product Management Menu ==")
+        print("==============================")
+        print("1. Add Product or Adding a quantity to an existing product")
         print("2. Remove Product")
         print("3. Add Discount")
         print("4. Remove Discount")
@@ -237,31 +244,20 @@ class Display:
     @staticmethod
     def display_manage_order():
         '''
-        Displays the manage order menu,
+        Displays the manage order menu.
         '''
+        print("\n== Order Management Menu ==")
+        print("============================")
         print("1. Update order status")
         print("2. List Orders")
         print("3. Exit")
         choice = input("\nEnter your choice: ")
         return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
-    @staticmethod
-    def display_menu():
-        '''
-        Displays the main menu options,
-        '''
-        print("4. Reporting")
-        print("5. Logout")
-        print("0. Exit")
-        choice = input("\nEnter your choice: ")
-        return choice.replace(" ", "").translate(str.maketrans("", "", ".,!?;:"))
 
 
     @staticmethod
     def save_changes_menu():
-        '''
-        Save changes to JSON files
-        '''
         print("\nWould you like to:")
         print("1. Continue making changes")
         print("2. Save changes and exit")

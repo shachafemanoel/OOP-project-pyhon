@@ -19,10 +19,7 @@
             "amount_of_payments": 2
         },
         "user_type": "Client",
-        "message": [
-            "\n * Thank you for your purchase!,  Order number: 15 has been received! *",
-            "\n * Thank you for your purchase!,  Order number: 15 has been received! *"
-        ],
+        "message": [],
         "currency": "$USD"
     },
     {

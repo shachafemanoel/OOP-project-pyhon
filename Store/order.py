@@ -1,6 +1,5 @@
 from Store.payment import Payment
-from Store.payment_calculator import CurrencyConverter
-from Store.payment_calculator import InstallmentPayment
+from Store.payment_calculator import CurrencyConverter,InstallmentPayment
 
 
 class Order:

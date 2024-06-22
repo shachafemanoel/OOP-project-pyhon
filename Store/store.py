@@ -271,8 +271,7 @@ class Store:
             try:
                 new_product = ProductFactory.create_product(product_type, **product_dict)
             except ValueError as e:
-                print(f"An error occurred while creating the product: {e}")
-                return
+                raise ValueError(f"An error occurred while creating the product: {e}")
 
             discount = self.sales.get_product_discount(new_product)
             if discount > 0:

@@ -100,7 +100,7 @@ class Sales:
         discount (float): The discount percentage (e.g., 0.10 for 10% off).
         """
         if 0 < discount < 100:
-            self.category_discounts[category_name] = discount
+            self.category_discounts[category_name.upper()] = discount
         else:
             raise StoreError.InvalidInputError("Invalid discount value")
 

@@ -29,7 +29,7 @@ class ProductFactory:
         elif choice == "4":
             category = "Product"
         else:
-            category = None
+            raise ValueError("Invalid choice")
         return category.upper()
 
     """
@@ -38,7 +38,7 @@ class ProductFactory:
 
 
     def create_product(self, product_type, **kwargs):
-        creator = self.product_classes.get(product_type)
+        creator = self.product_classes.get(product_type.title())
         if not creator:
             raise ValueError(f"Unknown product type: {product_type}")
         return creator(**kwargs)
