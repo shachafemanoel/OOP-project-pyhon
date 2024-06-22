@@ -38,7 +38,7 @@ class Store:
         self.reporting = Reporting()
         self.sales = Sales()
         self.currency = "₪ILS"
-
+        self.factory = ProductFactory()
     def add_review(self, product, stars, review=None):
         """
         Adds a review for a product.
@@ -269,7 +269,7 @@ class Store:
                 "quantity") is not None:
             product_type = product_dict.pop("product_type", None)
             try:
-                new_product = ProductFactory.create_product(product_type, **product_dict)
+                new_product = self.factory.create_product(product_type, **product_dict)
             except ValueError as e:
                 raise ValueError(f"An error occurred while creating the product: {e}")
 

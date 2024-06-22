@@ -39,7 +39,7 @@ class Display:
         else:
             print("2. Cart(0)")
         if len(sales) > 0:
-            print("3.   Collection * new sale *")
+            print("3. Collection * new sale *")
         else:
             print("3. Collection")
         if new_message > 0:

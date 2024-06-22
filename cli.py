@@ -947,7 +947,7 @@ class StoreCLI:
         logging.info("Logged out successfully\n")
 
     def wellcome_page(self):
-        selection = Display.display_user(self.store.sales)
+        selection = Display.display_user()
         if selection == '1':
             self.log_in()
         elif selection == '2':
