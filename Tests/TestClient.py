@@ -1,67 +1,84 @@
 import unittest
-
 from Store.client import Client
 from Store.order import Order
-from Store.payment import Payment
-
+from Store.payment_calculator import CurrencyConverter
 
 class TestClient(unittest.TestCase):
 
     def setUp(self):
-        self.payment = Payment("Client Check", "1234567890", "Credit Card", 10)
-        self.client = Client("2020", "Client Check", '1234', 'Address', 0, "Credit Card", 10)
-        self.order1 = Order(self.client, 100, {"Product1": 1}, self.payment)
-        self.order2 = Order(self.client, 200, {"Product2": 2}, self.payment)
+        self.client = Client("1234","John Doe","password123","123 Main St",0,None,None,"₪ILS",{})
+        self.order = Order(1, None, {
+            "owner": "John Doe",
+            "info": "1234567812345678",
+            "payment_method": "Credit Card",
+            "amount_of_payments": 1}, None, "₪ILS","123 Main St")
+    def test_initialization(self):
+        self.assertEqual(self.client.user_id, "1234")
+        self.assertEqual(self.client.user_full_name, "John Doe")
+        self.assertEqual(self.client.password, "password123")
+        self.assertEqual(self.client.address, "123 Main St")
+        self.assertEqual(self.client.online, 0)
+        self.assertEqual(self.client.currency, "₪ILS")
+        self.assertEqual(self.client.order_history, {})
+        self.assertEqual(self.client.message, [])
+        self.assertEqual(self.client.new_message, 0)
 
-    def test_update_client(self):
-        self.client.messege = ["Message 1", "Message 2"]
-        self.client.new_messege = 2
-        notifications = self.client.update_client()
-        self.assertIn("Message 1", notifications)
-        self.assertIn("Message 2", notifications)
-        self.assertIn("There are 2 new notifications for you", notifications)
-        self.assertEqual(self.client.new_messege, 0)
-        self.assertEqual(self.client.messege, [])
-        notifications = self.client.update_client()
-        self.assertIn("There are no new notifications", notifications)
+    def test_set_message(self):
+        self.client.message = ["New message"]
+        self.assertEqual(self.client.message, ["New message"])
 
-    def test_use_coupon(self):
-        self.client.use_coupon()
-        self.assertEqual(self.client.coupon, 0)
+    def test_update_client_no_notifications(self):
+        result = self.client.update_client()
+        self.assertEqual(result, "\n * There are no new notifications *\n ")
+
+    def test_update_client_with_notifications(self):
+        self.client.message = ["New message"]
+        self.client.new_message = 1
+        result = self.client.update_client()
+        self.assertIn("New message", result)
+        self.assertEqual(self.client.new_message, 0)
+        self.assertEqual(self.client.message, [])
+
+    def test_currency_setter(self):
+        self.client.currency = "$USD"
+        self.assertEqual(self.client.currency, "$USD")
 
     def test_new_status(self):
-        self.client.new_status(self.order1)
-        self.assertIn(self.order1.order_number, self.client.order_history)
-        self.assertIn(f"\n *Order Number:{self.order1.order_number} has been {self.order1.status} *",
-                      self.client.messege)
-        self.assertEqual(self.client.new_messege, 1)
+        order = self.order
+        self.client.new_status(order)
+        self.assertIn(order.order_number, self.client.order_history)
+        self.assertEqual(self.client.order_history[order.order_number], order)
+        self.assertEqual(self.client.new_message, 1)
 
     def test_new_order(self):
-        self.client.new_order(self.order2)
-        self.assertIn(self.order2.order_number, self.client.order_history)
-        self.assertIn(
-            f"\n * Thank you for your purchase!,  Order number: {self.order2.order_number} has been received! *",
-            self.client.messege)
-        self.assertEqual(self.client.new_messege, 1)
+        order = self.order
+        self.client.new_order(order)
+        self.assertIn("Thank you for your purchase!", self.client.message[0])
+        self.assertEqual(self.client.new_message, 1)
 
-    def test_list_orders_client(self):
-        self.client.new_order(self.order1)
-        self.client.new_order(self.order2)
-        orders_list = self.client.list_orders_client()
-        self.assertEqual(len(orders_list), 2)
-        self.assertIn(f"Order Number: {self.order1.order_number}", orders_list[0][0])
-        self.assertIn(f"Order Number: {self.order2.order_number}", orders_list[1][0])
+    def test_list_orders_client_no_orders(self):
+        result = self.client.list_orders_client()
+        self.assertEqual(result, "\n * There are no orders *\n")
 
-    def test_change_address(self):
-        new_address = "New Address"
-        self.client.change_address(new_address)
-        self.assertEqual(self.client.address, new_address)
+    def test_list_orders_client_with_orders(self):
+        order = self.order
+        self.client.order_history[1] = order
+        result = self.client.list_orders_client()
+        self.assertIn("Orders History", result)
+        self.assertIn("Order number:1", result)
+        self.assertIn("Orders History    \n-----------------------------------------\nOrder number:1             \n Total amount: None ₪ILS | Status: Processing\n-----------------------------------------\n", result)
 
-    def test_str_method(self):
-        client_str = str(self.client)
-        self.assertIn("Client Check", client_str)
-        self.assertIn("2020", client_str)
+    def test_to_dict(self):
+        self.client.message = ["New message"]
+        result = self.client.to_dict()
+        self.assertEqual(result["message"], ["New message"])
+        self.assertEqual(result["currency"], "₪ILS")
+        self.assertEqual(result["user_type"], "Client")
 
+    def test_str(self):
+        result = str(self.client)
+        self.assertIn("User:", result)
+        self.assertIn("Order quantity: 0 orders", result)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -43,14 +43,14 @@ class Client(User):
         '''
         :return: message
         '''
-        return self.__messege
+        return self.__message
 
     @message.setter
     def message(self, value):
         '''
         Sets new message
         '''
-        self.__messege = value
+        self.__message = value
 
     def update_client(self):
         '''
