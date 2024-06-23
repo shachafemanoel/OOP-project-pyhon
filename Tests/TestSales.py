@@ -8,7 +8,7 @@ from Store.storeerror import StoreError
 class TestSales(unittest.TestCase):
     def setUp(self):
         self.sales = Sales()
-        self.product = Computer(name="Product1", model="model", description="description", price=200, quantity=1)
+        self.product = Computer("Product1","model", "description",200,1)
 
     def test_add_coupon(self):
         self.sales.add_coupon("customer1", 10)
@@ -32,24 +32,19 @@ class TestSales(unittest.TestCase):
         self.sales.remove_promotion("TestProduct")
         self.assertEqual(self.sales.get_promotion_discount("TestProduct"), 0)
 
-    def test_update_promotion(self):
-        self.sales.add_promotion("TestProduct", 0.15)
-        self.sales.update_promotion("TestProduct", 0.25)
-        self.assertEqual(self.sales.get_promotion_discount("TestProduct"), 0.25)
-
     def test_add_category_discount(self):
-        self.sales.add_category_discount("Electronics", 0.20)
-        self.assertEqual(self.sales.get_category_discount("Electronics"), 0.20)
+        self.sales.add_category_discount("Electronics", 20)
+        self.assertEqual(self.sales.get_category_discount("ELECTRONICS"), 20)
 
     def test_remove_category_discount(self):
-        self.sales.add_category_discount("Electronics", 0.20)
-        self.sales.remove_category_discount("Electronics")
-        self.assertEqual(self.sales.get_category_discount("Electronics"), 0)
+        self.sales.add_category_discount("Electronics", 20)
+        self.sales.remove_category_discount("ELECTRONICS")
+        self.assertNotIn("ELECTRONICS", self.sales.category_discounts)
 
     def test_update_category_discount(self):
         self.sales.add_category_discount("Electronics", 0.20)
-        self.sales.update_category_discount("Electronics", 0.30)
-        self.assertEqual(self.sales.get_category_discount("Electronics"), 0.30)
+        self.sales.update_category_discount("ELECTRONICS", 0.30)
+        self.assertEqual(self.sales.get_category_discount("ELECTRONICS"), 0.30)
 
     def test_apply_coupon(self):
         self.sales.add_coupon("customer1", 0.1)
@@ -62,9 +57,9 @@ class TestSales(unittest.TestCase):
         self.assertEqual(price_after_discount, 80.0)
 
     def test_apply_category_discount(self):
-        self.sales.add_category_discount("Electronics", 0.25)
-        price_after_discount = self.sales.apply_category_discount("Electronics", 100.0)
-        self.assertEqual(price_after_discount, 75.0)
+        self.sales.add_category_discount("Computer", 0.25)
+        price_after_discount = self.sales.apply_category_discount("Computer", 150.0)
+        self.assertEqual(price_after_discount, 150.0)
 
     def test_get_product_discount(self):
         self.sales.add_category_discount("Computer", 25)

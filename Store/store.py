@@ -39,6 +39,7 @@ class Store:
         self.sales = Sales()
         self.currency = "₪ILS"
         self.factory = ProductFactory()
+
     def add_review(self, product, stars, review=None):
         """
         Adds a review for a product.

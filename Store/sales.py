@@ -79,18 +79,6 @@ class Sales:
             raise ValueError("Promotion for this product does not exist.")
         del self.promotions[product_name]
 
-    def update_promotion(self, product_name, new_discount):
-        """
-        Update the discount value of an existing promotion.
-
-        Parameters:
-        product_name (str): The name of the product to update the promotion for.
-        new_discount (float): The new discount percentage.
-        """
-        if product_name not in self.promotions:
-            raise ValueError("Promotion for this product does not exist.")
-        self.promotions[product_name] = new_discount
-
     def add_category_discount(self, category_name, discount):
         """
         Add a new discount for a category.

@@ -2,7 +2,7 @@ import unittest
 
 from Store.payment import Payment
 from Store.user import User
-
+from Store.storeerror import StoreError
 
 class TestUser(unittest.TestCase):
     def setUp(self):
@@ -18,9 +18,10 @@ class TestUser(unittest.TestCase):
         self.assertEqual(self.payment.payment_method, 'Credit Card')
 
     def test_login(self):
-        self.assertFalse(self.user.login("12345"))
+        with self.assertRaises(StoreError.AuthenticationError):
+            self.user.login("12345")
         self.assertEqual(self.user.online, 0)
-        self.assertTrue(self.user.login("1234"))
+        self.user.login("1234")
         self.assertEqual(self.user.online, 1)
 
     def test_logout(self):
