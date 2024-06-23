@@ -33,7 +33,7 @@ class Reporting:
         name : str
         quant : int
         """
-        if name is self.sold_products:
+        if name in self.sold_products:
             self.sold_products[name] += quant
         else:
             self.sold_products[name] = quant
