@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+*.log
+npm-debug.log*
+
+# Env
+.env
+
+# Others
+package-lock.json
