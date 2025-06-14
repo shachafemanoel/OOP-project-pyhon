@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Your Cart</h1>
+{% if items %}
+<table>
+    <tr><th>Product</th><th>Quantity</th><th>Price</th></tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.product.price * item.quantity }} {{ item.product.currency }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<p>Total: {{ total }} ₪</p>
+<a href="{{ url_for('checkout') }}">Checkout</a>
+{% else %}
+<p>Cart is empty</p>
+{% endif %}
+{% endblock %}

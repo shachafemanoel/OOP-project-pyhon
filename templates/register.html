@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Register</h1>
+{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+<form method="post">
+    <label>ID: <input type="text" name="user_id"></label><br>
+    <label>Full Name: <input type="text" name="user_full_name"></label><br>
+    <label>Password: <input type="password" name="password"></label><br>
+    <input type="submit" value="Register">
+</form>
+{% endblock %}
